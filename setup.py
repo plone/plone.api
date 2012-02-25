@@ -17,6 +17,9 @@ setup(name='plone.api',
       install_requires=[
         'setuptools',
       ],
+      extras_require={
+        'test': ['plone.app.testing'],
+      },
       classifiers=[
         'Environment :: Web Environment',
         'Framework :: Plone',
