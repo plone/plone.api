@@ -32,15 +32,16 @@ acceptable API.
 Design decisions
 ================
 
-Ideally we want the API to behave like a dict. In this way you don't
-have to remember method names that do CRUD. You just use the API like
-you'd use any dict.
+Ideally we want the API to behave 'pythonic', i.e. like a dict or set where
+appropriate. This way developers don't have to remember method names that
+support CRUD of things like users, groups, resources and content.
 
-However the underlying APIs that plone.api is using (like portal_memberdata, ...)
-are not perfect. For tasks where we cannot yet support dict-like API, we
-add convenience methods. When the underlying APIs get fixed, we will change
-the documentation to point to using the dict-like access and we'll deprecate
-the convenience methods.
+However, Plone's underlying APIs (like `portal_memberdata` etc) are mostly not
+following the same approach. For tasks where no 'pythonic' API exists (yet)
+convenience methods are provided. These should be considered to be temporary or
+rather transitional, i.e. when the underlying APIs get "fixed", the practices
+recommended by i:mode:`plone.api` will be adjusted accordingly and the
+convenience methods will be deprecated.
 
 For example, changing a password. Ideally we want the code to look like this:
 
