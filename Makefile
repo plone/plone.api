@@ -14,8 +14,11 @@ docs/index.html: src/plone/api/docs/*.rst
 bin/buildout: buildout.cfg bootstrap.py
 	$(python) bootstrap.py -d
 
+tests: .installed.cfg
+	@bin/test
+
 clean:
 	-rm -rf .installed.cfg bin docs parts develop-eggs
 
-.PHONY: all docs clean
+.PHONY: all docs tests clean
 
