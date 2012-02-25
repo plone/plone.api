@@ -22,14 +22,17 @@ We plan to deprecate such methods as soon as the tools implement an
 acceptable API.
 
 
-Contents:
+
+Table of Contents
+=================
 
 .. toctree::
-   content
-   users
-   utilities
-   inittools
    :maxdepth: 2
+
+   content.rst
+   users.rst
+   utilities.rst
+   inittools.rst
 
 
 Indices and tables
