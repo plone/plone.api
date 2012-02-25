@@ -24,8 +24,8 @@ The request will be fetched from a thread local.
 
 .. code-block:: python
 
-    from plone.api import get_request
-    request = get_request()
+    from plone import api
+    request = api.get_request()
 
 .. invisible-code-block:: python
 
