@@ -41,16 +41,38 @@ To send an e-mail just use send_email:
 
 .. Todo: Add example for creating a mime-mail
 
+.. invisible-code-block:: python
+    
+    # Mock the mail host so we can test sending the email
+    from plone import api
+    from Products.CMFPlone.tests.utils import MockMailHost
+    from Products.CMFPlone.utils import getToolByName
+    from Products.MailHost.interfaces import IMailHost
+
+    mockmailhost = MockMailHost('MailHost')
+    site = api.get_site()
+    site.MailHost = mockmailhost
+    sm = site.getSiteManager()
+    sm.registerUtility(component=mockmailhost, provided=IMailHost)
+    mailhost = getToolByName(site, 'MailHost')
+    mailhost.reset()
+
 .. code-block:: python
 
    api.send_email(
-       subject="hello world",
+       body="hello, bob",
+       recipient="bob@plone.org",
        sender="admin@mysite.com",
-       recipients=["arthur.dent@gmail.com"],
-       body="hello, arthur",
+       subject="hello world",
    )
 
 .. invisible-code-block:: python
+    # test email
+    self.assertEqual(len(mailhost.messages), 1)
 
-   None
+    msg = mailhost.messages[0]
 
+    self.assertTrue('To: bob@plone.org' in msg)
+    self.assertTrue('From: admin@mysite.com' in msg)
+    self.assertTrue('Subject: =?utf-8?q?hello_world' in msg)
+    self.assertTrue('hello, bob' in msg)

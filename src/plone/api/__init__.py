@@ -1,5 +1,7 @@
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
+from zope.component import getUtility
 from zope.globalrequest import getRequest
 
 import random
@@ -7,17 +9,17 @@ import string
 
 
 def get_site():
-    """ Return the Plone Site object. """
+    """Return the Plone Site object."""
     return getSite()
 
 
 def get_request():
-    """ Return the current request. """
+    """Return the current request."""
     return getRequest()
 
 
 def create_user(username, email, password=None, **kwargs):
-    """Create user"""
+    """Create user."""
     site = get_site()
     registration = getToolByName(site, 'portal_registration')
 
@@ -41,3 +43,17 @@ def change_password(userid, password):
     memberdata = getToolByName(site, 'portal_memberdata')
     member = memberdata.getMemberById(userid)
     member._setPassword(password)
+
+
+def send_email(body="", recipient="", sender="", subject=""):
+    """Send an email."""
+    encoding = getUtility(ISiteRoot).getProperty('email_charset', 'utf-8')
+
+    # The mail headers are not properly encoded we need to extract
+    # them and let MailHost manage the encoding.
+    if isinstance(body, unicode):
+        body = body.encode(encoding)
+
+    host = getToolByName(get_site(), 'MailHost')
+    host.send(body, recipient, sender, subject=subject, charset=encoding,
+              immediate=True)
