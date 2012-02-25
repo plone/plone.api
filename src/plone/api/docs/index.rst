@@ -47,15 +47,45 @@ For example, changing a password. Ideally we want the code to look like this:
 
 .. code-block:: python
 
-  from plone import api
-  api.users['bob'].password = "secret"
+    from plone import api
+    api.users['bob'].password = "secret"
 
 But currently we must use this:
 
 .. code-block:: python
 
-  from plone import api
-  api.set_password('bob', 'secret')
+    from plone import api
+    api.set_password('bob', 'secret')
+
+
+To be clear: The API will persist even when the convenience methods will be
+deprecated.
+
+Also, we don't intend to cover all possible use-cases. Only the absolutely
+most common ones. If you need to do something funky, just use the
+underlaying APIs directly.
+
+
+*Why we don't want to use wrappers*
+
+We could also wrap a object (like a user) with a API to make it more usable right now.
+That would be an alternative to the convenience methods.
+
+But telling developers that they will get yet another object from the API which isn't the requested
+object, but a API-wrapped one instead, would be very hard. Also, making this wrap
+transparent, in order to make the returned object directly usable,
+would be nearly impossible, because we'd have to proxy all the
+zope.interface stuff, annotations and more.
+
+
+*Won't dict-access for users encourage developers to mis-use MemberData object?*
+
+This is a risk yes. For now, we will make it clear in the documentation of plone.api
+what the limitations of users dict are and how to use it propertly. Big red honking
+banners warning what not to do.
+
+Then we can focus on fixing portal_memberdata to not allow developers to shoot themselves
+in the knee but rather expose a sane API.
 
 
 Table of Contents
