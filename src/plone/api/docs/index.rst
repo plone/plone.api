@@ -23,7 +23,9 @@ describe how to work with plone.
 In addition we want a simple entry point for the most important tools
 that are needed on nearly every project. We will also add helper
 methods for things that the tools should already do themselves in an
-easy way, but currently don't.
+easy way, but currently don't. Keeping everything in one place helps
+keep the API introspectable and discoverable, which are important
+aspects of being Pythonic.
 
 We plan to deprecate such methods as soon as the tools implement an
 acceptable API.
