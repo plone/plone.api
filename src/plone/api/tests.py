@@ -14,6 +14,7 @@ import doctest
 import manuel.codeblock
 import manuel.doctest
 import manuel.testing
+import os
 import re
 import transaction
 import unittest2 as unittest
@@ -74,6 +75,10 @@ def DocFileSuite(testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TES
 
 
 def test_suite():
-    return unittest.TestSuite([
-        DocFileSuite('docs/utilities.rst'),
-        ])
+    doctests = []
+    docs_path = os.path.join(os.path.dirname(__file__), 'docs')
+
+    for filename in os.listdir(docs_path):
+        doctests.append(DocFileSuite(os.path.join('docs', filename)))
+
+    return unittest.TestSuite(doctests)
