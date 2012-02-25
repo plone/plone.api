@@ -4,3 +4,6 @@
 /eggs/
 /parts/
 *.pyc
+/docs/
+/include/
+/lib/
