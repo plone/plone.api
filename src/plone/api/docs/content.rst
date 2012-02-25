@@ -20,7 +20,7 @@ be created.
 
    from plone import api
    site = api.get_site()
-   api.create(site, 'foo',
+   api.create(site,
        type='Document',
        id='myid',
        title='This is a test document.')

@@ -18,6 +18,12 @@ def get_request():
     return getRequest()
 
 
+def create(container, type, id, **kwargs):
+    """Create content of the given type."""
+    fti = get_site().portal_types[type]
+    return fti.constructInstance(container, id, **kwargs)
+
+
 def create_user(username, email, password=None, **kwargs):
     """Create user."""
     site = get_site()
