@@ -15,7 +15,7 @@ bin/buildout: buildout.cfg bootstrap.py
 	$(python) bootstrap.py -d
 
 clean:
-	-rm -rf .installed.cfg bin docs parts
+	-rm -rf .installed.cfg bin docs parts develop-eggs
 
 .PHONY: all docs clean
 
