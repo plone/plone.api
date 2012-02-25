@@ -1,10 +1,17 @@
-.. plone.api documentation master file, created by
-   sphinx-quickstart on Sat Feb 25 11:49:34 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+*******************************
+:mod:`plone.api` -- A Plone API
+*******************************
 
-plone.api
-=========
+:Author: Plone Foundation
+:Version: |version|
+
+.. module:: plone.api
+
+.. topic:: Overview
+
+   The :mod:`plone.api` is an attempt to provide an easy to use API
+   for developing with Plone.
+
 
 When documenting plone, an easy and understandable set of basic
 functions helps to keep the documentation focused on the current task
@@ -20,7 +27,6 @@ easy way, but currently don't.
 
 We plan to deprecate such methods as soon as the tools implement an
 acceptable API.
-
 
 
 Table of Contents
@@ -41,4 +47,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
