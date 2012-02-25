@@ -11,7 +11,7 @@ docs/index.html: src/plone/api/docs/*.rst
 .installed.cfg: bin/buildout buildout.cfg
 	bin/buildout $(options)
 
-bin/buildout: buildout.cfg bootstrap.py
+bin/buildout: bootstrap.py
 	$(python) bootstrap.py -d
 
 tests: .installed.cfg
