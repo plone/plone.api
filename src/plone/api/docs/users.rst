@@ -19,16 +19,19 @@ To quickly create a new user, use the ``create_user`` helper method. You have
 to specify username id and email.
 
 .. code-block:: python
+
    from plone import api
    user = api.create_user(username='bob', email='bob@plone.org')
 
 .. invisible-code-block:: python
+
    self.assertEquals(user.id, 'bob')
    self.assertEquals(user.getProperty('email'), 'bob@plone.org')
 
 You can specify any number of user properties as keyword arguments.
 
 .. code-block:: python
+
    user = api.create_user('bob', email='bob@plone.org',
       fullname='Bob',
       location='Munich',
@@ -36,6 +39,7 @@ You can specify any number of user properties as keyword arguments.
    )
 
 .. invisible-code-block:: python
+
    self.assertEquals(user.getProperty('fullname'), 'Bob')
    self.assertEquals(user.getProperty('location'), 'Munich')
    self.assertEquals(user.getProperty('website'), 'http://plone.org')
@@ -44,9 +48,11 @@ Besides user properties you can also specify a password for the new user.
 Otherwise a random 8-char alphanumeric password will be generated.
 
 .. code-block:: python
+
    user = api.create_user('bob', email='bob@plone.org', password='secret')
 
 .. invisible-code-block:: python
+
    self.assertEquals(user.getPassword(), 'secret')
 
 
@@ -93,6 +99,7 @@ Changing a password
    None
 
 .. invisible-code-block:: python
+
    user._getPassword('new-password')
 
 
