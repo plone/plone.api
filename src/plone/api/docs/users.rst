@@ -12,20 +12,42 @@ To create a new user, use this.
    from plone import api
    api.create_user('bob', firstname='Bob')
 
-.. invisible-code-block:: python
+Creating a user
+---------------
 
-   None
-
-You can also add groups to that user:
+To quickly create a new user, use the ``create_user`` helper method. You have
+to specify username id and email.
 
 .. code-block:: python
-
    from plone import api
-   api.create_user('eliza', groups=['group_a', 'group_b'])
+   user = api.create_user(username='bob', email='bob@plone.org')
 
 .. invisible-code-block:: python
+   self.assertEquals(user.id, 'bob')
+   self.assertEquals(user.getProperty('email'), 'bob@plone.org')
 
-   None
+You can specify any number of user properties as keyword arguments.
+
+.. code-block:: python
+   user = api.create_user('bob', email='bob@plone.org',
+      fullname='Bob',
+      location='Munich',
+      website='http://plone.org',
+   )
+
+.. invisible-code-block:: python
+   self.assertEquals(user.getProperty('fullname'), 'Bob')
+   self.assertEquals(user.getProperty('location'), 'Munich')
+   self.assertEquals(user.getProperty('website'), 'http://plone.org')
+
+Besides user properties you can also specify a password for the new user.
+Otherwise a random 8-char alphanumeric password will be generated.
+
+.. code-block:: python
+   user = api.create_user('bob', email='bob@plone.org', password='secret')
+
+.. invisible-code-block:: python
+   self.assertEquals(user.getPassword(), 'secret')
 
 
 Getting a user
@@ -69,6 +91,9 @@ Changing a password
 
    # TODO Add test!
    None
+
+.. invisible-code-block:: python
+   user._getPassword('new-password')
 
 
 Getting the currently logged in user

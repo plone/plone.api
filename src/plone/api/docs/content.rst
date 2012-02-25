@@ -35,7 +35,7 @@ be created.
    site = api.get_site()
    site['myid'] = api.create(
        type='Document',
-       title='This is a test document.'')
+       title='This is a test document.')
 
 
 .. invisible-code-block:: python
