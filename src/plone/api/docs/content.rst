@@ -30,42 +30,62 @@ You can also load content by path (from the site root):
 Create content
 --------------
 
-a) api.create(portal.folder, 'foo',
-       type='Document',
-       attr1='abc',
-       title='def')
-b) portal.folder['foo'] = api.create(type='Document', attr...)
+.. warning ::
+
+   This is for discussion - should we support version A or B?
+
+.. note ::
+
+   Version A
 
 .. code-block:: python
 
-   # create content
-   # XXX What type of content are we creating here?
-   site['foo'] = api.create_content(type='Folder', title='Foo')
-   site['bar'] = api.create_content('Folder', title='Bar')
-   site.bar['doc'] = api.create_content('Page', title='Doc')
-   # XXX Other way?
-   content = content.add_content(type, id, \*\*kw)
+   site = api.get_site()
+   api.create(site, 'foo',
+       type='Document',
+       id='myid',
+       title='This is a test document.')
 
-   print 'Output     text.'
+.. note ::
+
+   Version B
+
+.. code-block:: python
+
+   site = api.get_site()
+   site['myid'] = api.create(
+       type='Document',
+       title='This is a test document.'')
+
 
 .. invisible-code-block:: python
 
-   :options: -ELLIPSIS, +NORMALIZE_WHITESPACE
-
-   Output text.
+   self.assertEquals(site['myid'].Title(), 'This is a test document')
 
 
 Move content
 ------------
 
-a) api.move(source=portal.someobj, target=portal.folder)
-b) portal.folder['foo'] = portal.pop('someobj')
+.. warning ::
+
+   This is for discussion - should we support version A or B?
+
+.. note ::
+
+   Version A
 
 .. code-block:: python
 
-   # move content (works)
+   api.move(source=portal.someobj, target=portal.folder)
+
+.. note ::
+
+   Version B
+
+.. code-block:: python
+
    # XXX will this also trigger events?
-   site.foo['doc'] = site.bar.pop('doc')
+   portal.folder['foo'] = portal.pop('someobj')
 
 .. invisible-code-block:: python
 
