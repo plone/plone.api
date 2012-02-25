@@ -4,14 +4,28 @@ Manipulation of content objects
 Loading the API for a content object
 ------------------------------------
 
-.. testcode::
+If you want to use plone.api for an existing object, simply call plone.api.content with
+the object.
 
+.. code-block:: python
+
+   from plone import api
    content = api.content(context)
-   context = api.get_content('/folder/folder/page')
 
-.. testoutput::
+.. invisible-code-block:: python
 
    None
+
+You can also load content by path (from the site root):
+
+.. code-block:: python
+
+   obj = api.get_content('/folder/folder/page')
+
+.. invisible-code-block:: python
+
+   self.assertEquals(obj.Title(), "?!")
+
 
 Create content
 --------------
@@ -22,7 +36,7 @@ a) api.create(portal.folder, 'foo',
        title='def')
 b) portal.folder['foo'] = api.create(type='Document', attr...)
 
-.. testcode::
+.. code-block:: python
 
    # create content
    # XXX What type of content are we creating here?
@@ -34,7 +48,7 @@ b) portal.folder['foo'] = api.create(type='Document', attr...)
 
    print 'Output     text.'
 
-.. testoutput::
+.. invisible-code-block:: python
 
    :options: -ELLIPSIS, +NORMALIZE_WHITESPACE
 
@@ -47,13 +61,13 @@ Move content
 a) api.move(source=portal.someobj, target=portal.folder)
 b) portal.folder['foo'] = portal.pop('someobj')
 
-.. testcode::
+.. code-block:: python
 
    # move content (works)
    # XXX will this also trigger events?
    site.foo['doc'] = site.bar.pop('doc')
 
-.. testoutput::
+.. invisible-code-block:: python
 
    None
 
@@ -64,11 +78,11 @@ Copy content
 a) api.copy(source=portal.someobj, target=portal.folder)
 b) portal.folder['foo'] = api.copy(portal.someobj)
 
-.. testcode::
+.. code-block:: python
 
    site.bar['test'] = api.copy(site.foo.doc)
 
-.. testoutput::
+.. invisible-code-block:: python
 
    None
 
@@ -80,13 +94,13 @@ Delete content
 a) api.delete(portal.someobj)
 b) del portal.folder['foo']
 
-.. testcode::
+.. code-block:: python
 
    # delete content (works)
    # XXX will this also trigger events?
    del site.bar['test']
 
-.. testoutput::
+.. invisible-code-block:: python
 
    None
 
@@ -94,11 +108,11 @@ b) del portal.folder['foo']
 Workflows
 ---------
 
-.. testcode::
+.. code-block:: python
 
    content.transition('publish')
 
-.. testoutput::
+.. invisible-code-block:: python
 
    None
 
@@ -107,11 +121,11 @@ Workflows
 Search content
 --------------
 
-.. testcode::
+.. code-block:: python
 
    api.search(\*\*catalog_search_params)
 
-.. testoutput::
+.. invisible-code-block:: python
 
    None
 

@@ -4,23 +4,23 @@ User management
 Getting the API for a user
 --------------------------
 
-.. testcode::
+.. code-block:: python
 
    user = api.user(userobject)
    user = api.get_user(username)
 
-.. testoutput::
+.. invisible-code-block:: python
 
    None
 
 Getting a user
 --------------
 
-.. testcode::
+.. code-block:: python
    # get user
    noob = api.users['noob']
 
-.. testoutput::
+.. invisible-code-block:: python
    None
 
 Creating a user
@@ -28,48 +28,48 @@ Creating a user
 a) api.users['newone'] = api.create_user(a, b, c)
 b) api.users.create('someid', 'pass', a, b, c)
 
-.. testcode::
+.. code-block:: python
    api.create_user('bob', firstname='Bob')
 
-.. testoutput::
+.. invisible-code-block:: python
    None
 
 Deleting a user
 ---------------
 
-.. testcode::
+.. code-block:: python
    del api.users['bob']
 
-.. testoutput::
+.. invisible-code-block:: python
    None
 
 
 Changing a password
 -------------------
 
-.. testcode::
+.. code-block:: python
    user.password = 'foo$$'
 
-.. testoutput::
+.. invisible-code-block:: python
    None
 
 
 Getting the currently logged in user
 ------------------------------------
 
-.. testcode::
+.. code-block:: python
    api.get_current_user()
 
-.. testoutput::
+.. invisible-code-block:: python
    None
 
 
 Getting the groups for a user
 -----------------------------
-.. testcode::
+.. code-block:: python
    api.user(userobj).get_groups()
 
-.. testoutput::
+.. invisible-code-block:: python
    ['group_a', 'group_b']
 
 
@@ -79,7 +79,7 @@ Adding a user to a group
 a) api.get_user('username').add_group('somegroup')
 b) api.add_user_to_group('username', 'group')
 
-.. testcode::
+.. code-block:: python
    # XXX this requires that get_user returns a API-wrapped user object
    api.get_user('username').add_group('somegroup')
 
@@ -91,10 +91,10 @@ a) api.get_user('username').del_group('somegroup')
 b) api.drop_group_from_user('someuser', 'somegroup')
 c) del api.get_user('username').groups['somegroup']
 
-.. testcode::
+.. code-block:: python
    None
 
-.. testoutput::
+.. invisible-code-block:: python
    None
 
 
@@ -104,10 +104,10 @@ Setting properties on a user
 a) user['location'] = 'Munich'
 b) user.setProperty(user, 'location', 'Munich')
 
-.. testcode::
+.. code-block:: python
    user.setProperty(user, 'location', 'Munich')
 
-.. testoutput::
+.. invisible-code-block:: python
    None
 
 
