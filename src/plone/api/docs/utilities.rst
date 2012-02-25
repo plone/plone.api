@@ -17,20 +17,21 @@ Getting the Plone site object goes like this:
     self.assertEquals(site.getId(), 'plone')
 
 
-
 Getting the current request
 ---------------------------
 
-You can get the current request like that:
+The request will be fetched from a thread local.
 
 .. code-block:: python
 
-   request = api.get_request()
+    from plone.api import get_request
+    request = get_request()
 
 .. invisible-code-block:: python
 
-   import pdb; pdb.set_trace()
-   #self.assertEquals()
+    from ZPublisher.HTTPRequest import HTTPRequest
+    self.assertTrue(isinstance(request, HTTPRequest))
+    self.assertEqual(request.getURL(), 'http://nohost')
 
 
 Sending an E-Mail
