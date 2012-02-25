@@ -8,7 +8,7 @@ all: .installed.cfg docs/index.html
 docs/index.html: src/plone/api/docs/*.rst
 	bin/sphinx-build src/plone/api/docs docs
 
-.installed.cfg: buildout.cfg
+.installed.cfg: bin/buildout buildout.cfg
 	bin/buildout $(options)
 
 bin/buildout: buildout.cfg bootstrap.py
