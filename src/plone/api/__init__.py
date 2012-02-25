@@ -24,6 +24,25 @@ def create(container, type, id, **kwargs):
     return fti.constructInstance(container, id, **kwargs)
 
 
+class Tools(object):
+    """Portal tools."""
+
+    def __getitem__(self, name):
+        site = get_site()
+        return getToolByName(site, name)
+
+tools = Tools()
+
+
+class Users(object):
+    """User management."""
+
+    def __getitem__(self, name):
+        return tools['portal_membership'].getMemberById(name)
+
+users = Users()
+
+
 def create_user(username, email, password=None, **kwargs):
     """Create user."""
     site = get_site()

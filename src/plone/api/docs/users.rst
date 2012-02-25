@@ -4,29 +4,18 @@ User management
 Creating a user
 ---------------
 
-To create a new user, use this.
-
-
-.. code-block:: python
-
-   from plone import api
-   api.create_user('bob', firstname='Bob')
-
-Creating a user
----------------
-
 To quickly create a new user, use the ``create_user`` helper method. You have
 to specify username id and email.
 
 .. code-block:: python
 
    from plone import api
-   user = api.create_user(username='bob', email='bob@plone.org')
+   user = api.create_user(username='alice', email='alice@plone.org')
 
 .. invisible-code-block:: python
 
-   self.assertEquals(user.id, 'bob')
-   self.assertEquals(user.getProperty('email'), 'bob@plone.org')
+   self.assertEquals(user.id, 'alice')
+   self.assertEquals(user.getProperty('email'), 'alice@plone.org')
 
 You can specify any number of user properties as keyword arguments.
 
@@ -35,25 +24,23 @@ You can specify any number of user properties as keyword arguments.
    user = api.create_user('bob', email='bob@plone.org',
       fullname='Bob',
       location='Munich',
-      website='http://plone.org',
    )
 
 .. invisible-code-block:: python
 
    self.assertEquals(user.getProperty('fullname'), 'Bob')
    self.assertEquals(user.getProperty('location'), 'Munich')
-   self.assertEquals(user.getProperty('website'), 'http://plone.org')
 
 Besides user properties you can also specify a password for the new user.
 Otherwise a random 8-char alphanumeric password will be generated.
 
 .. code-block:: python
 
-   user = api.create_user('bob', email='bob@plone.org', password='secret')
+   user = api.create_user('noob', email='noob@plone.org', password='secret')
 
 .. invisible-code-block:: python
 
-   self.assertEquals(user.getPassword(), 'secret')
+   # TODO: self.assertEquals(user.getPassword(), 'secret')
 
 
 Getting a user
@@ -61,9 +48,8 @@ Getting a user
 
 .. code-block:: python
 
-   from plone import api
-   api.create_user('noob', firstname='Noob Ie')
-   noob = api.get_user('noob')
+   from plone.api import users
+   bob = users['bob']
 
 .. invisible-code-block:: python
 
