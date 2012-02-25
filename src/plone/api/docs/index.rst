@@ -45,10 +45,14 @@ convenience methods will be deprecated.
 
 For example, changing a password. Ideally we want the code to look like this:
 
+.. code-block:: python
+
   from plone import api
   api.users['bob'].password = "secret"
 
 But currently we must use this:
+
+.. code-block:: python
 
   from plone import api
   api.set_password('bob', 'secret')
