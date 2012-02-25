@@ -29,6 +29,30 @@ We plan to deprecate such methods as soon as the tools implement an
 acceptable API.
 
 
+Design decisions
+================
+
+Ideally we want the API to behave like a dict. In this way you don't
+have to remember method names that do CRUD. You just use the API like
+you'd use any dict.
+
+However the underlying APIs that plone.api is using (like portal_memberdata, ...)
+are not perfect. For tasks where we cannot yet support dict-like API, we
+add convenience methods. When the underlying APIs get fixed, we will change
+the documentation to point to using the dict-like access and we'll deprecate
+the convenience methods.
+
+For example, changing a password. Ideally we want the code to look like this:
+
+  from plone import api
+  api.users['bob'].password = "secret"
+
+But currently we must use this:
+
+  from plone import api
+  api.set_password('bob', 'secret')
+
+
 Table of Contents
 =================
 
