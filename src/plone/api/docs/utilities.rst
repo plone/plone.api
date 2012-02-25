@@ -20,7 +20,7 @@ Getting the Plone site object goes like this:
 Getting the current request
 ---------------------------
 
-The request will be fetched from a thread local.
+The request will be fetched from a `thread-local  <http://readthedocs.org/docs/collective-docs/en/latest/persistency/lifecycle.html?highlight=thread-local>`_.
 
 .. code-block:: python
 
@@ -41,7 +41,7 @@ To send an e-mail just use send_email:
 
 .. Todo: Add example for creating a mime-mail
 
-.. code-block::
+.. code-block:: python
 
    api.send_email(
        subject="hello world",
@@ -50,7 +50,7 @@ To send an e-mail just use send_email:
        body="hello, arthur",
    )
 
-.. invisible-code-block::
+.. invisible-code-block:: python
 
    None
 
