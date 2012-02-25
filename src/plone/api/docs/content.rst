@@ -59,7 +59,15 @@ To move a content object around, use this.
 .. code-block:: python
 
    from plone import api
-   api.move(source=portal.someobj, target=portal.folder)
+
+   # Create some content
+   site = api.get_site()
+   api.create(site, type='Folder', id='news')
+   api.create(site, type='Folder', id='contact')
+   api.create(site['news'], type='Document', id='aboutus')
+
+   # Now move the 'aboutus' page over to 'contact'.
+   api.move(source=site['news']['aboutus'], target=site['contact'])
 
 .. note ::
 
@@ -67,8 +75,16 @@ To move a content object around, use this.
 
 .. code-block:: python
 
-   # XXX will this also trigger events?
-   portal.folder['foo'] = portal.pop('someobj')
+   from plone import api
+
+   # Create some content
+   site = api.get_site()
+   site['news'] = api.create(type='Folder')
+   site['contact'] = api.create(type='Folder')
+   site['news']['aboutus'] = api.create(type='Document')
+
+   # Now move the 'aboutus' page over to 'contact'.
+   site['contact']['aboutus'] = site['news'].pop('aboutus')
 
 .. invisible-code-block:: python
 
@@ -186,9 +202,12 @@ To see the current status, use this:
 Search content
 --------------
 
+Searching content works by utilizing the portal_catalog tool so you can use
+the same arguments.
+
 .. code-block:: python
 
-   api.search(\*\*catalog_search_params)
+   api.search(**catalog_search_params)
 
 .. invisible-code-block:: python
 
