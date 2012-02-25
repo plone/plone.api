@@ -14,7 +14,7 @@ be created.
 
 .. note ::
 
-   Version A
+   Version A (command line style)
 
 .. code-block:: python
 
@@ -27,7 +27,7 @@ be created.
 
 .. note ::
 
-   Version B
+   Version B (python dict style)
 
 .. code-block:: python
 
@@ -46,7 +46,7 @@ be created.
 Move content
 ------------
 
-To move a content object around, use this.
+That's how you can move content around like in a file system.
 
 .. warning ::
 
@@ -81,14 +81,15 @@ To move a content object around, use this.
    site = api.get_site()
    site['news'] = api.create(type='Folder')
    site['contact'] = api.create(type='Folder')
-   site['news']['aboutus'] = api.create(type='Document')
+   site['news']['aboutus'] = api.create(type='Document', title='About us')
 
    # Now move the 'aboutus' page over to 'contact'.
    site['contact']['aboutus'] = site['news'].pop('aboutus')
 
 .. invisible-code-block:: python
 
-   None
+   self.assertLength(site['news'], 0)
+   self.assertEquals(site['contact']['aboutus'].Title(), 'About us')
 
 
 Copy content
@@ -106,7 +107,13 @@ To copy a content object, use that:
 
 .. code-block:: python
 
-   api.copy(source=portal.someobj, target=portal.folder)
+   from plone import api
+
+   # Create some content
+   site = api.get_site()
+   api.create(site, type='Document', id='copyme')
+
+   api.copy(source=site['copyme'], target=site, id='thecopy')
 
 .. note ::
 
@@ -114,16 +121,24 @@ To copy a content object, use that:
 
 .. code-block:: python
 
-   site.bar['test'] = api.copy(site.foo.doc)
+   from plone import api
+
+   # Create some content
+   site = api.get_site()
+   site['copyme'] = api.create(type='Document', title='Copy me')
+
+   site['thecopy'] = api.copy(site['copyme'])
 
 .. invisible-code-block:: python
 
-   None
-
+   self.assertEquals(site['copyme'].Title(), 'Copy me')
+   self.assertEquals(site['thecopy'].Title(), 'Copy me')
 
 
 Delete content
 --------------
+
+Deleting content works like that:
 
 .. warning ::
 
@@ -135,7 +150,11 @@ Delete content
 
 .. code-block:: python
 
-    api.delete(portal.someobj)
+   from plone import api
+
+   site = api.get_site()
+   site['deleteme'] = api.create(type='Document')
+   api.delete(site['deleteme'])
 
 .. note ::
 
@@ -143,38 +162,52 @@ Delete content
 
 .. code-block:: python
 
-   # XXX will this also trigger events?
-   del site.bar['test']
+   from plone import api
+
+   site = api.get_site()
+   site['deleteme'] = api.create(type='Document')
+   del site['deleteme']
 
 .. invisible-code-block:: python
 
-   None
+   self.assertNone(site.get('deleteme'))
 
 
-Loading the API for a content object
-------------------------------------
+Getting a content object
+------------------------
 
-If you want to use plone.api for an existing object, simply call plone.api.content with
-the object.
+This will get a content object by path.
 
 .. code-block:: python
 
    from plone import api
-   obj = api.content(context)
+
+   site = api.get_site()
+   site['getme'] = api.create(type='Document', title='The title')
+   obj = api.get_content('/getme')
 
 .. invisible-code-block:: python
 
-   None
+   self.assertEquals(obj.Title(), "The title")
 
-You can also load content by path (from the site root):
+
+Search content
+--------------
+
+Searching content works by utilizing the portal_catalog tool so you can use
+the same arguments.
+The search returns brains.
 
 .. code-block:: python
 
-   obj = api.get_content('/folder/folder/page')
+   from plone import api
+   site['findme'] = api.create(type='Document', title='FIND ME')
+   brains = api.search(title='FIND ME')
 
 .. invisible-code-block:: python
 
-   self.assertEquals(obj.Title(), "?!")
+   self.assertLength(brains, 1)
+   self.assertEquals(brains.Title, 'FIND ME')
 
 
 Workflows
@@ -185,31 +218,18 @@ triggering a workflow transition.
 
 .. code-block:: python
 
-   content.transition('publish')
+   from plone import api
+   site['workflowme'] = api.create(type='Document')
+   api.transition(site['workflowme'], 'publish')
 
 .. invisible-code-block:: python
 
-   self.assertEquals(content.state, 'published')
+   self.assertEquals(api.state(site['workflowme'], 'published')
 
 To see the current status, use this:
 
 .. code-block:: python
 
-   state = content.state
+   state = api.state(site['workflowme'])
 
-
-
-Search content
---------------
-
-Searching content works by utilizing the portal_catalog tool so you can use
-the same arguments.
-
-.. code-block:: python
-
-   api.search(**catalog_search_params)
-
-.. invisible-code-block:: python
-
-   None
 
