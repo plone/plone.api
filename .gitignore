@@ -1,9 +1,10 @@
+*.pyc
 /.installed.cfg
 /bin/
 /develop-eggs/
-/eggs/
-/parts/
-*.pyc
 /docs/
+/eggs/
 /include/
 /lib/
+/parts/
+/var/
