@@ -224,7 +224,7 @@ triggering a workflow transition.
 
 .. invisible-code-block:: python
 
-   self.assertEquals(api.state(site['workflowme'], 'published')
+   self.assertEquals(api.state(site['workflowme'], 'published'))
 
 To see the current status, use this:
 
