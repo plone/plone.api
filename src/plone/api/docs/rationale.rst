@@ -100,13 +100,3 @@ internal utility code::
 
     if users['bob'].__class__.__name__ == 'WrappedMemberDataObject':
         # do something
-
-
-**Won't dict-access for users encourage developers to mis-use MemberData objects?**
-
-This is a risk, yes. For now, we will make it clear in the documentation of
-:mod:`plone.api` what the limitations of users dict are and how to use it
-propertly. Big red honking banners should give warning what not to do.
-
-With this we can focus on fixing `portal_memberdata` to not allow developers to
-shoot themselves in the knee but rather expose a sane API.
