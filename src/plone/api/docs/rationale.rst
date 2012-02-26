@@ -20,8 +20,7 @@ Two libraries are especially inspiring:
 `SQLAlchemy <http://www.sqlalchemy.org/>`_
   Arguably, the reason for SQLAlchemy's success in the developer community
   lies as much in its feature set as in the fact that its API is very well
-  designed, is consistent,
-  explicit, and easy to learn.
+  designed, is consistent, explicit, and easy to learn.
 
 `Requests <http://docs.python-requests.org>`_
   As of this writing, this is still a very new library, but just looking at
@@ -39,41 +38,20 @@ No positional arguments.  Only named (keyword) arguments.
   #. When using positional arguments, the method signature is dictated by the underlying implementation.  Think required vs. optional arguments.  Named arguments are always optional in Python.  This allows us to change implementation details and leave the signature unchanged.
   #. The arguments can all be passed as a dictionary.
 
-Ideally we want the API to behave 'pythonically', i.e. like a dict or set
-where appropriate. This way developers need to remember less method names
-and just use the API as a dict/set.
+The API provides grouped functional access to otherwise distributed logic
+in plone. Plone's original distribution of logic is a result of two things:
+The historic re-using of CMF- and zope-methods and of reasonable, but
+at first hard to understandable splits (like acl_users.* and portal_membedata).
 
-However, Plone's underlying APIs (like `portal_memberdata` etc) are suboptimal
-in this regard. For tasks where no 'pythonic' API exists (yet), we provide
-convenience methods. These should be considered as temporary or rather
-transitional solution. I.e. when the underlying APIs get "fixed", the
-practices recommended by :mod:`plone.api` will be adjusted accordingly and
-the convenience methods will be deprecated.
+So we create some modules with a bunch of useful methods that implement
+best-practice access to the original distributed APIs. In this way we also
+document in code how to use plone directly.
 
-For example, modifying user's `fullname` property. Ideally we want the code to
-look like this:
-
-.. code-block:: python
-
-    from plone import api
-    bob = api.users.get(username='bob')
-    bob.fullname = 'Bob Smith'
-
-But currently we must use this:
-
-.. code-block:: python
-
-    from plone import api
-    bob = api.users.get(username='bob')
-    api.users.set_property(user=bob, name='fullname', value='Bob Smith')
-
-.. invisible-code-block:: python
-
-   self.assertEquals(bob.getProperty('fullname'), 'Bob Smith')
-
-
-In any case: The API will persist even when the convenience methods will be
-deprecated.
+.. note ::
+   If you doubt those last sentences: We had five different ways to get the
+   site root with different edge-cases. We had three different ways to move
+   an object. With this in mind, it's obvious that even the most simple
+   tasks can't be documented in plone in a sane way.
 
 Also, we don't intend to cover all possible use-cases. Only the absolutely
 most common ones. If you need to do something funky, just use the
