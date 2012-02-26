@@ -1,18 +1,5 @@
-*******************************
-:mod:`plone.api.user`
-*******************************
-
-:Author: Plone Foundation
-:Version: |version|
-
-.. module:: plone.api.user
-
-.. topic:: Overview
-
-   The :mod:`plone.api.user` provides CRUD methods for users and groups. 
-   
-User management
-===============
+Managing users
+==============
 
 Creating a user
 ---------------
