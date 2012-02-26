@@ -23,6 +23,29 @@ The object's ``id`` gets generated (in a safe way) from it's ``title``.
 
    self.assertEquals(obj.id, 'my-content')
 
+.. invisible-code-block:: python
+
+   self.assertEquals(obj.Title(), 'My Content')
+
+
+If you want to make sure that the ``id`` will be the one you'd expect from your
+``title`` or ``id`` parameter, just pass the ``strict=True`` parameter and ``create``
+will raise a ``KeyError`` if ``id`` conflicts.
+
+.. code-block:: python
+
+   try:
+       obj = content.create(type='Document', title='My Content', id='my_content', container=site, strict=True)
+   except KeyError:
+       # do something meaningful, because the ID was already owned.
+       pass
+   else:
+       raise Exception("Create succeeded and shouldn't have!")
+
+.. comment :: XXX Actually, the else: above is the test case. I didn't find out how
+   to make it one.
+
+
 
 Getting a content object
 ------------------------

@@ -1,6 +1,6 @@
 
 
-def create(container=None, type=None, id=None, title=None, *args, **kwargs):
+def create(container=None, type=None, id=None, title=None, strict=True, *args, **kwargs):
     """Creates a new object.
 
     :param container: [required] Container object in which to create the new
@@ -15,6 +15,10 @@ def create(container=None, type=None, id=None, title=None, *args, **kwargs):
     :param title: Title of the object. If no title is provided, use id as
         the title.
     :type title: string
+    :param strict: When True, the given id will be enforced. If the id is conflicting
+        with another object in the target container, raise a KeyError.
+        When False, move creates a new, non-conflicting id.
+    :type param: boolean
     :returns: Content object
     """
     if args:
@@ -50,7 +54,7 @@ def get(path=None, UID=None, *args):
     pass
 
 
-def move(source=None, target=None, id=None, *args):
+def move(source=None, target=None, id=None, strict=False, *args):
     """Moves the object to the target container.
 
     :param source: [required] Object that we want to move.
@@ -64,6 +68,10 @@ def move(source=None, target=None, id=None, *args):
         object in the target container, a suffix will be added to the moved
         object's id.
     :type id: string
+    :param strict: When True, the given id will be enforced. If the id is conflicting
+        with another object in the target container, raise a KeyError.
+        When False, move creates a new, non-conflicting id.
+    :type param: boolean
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -77,7 +85,7 @@ def move(source=None, target=None, id=None, *args):
     pass
 
 
-def copy(source=None, target=None, id=None, *args):
+def copy(source=None, target=None, id=None, strict=False, *args):
     """Copies the object to the target container.
 
     :param source: [required] Object that we want to copy.
@@ -92,6 +100,10 @@ def copy(source=None, target=None, id=None, *args):
         target container, a suffix will be added to the new object's id.
     :type id: string
     :returns: Content object that was created in the target location
+    :param strict: When True, the given id will be enforced. If the id is conflicting
+        with another object in the target container, raise a KeyError.
+        When False, move creates a new, non-conflicting id.
+    :type param: boolean
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
