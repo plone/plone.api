@@ -32,19 +32,20 @@ If you want to make sure that the ``id`` will be the one you'd expect from your
 ``title`` or ``id`` parameter, just pass the ``strict=True`` parameter and ``create``
 will raise a ``KeyError`` if ``id`` conflicts.
 
+.. invisible-code-block:: python
+
+   obj = None
+
 .. code-block:: python
 
    try:
        obj = content.create(type='Document', title='My Content', id='my_content', container=site, strict=True)
    except KeyError:
-       # do something meaningful, because the ID was already owned.
-       pass
-   else:
-       raise Exception("Create succeeded and shouldn't have!")
+       pass  # do something meaningful, because the ID was already owned.
 
-.. comment :: XXX Actually, the else: above is the test case. I didn't find out how
-   to make it one.
+.. invisible-code-block:: python
 
+   self.assertFalse(obj)
 
 
 Getting a content object
@@ -129,13 +130,11 @@ to make move raise a ``KeyError`` if the target ID exists.
    try:
        api.content.move(source=contact, target=site, id='contact', strict=True)
    except KeyError:
-       # do something meaningful, because the ID was already owned.
-       pass
-   else:
-       raise Exception("Move succeeded and shouldn't have!")
+       pass  # do something meaningful, because the ID was already owned.
 
-.. comment :: XXX Actually, the else: above is the test case. I didn't find out how
-   to make it one.
+.. invisible-code-block:: python
+
+   self.assertFalse(site['contact'])
 
 
 Rename content
@@ -162,20 +161,9 @@ the target ID was already used.
    from plone import api
    site = api.get_site()
    try:
-       api.content.move(source=site['welcome'], id='very-welcome')
+       api.content.move(source=site['very-welcome'], id='very-welcome')
    except KeyError:
-       # do something meaningful, because the ID was already owned.
-       pass
-   else:
-       raise Exception("Move succeeded and shouldn't have!")
-
-.. comment :: XXX Actually, the else: above is the test case. I didn't find out how
-   to make it one.
-
-
-.. invisible-code-block:: python
-
-   self.assertTrue(site['very-welcome'])
+       pass  # do something meaningful, because the ID was already owned.
 
 
 Copy content
@@ -225,8 +213,7 @@ target ID conflicts with an existing one in the target folder.
    try:
        api.content.copy(source=training, target=site, id='training', strict=True) # copy again
    except KeyError:
-       # do something meaningful, because the ID was already owned.
-       pass
+       pass # do something meaningful, because the ID was already owned.
    else:
        raise Exception("Copy succeeded and shouldn't have!")
 
