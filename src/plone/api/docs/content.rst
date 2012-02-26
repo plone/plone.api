@@ -10,22 +10,22 @@ be created.
 
 .. code-block:: python
 
-   from plone.api import content
-   obj = content.create(type='Document', title='My Content', container=site)
+    from plone.api import content
+    obj = content.create(type='Document', title='My Content', container=site)
 
 .. invisible-code-block:: python
 
-   self.assertEquals(obj.Title(), 'My Content')
+    self.assertEquals(obj.Title(), 'My Content')
 
 The object's ``id`` gets generated (in a safe way) from it's ``title``.
 
 .. code-block:: python
 
-   self.assertEquals(obj.id, 'my-content')
+    self.assertEquals(obj.id, 'my-content')
 
 .. invisible-code-block:: python
 
-   self.assertEquals(obj.Title(), 'My Content')
+    self.assertEquals(obj.Title(), 'My Content')
 
 
 If you want to make sure that the ``id`` will be the one you'd expect from your
@@ -34,18 +34,18 @@ will raise a ``KeyError`` if ``id`` conflicts.
 
 .. invisible-code-block:: python
 
-   obj = None
+    obj = None
 
 .. code-block:: python
 
-   try:
-       obj = content.create(type='Document', title='My Content', id='my_content', container=site, strict=True)
-   except KeyError:
-       pass  # do something meaningful, because the ID was already owned.
+    try:
+        obj = content.create(type='Document', title='My Content', id='my_content', container=site, strict=True)
+    except KeyError:
+        pass  # do something meaningful, because the ID was already owned.
 
 .. invisible-code-block:: python
 
-   self.assertFalse(obj)
+    self.assertFalse(obj)
 
 
 Getting a content object
@@ -54,28 +54,28 @@ Getting a content object
 There are several approaches of getting to your content object. Consider
 the following site structure::
 
-   Plone (site root)
-   |-- welcome
-   |-- about
-   |   |-- team
-   |   `-- contact
-   `-- events
-       |-- training
-       |-- conference
-       `-- sprint
+    Plone (site root)
+    |-- welcome
+    |-- about
+    |   |-- team
+    |   `-- contact
+    `-- events
+        |-- training
+        |-- conference
+        `-- sprint
 
 .. invisible-code-block:: python
 
-   site = api.get_site()
-   about = api.content.create(type='Folder', id='about', container=site)
-   events = api.content.create(type='Folder', id='events', container=site)
+    site = api.get_site()
+    about = api.content.create(type='Folder', id='about', container=site)
+    events = api.content.create(type='Folder', id='events', container=site)
 
-   api.content.create(container=about, type='Document', id='team')
-   api.content.create(container=about, type='Document', id='contact')
+    api.content.create(container=about, type='Document', id='team')
+    api.content.create(container=about, type='Document', id='contact')
 
-   api.content.create(container=events, type='Event', id='training')
-   api.content.create(container=events, type='Event', id='conference')
-   api.content.create(container=events, type='Event', id='sprint')
+    api.content.create(container=events, type='Event', id='training')
+    api.content.create(container=events, type='Event', id='conference')
+    api.content.create(container=events, type='Event', id='sprint')
 
 
 We can do the following operations to get to various content objects in the
@@ -83,16 +83,16 @@ stucture above:
 
 .. code-block:: python
 
-   from plone import api
-   site = api.get_site()             # the root object
-   site = api.content.get(path='/')  # this also works
+    from plone import api
+    site = api.get_site()             # the root object
+    site = api.content.get(path='/')  # this also works
 
-   welcome = site['welcome']                   # your can access children directly with dict-like access
-   welcome = api.content.get(path='/welcome')  # or indirectly by using the api.content.get() method
+    welcome = site['welcome']                   # your can access children directly with dict-like access
+    welcome = api.content.get(path='/welcome')  # or indirectly by using the api.content.get() method
 
-   # more examples
-   conference = site['events']['conference']
-   sprint = api.content.get(path='/events/training')
+    # more examples
+    conference = site['events']['conference']
+    sprint = api.content.get(path='/events/training')
 
 
 Move content
@@ -104,15 +104,15 @@ of folder ``about`` into Plone site root.
 
 .. code-block:: python
 
-   from plone import api
-   site = api.get_site()
-   contact = site['about']['contact']
+    from plone import api
+    site = api.get_site()
+    contact = site['about']['contact']
 
-   api.content.move(source=contact, target=site)
+    api.content.move(source=contact, target=site)
 
 .. invisible-code-block:: python
 
-   self.assertTrue(site['contact'])
+    self.assertTrue(site['contact'])
 
 Actually, ``move`` behaves like a filesystem move. If you pass it an ``id``
 argument, you can define to what target ID the object will be moved to. Otherwise
@@ -124,17 +124,17 @@ to make move raise a ``KeyError`` if the target ID exists.
 
 .. code-block:: python
 
-   from plone import api
-   site = api.get_site()
-   contact = site['about']['contact']
-   try:
-       api.content.move(source=contact, target=site, id='contact', strict=True)
-   except KeyError:
-       pass  # do something meaningful, because the ID was already owned.
+    from plone import api
+    site = api.get_site()
+    contact = site['about']['contact']
+    try:
+        api.content.move(source=contact, target=site, id='contact', strict=True)
+    except KeyError:
+        pass  # do something meaningful, because the ID was already owned.
 
 .. invisible-code-block:: python
 
-   self.assertFalse(site['contact'])
+    self.assertFalse(site['contact'])
 
 
 Rename content
@@ -145,25 +145,25 @@ and omit ``target``.
 
 .. code-block:: python
 
-   from plone import api
-   site = api.get_site()
-   api.content.move(source=site['welcome'], id='very-welcome')
+    from plone import api
+    site = api.get_site()
+    api.content.move(source=site['welcome'], id='very-welcome')
 
 .. invisible-code-block:: python
 
-   self.assertTrue(site['very-welcome'])
+    self.assertTrue(site['very-welcome'])
 
 Again, you may use the argument ``strict=True`` to make move raise a ``KeyError`` if
 the target ID was already used.
 
 .. code-block:: python
 
-   from plone import api
-   site = api.get_site()
-   try:
-       api.content.move(source=site['very-welcome'], id='very-welcome')
-   except KeyError:
-       pass  # do something meaningful, because the ID was already owned.
+    from plone import api
+    site = api.get_site()
+    try:
+        api.content.move(source=site['very-welcome'], id='very-welcome')
+    except KeyError:
+        pass  # do something meaningful, because the ID was already owned.
 
 
 Copy content
@@ -173,11 +173,11 @@ To copy a content object, use this:
 
 .. code-block:: python
 
-   from plone import api
-   site = api.get_site()
-   training = site['events']['training']
+    from plone import api
+    site = api.get_site()
+    training = site['events']['training']
 
-   api.content.copy(source=training, target=site)
+    api.content.copy(source=training, target=site)
 
 
 Note that the new object will have the same id as the old object (if not
@@ -210,12 +210,14 @@ target ID conflicts with an existing one in the target folder.
 
 .. code-block:: python
 
-   try:
-       api.content.copy(source=training, target=site, id='training', strict=True) # copy again
-   except KeyError:
-       pass # do something meaningful, because the ID was already owned.
-   else:
-       raise Exception("Copy succeeded and shouldn't have!")
+    try:
+        api.content.copy(source=training, target=site, id='training', strict=True) # copy again
+    except KeyError:
+        pass # do something meaningful, because the ID was already owned.
+
+.. invisible-code-block:: python
+
+    self.assertTrue(site['training'])
 
 
 Delete content
@@ -225,14 +227,14 @@ Deleting content works like this:
 
 .. code-block:: python
 
-   from plone import api
-   site = api.get_site()
-   redundant_training = site['training-1']
-   api.content.delete(obj=redundant_training)
+    from plone import api
+    site = api.get_site()
+    redundant_training = site['training-1']
+    api.content.delete(obj=redundant_training)
 
 .. invisible-code-block:: python
 
-   self.assertNotIn('training-1', site)
+    self.assertNotIn('training-1', site)
 
 
 Get workflow state
@@ -242,13 +244,13 @@ To find out in which workflow state your content is, use ``get_state``.
 
 .. code-block:: python
 
-   from plone import api
-   about = site['about']
-   state = api.content.get_state(about)
+    from plone import api
+    about = site['about']
+    state = api.content.get_state(about)
 
 .. invisible-code-block:: python
 
-   self.assertEquals(state, 'private')
+    self.assertEquals(state, 'private')
 
 
 Transition
@@ -258,11 +260,11 @@ To transition your content into a new state, use ``transition``.
 
 .. code-block:: python
 
-   from plone import api
-   about = site['about']
-   state = api.content.transition(obj=about, transition='publish')
+    from plone import api
+    about = site['about']
+    state = api.content.transition(obj=about, transition='publish')
 
 .. invisible-code-block:: python
 
-   self.assertEquals(state, 'published')
+    self.assertEquals(state, 'published')
 

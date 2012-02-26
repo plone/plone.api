@@ -117,12 +117,12 @@ To send an e-mail just use send_email:
 
 .. code-block:: python
 
-   api.send_email(
-       body="hello, bob",
-       recipient="bob@plone.org",
-       sender="admin@mysite.com",
+    api.send_email(
+        body="hello, bob",
+        recipient="bob@plone.org",
+        sender="admin@mysite.com",
        subject="hello world",
-   )
+    )
 
 .. invisible-code-block:: python
     # test email
