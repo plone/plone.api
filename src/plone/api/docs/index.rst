@@ -115,6 +115,12 @@ Also, making this wrap transparent, in order to make the returned object
 directly usable, would be nearly impossible, because we'd have to proxy all the
 :mod:`zope.interface` stuff, annotations and more.
 
+Furthermore, we want to avoid people writing code like this in tests of their
+internal utility code::
+
+    if users['bob'].__class__.__name__ == 'WrappedMemberDataObject':
+        # do something
+
 
 **Won't dict-access for users encourage developers to mis-use MemberData objects?**
 
