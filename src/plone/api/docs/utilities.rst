@@ -42,7 +42,7 @@ To send an e-mail just use send_email:
 .. Todo: Add example for creating a mime-mail
 
 .. invisible-code-block:: python
-    
+
     # Mock the mail host so we can test sending the email
     from plone import api
     from Products.CMFPlone.tests.utils import MockMailHost
