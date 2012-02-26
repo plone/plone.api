@@ -1,19 +1,5 @@
-*******************************
-:mod:`plone.api.content`
-*******************************
-
-:Author: Plone Foundation
-:Version: |version|
-
-.. module:: plone.api.content
-
-.. topic:: Overview
-
-   The :mod:`plone.api.content` provides CRUD methods for content objects and
-   containers.
-
-Manipulation of content objects
-===============================
+Managing content
+================
 
 Create content
 --------------
@@ -67,7 +53,7 @@ This is how you can move content around like in a file system.
    # Create some content
    news = content.create(type='Folder', id='news')
    contact = content.create(type='Folder', id='contact')
-   content.create(container=news, 
+   content.create(container=news,
                   type='Document',
                   id='aboutus',
                   title='About us')
@@ -95,7 +81,7 @@ To copy a content object, use this:
    # Create some content
    copyme = content.create(type='Document', id='copyme')
 
-   # Now make a copy of it. 
+   # Now make a copy of it.
    obj = content.copy(source=copyme, id='thecopy')
 
 .. invisible-code-block:: python
@@ -140,7 +126,7 @@ on it, like triggering a workflow transition.
 
    content.transition(obj=obj, state='publish')
    new_state = content.get_state(obj=obj)
-   
+
    content.transition(obj=new_obj, state=old_state)
    restored_state = content.get_state(obj=obj)
 

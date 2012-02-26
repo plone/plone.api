@@ -1,5 +1,5 @@
-User management
-===============
+Managing users
+==============
 
 Creating a user
 ---------------
