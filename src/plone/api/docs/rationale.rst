@@ -33,44 +33,52 @@ Two libraries are especially inspiring:
 
 Design decisions
 ================
-No positional arguments.  All named arguments.
+No positional arguments.  Only named (keyword) arguments.
   #. There will never be a doubt when writing a method on whether an argument should be positional or not.  Decision already made.
   #. There will never be a doubt when using the API on which argument comes first, and which ones are named.  All arguments are named.
   #. When using positional arguments, the method signature is dictated by the underlying implementation.  Think required vs. optional arguments.  Named arguments are always optional in Python.  This allows us to change implementation details and leave the signature unchanged.
   #. The arguments can all be passed as a dictionary.
 
 Ideally we want the API to behave 'pythonically', i.e. like a dict or set
-where appropriate. This way developers don't have to remember method names
-that support CRUD of things like users, groups, resources and content.
+where appropriate. This way developers need to remember less method names
+and just use the API as a dict/set.
 
-However, Plone's underlying APIs (like `portal_memberdata` etc) are mostly not
-following the same approach. For tasks where no 'pythonic' API exists (yet)
-convenience methods are provided. These should be considered to be temporary
-or rather transitional, i.e. when the underlying APIs get "fixed", the
+However, Plone's underlying APIs (like `portal_memberdata` etc) are suboptimal
+in this regard. For tasks where no 'pythonic' API exists (yet), we provide
+convenience methods. These should be considered as temporary or rather
+transitional solution. I.e. when the underlying APIs get "fixed", the
 practices recommended by :mod:`plone.api` will be adjusted accordingly and
 the convenience methods will be deprecated.
 
-For example, changing a password. Ideally we want the code to look like this:
+For example, modifying user's `fullname` property. Ideally we want the code to
+look like this:
 
 .. code-block:: python
 
     from plone import api
-    api.users['bob'].password = "secret"
+    bob = api.users.get(username='bob')
+    bob.fullname = 'Bob Smith'
 
 But currently we must use this:
 
 .. code-block:: python
 
     from plone import api
-    api.set_password('bob', 'secret')
+    bob = api.users.get(username='bob')
+    api.users.set_property(user=bob, name='fullname', value='Bob Smith')
+
+.. invisible-code-block:: python
+
+   self.assertEquals(bob.getProperty('fullname'), 'Bob Smith')
 
 
-To be clear: The API will persist even when the convenience methods will be
+In any case: The API will persist even when the convenience methods will be
 deprecated.
 
 Also, we don't intend to cover all possible use-cases. Only the absolutely
 most common ones. If you need to do something funky, just use the
-underlaying APIs directly.
+underlaying APIs directly. We will cover 20% of tasks that are done 80% of
+the time, and not one more.
 
 
 FAQ
