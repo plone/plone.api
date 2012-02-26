@@ -30,6 +30,7 @@ Narrative documentation
     utilities.rst
     content.rst
     users.rst
+    groups.rst
 
 Complete API and advanced usage
 ===============================
