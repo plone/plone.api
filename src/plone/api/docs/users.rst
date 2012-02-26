@@ -192,8 +192,7 @@ plus the name of the property and it's new value.
 
 .. invisible-code-block:: python
 
-    email = api.user.get_property(username='bob', name='email')
-    self.assertEquals(email, 'bob@plone.com')
+    self.assertEquals(bob.getProperty('email'), 'Bob Smith', 'bob@plone.com')
 
 
 .. _get_groups_for_user_example:
