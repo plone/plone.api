@@ -1,3 +1,16 @@
+*******************************
+:mod:`plone.api.user`
+*******************************
+
+:Author: Plone Foundation
+:Version: |version|
+
+.. module:: plone.api.user
+
+.. topic:: Overview
+
+   The :mod:`plone.api.user` provides CRUD methods for users and groups. 
+   
 User management
 ===============
 
@@ -29,7 +42,7 @@ Otherwise, you also need to pass in the username of the new user.
 .. code-block:: python
 
    from plone import api
-   user = jane.user.create_user(email='jane@plone.org', username='jane')
+   user = api.user.create_user(email='jane@plone.org', username='jane')
 
 .. invisible-code-block:: python
 
@@ -45,7 +58,7 @@ To set user properties when creating a new user, pass in a properties dict.
       fullname='Bob',
       location='Munich',
    )
-   user = api.user.create_user('bob', email='bob@plone.org', properties=properties)
+   user = api.user.create_user(username='bob', email='bob@plone.org', properties=properties)
 
 .. invisible-code-block:: python
 
@@ -58,7 +71,7 @@ Otherwise a random 8-char alphanumeric password will be generated.
 
 .. code-block:: python
 
-   user = api.user.create_user('noob', email='noob@plone.org', password='secret')
+   user = api.user.create_user(username='noob', email='noob@plone.org', password='secret')
 
 .. invisible-code-block:: python
 
@@ -71,7 +84,7 @@ Getting a user
 .. code-block:: python
 
    from plone import api
-   user = api.user.get('bob')
+   user = api.user.get(username='bob')
 
 .. invisible-code-block:: python
 
@@ -100,24 +113,24 @@ user object you want to delete.
 .. code-block:: python
 
    from plone import api
-   unwanted = api.user.create('unwanted')
+   unwanted = api.user.create(username='unwanted')
    api.user.delete('unwanted')
 
 
 .. invisible-code-block:: python
 
-   self.assertNone(api.user.get('unwanted'))
+   self.assertNone(api.user.get(username='unwanted'))
 
 .. code-block:: python
 
    from plone import api
-   unwanted = api.user.create('unwanted')
+   unwanted = api.user.create(username='unwanted')
    api.user.delete(unwanted)
 
 
 .. invisible-code-block:: python
 
-   self.assertNone(api.user.get('unwanted'))
+   self.assertNone(api.user.get(username='unwanted'))
 
 
 Changing a password
@@ -132,23 +145,23 @@ If you don't pass in any password, a random one will be generated.
 .. code-block:: python
 
     from plone import api
-    api.user.change_password('bob', 'newsecret')
+    api.user.change_password(username='bob', password='newsecret')
 
 .. invisible-code-block:: python
 
-    self.assertEqulas(user._getPassword(), 'newsecret')
+    self.assertEqulas(user._getPassword(), password='newsecret')
 
 .. code-block:: python
 
-    api.user.change_password(user, 'newsecret')
+    api.user.change_password(user=user, password='newsecret')
 
 .. invisible-code-block:: python
 
-    self.assertEqulas(user._getPassword(), 'newnewsecret')
+    self.assertEqulas(user._getPassword(), password='newnewsecret')
 
 .. code-block:: python
 
-    api.user.change_password('bob')  # generate a random password
+    api.user.change_password(username='bob')  # generate a random password
 
 
 Getting a user's property
