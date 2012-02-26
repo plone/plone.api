@@ -1,10 +1,27 @@
 Utilities
 =========
 
+.. _get_site_url_example:
+
+Get the site url
+----------------
+
+A shortcut to getting the site's url is now always at hand.
+
+.. code-block:: python
+
+    from plone import api
+    url = api.get_site_url()
+
+.. invisible-code-block:: python
+
+    self.assertEqual(url, 'http://nohost')
+
+
 .. _get_site_example:
 
-Getting the plone site
-----------------------
+Get the plone site
+------------------
 
 Getting the Plone site object goes like this:
 
@@ -21,8 +38,8 @@ Getting the Plone site object goes like this:
 
 .. _get_request_example:
 
-Getting the current request
----------------------------
+Get the current request
+-----------------------
 
 The request will be fetched from a `thread-local  <http://readthedocs.org/docs/collective-docs/en/latest/persistency/lifecycle.html?highlight=thread-local>`_.
 
@@ -38,7 +55,7 @@ The request will be fetched from a `thread-local  <http://readthedocs.org/docs/c
     self.assertEqual(request.getURL(), 'http://nohost')
 
 
-.. _get_tool:
+.. _get_tool_example:
 
 Getting a tool
 --------------
@@ -54,6 +71,23 @@ name of the tool you need.
 .. invisible-code-block:: python
 
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
+
+
+.. _show_message_example:
+
+Showing a notification message
+------------------------------
+
+This is how to show a notification message to the user.
+
+.. code-block:: python
+
+    from plone import api
+    api.show_message(msg='This site rocks!')
+
+.. invisible-code-block:: python
+
+    # TODO: how to test this?
 
 
 .. _send_email_example:

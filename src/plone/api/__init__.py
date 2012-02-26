@@ -29,7 +29,7 @@ def get_tool(name=None, *args):
     :param email: [required] Name of the tool you want.
     :type email: string
     :returns: portal tool
-    :Example: :ref:`get_tool`
+    :Example: :ref:`get_tool_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
