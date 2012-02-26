@@ -3,11 +3,11 @@
 def create(email=None, username=None, password=None, properties=None, *args):
     """Creates a user.
 
+    :param email: [required] Email for the new user.
+    :type email: string
     :param username: Username for the new user. This is required if email
         is not used as a username.
     :type username: string
-    :param email: [required] Email for the new user.
-    :type email: string
     :param password: Password for the new user. If it's not set we generate
         a random 8-char alpha-numeric one.
     :type password: string
@@ -239,7 +239,7 @@ def join_group(username=None, user=None, groupname=None, group=None, *args):
 
 
 def leave_group(username=None, user=None, groupname=None, group=None, *args):
-    """Un-join a user from a group.
+    """Remove the user from a group.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
