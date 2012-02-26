@@ -33,8 +33,8 @@ the following site structure::
    Plone (site root)
    |-- welcome
    |-- about
-       |-- team
-       `-- contact
+   |   |-- team
+   |   `-- contact
    `-- events
        |-- training
        |-- conference
