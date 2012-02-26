@@ -60,6 +60,16 @@ def get_current():
     pass
 
 
+def get_all():
+    """Returns all users.
+
+    :returns: All users
+    :rtype: List of MemberData objects
+    :Example: :ref:`get_all_users_example`
+    """
+    pass
+
+
 def delete(username=None, user=None, *args):
     """Deletes a user.
 

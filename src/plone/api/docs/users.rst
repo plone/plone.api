@@ -96,6 +96,21 @@ Getting the currently logged-in user
     self.assertEquals(current.id, 'test_user_1_')
 
 
+.. _get_all_users_example:
+
+Getting all users
+-----------------
+
+.. code-block:: python
+
+    from plone import api
+    users = api.user.get_all()
+
+.. invisible-code-block:: python
+
+    self.assertEquals(users[0].id, 'test_user_1_')
+
+
 .. _delete_user_example:
 
 Deleting a user

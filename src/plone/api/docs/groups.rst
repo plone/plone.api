@@ -31,6 +31,21 @@ Getting a group
     self.assertEquals(group.id, 'staff')
 
 
+.. _get_all_groups_example:
+
+Getting all groups
+------------------
+
+.. code-block:: python
+
+    from plone import api
+    users = api.group.get_all()
+
+.. invisible-code-block:: python
+
+    self.assertEquals(group[0].id, 'staff')
+
+
 .. _delete_group_example:
 
 Deleting a group

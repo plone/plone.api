@@ -38,6 +38,16 @@ def get(groupname=None, *args):
     pass
 
 
+def get_all():
+    """Returns all groups.
+
+    :returns: All groups
+    :rtype: List of GroupData objects
+    :Example: :ref:`get_all_groups_example`
+    """
+    pass
+
+
 def delete(groupname=None, group=None, *args):
     """Deletes a group.
 
