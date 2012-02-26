@@ -50,16 +50,13 @@ def get(username=None, *args):
     pass
 
 
-def get_current(*args):
+def get_current():
     """Returns the currently logged-in user.
 
     :returns: Currently logged-in user
     :rtype: MemberData object
     :Example: :ref:`get_current_user_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     pass
 
 
