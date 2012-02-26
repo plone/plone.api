@@ -17,7 +17,7 @@ def create(container=None, type=None, id=None, title=None, strict=True, *args, *
     :type title: string
     :param strict: When True, the given id will be enforced. If the id is conflicting
         with another object in the target container, raise a KeyError.
-        When False, move creates a new, non-conflicting id.
+        When False, ``create`` creates a new, non-conflicting id.
     :type param: boolean
     :returns: Content object
     """
@@ -102,7 +102,7 @@ def copy(source=None, target=None, id=None, strict=False, *args):
     :returns: Content object that was created in the target location
     :param strict: When True, the given id will be enforced. If the id is conflicting
         with another object in the target container, raise a KeyError.
-        When False, move creates a new, non-conflicting id.
+        When False, ``copy`` creates a new, non-conflicting id.
     :type param: boolean
     """
     if args:
