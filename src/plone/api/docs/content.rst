@@ -75,8 +75,8 @@ Move content
 ------------
 
 This is how you can move content around the site structure defined above.
-The code below moves item ``contact`` ouf of folder ``about`` into Plone site
-root.
+The code below moves item ``contact`` (with all objects that it contains) ouf
+of folder ``about`` into Plone site root.
 
 .. code-block:: python
 
