@@ -88,7 +88,24 @@ root.
 
 .. invisible-code-block:: python
 
-   self.assertIn(contact, site)
+   self.assertTrue(site['contact'])
+
+
+Rename content
+------------
+
+To rename, you still use the ``move`` method, just pass in a new ``id`` instead
+and omit ``target``.
+
+.. code-block:: python
+
+   from plone import api
+   site = api.get_site()
+   api.content.move(source=site['welcome'], id='very-welcome')
+
+.. invisible-code-block:: python
+
+   self.assertTrue(site['very-welcome'])
 
 
 Copy content
@@ -110,7 +127,7 @@ stated otherwise).
 
 .. code-block:: python
 
-    self.assertEquals(site['training'].id, 'training')
+    self.assertTrue(site['training'])
 
 
 However, if the new object's id conflicts with another object in the target
@@ -119,7 +136,16 @@ container, a suffix will be added to the new object's id.
 .. code-block:: python
 
     api.content.copy(source=training, target=site)  # copy again
-    self.assertEquals('training-1'].id, 'training-1')
+    self.assertTrue(site['training-1'])
+
+
+You can also just omit ``target`` which will duplicate your content object
+in the same container where it already is and assign it a non-conflicting id.
+
+.. code-block:: python
+
+    api.content.copy(source=training)
+    self.assertTrue(site['events']['training-1'])
 
 
 Delete content
