@@ -32,7 +32,7 @@ Narrative documentation
     users.rst
 
 Complete API and advanced usage
-==============================
+===============================
 
 .. toctree::
 

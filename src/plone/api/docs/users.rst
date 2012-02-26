@@ -1,6 +1,8 @@
 Managing users
 ==============
 
+.. _create_user_example:
+
 Creating a user
 ---------------
 
@@ -64,6 +66,8 @@ Otherwise a random 8-char alphanumeric password will be generated.
    self.assertEquals(user._getPassword(), 'secret')
 
 
+.. _get_user_example:
+
 Getting a user
 --------------
 
@@ -77,6 +81,8 @@ Getting a user
    self.assertEquals(user.id, 'bob')
 
 
+.. _get_current_user_example:
+
 Getting the currently logged-in user
 ------------------------------------
 
@@ -89,6 +95,8 @@ Getting the currently logged-in user
 
    self.assertEquals(current.id, 'test_user_1_')
 
+
+.. _delete_user_example:
 
 Deleting a user
 ---------------
@@ -117,6 +125,8 @@ user object you want to delete.
 
    self.assertNone(api.user.get(username='unwanted'))
 
+
+.. _change_password_example:
 
 Changing a password
 -------------------
@@ -149,6 +159,8 @@ If you don't pass in any password, a random one will be generated.
     api.user.change_password(username='bob')  # generate a random password
 
 
+.. _get_user_property_example:
+
 Getting a user's property
 -------------------------
 
@@ -164,6 +176,8 @@ to get property for, plus the name of the property.
 
     self.assertEqulas(email, 'bob@plone.org')
 
+
+.. _set_user_property_example:
 
 Setting a user's property
 -------------------------
@@ -183,6 +197,8 @@ plus the name of the property and it's new value.
     self.assertEqulas(email, 'bob@plone.com')
 
 
+.. _get_groups_for_user_example:
+
 Getting groups that user is a member of
 ---------------------------------------
 
@@ -198,6 +214,8 @@ to get groups for.
 
    self.assertEquals(groups, ['staff', ])
 
+
+.. _add_user_to_group_example:
 
 Adding a user to a group
 ------------------------
@@ -220,6 +238,8 @@ the target group.
    self.assertEquals(api.user.get_groups(username='bob'), ['staff, '])
    self.assertEquals(api.user.get_groups(username='jane'), ['staff, '])
 
+
+.. _drop_user_from_group_example:
 
 Remove user from a group
 ------------------------

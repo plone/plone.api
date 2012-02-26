@@ -16,6 +16,7 @@ def create(email=None, username=None, password=None, properties=None, *args):
     :type properties: dict
     :returns: Newly created user
     :rtype: MemberData object
+    :Example: :ref:`create_user_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -37,6 +38,7 @@ def get(username=None, *args):
     :type username: string
     :returns: User
     :rtype: MemberData object
+    :Example: :ref:`get_user_example`
     """
 
     if args:
@@ -53,6 +55,7 @@ def get_current(*args):
 
     :returns: Currently logged-in user
     :rtype: MemberData object
+    :Example: :ref:`get_current_user_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -70,6 +73,7 @@ def delete(username=None, user=None, *args):
     :type username: string
     :param user: User object to be deleted.
     :type user: MemberData object
+    :Example: :ref:`delete_user_example`
     """
 
     if args:
@@ -96,6 +100,7 @@ def change_password(username=None, user=None, password=None, *args):
     :param password: New password for the user. If it's not set we generate
         a random 8-char alpha-numeric one.
     :type password: string
+    :Example: :ref:`change_password_example`
     """
 
     if args:
@@ -124,6 +129,7 @@ def get_property(username=None, user=None, name=None, *args):
     :type name: string
     :returns: Property's value
     :rtype: string, tuple, DateTime, etc.
+    :Example: :ref:`get_user_property_example`
     """
 
     if args:
@@ -155,6 +161,7 @@ def set_property(username=None, user=None, name=None, value=None, *args):
     :type name: string
     :param value: Value to set to the property.
     :type value: string, tuple, DateTime, etc.
+    :Example: :ref:`set_user_property_example`
     """
 
     if args:
@@ -187,6 +194,7 @@ def get_groups(username=None, user=None, *args):
     :type user: MemberData object
     :returns: List of group names of groups this user is member of.
     :rtype: List of strings
+    :Example: :ref:`get_groups_for_user_example`
     """
 
     if args:
@@ -218,6 +226,7 @@ def join_group(username=None, user=None, groupname=None, group=None, *args):
     :type groupname: string
     :param group: Group to which to join the user.
     :type group: GroupData object
+    :Example: :ref:`add_user_to_group_example`
     """
 
     if args:
@@ -255,6 +264,7 @@ def leave_group(username=None, user=None, groupname=None, group=None, *args):
     :type groupname: string
     :param group: Group from which to un-join the user.
     :type group: GroupData object
+    :Example: :ref:`drop_user_from_group_example`
     """
 
     if args:
