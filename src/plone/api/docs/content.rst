@@ -90,6 +90,30 @@ of folder ``about`` into Plone site root.
 
    self.assertTrue(site['contact'])
 
+Actually, ``move`` behaves like a filesystem move. If you pass it an ``id``
+argument, you can define to what target ID the object will be moved to. Otherwise
+it will be moved with the same ID that it had.
+
+If the ID in the target folder is already used, a new non-conflicting ID is
+being generated. If you don't like that, just add another argument ``strict=True``
+to make move raise a ``KeyError`` if the target ID exists.
+
+.. code-block:: python
+
+   from plone import api
+   site = api.get_site()
+   contact = site['about']['contact']
+   try:
+       api.content.move(source=contact, target=site, id='contact', strict=True)
+   except KeyError:
+       # do something meaningful, because the ID was already owned.
+       pass
+   else:
+       raise Exception("Move succeeded and shouldn't have!")
+
+.. comment :: XXX Actually, the else: above is the test case. I didn't find out how
+   to make it one.
+
 
 Rename content
 ------------
@@ -102,6 +126,29 @@ and omit ``target``.
    from plone import api
    site = api.get_site()
    api.content.move(source=site['welcome'], id='very-welcome')
+
+.. invisible-code-block:: python
+
+   self.assertTrue(site['very-welcome'])
+
+Again, you may use the argument ``strict=True`` to make move raise a ``KeyError`` if
+the target ID was already used.
+
+.. code-block:: python
+
+   from plone import api
+   site = api.get_site()
+   try:
+       api.content.move(source=site['welcome'], id='very-welcome')
+   except KeyError:
+       # do something meaningful, because the ID was already owned.
+       pass
+   else:
+       raise Exception("Move succeeded and shouldn't have!")
+
+.. comment :: XXX Actually, the else: above is the test case. I didn't find out how
+   to make it one.
+
 
 .. invisible-code-block:: python
 
@@ -147,6 +194,19 @@ in the same container where it already is and assign it a non-conflicting id.
     api.content.copy(source=training)
     self.assertTrue(site['events']['training-1'])
 
+With the parameter ``strict=True``, copy will raise a ``KeyError`` if the
+target ID conflicts with an existing one in the target folder.
+
+.. code-block:: python
+
+   try:
+       api.content.copy(source=training, target=site, id='training', strict=True) # copy again
+   except KeyError:
+       # do something meaningful, because the ID was already owned.
+       pass
+   else:
+       raise Exception("Copy succeeded and shouldn't have!")
+
 
 Delete content
 --------------
@@ -158,7 +218,7 @@ Deleting content works like this:
    from plone import api
    site = api.get_site()
    redundant_training = site['training-1']
-   api.content.delete(object=redundant_training)
+   api.content.delete(obj=redundant_training)
 
 .. invisible-code-block:: python
 
