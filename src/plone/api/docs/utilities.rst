@@ -34,6 +34,22 @@ The request will be fetched from a `thread-local  <http://readthedocs.org/docs/c
     self.assertEqual(request.getURL(), 'http://nohost')
 
 
+Getting a tool
+--------------
+
+To get a portal tool in a simple way, just use ``get_tool`` and pass in the
+name of the tool you need.
+
+.. code-block:: python
+
+    from plone import api
+    catalog = api.get_tool(name='portal_catalog')
+
+.. invisible-code-block:: python
+
+    self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
+
+
 Sending an E-Mail
 -----------------
 

@@ -23,7 +23,7 @@ in the email of the new user.
 .. invisible-code-block:: python
 
    self.assertEquals(user.id, 'alice@plone.org')
-   self.assertEquals(user.getProperty('email'), 'alice@plone.org')
+   self.assertEquals(api.user.get_property(user=user, name='email'), 'alice@plone.org')
 
 
 Otherwise, you also need to pass in the username of the new user.
@@ -35,7 +35,7 @@ Otherwise, you also need to pass in the username of the new user.
 .. invisible-code-block:: python
 
    self.assertEquals(user.id, 'jane')
-   self.assertEquals(user.getProperty('email'), 'jane@plone.org')
+   self.assertEquals(api.user.get_property(user=user, name='email'), 'jane@plone.org')
 
 
 To set user properties when creating a new user, pass in a properties dict.
@@ -50,8 +50,8 @@ To set user properties when creating a new user, pass in a properties dict.
 
 .. invisible-code-block:: python
 
-   self.assertEquals(user.getProperty('fullname'), 'Bob')
-   self.assertEquals(user.getProperty('location'), 'Munich')
+   self.assertEquals(api.user.get_property(user=user, name='fullname'), 'Bob')
+   self.assertEquals(api.user.get_property(user=user, name='location'), 'Munich')
 
 
 Besides user properties you can also specify a password for the new user.
@@ -107,7 +107,7 @@ user object you want to delete.
 .. code-block:: python
 
    from plone import api
-   unwanted = api.user.create(username='unwanted')
+   api.user.create(username='unwanted')
    api.user.delete(username='unwanted')
 
 
@@ -119,7 +119,6 @@ user object you want to delete.
 
    unwanted = api.user.create(username='unwanted')
    api.user.delete(user=unwanted)
-
 
 .. invisible-code-block:: python
 
@@ -174,7 +173,7 @@ to get property for, plus the name of the property.
 
 .. invisible-code-block:: python
 
-    self.assertEqulas(email, 'bob@plone.org')
+    self.assertEquals(email, 'bob@plone.org')
 
 
 .. _set_user_property_example:
@@ -194,7 +193,7 @@ plus the name of the property and it's new value.
 .. invisible-code-block:: python
 
     email = api.user.get_property(username='bob', name='email')
-    self.assertEqulas(email, 'bob@plone.com')
+    self.assertEquals(email, 'bob@plone.com')
 
 
 .. _get_groups_for_user_example:
