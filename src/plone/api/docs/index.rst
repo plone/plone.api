@@ -62,6 +62,10 @@ Two libraries are especially inspiring:
 Design decisions
 ================
 No positional arguments.  All named arguments.
+  #. There will never be a doubt when writing a method on whether an argument should be positional or not.  Decision already made.
+  #. There will never be a doubt when using the API on which argument comes first, and which ones are named.  All arguments are named.
+  #. When using positional arguments, the method signature is dictated by the underlying implementation.  Think required vs. optional arguments.  Named arguments are always optional in Python.  This allows us to change implementation details and leave the signature unchanged.
+  #. The arguments can all be passed as a dictionary.
 
 Ideally we want the API to behave 'pythonic', i.e. like a dict or set where
 appropriate. This way developers don't have to remember method names that
