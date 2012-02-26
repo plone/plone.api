@@ -9,8 +9,8 @@
 
 .. topic:: Overview
 
-   The :mod:`plone.api` is an attempt to provide an easy to use API
-   for developing with Plone.
+   The :mod:`plone.api` is an elegant and simple API, built for humans wishing
+   to develop with Plone.
 
 
 When documenting plone, an easy and understandable set of basic
@@ -27,12 +27,41 @@ easy way, but currently don't. Keeping everything in one place helps
 keep the API introspectable and discoverable, which are important
 aspects of being Pythonic.
 
-We plan to deprecate such methods as soon as the tools implement an
-acceptable API.
+Such methods may be deprecated if the underlying tools implement an acceptable
+API.
+
+Inspiration
+===========
+We want `plone.api` to be developed with `PEP 20 <http://www.python.org/dev/peps/pep-0020/>`_ idioms in mind, in particular:
+
+  |   Explicit is better than implicit.
+  |   Readability counts.
+  |   There should be one-- and preferably only one --obvious way to do it.
+  |   Now is better than never.
+  |   If the implementation is hard to explain, it's a bad idea.
+  |   If the implementation is easy to explain, it may be a good idea.
+
+All contributions to `plone.api` should keep these important rules in mind.
+
+Two libraries are especially inspiring:
+
+`SQLAlchemy <http://www.sqlalchemy.org/>`_
+  Arguably, the reason for SQLAlchemy's success in the developer community
+  lies as much in its feature set as in the fact that its API is very well 
+  designed, is consistent, 
+  explicit, and easy to learn.
+
+`Requests <http://docs.python-requests.org>`_
+  As of this writing, this is still a very new library, but just looking at 
+  `a comparison between the urllib2 way and the requests way <https://gist.github.com/973705>`_,
+  as well as the rest of its documentation, one cannot but see a parallel
+  between the way we *have been* and the way we *should be* writing code for
+  Plone (or at least have that option).
 
 
 Design decisions
 ================
+No positional arguments.  All named arguments.
 
 Ideally we want the API to behave 'pythonic', i.e. like a dict or set where
 appropriate. This way developers don't have to remember method names that
@@ -40,10 +69,10 @@ support CRUD of things like users, groups, resources and content.
 
 However, Plone's underlying APIs (like `portal_memberdata` etc) are mostly not
 following the same approach. For tasks where no 'pythonic' API exists (yet)
-convenience methods are provided. These should be considered to be temporary or
-rather transitional, i.e. when the underlying APIs get "fixed", the practices
-recommended by i:mode:`plone.api` will be adjusted accordingly and the
-convenience methods will be deprecated.
+convenience methods are provided. These should be considered to be temporary
+or rather transitional, i.e. when the underlying APIs get "fixed", the
+practices recommended by i:mode:`plone.api` will be adjusted accordingly and
+the convenience methods will be deprecated.
 
 For example, changing a password. Ideally we want the code to look like this:
 

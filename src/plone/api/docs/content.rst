@@ -19,6 +19,7 @@ be created.
 .. code-block:: python
 
    from plone import api
+
    site = api.get_site()
    api.create(site,
        type='Document',
@@ -32,6 +33,7 @@ be created.
 .. code-block:: python
 
    from plone import api
+
    site = api.get_site()
    site['myid'] = api.create(
        type='Document',
@@ -41,6 +43,51 @@ be created.
 .. invisible-code-block:: python
 
    self.assertEquals(site['myid'].Title(), 'This is a test document')
+
+
+Getting a content object
+------------------------
+
+This will get a content object by path.
+
+.. warning ::
+
+   This is for discussion - should we support version A or B?
+
+.. note ::
+
+   Version A (command line style)
+
+.. code-block:: python
+
+   from plone import api
+
+   api.create(type='Document',
+       id='getme',
+       title='The title')
+   obj = api.get_content('/getme')
+
+.. invisible-code-block:: python
+
+   self.assertEquals(obj.Title(), "The title")
+
+.. note ::
+
+   Version B (python dict style)
+
+.. code-block:: python
+
+   from plone import api
+
+   site = api.get_site()
+   site['getme'] = api.create(
+       type='Document',
+       title='The title')
+   obj = site['getme']
+
+.. invisible-code-block:: python
+
+   self.assertEquals(obj.Title(), "The title")
 
 
 Move content
@@ -61,13 +108,14 @@ That's how you can move content around like in a file system.
    from plone import api
 
    # Create some content
-   site = api.get_site()
-   api.create(site, type='Folder', id='news')
-   api.create(site, type='Folder', id='contact')
-   api.create(site['news'], type='Document', id='aboutus')
+   api.create(type='Folder', id='news')
+   api.create(type='Folder', id='contact')
+   api.create(parent=api.get_content('/news'), type='Document', id='aboutus')
 
    # Now move the 'aboutus' page over to 'contact'.
-   api.move(source=site['news']['aboutus'], target=site['contact'])
+   aboutus = api.get_content('/news/aboutus')
+   contact = api.get_content('/contact')
+   api.move(source=aboutus, target=contact)
 
 .. note ::
 
@@ -95,7 +143,7 @@ That's how you can move content around like in a file system.
 Copy content
 ------------
 
-To copy a content object, use that:
+To copy a content object, use this:
 
 .. warning ::
 
@@ -110,10 +158,9 @@ To copy a content object, use that:
    from plone import api
 
    # Create some content
-   site = api.get_site()
-   api.create(site, type='Document', id='copyme')
+   copyme = api.create(type='Document', id='copyme')
 
-   api.copy(source=site['copyme'], target=site, id='thecopy')
+   api.copy(source=copyme, target=api.get_site(), id='thecopy')
 
 .. note ::
 
@@ -138,7 +185,7 @@ To copy a content object, use that:
 Delete content
 --------------
 
-Deleting content works like that:
+Deleting content works like this:
 
 .. warning ::
 
@@ -152,9 +199,8 @@ Deleting content works like that:
 
    from plone import api
 
-   site = api.get_site()
-   site['deleteme'] = api.create(type='Document')
-   api.delete(site['deleteme'])
+   api.create(type='Document', id='deleteme')
+   api.delete(api.get_content('deleteme'))
 
 .. note ::
 
@@ -173,24 +219,6 @@ Deleting content works like that:
    self.assertNone(site.get('deleteme'))
 
 
-Getting a content object
-------------------------
-
-This will get a content object by path.
-
-.. code-block:: python
-
-   from plone import api
-
-   site = api.get_site()
-   site['getme'] = api.create(type='Document', title='The title')
-   obj = api.get_content('/getme')
-
-.. invisible-code-block:: python
-
-   self.assertEquals(obj.Title(), "The title")
-
-
 Search content
 --------------
 
@@ -198,9 +226,34 @@ Searching content works by utilizing the portal_catalog tool so you can use
 the same arguments.
 The search returns brains.
 
+.. warning ::
+
+   This is for discussion - should we support version A or B?
+
+.. note ::
+
+   Version A (command line style)
+
 .. code-block:: python
 
    from plone import api
+
+   api.create(type='Document', id='findme', title='FIND ME')
+   brains = api.search(title='FIND ME')
+
+.. invisible-code-block:: python
+
+   self.assertLength(brains, 1)
+   self.assertEquals(brains.Title, 'FIND ME')
+
+.. note ::
+
+   Version B (python dict style)
+
+.. code-block:: python
+
+   from plone import api
+
    site['findme'] = api.create(type='Document', title='FIND ME')
    brains = api.search(title='FIND ME')
 
@@ -216,9 +269,33 @@ Workflows
 Now, with the API'd content, you can call convenience methods on it, like
 triggering a workflow transition.
 
+.. warning ::
+
+   This is for discussion - should we support version A or B?
+
+.. note ::
+
+   Version A (command line style)
+
 .. code-block:: python
 
    from plone import api
+
+   api.create(type='Document', id='workflowme')
+   api.transition(api.get_content('workflowme'), 'publish')
+
+.. invisible-code-block:: python
+
+   self.assertEquals(api.state(site['workflowme'], 'published'))
+
+.. note ::
+
+   Version B (python dict style)
+
+.. code-block:: python
+
+   from plone import api
+
    site['workflowme'] = api.create(type='Document')
    api.transition(site['workflowme'], 'publish')
 
@@ -228,8 +305,23 @@ triggering a workflow transition.
 
 To see the current status, use this:
 
+.. warning ::
+
+   This is for discussion - should we support version A or B?
+
+.. note ::
+
+   Version A (command line style)
+
+.. code-block:: python
+
+   state = api.state(api.get_content('workflowme'))
+
+.. note ::
+
+   Version B (python dict style)
+
 .. code-block:: python
 
    state = api.state(site['workflowme'])
-
 
