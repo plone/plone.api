@@ -47,7 +47,7 @@ This will get a content object by path.
    content.create(type='Document',
                   id='getme',
                   title='The title')
-   obj = content.get('/getme')
+   obj = content.get(id='/getme')
 
 .. invisible-code-block:: python
 
@@ -73,7 +73,7 @@ This is how you can move content around like in a file system.
                   title='About us')
 
    # Now move the 'aboutus' page over to 'contact'.
-   aboutus = content.get('/news/aboutus')
+   aboutus = content.get(id='/news/aboutus')
    obj = content.move(source=aboutus, target=contact)
 
 .. invisible-code-block:: python
@@ -115,12 +115,12 @@ Deleting content works like this:
    from plone.api import content
 
    content.create(type='Document', id='deleteme')
-   content.delete(object=content.get('deleteme'))
+   content.delete(object=content.get(id='deleteme'))
 
 .. invisible-code-block:: python
 
    from plone import api
-   self.assertNone(api.get_site().get('deleteme'))
+   self.assertNone(api.get_site().get(id='deleteme'))
 
 
 
