@@ -1,6 +1,8 @@
 Managing groups
 ===============
 
+.. _create_group_example:
+
 Creating a group
 ----------------
 
@@ -14,6 +16,8 @@ Creating a group
    self.assertEquals(group.id, 'staff')
 
 
+.. _get_group_example:
+
 Getting a group
 ---------------
 
@@ -26,6 +30,8 @@ Getting a group
 
    self.assertEquals(group.id, 'staff')
 
+
+.. _delete_group_example:
 
 Deleting a group
 ----------------

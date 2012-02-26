@@ -7,6 +7,7 @@ def create(groupname=None, *args):
     :type groupname: string
     :returns: Newly created group
     :rtype: GroupData object
+    :Example: :ref:`create_group_example`
     """
 
     if args:
@@ -25,6 +26,7 @@ def get(groupname=None, *args):
     :type groupname: string
     :returns: Group
     :rtype: GroupData object
+    :Example: :ref:`get_group_example`
     """
 
     if args:
@@ -46,6 +48,7 @@ def delete(groupname=None, group=None, *args):
     :type groupname: string
     :param group: Group object to be deleted.
     :type group: GroupData object
+    :Example: :ref:`delete_group_example`
     """
 
     if args:
