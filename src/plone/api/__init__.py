@@ -54,7 +54,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
     if args:
         raise ValueError('Positional arguments are not allowed!')
 
-    if not body and not recipient and not sender and not subject:
+    if not sender or not recipient or not subject or not body:
         raise ValueError
 
     site = get_site()
