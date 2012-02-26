@@ -1,11 +1,6 @@
 *******************************
-:mod:`plone.api` -- A Plone API
+A Plone API
 *******************************
-
-:Author: Plone Foundation
-:Version: |version|
-
-.. module:: plone.api
 
 .. topic:: Overview
 

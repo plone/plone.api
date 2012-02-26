@@ -28,7 +28,6 @@ Otherwise, you also need to pass in the username of the new user.
 
 .. code-block:: python
 
-   from plone import api
    user = api.user.create_user(email='jane@plone.org', username='jane')
 
 .. invisible-code-block:: python
@@ -110,7 +109,6 @@ user object you want to delete.
 
 .. code-block:: python
 
-   from plone import api
    unwanted = api.user.create(username='unwanted')
    api.user.delete(user=unwanted)
 
@@ -159,6 +157,7 @@ to get property for, plus the name of the property.
 
 .. code-block:: python
 
+    from plone import api
     email = api.user.get_property(username='bob', name='email')
 
 .. invisible-code-block:: python
@@ -175,6 +174,7 @@ plus the name of the property and it's new value.
 
 .. code-block:: python
 
+    from plone import api
     api.user.set_property(username='bob', name='email', value='bob@plone.com')
 
 .. invisible-code-block:: python
@@ -191,6 +191,7 @@ to get groups for.
 
 .. code-block:: python
 
+   from plone import api
    groups = api.user.get_groups(username='bob')
 
 .. invisible-code-block:: python
@@ -207,6 +208,7 @@ the target group.
 
 .. code-block:: python
 
+   from plone import api
    api.user.join_group(username='bob', groupname='staff')
 
    user = api.user.get(username='jane')
@@ -228,6 +230,7 @@ the target group.
 
 .. code-block:: python
 
+   from plone import api
    api.user.leave_group(username='bob', groupname='staff')
 
    user = api.user.get(username='jane')
