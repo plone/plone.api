@@ -3,7 +3,7 @@
 project = u'plone.api'
 copyright = u'2012, Plone Foundation'
 
-extensions = ['sphinx.ext.doctest', 'sphinx.ext.coverage']
+extensions = ['sphinx.ext.doctest', 'sphinx.ext.coverage', 'sphinx.ext.autodoc']
 master_doc = 'index'
 
 from pkg_resources import get_distribution

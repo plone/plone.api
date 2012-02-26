@@ -16,6 +16,7 @@ setup(name='plone.api',
       zip_safe=False,
       install_requires=[
         'setuptools',
+        'Plone',  # this is needed so we can pull docstrings into Sphinx
       ],
       extras_require={
         'test': ['plone.app.testing'],
