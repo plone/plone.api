@@ -1,6 +1,8 @@
 Utilities
 =========
 
+.. _get_site_example:
+
 Getting the plone site
 ----------------------
 
@@ -16,6 +18,8 @@ Getting the Plone site object goes like this:
     self.assertEquals(site.getPortalTypeName(), 'Plone Site')
     self.assertEquals(site.getId(), 'plone')
 
+
+.. _get_request_example:
 
 Getting the current request
 ---------------------------
@@ -34,6 +38,8 @@ The request will be fetched from a `thread-local  <http://readthedocs.org/docs/c
     self.assertEqual(request.getURL(), 'http://nohost')
 
 
+.. _get_tool:
+
 Getting a tool
 --------------
 
@@ -49,6 +55,8 @@ name of the tool you need.
 
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
 
+
+.. _send_email_example:
 
 Sending an E-Mail
 -----------------

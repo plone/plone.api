@@ -8,6 +8,7 @@ def get_site():
     Interfaces and doing multi adapter lookups.
 
     :returns: Plone Site object
+    :Example: :ref:`get_site_example`
     """
     return getSite()
 
@@ -17,6 +18,7 @@ def get_request():
     Interfaces and doing multi adapter lookups.
 
     :returns: Request object
+    :Example: :ref:`get_request_example`
     """
     return getRequest()
 
@@ -27,6 +29,7 @@ def get_tool(name=None, *args):
     :param email: [required] Name of the tool you want.
     :type email: string
     :returns: portal tool
+    :Example: :ref:`get_tool`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -49,6 +52,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
     :type subject: string
     :param body: [required] Body text of the email
     :type body: string
+    :Example: :ref:`send_email_example`
     """
 
     if args:
