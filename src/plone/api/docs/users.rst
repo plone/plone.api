@@ -101,7 +101,7 @@ user object you want to delete.
 
    from plone import api
    unwanted = api.user.create(username='unwanted')
-   api.user.delete('unwanted')
+   api.user.delete(username='unwanted')
 
 
 .. invisible-code-block:: python
@@ -112,7 +112,7 @@ user object you want to delete.
 
    from plone import api
    unwanted = api.user.create(username='unwanted')
-   api.user.delete(unwanted)
+   api.user.delete(user=unwanted)
 
 
 .. invisible-code-block:: python
@@ -213,7 +213,7 @@ the target group.
    group = api.group.get(groupname='staff')
    api.user.join_group(user=user, group=group)
 
-.. code-block:: python
+.. invisible-code-block:: python
 
    self.assertEquals(api.user.get_groups(username='bob'), ['staff, '])
    self.assertEquals(api.user.get_groups(username='jane'), ['staff, '])
