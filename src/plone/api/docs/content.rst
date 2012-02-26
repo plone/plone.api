@@ -4,68 +4,91 @@ Managing content
 Create content
 --------------
 
-If you want to create content, use this method. The type attribute will
-automatically decide which content type (dexterity, archetype, ...) should
+If you want to create a new content item, use this method. The type attribute
+will automatically decide which content type (dexterity, archetype, ...) should
 be created.
 
 .. code-block:: python
 
    from plone.api import content
-
-   obj = content.create(type='Document',
-                        id='myid',
-                        title='This is a test document.')
+   obj = content.create(type='Document', title='My Content', container=site)
 
 .. invisible-code-block:: python
 
-   self.assertEquals(obj.Title(), 'This is a test document')
+   self.assertEquals(obj.Title(), 'My Content')
+
+The object's ``id`` gets generated (in a safe way) from it's ``title``.
+
+.. code-block:: python
+
+   self.assertEquals(obj.id, 'my-content')
 
 
 Getting a content object
 ------------------------
 
-This will get a content object by path.
+There are several approaches of getting to your content object. Consider
+the following site structure::
 
-.. code-block:: python
-
-   from plone.api import content
-
-   content.create(type='Document',
-                  id='getme',
-                  title='The title')
-   obj = content.get(id='/getme')
+   Plone (site root)
+   |-- welcome
+   |-- about
+       |-- team
+       `-- contact
+   `-- events
+       |-- training
+       |-- conference
+       `-- sprint
 
 .. invisible-code-block:: python
 
-   self.assertEquals(obj.Title(), "The title")
+   site = api.get_site()
+   about = api.content.create(type='Folder', id='about', container=site)
+   events = api.content.create(type='Folder', id='events', container=site)
 
+   api.content.create(container=about, type='Document', id='team')
+   api.content.create(container=about, type='Document', id='contact')
+
+   api.content.create(container=events, type='Event', id='training')
+   api.content.create(container=events, type='Event', id='conference')
+   api.content.create(container=events, type='Event', id='sprint')
+
+
+We can do the following operations to get to various content objects in the
+stucture above:
+
+.. code-block:: python
+
+   from plone import api
+   site = api.get_site()             # the root object
+   site = api.content.get(path='/')  # this also works
+
+   welcome = site['welcome']                   # your can access children directly with dict-like access
+   welcome = api.content.get(path='/welcome')  # or indirectly by using the api.content.get() method
+
+   # more examples
+   conference = site['events']['conference']
+   sprint = api.content.get(path='/events/training')
 
 
 Move content
 ------------
 
-This is how you can move content around like in a file system.
+This is how you can move content around the site structure defined above.
+The code below moves item ``contact`` ouf of folder ``about`` into Plone site
+root.
 
 .. code-block:: python
 
-   from plone.api import content
+   from plone import api
+   site = api.get_site()
+   contact = site['about']['contact']
 
-   # Create some content
-   news = content.create(type='Folder', id='news')
-   contact = content.create(type='Folder', id='contact')
-   content.create(container=news,
-                  type='Document',
-                  id='aboutus',
-                  title='About us')
-
-   # Now move the 'aboutus' page over to 'contact'.
-   aboutus = content.get(id='/news/aboutus')
-   obj = content.move(source=aboutus, target=contact)
+   api.content.move(source=contact, target=site)
 
 .. invisible-code-block:: python
 
-   self.assertLength(news, 0)
-   self.assertEquals(obj.Title(), 'About us')
+   self.assertIn(contact, site)
 
 
 Copy content
@@ -75,20 +98,28 @@ To copy a content object, use this:
 
 .. code-block:: python
 
-   from plone.api import content
    from plone import api
+   site = api.get_site()
+   training = site['events']['training']
 
-   # Create some content
-   copyme = content.create(type='Document', id='copyme')
+   api.content.copy(source=training, target=site)
 
-   # Now make a copy of it.
-   obj = content.copy(source=copyme, id='thecopy')
 
-.. invisible-code-block:: python
+Note that the new object will have the same id as the old object (if not
+stated otherwise).
 
-   self.assertNotEquals(obj, copyme)
-   self.assertEquals(copyme.Title(), 'Copy me')
-   self.assertEquals(obj.Title(), 'Copy me')
+.. code-block:: python
+
+    self.assertEquals(site['training'].id, 'training')
+
+
+However, if the new object's id conflicts with another object in the target
+container, a suffix will be added to the new object's id.
+
+.. code-block:: python
+
+    api.content.copy(source=training, target=site)  # copy again
+    self.assertEquals('training-1'].id, 'training-1')
 
 
 Delete content
@@ -98,40 +129,44 @@ Deleting content works like this:
 
 .. code-block:: python
 
-   from plone.api import content
-
-   content.create(type='Document', id='deleteme')
-   content.delete(object=content.get(id='deleteme'))
+   from plone import api
+   site = api.get_site()
+   redundant_training = site['training-1']
+   api.content.delete(object=redundant_training)
 
 .. invisible-code-block:: python
 
-   from plone import api
-   self.assertNone(api.get_site().get(id='deleteme'))
+   self.assertNotIn('training-1', site)
 
 
+Get workflow state
+------------------
 
-
-Workflows
----------
-
-Now, with the object you get from this API, you can call convenience methods
-on it, like triggering a workflow transition.
+To find out in which workflow state your content is, use ``get_state``.
 
 .. code-block:: python
 
-   from plone.api import content
-
-   obj = content.create(type='Document', id='workflowme')
-   old_state = content.get_state(obj=obj)
-
-   content.transition(obj=obj, state='publish')
-   new_state = content.get_state(obj=obj)
-
-   content.transition(obj=new_obj, state=old_state)
-   restored_state = content.get_state(obj=obj)
+   from plone import api
+   about = site['about']
+   state = api.content.get_state(about)
 
 .. invisible-code-block:: python
 
-   self.assertEquals(new_state, 'published')
-   self.assertEquals(restored_state, old_state)
+   self.assertEquals(state, 'private')
+
+
+Transition
+----------
+
+To transition your content into a new state, use ``transition``.
+
+.. code-block:: python
+
+   from plone import api
+   about = site['about']
+   state = api.content.transition(obj=about, transition='publish')
+
+.. invisible-code-block:: python
+
+   self.assertEquals(state, 'published')
 
