@@ -96,6 +96,26 @@ Getting the currently logged-in user
     self.assertEquals(current.id, 'test_user_1_')
 
 
+.. _is_anonymous_example:
+
+Check if current user is anonymous
+----------------------------------
+
+Sometimes you need to trigger or display some piece of information only for
+logged-in users. It's easy to use ``is_anonymous`` to do a basic check for it.
+
+.. code-block:: python
+
+    from plone import api
+    if not api.user.is_anonymous()
+        trigger = False
+    trigger = True
+
+.. invisible-code-block:: python
+
+    self.assertTrue(trigger)
+
+
 .. _get_all_users_example:
 
 Getting all users
@@ -208,6 +228,47 @@ plus the name of the property and it's new value.
 .. invisible-code-block:: python
 
     self.assertEquals(bob.getProperty('email'), 'Bob Smith', 'bob@plone.com')
+
+
+.. _user_has_role:
+
+Check for role
+--------------
+
+Again on the security aspects, checking if a user has a certain role goes
+like this. If you omit the ``user`` parameter, the currently logged-in
+user will be used.
+
+.. code-block:: python
+
+    from plone import api
+    if not api.user.has_role(username='bob', role='Manager')
+        trigger = False
+    trigger = True
+
+.. invisible-code-block:: python
+
+    self.assertFalse(trigger)
+
+
+.. _user_has_permission:
+
+Check for permission
+--------------------
+
+Likewise, you can also check if a user has a certain permission. Omitting the
+``user`` parameter means the currently logged-in user will be used.
+
+.. code-block:: python
+
+    from plone import api
+    if not api.user.has_permission(username='bob', permission='Manage portal content')
+        trigger = False
+    trigger = True
+
+.. invisible-code-block:: python
+
+    self.assertFalse(trigger)
 
 
 .. _get_groups_for_user_example:
