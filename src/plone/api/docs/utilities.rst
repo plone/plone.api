@@ -83,7 +83,7 @@ This is how to show a notification message to the user.
 .. code-block:: python
 
     from plone import api
-    api.show_message(msg='This site rocks!')
+    api.show_message(message='Blueberries rock!')
 
 .. invisible-code-block:: python
 
