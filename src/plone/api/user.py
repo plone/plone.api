@@ -290,3 +290,69 @@ def leave_group(username=None, user=None, groupname=None, group=None, *args):
         raise ValueError
 
     pass
+
+
+def is_anonymous():
+    """Check if the currently logged-in user is anonymous.
+
+    :returns: True if the current user is anonymous, False otherwise.
+    :rtype: bool
+    """
+    pass
+
+
+def has_role(role=None, username=None, user=None, *args):
+    """Check if the user has the specified role.
+
+    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    set one or the other, but not both. If no ``username` or ``user`` are
+    provided, check the role for the currently logged-in user.
+
+    :param role: [required] Role of the user to check for
+    :type role: string
+    :param username: Username of the user that we are checking the role for
+    :type username: string
+    :param user: User that we are checking the role for
+    :type user: MemberData object
+    :returns: True if user has the specified role, False otherwise.
+    :rtype: bool
+    """
+    if args:
+        raise ValueError('Positional arguments are not allowed!')
+
+    if not role:
+        raise ValueError
+
+    if username and user:
+        raise ValueError
+
+    pass
+
+
+def has_permission(permission=None, username=None, user=None, *args):
+    """Check if the user has the specified permission.
+
+    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    set one or the other, but not both. If no ``username` or ``user`` are
+    provided, check the permission for the currently logged-in user.
+
+    :param permission: [required] Permission of the user to check for
+    :type permission: string
+    :param username: Username of the user that we are checking the permission
+        for
+    :type username: string
+    :param user: User that we are checking the permission for
+    :type user: MemberData object
+    :returns: True if user has the specified permission, False otherwise.
+    :rtype: bool
+    """
+    if args:
+        raise ValueError('Positional arguments are not allowed!')
+
+    if not permission:
+        ValueError
+
+    if username and user:
+        raise ValueError
+
+    pass
