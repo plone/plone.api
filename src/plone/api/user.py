@@ -267,11 +267,11 @@ def leave_group(username=None, user=None, groupname=None, group=None, *args):
     :type username: string
     :param user: User to leave the group.
     :type user: MemberData object
-    :param groupname: Group name of the group from which to un-join the user.
+    :param groupname: Group name of the group from which to remove the user.
     :type groupname: string
-    :param group: Group from which to un-join the user.
+    :param group: Group from which to remove the user.
     :type group: GroupData object
-    :Example: :ref:`drop_user_from_group_example`
+    :Example: :ref:`remove_user_from_group_example`
     """
 
     if args:
@@ -297,6 +297,7 @@ def is_anonymous():
 
     :returns: True if the current user is anonymous, False otherwise.
     :rtype: bool
+    :Example: :ref:`is_anonymous_example`
     """
     pass
 
@@ -316,6 +317,7 @@ def has_role(role=None, username=None, user=None, *args):
     :type user: MemberData object
     :returns: True if user has the specified role, False otherwise.
     :rtype: bool
+    :Example: :ref:`has_role_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -345,6 +347,7 @@ def has_permission(permission=None, username=None, user=None, *args):
     :type user: MemberData object
     :returns: True if user has the specified permission, False otherwise.
     :rtype: bool
+    :Example: :ref:`has_permission_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')

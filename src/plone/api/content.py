@@ -22,6 +22,7 @@ def create(container=None, type=None, id=None, title=None, strict=True, *args,
         KeyError. When False, ``create`` creates a new, non-conflicting id.
     :type param: boolean
     :returns: Content object
+    :Example: :ref:`create_content_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -43,6 +44,7 @@ def get(path=None, UID=None, *args):
     :param UID: UID of the object we want to get.
     :type UID: string
     :returns: Content object
+    :Example: :ref:`get_content_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -63,7 +65,8 @@ def move(source=None, target=None, id=None, strict=False, *args):
     :type source: Content object
     :param target: Target container to which the source object will
         be moved. If no target is specified, the source object's container will
-        be used as a target, effectively making this operation a rename.
+        be used as a target, effectively making this operation a rename
+        (:ref:`rename_content_example`).
     :type target: Folderish content object
     :param id: Pass this parameter if you want to change the id of the moved
         object on the target location. If the new id conflicts with another
@@ -74,6 +77,7 @@ def move(source=None, target=None, id=None, strict=False, *args):
         conflicting with another object in the target container, raise a
         KeyError. When False, move creates a new, non-conflicting id.
     :type param: boolean
+    :Example: :ref:`move_content_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -106,6 +110,7 @@ def copy(source=None, target=None, id=None, strict=False, *args):
         conflicting with another object in the target container, raise a
         KeyError. When False, ``copy`` creates a new, non-conflicting id.
     :type param: boolean
+    :Example: :ref:`copy_content_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -121,6 +126,7 @@ def delete(obj=None, *args):
 
     :param obj: [required] Object that we want to delete.
     :type obj: Content object
+    :Example: :ref:`delete_content_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -138,6 +144,7 @@ def get_state(obj=None, *args):
     :type obj: Content object
     :returns: Object's current workflow state
     :rtype: string
+    :Example: :ref:`get_state_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -156,6 +163,7 @@ def transition(obj=None, transition=None, *args):
     :type obj: Content object
     :param transition: [required] Name of the workflow transition.
     :type transition: string
+    :Example: :ref:`transition_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')

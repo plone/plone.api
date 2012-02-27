@@ -1,6 +1,8 @@
 Managing content
 ================
 
+.. _create_content_example:
+
 Create content
 --------------
 
@@ -47,6 +49,8 @@ If you want to make sure that the ``id`` will be the one you'd expect from your
 
     self.assertFalse(obj)
 
+
+.. _get_content_example:
 
 Get content object
 ------------------
@@ -95,6 +99,8 @@ stucture above:
     sprint = api.content.get(path='/events/training')
 
 
+.. _move_content_example:
+
 Move content
 ------------
 
@@ -137,6 +143,8 @@ being generated. If you don't like that, just add another argument
     self.assertFalse(site['contact'])
 
 
+.. _rename_content_example:
+
 Rename content
 --------------
 
@@ -165,6 +173,8 @@ Again, you may use the argument ``strict=True`` to make move raise a
     except KeyError:
         pass  # do something meaningful, because the ID was already owned.
 
+
+.. _copy_content_example:
 
 Copy content
 ------------
@@ -220,6 +230,8 @@ target ID conflicts with an existing one in the target folder.
     self.assertTrue(site['training'])
 
 
+.. _delete_content_example:
+
 Delete content
 --------------
 
@@ -237,6 +249,8 @@ Deleting content works like this:
     self.assertNotIn('training-1', site)
 
 
+.. _get_state_example:
+
 Get workflow state
 ------------------
 
@@ -252,6 +266,8 @@ To find out in which workflow state your content is, use ``get_state``.
 
     self.assertEquals(state, 'private')
 
+
+.. _transition_example:
 
 Transition
 ----------

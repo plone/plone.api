@@ -230,7 +230,7 @@ plus the name of the property and it's new value.
     self.assertEquals(bob.getProperty('email'), 'Bob Smith', 'bob@plone.com')
 
 
-.. _user_has_role:
+.. _has_role_example:
 
 Check for role
 --------------
@@ -251,7 +251,7 @@ user will be used.
     self.assertFalse(trigger)
 
 
-.. _user_has_permission:
+.. _has_permission_example:
 
 Check for permission
 --------------------
@@ -313,7 +313,7 @@ of the target group.
     self.assertEquals(api.user.get_groups(username='jane'), ['staff, '])
 
 
-.. _drop_user_from_group_example:
+.. _remove_user_from_group_example:
 
 Remove user from group
 ----------------------
@@ -335,4 +335,3 @@ the target group.
 
     self.assertEquals(api.user.get_groups(username='bob'), [])
     self.assertEquals(api.user.get_groups(username='jane'), [])
-

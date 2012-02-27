@@ -92,8 +92,8 @@ This is how to show a notification message to the user.
 
 .. _send_email_example:
 
-Senda E-Mail
-------------
+Send E-Mail
+-----------
 
 To send an e-mail just use send_email:
 
