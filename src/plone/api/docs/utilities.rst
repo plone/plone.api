@@ -41,7 +41,7 @@ Getting the Plone site object goes like this:
 Get current request
 -------------------
 
-The request will be fetched from a `thread-local  <http://readthedocs.org/docs/collective-docs/en/latest/persistency/lifecycle.html?highlight=thread-local>`_.
+The request will be fetched from a `thread-local <http://readthedocs.org/docs/collective-docs/en/latest/persistency/lifecycle.html?highlight=thread-local>`_.
 
 .. code-block:: python
 

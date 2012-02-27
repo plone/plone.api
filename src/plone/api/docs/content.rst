@@ -29,8 +29,8 @@ The object's ``id`` gets generated (in a safe way) from it's ``title``.
 
 
 If you want to make sure that the ``id`` will be the one you'd expect from your
-``title`` or ``id`` parameter, just pass the ``strict=True`` parameter and ``create``
-will raise a ``KeyError`` if ``id`` conflicts.
+``title`` or ``id`` parameter, just pass the ``strict=True`` parameter and
+``create`` will raise a ``KeyError`` if ``id`` conflicts.
 
 .. invisible-code-block:: python
 
@@ -115,12 +115,12 @@ of folder ``about`` into Plone site root.
     self.assertTrue(site['contact'])
 
 Actually, ``move`` behaves like a filesystem move. If you pass it an ``id``
-argument, you can define to what target ID the object will be moved to. Otherwise
-it will be moved with the same ID that it had.
+argument, you can define to what target ID the object will be moved to.
+Otherwise it will be moved with the same ID that it had.
 
 If the ID in the target folder is already used, a new non-conflicting ID is
-being generated. If you don't like that, just add another argument ``strict=True``
-to make move raise a ``KeyError`` if the target ID exists.
+being generated. If you don't like that, just add another argument
+``strict=True`` to make move raise a ``KeyError`` if the target ID exists.
 
 .. code-block:: python
 
@@ -153,8 +153,8 @@ and omit ``target``.
 
     self.assertTrue(site['very-welcome'])
 
-Again, you may use the argument ``strict=True`` to make move raise a ``KeyError`` if
-the target ID was already used.
+Again, you may use the argument ``strict=True`` to make move raise a
+``KeyError`` if the target ID was already used.
 
 .. code-block:: python
 

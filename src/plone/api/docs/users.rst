@@ -294,9 +294,9 @@ to get groups for.
 Add user to group
 -----------------
 
-The ``join_group`` method accepts either the username or the user object you want
-to make a member of the group and either the groupname or the group object of
-the target group.
+The ``join_group`` method accepts either the username or the user object you
+want to make a member of the group and either the groupname or the group object
+of the target group.
 
 .. code-block:: python
 

@@ -5,7 +5,8 @@ Rationale
 Inspiration
 ===========
 
-We want `plone.api` to be developed with `PEP 20 <http://www.python.org/dev/peps/pep-0020/>`_ idioms in mind, in particular:
+We want `plone.api` to be developed with `PEP 20
+<http://www.python.org/dev/peps/pep-0020/>`_ idioms in mind, in particular:
 
   |   Explicit is better than implicit.
   |   Readability counts.
@@ -25,10 +26,10 @@ Two libraries are especially inspiring:
 
 `Requests <http://docs.python-requests.org>`_
   As of this writing, this is still a very new library, but just looking at
-  `a comparison between the urllib2 way and the requests way <https://gist.github.com/973705>`_,
-  as well as the rest of its documentation, one cannot but see a parallel
-  between the way we *have been* and the way we *should be* writing code for
-  Plone (or at least have that option).
+  `a comparison between the urllib2 way and the requests way
+  <https://gist.github.com/973705>`_, as well as the rest of its documentation,
+  one cannot but see a parallel between the way we *have been* and the way we
+  *should be* writing code for Plone (or at least have that option).
 
 
 Design decisions
