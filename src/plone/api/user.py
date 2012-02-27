@@ -1,7 +1,7 @@
 
 
 def create(email=None, username=None, password=None, properties=None, *args):
-    """Creates a user.
+    """Create a user.
 
     :param email: [required] Email for the new user.
     :type email: string
@@ -32,7 +32,7 @@ def create(email=None, username=None, password=None, properties=None, *args):
 
 
 def get(username=None, *args):
-    """Returns a user.
+    """Get a user.
 
     :param username: [required] Username of the user we want to get.
     :type username: string
@@ -51,7 +51,7 @@ def get(username=None, *args):
 
 
 def get_current():
-    """Returns the currently logged-in user.
+    """Get the currently logged-in user.
 
     :returns: Currently logged-in user
     :rtype: MemberData object
@@ -71,7 +71,7 @@ def get_all():
 
 
 def delete(username=None, user=None, *args):
-    """Deletes a user.
+    """Delete a user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
@@ -94,7 +94,7 @@ def delete(username=None, user=None, *args):
 
 
 def change_password(username=None, user=None, password=None, *args):
-    """Changes a user's password.
+    """Change the user's password.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
@@ -123,7 +123,7 @@ def change_password(username=None, user=None, password=None, *args):
 
 
 def get_property(username=None, user=None, name=None, *args):
-    """Returns a user's property.
+    """Get a user's property.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
@@ -155,7 +155,7 @@ def get_property(username=None, user=None, name=None, *args):
 
 
 def set_property(username=None, user=None, name=None, value=None, *args):
-    """Returns a user's property.
+    """Set a user's property.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
@@ -190,7 +190,7 @@ def set_property(username=None, user=None, name=None, value=None, *args):
 
 
 def get_groups(username=None, user=None, *args):
-    """Returns a list of groups that this user is a member of.
+    """Get a list of groups that this user is a member of.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
@@ -217,7 +217,7 @@ def get_groups(username=None, user=None, *args):
 
 
 def join_group(username=None, user=None, groupname=None, group=None, *args):
-    """Join a user to a group.
+    """Add the user to a group.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
@@ -260,8 +260,8 @@ def leave_group(username=None, user=None, groupname=None, group=None, *args):
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
 
-    Arguments ``groupname`` and ``group`` are mutually exclusive. You can either
-    set one or the other, but not both.
+    Arguments ``groupname`` and ``group`` are mutually exclusive. You can
+    either set one or the other, but not both.
 
     :param username: Username of the user to leave the group.
     :type username: string

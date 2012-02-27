@@ -1,7 +1,7 @@
 
 
 def create(groupname=None, *args):
-    """Creates a group.
+    """Create a group.
 
     :param groupname: [required] Name of the new group.
     :type groupname: string
@@ -20,7 +20,7 @@ def create(groupname=None, *args):
 
 
 def get(groupname=None, *args):
-    """Returns a group.
+    """Get a group.
 
     :param groupname: [required] Name of the group we want to get.
     :type groupname: string
@@ -49,7 +49,7 @@ def get_all():
 
 
 def delete(groupname=None, group=None, *args):
-    """Deletes a group.
+    """Delete a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.

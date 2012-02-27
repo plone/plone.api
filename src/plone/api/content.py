@@ -1,23 +1,25 @@
 
 
-def create(container=None, type=None, id=None, title=None, strict=True, *args, **kwargs):
-    """Creates a new object.
+def create(container=None, type=None, id=None, title=None, strict=True, *args,
+           **kwargs):
+    """Create a new object.
 
     :param container: [required] Container object in which to create the new
         object.
     :type container: Folderish content object
     :param type: [required] Type of the object.
     :type type: string
-    :param id: Id of the object. If no id is provided, automatically generate
-        one from the title. If there is no id or title provided, raise a
-        ValueError.
+    :param id: Id of the object.  If the id conflicts with another object in
+        the container, a suffix will be added to the new object's id. If no id
+        is provided, automatically generate one from the title. If there is no
+        id or title provided, raise a ValueError.
     :type id: string
     :param title: Title of the object. If no title is provided, use id as
         the title.
     :type title: string
-    :param strict: When True, the given id will be enforced. If the id is conflicting
-        with another object in the target container, raise a KeyError.
-        When False, ``create`` creates a new, non-conflicting id.
+    :param strict: When True, the given id will be enforced. If the id is
+        conflicting with another object in the target container, raise a
+        KeyError. When False, ``create`` creates a new, non-conflicting id.
     :type param: boolean
     :returns: Content object
     """
@@ -34,7 +36,7 @@ def create(container=None, type=None, id=None, title=None, strict=True, *args, *
 
 
 def get(path=None, UID=None, *args):
-    """Returns an object.
+    """Get an object.
 
     :param path: Path to the object we want to get, relative to the site root.
     :type path: string
@@ -55,7 +57,7 @@ def get(path=None, UID=None, *args):
 
 
 def move(source=None, target=None, id=None, strict=False, *args):
-    """Moves the object to the target container.
+    """Move the object to the target container.
 
     :param source: [required] Object that we want to move.
     :type source: Content object
@@ -68,9 +70,9 @@ def move(source=None, target=None, id=None, strict=False, *args):
         object in the target container, a suffix will be added to the moved
         object's id.
     :type id: string
-    :param strict: When True, the given id will be enforced. If the id is conflicting
-        with another object in the target container, raise a KeyError.
-        When False, move creates a new, non-conflicting id.
+    :param strict: When True, the given id will be enforced. If the id is
+        conflicting with another object in the target container, raise a
+        KeyError. When False, move creates a new, non-conflicting id.
     :type param: boolean
     """
     if args:
@@ -86,7 +88,7 @@ def move(source=None, target=None, id=None, strict=False, *args):
 
 
 def copy(source=None, target=None, id=None, strict=False, *args):
-    """Copies the object to the target container.
+    """Copy the object to the target container.
 
     :param source: [required] Object that we want to copy.
     :type source: Content object
@@ -100,9 +102,9 @@ def copy(source=None, target=None, id=None, strict=False, *args):
         target container, a suffix will be added to the new object's id.
     :type id: string
     :returns: Content object that was created in the target location
-    :param strict: When True, the given id will be enforced. If the id is conflicting
-        with another object in the target container, raise a KeyError.
-        When False, ``copy`` creates a new, non-conflicting id.
+    :param strict: When True, the given id will be enforced. If the id is
+        conflicting with another object in the target container, raise a
+        KeyError. When False, ``copy`` creates a new, non-conflicting id.
     :type param: boolean
     """
     if args:
@@ -115,7 +117,7 @@ def copy(source=None, target=None, id=None, strict=False, *args):
 
 
 def delete(obj=None, *args):
-    """Deletes the object.
+    """Delete the object.
 
     :param obj: [required] Object that we want to delete.
     :type obj: Content object
@@ -130,7 +132,7 @@ def delete(obj=None, *args):
 
 
 def get_state(obj=None, *args):
-    """Returns the current workflow state of the object.
+    """Get the current workflow state of the object.
 
     :param obj: [required] Object that we want to get the state for.
     :type obj: Content object
@@ -147,7 +149,7 @@ def get_state(obj=None, *args):
 
 
 def transition(obj=None, transition=None, *args):
-    """Performs a workflow transition for the object.
+    """Perform a workflow transition for the object.
 
     :param obj: [required] Object for which we want to perform the workflow
         transition.
