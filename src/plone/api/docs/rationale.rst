@@ -41,19 +41,19 @@ No positional arguments.  Only named (keyword) arguments.
   #. The arguments can all be passed as a dictionary.
 
 The API provides grouped functional access to otherwise distributed logic
-in plone. Plone's original distribution of logic is a result of two things:
-The historic re-using of CMF- and zope-methods and of reasonable, but
-at first hard to understandable splits (like acl_users.* and portal_membedata).
+in Plone. Plone's original distribution of logic is a result of two things:
+The historic re-use of CMF- and Zope-methods and reasonable, but
+at first hard to understand splits like acl_users.* and portal_memberdata.
 
-So we create some modules with a bunch of useful methods that implement
+So we created some modules with a bunch of useful methods that implement
 best-practice access to the original distributed APIs. In this way we also
-document in code how to use plone directly.
+document in code how to use Plone directly.
 
 .. note ::
    If you doubt those last sentences: We had five different ways to get the
    site root with different edge-cases. We had three different ways to move
    an object. With this in mind, it's obvious that even the most simple
-   tasks can't be documented in plone in a sane way.
+   tasks can't be documented in Plone in a sane way.
 
 Also, we don't intend to cover all possible use-cases. Only the absolutely
 most common ones. If you need to do something funky, just use the
