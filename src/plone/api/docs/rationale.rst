@@ -73,8 +73,9 @@ Also, making this wrap transparent, in order to make the returned object
 directly usable, would be nearly impossible, because we'd have to proxy all the
 :mod:`zope.interface` stuff, annotations and more.
 
-Furthermore, we want to avoid people writing code like this in tests of their
-internal utility code::
+Furthermore, we want to avoid people writing code like this in tests or their
+internal utility code and failing miserably in the future if wrappers would
+no longer be needed and would therefore be removed::
 
     if users['bob'].__class__.__name__ == 'WrappedMemberDataObject':
         # do something
