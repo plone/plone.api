@@ -3,8 +3,8 @@ Utilities
 
 .. _get_site_url_example:
 
-Get the site url
-----------------
+Get site url
+------------
 
 A shortcut to getting the site's url is now always at hand.
 
@@ -20,8 +20,8 @@ A shortcut to getting the site's url is now always at hand.
 
 .. _get_site_example:
 
-Get the site object
--------------------
+Get site object
+---------------
 
 Getting the Plone site object goes like this:
 
@@ -38,8 +38,8 @@ Getting the Plone site object goes like this:
 
 .. _get_request_example:
 
-Get the current request
------------------------
+Get current request
+-------------------
 
 The request will be fetched from a `thread-local  <http://readthedocs.org/docs/collective-docs/en/latest/persistency/lifecycle.html?highlight=thread-local>`_.
 
@@ -57,8 +57,8 @@ The request will be fetched from a `thread-local  <http://readthedocs.org/docs/c
 
 .. _get_tool_example:
 
-Get a tool
-----------
+Get tool
+--------
 
 To get a portal tool in a simple way, just use ``get_tool`` and pass in the
 name of the tool you need.
@@ -75,8 +75,8 @@ name of the tool you need.
 
 .. _show_message_example:
 
-Show a notification message
----------------------------
+Show notification message
+-------------------------
 
 This is how to show a notification message to the user.
 
@@ -92,8 +92,8 @@ This is how to show a notification message to the user.
 
 .. _send_email_example:
 
-Senda an E-Mail
----------------
+Senda E-Mail
+------------
 
 To send an e-mail just use send_email:
 

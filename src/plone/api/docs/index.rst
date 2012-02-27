@@ -32,13 +32,13 @@ Narrative documentation
     users.rst
     groups.rst
 
+
 Complete API and advanced usage
 ===============================
 
 .. toctree::
 
     api.rst
-
 
 
 Indices and tables

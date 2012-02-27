@@ -3,8 +3,8 @@ Managing groups
 
 .. _create_group_example:
 
-Creating a group
-----------------
+Create group
+------------
 
 .. code-block:: python
 
@@ -18,8 +18,8 @@ Creating a group
 
 .. _get_group_example:
 
-Getting a group
----------------
+Get group
+---------
 
 .. code-block:: python
 
@@ -33,8 +33,8 @@ Getting a group
 
 .. _get_all_groups_example:
 
-Getting all groups
-------------------
+Get all groups
+--------------
 
 .. code-block:: python
 
@@ -48,8 +48,8 @@ Getting all groups
 
 .. _delete_group_example:
 
-Deleting a group
-----------------
+Delete group
+------------
 
 To delete a group, use ``delete`` and pass in either the groupname or the
 group object you want to delete.

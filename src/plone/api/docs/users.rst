@@ -3,8 +3,8 @@ Managing users
 
 .. _create_user_example:
 
-Creating a user
----------------
+Create user
+-----------
 
 If your site is configured to use emails as usernames you just need to pass
 in the email of the new user.
@@ -68,8 +68,8 @@ Otherwise a random 8-char alphanumeric password will be generated.
 
 .. _get_user_example:
 
-Getting a user
---------------
+Get user
+--------
 
 .. code-block:: python
 
@@ -83,8 +83,8 @@ Getting a user
 
 .. _get_current_user_example:
 
-Getting the currently logged-in user
-------------------------------------
+Get currently logged-in user
+----------------------------
 
 .. code-block:: python
 
@@ -118,8 +118,8 @@ logged-in users. It's easy to use ``is_anonymous`` to do a basic check for it.
 
 .. _get_all_users_example:
 
-Getting all users
------------------
+Get all users
+-------------
 
 .. code-block:: python
 
@@ -133,8 +133,8 @@ Getting all users
 
 .. _delete_user_example:
 
-Deleting a user
----------------
+Delete user
+-----------
 
 To delete a user, use ``delete`` and pass in either the username or the
 user object you want to delete.
@@ -162,8 +162,8 @@ user object you want to delete.
 
 .. _change_password_example:
 
-Changing a password
--------------------
+Change user's password
+----------------------
 
 To change a user's password, use ``change_password`` and pass in either the
 username or the user object you want to change password for, plus the password
@@ -195,8 +195,8 @@ If you don't pass in any password, a random one will be generated.
 
 .. _get_user_property_example:
 
-Getting a user's property
--------------------------
+Get user's property
+-------------------
 
 Use ``get_property`` and pass in either the username or the user object you want
 to get property for, plus the name of the property.
@@ -213,8 +213,8 @@ to get property for, plus the name of the property.
 
 .. _set_user_property_example:
 
-Setting a user's property
--------------------------
+Set user's property
+-------------------
 
 Setting a user's property is achieved by using ``set_property``, passing it
 either the username or the user object you want to get property for,
@@ -273,8 +273,8 @@ Likewise, you can also check if a user has a certain permission. Omitting the
 
 .. _get_groups_for_user_example:
 
-Getting groups that user is a member of
----------------------------------------
+Get groups that user is a member of
+-----------------------------------
 
 Use ``get_groups``, passing in either the username or the user object you want
 to get groups for.
@@ -291,8 +291,8 @@ to get groups for.
 
 .. _add_user_to_group_example:
 
-Adding a user to a group
-------------------------
+Add user to group
+-----------------
 
 The ``join_group`` method accepts either the username or the user object you want
 to make a member of the group and either the groupname or the group object of
@@ -315,8 +315,8 @@ the target group.
 
 .. _drop_user_from_group_example:
 
-Remove user from a group
-------------------------
+Remove user from group
+----------------------
 
 The ``leave_group`` method accepts either the username or the user object you
 want to remove from the group and either the groupname or the group object of

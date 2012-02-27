@@ -48,8 +48,8 @@ will raise a ``KeyError`` if ``id`` conflicts.
     self.assertFalse(obj)
 
 
-Getting a content object
-------------------------
+Get content object
+------------------
 
 There are several approaches of getting to your content object. Consider
 the following site structure::
@@ -138,7 +138,7 @@ to make move raise a ``KeyError`` if the target ID exists.
 
 
 Rename content
-------------
+--------------
 
 To rename, you still use the ``move`` method, just pass in a new ``id`` instead
 and omit ``target``.

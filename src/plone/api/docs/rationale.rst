@@ -4,6 +4,7 @@ Rationale
 
 Inspiration
 ===========
+
 We want `plone.api` to be developed with `PEP 20 <http://www.python.org/dev/peps/pep-0020/>`_ idioms in mind, in particular:
 
   |   Explicit is better than implicit.
