@@ -1,3 +1,4 @@
+from plone import api
 from Products.Archetypes.interfaces.base import IBaseObject
 from zope.app.container.interfaces import INameChooser
 
@@ -192,4 +193,7 @@ def transition(obj=None, transition=None, *args):
     if not obj or not transition:
         raise ValueError
 
-    pass
+    #workflow = api.get_tool('portal_workflow')
+    from Products.CMFCore.utils import getToolByName
+    workflow = getToolByName(obj, 'portal_workflow')
+    workflow.doActionFor(obj, transition)
