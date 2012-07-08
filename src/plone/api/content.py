@@ -1,3 +1,7 @@
+from Products.Archetypes.interfaces.base import IBaseObject
+from zope.app.container.interfaces import INameChooser
+
+import random
 
 
 def create(container=None, type=None, id=None, title=None, strict=True, *args,
@@ -24,16 +28,33 @@ def create(container=None, type=None, id=None, title=None, strict=True, *args,
     :returns: Content object
     :Example: :ref:`create_content_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
+    if not container:
+        raise ValueError('The ``container`` attribute is required.')
 
-    if not container or not type:
-        raise ValueError
+    if not type:
+        raise ValueError('The ``type`` attribute is required.')
 
     if not id and not title:
-        raise ValueError
+        raise ValueError('You have to provide either the ``id`` or the '
+                         '``title`` attribute')
 
-    pass
+    # Create a temporary id
+    id = str(random.randint(0, 99999999))
+    container.invokeFactory(type, id, title=title, **kwargs)
+    content = container[id]
+
+    # Archetypes specific code
+    if IBaseObject.providedBy(content):
+        # Will finish Archetypes content item creation process,
+        # rename-after-creation and such
+        content.processForm()
+
+    # Create a new id from title
+    chooser = INameChooser(container)
+    new_id = chooser.chooseName(title, content)
+    content.aq_parent.manage_renameObject(id, new_id)
+
+    return content
 
 
 def get(path=None, UID=None, *args):
