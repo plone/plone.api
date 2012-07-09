@@ -16,7 +16,7 @@ def create(groupname=None, *args):
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    pass
+    raise NotImplementedError
 
 
 def get(groupname=None, *args):
@@ -35,7 +35,7 @@ def get(groupname=None, *args):
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    pass
+    raise NotImplementedError
 
 
 def get_all():
@@ -45,7 +45,7 @@ def get_all():
     :rtype: List of GroupData objects
     :Example: :ref:`get_all_groups_example`
     """
-    pass
+    raise NotImplementedError
 
 
 def delete(groupname=None, group=None, *args):
@@ -70,4 +70,4 @@ def delete(groupname=None, group=None, *args):
     if groupname and group:
         raise ValueError
 
-    pass
+    raise NotImplementedError

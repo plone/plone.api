@@ -30,7 +30,7 @@ def get_site_url():
     :rtype: string
     :Example: :ref:`get_site_url_example`
     """
-    pass
+    raise NotImplementedError
 
 
 def show_message(message=None, type='info', *args):
@@ -48,7 +48,7 @@ def show_message(message=None, type='info', *args):
     if not message:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def get_tool(name=None, *args):
