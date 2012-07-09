@@ -47,11 +47,12 @@ def create(container=None,
         raise ValueError('You have to provide either the ``id`` or the '
                          '``title`` attribute')
 
-    if not strict and id in container.keys():
-        id = None
+    if strict and not id:
+        raise ValueError('You have to provide the ``id`` attribute when using strict')
+
 
     # Create a temporary id if the id is not given
-    content_id = id or str(random.randint(0, 99999999))
+    content_id = strict and id or str(random.randint(0, 99999999))
 
     if title:
         kwargs['title'] = title
@@ -65,10 +66,12 @@ def create(container=None,
         # rename-after-creation and such
         content.processForm()
 
-    if not id:
+    # Set the correct id, based on given id or title
+    if not strict:
         # Create a new id from title
         chooser = INameChooser(container)
-        new_id = chooser.chooseName(title, content)
+        derived_id = id or title
+        new_id = chooser.chooseName(derived_id, content)
         # kacee: we must do a commit, else the renaming fails because the object isn't in the zodb.
         # Thus if it is not in zodb, there's nothing to move. We should choose a correct id when
         # the object is created.
