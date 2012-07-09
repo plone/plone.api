@@ -53,7 +53,10 @@ def create(container=None,
     # Create a temporary id if the id is not given
     content_id = id or str(random.randint(0, 99999999))
 
-    container.invokeFactory(type, content_id, title=title, **kwargs)
+    if title:
+        kwargs['title'] = title
+
+    container.invokeFactory(type, content_id, **kwargs)
     content = container[content_id]
 
     # Archetypes specific code
