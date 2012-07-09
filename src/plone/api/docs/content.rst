@@ -50,9 +50,8 @@ If you want to make sure that the ``id`` will be the one you'd expect from your
     self.assertRaises(
         KeyError,
         content.create,
-        type='Document', title='My Content', id='my_content', container=site, strict=True
+        type='Document', title='My Content', id='my-content', container=site, strict=True
     )
-    pass
 
 .. invisible-code-block:: python
 
@@ -80,6 +79,7 @@ the following site structure::
 .. invisible-code-block:: python
 
     site = api.get_site()
+    welcome = api.content.create(type='Document', id='welcome', container=site)
     about = api.content.create(type='Folder', id='about', container=site)
     events = api.content.create(type='Folder', id='events', container=site)
 
@@ -98,14 +98,24 @@ stucture above:
 
     from plone import api
     site = api.get_site()             # the root object
+    self.assertEqual(site.getId(), 'plone')
+
     site = api.content.get(path='/')  # this also works
+    self.assertEqual(site.getId(), 'plone')
 
-    welcome = site['welcome']                   # your can access children directly with dict-like access
-    welcome = api.content.get(path='/welcome')  # or indirectly by using the api.content.get() method
+    welcome = site['welcome']  # your can access children directly with dict-like access
+    welcome_by_path = api.content.get(path='/welcome')  # or indirectly by using the api.content.get() method
 
+    self.assertEqual(welcome, welcome_by_path)
     # more examples
     conference = site['events']['conference']
     sprint = api.content.get(path='/events/training')
+
+    # Check resolving by UID
+    uid = conference.UID()
+    conference_by_uid = api.content.get(UID=uid)
+
+    self.assertEqual(conference, conference_by_uid)
 
 
 .. _move_content_example:
@@ -141,16 +151,14 @@ being generated. If you don't like that, just add another argument
 
     from plone import api
     site = api.get_site()
-    contact = site['about']['contact']
-    try:
-        api.content.move(source=contact, target=site, id='contact', strict=True)
-    except KeyError:
-        pass  # do something meaningful, because the ID was already owned.
+    contact = site['contact']
 
-.. invisible-code-block:: python
-
-    self.assertFalse(site['contact'])
-
+    from OFS.CopySupport import CopyError
+    self.assertRaises(
+        CopyError,
+        api.content.move,
+        source=contact, target=site, id='contact', strict=True
+    )
 
 .. _rename_content_example:
 

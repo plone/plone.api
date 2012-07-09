@@ -1,12 +1,13 @@
 import transaction
 from plone import api
+from plone.app.uuid.utils import uuidToObject
 from Products.Archetypes.interfaces.base import IBaseObject
 from zope.app.container.interfaces import INameChooser
 
 import random
 
 
-def create(container=None, type=None, id=None, title=None, strict=True, *args,
+def create(container=None, type=None, id=None, title=None, strict=False, *args,
            **kwargs):
     """Create a new object.
 
@@ -40,10 +41,14 @@ def create(container=None, type=None, id=None, title=None, strict=True, *args,
         raise ValueError('You have to provide either the ``id`` or the '
                          '``title`` attribute')
 
-    # Create a temporary id
-    id = str(random.randint(0, 99999999))
-    container.invokeFactory(type, id, title=title, **kwargs)
-    content = container[id]
+    if strict and id in container.keys():
+        raise KeyError('The ``id`` is already taken and the strict option was choosen.')
+
+    # Create a temporary id if the id is not given
+    content_id = id or str(random.randint(0, 99999999))
+
+    container.invokeFactory(type, content_id, title=title, **kwargs)
+    content = container[content_id]
 
     # Archetypes specific code
     if IBaseObject.providedBy(content):
@@ -51,14 +56,15 @@ def create(container=None, type=None, id=None, title=None, strict=True, *args,
         # rename-after-creation and such
         content.processForm()
 
-    # Create a new id from title
-    chooser = INameChooser(container)
-    new_id = chooser.chooseName(title, content)
-    # kacee: we must do a commit, else the renaming fails because the object isn't in the zodb.
-    # Thus if it is not in zodb, there's nothing to move. We should choose a correct id when
-    # the object is created.
-    transaction.commit()
-    content.aq_parent.manage_renameObject(id, new_id)
+    if not id:
+        # Create a new id from title
+        chooser = INameChooser(container)
+        new_id = chooser.chooseName(title, content)
+        # kacee: we must do a commit, else the renaming fails because the object isn't in the zodb.
+        # Thus if it is not in zodb, there's nothing to move. We should choose a correct id when
+        # the object is created.
+        transaction.commit()
+        content.aq_parent.manage_renameObject(content_id, new_id)
 
     return content
 
@@ -82,10 +88,19 @@ def get(path=None, UID=None, *args, **kwargs):
     if not path and not UID:
         raise ValueError('When getting an object path or UID attribute is required')
 
-    pass
+    if path:
+        site = api.get_site()
+        site_id = site.getId()
+        if not path.startswith(site_id):
+            path = '/{0}{1}'.format(site_id, path)
+        return site.restrictedTraverse(path)
+
+    elif UID:
+        return uuidToObject(UID)
 
 
-def move(source=None, target=None, id=None, strict=False, *args):
+
+def move(source=None, target=None, id=None, strict=False, *args, **kwargs):
     """Move the object to the target container.
 
     :param source: [required] Object that we want to move.
@@ -115,7 +130,17 @@ def move(source=None, target=None, id=None, strict=False, *args):
     if not target and not id:
         raise ValueError
 
-    pass
+    source_id = source.getId()
+    target.manage_pasteObjects(source.manage_cutObjects(source_id))
+
+    if id:
+        if strict:
+            new_id = id
+        else:
+            chooser = INameChooser(target)
+            new_id = chooser.chooseName(id, source)
+
+        target.manage_renameObject(source_id, new_id)
 
 
 def copy(source=None, target=None, id=None, strict=False, *args):
