@@ -6,6 +6,13 @@ Managing content
 Create content
 --------------
 
+First get the site object thru the api:
+
+.. code-block:: python
+
+    from plone import api
+    site = api.get_site()
+
 If you want to create a new content item, use this method. The type attribute
 will automatically decide which content type (dexterity, archetype, ...) should
 be created.
@@ -40,10 +47,12 @@ If you want to make sure that the ``id`` will be the one you'd expect from your
 
 .. code-block:: python
 
-    try:
-        obj = content.create(type='Document', title='My Content', id='my_content', container=site, strict=True)
-    except KeyError:
-        pass  # do something meaningful, because the ID was already owned.
+    self.assertRaises(
+        KeyError,
+        content.create,
+        type='Document', title='My Content', id='my_content', container=site, strict=True
+    )
+    pass
 
 .. invisible-code-block:: python
 
