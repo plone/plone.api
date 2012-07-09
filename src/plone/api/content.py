@@ -47,8 +47,8 @@ def create(container=None,
         raise ValueError('You have to provide either the ``id`` or the '
                          '``title`` attribute')
 
-    if strict and id in container.keys():
-        raise KeyError('The ``id`` is already taken and the strict option was choosen.')
+    if not strict and id in container.keys():
+        id = None
 
     # Create a temporary id if the id is not given
     content_id = id or str(random.randint(0, 99999999))
