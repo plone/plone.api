@@ -7,9 +7,14 @@ from zope.app.container.interfaces import INameChooser
 import random
 
 
-def create(container=None, type=None, id=None, title=None, strict=False, *args,
+def create(container=None,
+           type=None,
+           id=None,
+           title=None,
+           strict=False,
+           *args,
            **kwargs):
-    """Create a new object.
+    """Create a new content item in ZODB.
 
     :param container: [required] Container object in which to create the new
         object.
@@ -29,6 +34,7 @@ def create(container=None, type=None, id=None, title=None, strict=False, *args,
         KeyError. When False, ``create`` creates a new, non-conflicting id.
     :type param: boolean
     :returns: Content object
+
     :Example: :ref:`create_content_example`
     """
     if not container:
