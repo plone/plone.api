@@ -1,3 +1,4 @@
+import transaction
 from plone import api
 from Products.Archetypes.interfaces.base import IBaseObject
 from zope.app.container.interfaces import INameChooser
@@ -53,12 +54,16 @@ def create(container=None, type=None, id=None, title=None, strict=True, *args,
     # Create a new id from title
     chooser = INameChooser(container)
     new_id = chooser.chooseName(title, content)
+    # kacee: we must do a commit, else the renaming fails because the object isn't in the zodb.
+    # Thus if it is not in zodb, there's nothing to move. We should choose a correct id when
+    # the object is created.
+    transaction.commit()
     content.aq_parent.manage_renameObject(id, new_id)
 
     return content
 
 
-def get(path=None, UID=None, *args):
+def get(path=None, UID=None, *args, **kwargs):
     """Get an object.
 
     :param path: Path to the object we want to get, relative to the site root.
@@ -71,11 +76,11 @@ def get(path=None, UID=None, *args):
     if args:
         raise ValueError('Positional arguments are not allowed!')
 
-    if not path or not UID:
-        raise ValueError
-
     if path and UID:
-        raise ValueError
+        raise ValueError('When getting an object combining path and UID attribute is not allowed')
+
+    if not path and not UID:
+        raise ValueError('When getting an object path or UID attribute is required')
 
     pass
 
