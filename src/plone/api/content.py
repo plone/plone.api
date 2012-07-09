@@ -213,7 +213,8 @@ def get_state(obj=None, *args):
     if not obj:
         raise ValueError
 
-    pass
+    workflow = api.get_tool('portal_workflow')
+    return workflow.getInfoFor(obj, 'review_state')
 
 
 def transition(obj=None, transition=None, *args):
