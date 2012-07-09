@@ -19,7 +19,7 @@ setup(name='plone.api',
         'Plone',  # this is needed so we can pull docstrings into Sphinx
       ],
       extras_require={
-        'test': ['plone.app.testing'],
+        'test': ['plone.app.testing', 'mock'],
       },
       classifiers=[
         'Environment :: Web Environment',
