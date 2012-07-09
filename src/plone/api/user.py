@@ -1,3 +1,4 @@
+from plone import api
 
 
 def create(email=None, username=None, password=None, properties=None, *args):
@@ -24,6 +25,7 @@ def create(email=None, username=None, password=None, properties=None, *args):
     if not email:
         raise ValueError
 
+    site = api.get_site()
     use_email_as_username = site.portal_properties.use_email_as_username
     if not use_email_as_username and not username:
         raise ValueError
