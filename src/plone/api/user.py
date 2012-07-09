@@ -1,3 +1,4 @@
+from plone import api
 
 
 def create(email=None, username=None, password=None, properties=None, *args):
@@ -24,11 +25,12 @@ def create(email=None, username=None, password=None, properties=None, *args):
     if not email:
         raise ValueError
 
+    site = api.get_site()
     use_email_as_username = site.portal_properties.use_email_as_username
     if not use_email_as_username and not username:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def get(username=None, *args):
@@ -47,7 +49,7 @@ def get(username=None, *args):
     if not username:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def get_current():
@@ -57,7 +59,7 @@ def get_current():
     :rtype: MemberData object
     :Example: :ref:`get_current_user_example`
     """
-    pass
+    raise NotImplementedError
 
 
 def get_all():
@@ -67,7 +69,7 @@ def get_all():
     :rtype: List of MemberData objects
     :Example: :ref:`get_all_users_example`
     """
-    pass
+    raise NotImplementedError
 
 
 def delete(username=None, user=None, *args):
@@ -119,7 +121,7 @@ def change_password(username=None, user=None, password=None, *args):
     if username and user:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def get_property(username=None, user=None, name=None, *args):
@@ -151,7 +153,7 @@ def get_property(username=None, user=None, name=None, *args):
     if not name:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def set_property(username=None, user=None, name=None, value=None, *args):
@@ -186,7 +188,7 @@ def set_property(username=None, user=None, name=None, value=None, *args):
     if not value:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def get_groups(username=None, user=None, *args):
@@ -213,7 +215,7 @@ def get_groups(username=None, user=None, *args):
     if username and user:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def join_group(username=None, user=None, groupname=None, group=None, *args):
@@ -251,7 +253,7 @@ def join_group(username=None, user=None, groupname=None, group=None, *args):
     if groupname and group:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def leave_group(username=None, user=None, groupname=None, group=None, *args):
@@ -289,7 +291,7 @@ def leave_group(username=None, user=None, groupname=None, group=None, *args):
     if groupname and group:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def is_anonymous():
@@ -299,7 +301,7 @@ def is_anonymous():
     :rtype: bool
     :Example: :ref:`is_anonymous_example`
     """
-    pass
+    raise NotImplementedError
 
 
 def has_role(role=None, username=None, user=None, *args):
@@ -328,7 +330,7 @@ def has_role(role=None, username=None, user=None, *args):
     if username and user:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def has_permission(permission=None, username=None, user=None, *args):
@@ -358,4 +360,4 @@ def has_permission(permission=None, username=None, user=None, *args):
     if username and user:
         raise ValueError
 
-    pass
+    raise NotImplementedError

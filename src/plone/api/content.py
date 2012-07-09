@@ -182,7 +182,7 @@ def copy(source=None, target=None, id=None, strict=False, *args):
     if not source:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def delete(obj=None, *args):
@@ -198,7 +198,7 @@ def delete(obj=None, *args):
     if not obj:
         raise ValueError
 
-    pass
+    raise NotImplementedError
 
 
 def get_state(obj=None, *args):
