@@ -233,7 +233,5 @@ def transition(obj=None, transition=None, *args):
     if not obj or not transition:
         raise ValueError
 
-    #workflow = api.get_tool('portal_workflow')
-    from Products.CMFCore.utils import getToolByName
-    workflow = getToolByName(obj, 'portal_workflow')
-    workflow.doActionFor(obj, transition)
+    workflow = api.get_tool('portal_workflow')
+    return workflow.doActionFor(obj, transition)
