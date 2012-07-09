@@ -107,7 +107,7 @@ logged-in users. It's easy to use ``is_anonymous`` to do a basic check for it.
 .. code-block:: python
 
     from plone import api
-    if not api.user.is_anonymous()
+    if not api.user.is_anonymous():
         trigger = False
     trigger = True
 
@@ -242,7 +242,7 @@ user will be used.
 .. code-block:: python
 
     from plone import api
-    if not api.user.has_role(username='bob', role='Manager')
+    if not api.user.has_role(username='bob', role='Manager'):
         trigger = False
     trigger = True
 
@@ -262,7 +262,7 @@ Likewise, you can also check if a user has a certain permission. Omitting the
 .. code-block:: python
 
     from plone import api
-    if not api.user.has_permission(username='bob', permission='Manage portal content')
+    if not api.user.has_permission(username='bob', permission='Manage portal content'):
         trigger = False
     trigger = True
 
