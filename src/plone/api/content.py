@@ -7,9 +7,14 @@ from zope.app.container.interfaces import INameChooser
 import random
 
 
-def create(container=None, type=None, id=None, title=None, strict=False, *args,
+def create(container=None,
+           type=None,
+           id=None,
+           title=None,
+           strict=False,
+           *args,
            **kwargs):
-    """Create a new object.
+    """Create a new content item in ZODB.
 
     :param container: [required] Container object in which to create the new
         object.
@@ -29,6 +34,7 @@ def create(container=None, type=None, id=None, title=None, strict=False, *args,
         KeyError. When False, ``create`` creates a new, non-conflicting id.
     :type param: boolean
     :returns: Content object
+
     :Example: :ref:`create_content_example`
     """
     if not container:
@@ -41,13 +47,16 @@ def create(container=None, type=None, id=None, title=None, strict=False, *args,
         raise ValueError('You have to provide either the ``id`` or the '
                          '``title`` attribute')
 
-    if strict and id in container.keys():
-        raise KeyError('The ``id`` is already taken and the strict option was choosen.')
+    if not strict and id in container.keys():
+        id = None
 
     # Create a temporary id if the id is not given
     content_id = id or str(random.randint(0, 99999999))
 
-    container.invokeFactory(type, content_id, title=title, **kwargs)
+    if title:
+        kwargs['title'] = title
+
+    container.invokeFactory(type, content_id, **kwargs)
     content = container[content_id]
 
     # Archetypes specific code
@@ -204,7 +213,8 @@ def get_state(obj=None, *args):
     if not obj:
         raise ValueError
 
-    pass
+    workflow = api.get_tool('portal_workflow')
+    return workflow.getInfoFor(obj, 'review_state')
 
 
 def transition(obj=None, transition=None, *args):
@@ -223,7 +233,5 @@ def transition(obj=None, transition=None, *args):
     if not obj or not transition:
         raise ValueError
 
-    #workflow = api.get_tool('portal_workflow')
-    from Products.CMFCore.utils import getToolByName
-    workflow = getToolByName(obj, 'portal_workflow')
-    workflow.doActionFor(obj, transition)
+    workflow = api.get_tool('portal_workflow')
+    return workflow.doActionFor(obj, transition)
