@@ -42,7 +42,8 @@ def get_tool(name=None, *args):
 def send_email(sender=None, recipient=None, subject=None, body=None, *args):
     """Send an email.
 
-    :param sender: [required] Email sender, 'from' field.
+    :param sender: Email sender, 'from' field. If not set, the portal default
+        will be used.
     :type sender: string
     :param recipient: [required] Email recipient, 'to' field.
     :type recipient: string
@@ -56,11 +57,15 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
     if args:
         raise ValueError('Positional arguments are not allowed!')
 
-    if not sender or not recipient or not subject or not body:
+    if not recipient or not subject or not body:
         raise ValueError
 
     portal = getSite()
     encoding = portal.getProperty('email_charset', 'utf-8')
+
+    if not sender:
+        sender = portal.getProperty('email_from_name') + \
+            ' <' + portal.getProperty('email_from_address') + '>'
 
     # The mail headers are not properly encoded we need to extract
     # them and let MailHost manage the encoding.

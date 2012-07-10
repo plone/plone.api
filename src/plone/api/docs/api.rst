@@ -1,7 +1,10 @@
-plone.api (utils)
-=================
 
-.. automodule:: plone.api
+.. _plone-api-portal:
+
+plone.api.portal
+================
+
+.. automodule:: plone.api.portal
     :members:
 
 
@@ -13,11 +16,26 @@ plone.api.content
 .. automodule:: plone.api.content
     :members:
 
+
+.. _plone-api-view:
+
+plone.api.view
+==============
+
+.. automodule:: plone.api.view
+    :members:
+
+
+.. _plone-api-user:
+
 plone.api.user
 ==============
 
 .. automodule:: plone.api.user
     :members:
+
+
+.. _plone-api-group:
 
 plone.api.group
 ===============
