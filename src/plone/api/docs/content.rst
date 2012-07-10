@@ -30,7 +30,7 @@ The object's ``id`` gets generated (in a safe way) from it's ``title``.
 
 .. code-block:: python
 
-    self.assertEquals(obj.id, 'my-content')
+    assert obj.id == 'my-content'
 
 
 .. _get_content_example:
@@ -206,7 +206,28 @@ Deleting content works by passing the object you want to delete to the
     self.assertFalse(portal.get('training-1'))
 
 
-.. _get_state_example:
+.. _content_manipulation_with_strict_option
+
+Content manipulation with strict option
+---------------------------------------
+
+When manipulating content with ``api.content.create``, ``api.content.move`` and ``api.content.copy``
+the strict option is enabled by default. This means the id will be enforced, if the id is taken on
+the target container the API method will raise an error.
+
+.. code-block:: python
+
+    api.content.create(container=portal, type='Document', id='non-strict-usage')
+    portal['non-strict-usage']
+
+If the strict option is disabled a non-conflicting id will be created.
+
+.. code-block:: python
+    api.content.create(container=portal, type='Document', id='non-strict-usage', strict=False)
+    portal['non-strict-usage-1']
+
+
+.. _get_state_state:
 
 Get workflow state
 ------------------

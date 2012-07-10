@@ -1,10 +1,9 @@
+import random
 import transaction
 from plone import api
 from plone.app.uuid.utils import uuidToObject
 from Products.Archetypes.interfaces.base import IBaseObject
 from zope.app.container.interfaces import INameChooser
-
-import random
 
 
 def create(container=None,
