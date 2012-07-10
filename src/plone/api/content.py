@@ -11,7 +11,7 @@ def create(container=None,
            type=None,
            id=None,
            title=None,
-           strict=False,
+           strict=True,
            *args,
            **kwargs):
     """Create a new content item in ZODB.
@@ -112,8 +112,7 @@ def get(path=None, UID=None, *args, **kwargs):
         return uuidToObject(UID)
 
 
-
-def move(source=None, target=None, id=None, strict=False, *args, **kwargs):
+def move(source=None, target=None, id=None, strict=True, *args, **kwargs):
     """Move the object to the target container.
 
     :param source: [required] Object that we want to move.
@@ -156,7 +155,7 @@ def move(source=None, target=None, id=None, strict=False, *args, **kwargs):
         target.manage_renameObject(source_id, new_id)
 
 
-def copy(source=None, target=None, id=None, strict=False, *args):
+def copy(source=None, target=None, id=None, strict=True, *args):
     """Copy the object to the target container.
 
     :param source: [required] Object that we want to copy.
@@ -212,7 +211,7 @@ def delete(obj=None, *args):
     if not obj:
         raise ValueError
 
-    raise NotImplementedError
+    obj.aq_parent.manage_delObjects([obj.getId()])
 
 
 def get_state(obj=None, *args):
