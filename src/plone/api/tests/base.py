@@ -35,7 +35,6 @@ class PloneApiLayer(PloneSandboxLayer):
 
     def tearDownZope(self, app):
         """Tear down Zope."""
-        z2.uninstallProduct(app, 'plone.api')
 
 
 FIXTURE = PloneApiLayer()
