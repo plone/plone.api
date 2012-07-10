@@ -1,6 +1,7 @@
+""" Module that provides functionality for group manipulation """
 from zope.app.component.hooks import getSite
-
 from Products.CMFCore.utils import getToolByName
+
 
 def create(groupname=None,
            title=None,

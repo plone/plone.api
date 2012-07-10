@@ -1,6 +1,10 @@
+""" Module that provides functionality for content manipulation """
+
 import random
 import transaction
-from plone import api
+
+from Products.CMFPlone.utils import getToolByName
+from zope.app.component.hooks import getSite
 from plone.app.uuid.utils import uuidToObject
 from Products.Archetypes.interfaces.base import IBaseObject
 from zope.app.container.interfaces import INameChooser
@@ -46,9 +50,6 @@ def create(container=None,
         raise ValueError('You have to provide either the ``id`` or the '
                          '``title`` attribute')
 
-    if strict and not id:
-        raise ValueError('You have to provide the ``id`` attribute when using strict')
-
     # Create a temporary id if the id is not given
     content_id = strict and id or str(random.randint(0, 99999999))
 
@@ -64,8 +65,7 @@ def create(container=None,
         # rename-after-creation and such
         content.processForm()
 
-    # Set the correct id, based on given id or title
-    if not strict:
+    if not id or (not strict and id):
         # Create a new id from title
         chooser = INameChooser(container)
         derived_id = id or title
@@ -101,7 +101,7 @@ def get(path=None, UID=None, *args, **kwargs):
     # TODO: When no object is found, restrictedTraverse raises a KeyError and uuidToObject returns None.
     # Should we raise an error when no object is found using uid resolver?
     if path:
-        site = api.get_site()
+        site = getSite()
         site_id = site.getId()
         if not path.startswith('/{0}'.format(site_id)):
             path = '/{0}{1}'.format(site_id, path)
@@ -228,7 +228,7 @@ def get_state(obj=None, *args):
     if not obj:
         raise ValueError
 
-    workflow = api.get_tool('portal_workflow')
+    workflow = getToolByName(getSite(), 'portal_workflow')
     return workflow.getInfoFor(obj, 'review_state')
 
 
@@ -248,5 +248,5 @@ def transition(obj=None, transition=None, *args):
     if not obj or not transition:
         raise ValueError
 
-    workflow = api.get_tool('portal_workflow')
+    workflow = getToolByName(getSite(), 'portal_workflow')
     return workflow.doActionFor(obj, transition)
