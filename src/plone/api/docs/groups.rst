@@ -1,5 +1,5 @@
-Managing groups
-===============
+Groups
+======
 
 .. _create_group_example:
 

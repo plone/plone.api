@@ -1,5 +1,5 @@
-Managing users
-==============
+Users
+=====
 
 .. _create_user_example:
 

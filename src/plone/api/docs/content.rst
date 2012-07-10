@@ -1,5 +1,5 @@
-Managing content
-================
+Content
+=======
 
 .. _create_content_example:
 

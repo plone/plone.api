@@ -27,8 +27,9 @@ Narrative documentation
     :maxdepth: 2
 
     rationale.rst
-    utilities.rst
+    portal.rst
     content.rst
+    view.rst
     users.rst
     groups.rst
 
