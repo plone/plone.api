@@ -56,7 +56,8 @@ def get(groupname=None, *args):
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    raise NotImplementedError
+    group_tool = getToolByName(getSite(), 'portal_groups')
+    return group_tool.getGroupById(groupname)
 
 
 def get_all():
@@ -66,7 +67,8 @@ def get_all():
     :rtype: List of GroupData objects
     :Example: :ref:`get_all_groups_example`
     """
-    raise NotImplementedError
+    group_tool = getToolByName(getSite(), 'portal_groups')
+    return group_tool.listGroups()
 
 
 def delete(groupname=None, group=None, *args):
@@ -91,4 +93,9 @@ def delete(groupname=None, group=None, *args):
     if groupname and group:
         raise ValueError
 
-    raise NotImplementedError
+    group_tool = getToolByName(getSite(), 'portal_groups')
+
+    if group:
+        groupname = group.id
+
+    return group_tool.removeGroup(groupname)
