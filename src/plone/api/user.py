@@ -1,8 +1,14 @@
 """ Module that provides functionality for user manipulation """
 
+from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
 
-def create(email=None, username=None, password=None, properties=None, *args):
+import random
+import string
+
+
+def create(email=None, username=None, password=None, roles=('Member', ),
+           properties={}, *args):
     """Create a user.
 
     :param email: [required] Email for the new user.
@@ -21,17 +27,41 @@ def create(email=None, username=None, password=None, properties=None, *args):
     :Example: :ref:`create_user_example`
     """
     if args:
-        raise ValueError('Positional arguments are not allowed!')
+        raise ValueError("Positional arguments are not allowed!")
+
+    # it may happen that someone passes email in the properties dict, catch
+    # that and set the email so the code below this works fine
+    if not email and properties.get('email'):
+        email = properties.get('email')
 
     if not email:
-        raise ValueError
+        raise ValueError("You need to pass the new user's email.")
 
     site = getSite()
-    use_email_as_username = site.portal_properties.use_email_as_username
-    if not use_email_as_username and not username:
-        raise ValueError
+    props = site.portal_properties
+    use_email_as_username = props.site_properties.use_email_as_login
 
-    raise NotImplementedError
+    if not use_email_as_username and not username:
+        raise ValueError("The site is configured to use username that is not \
+            email so you need to pass a username.")
+
+    registration = getToolByName(site, 'portal_registration')
+    user_id = use_email_as_username and email or username
+
+    # Generate a random 8-char password
+    if not password:
+        chars = string.ascii_letters + string.digits
+        password = ''.join(random.choice(chars) for x in range(8))
+
+    properties.update(username=user_id)
+    properties.update(email=email)
+
+    return registration.addMember(
+        user_id,
+        password,
+        roles,
+        properties=properties
+    )
 
 
 def get(username=None, *args):
@@ -50,7 +80,8 @@ def get(username=None, *args):
     if not username:
         raise ValueError
 
-    raise NotImplementedError
+    portal_membership = getToolByName(getSite(), 'portal_membership')
+    return portal_membership.getMemberById(username)
 
 
 def get_current():
@@ -60,7 +91,8 @@ def get_current():
     :rtype: MemberData object
     :Example: :ref:`get_current_user_example`
     """
-    raise NotImplementedError
+    portal_membership = getToolByName(getSite(), 'portal_membership')
+    return portal_membership.getAuthenticatedMember()
 
 
 def get_all():
@@ -70,7 +102,8 @@ def get_all():
     :rtype: List of MemberData objects
     :Example: :ref:`get_all_users_example`
     """
-    raise NotImplementedError
+    portal_membership = getToolByName(getSite(), 'portal_membership')
+    return portal_membership.listMembers()
 
 
 def delete(username=None, user=None, *args):
@@ -94,6 +127,10 @@ def delete(username=None, user=None, *args):
 
     if username and user:
         raise ValueError
+
+    portal_membership = getToolByName(getSite(), 'portal_membership')
+    user_id = username or user.id
+    portal_membership.deleteMembers((user_id,))
 
 
 def change_password(username=None, user=None, password=None, *args):
@@ -154,7 +191,11 @@ def get_property(username=None, user=None, name=None, *args):
     if not name:
         raise ValueError
 
-    raise NotImplementedError
+    if username:
+        portal_membership = getToolByName(getSite(), 'portal_membership')
+        user = portal_membership.getMemberById(username)
+
+    return user.getProperty(name)
 
 
 def set_property(username=None, user=None, name=None, value=None, *args):
@@ -189,7 +230,10 @@ def set_property(username=None, user=None, name=None, value=None, *args):
     if not value:
         raise ValueError
 
-    raise NotImplementedError
+    if username:
+        portal_membership = getToolByName(getSite(), 'portal_membership')
+        user = portal_membership.getMemberById(username)
+    user.getProperties(name=value)
 
 
 def get_groups(username=None, user=None, *args):
@@ -216,7 +260,11 @@ def get_groups(username=None, user=None, *args):
     if username and user:
         raise ValueError
 
-    raise NotImplementedError
+    site = getSite()
+
+    if username:
+        user = getToolByName(site, 'portal_membership').getMemberById(username)
+    return getToolByName(site, 'portal_groups').getGroupsForPrincipal(user)
 
 
 def join_group(username=None, user=None, groupname=None, group=None, *args):
@@ -254,7 +302,10 @@ def join_group(username=None, user=None, groupname=None, group=None, *args):
     if groupname and group:
         raise ValueError
 
-    raise NotImplementedError
+    user_id = username or user.id
+    group_id = groupname or group.id
+    portal_groups = getToolByName(getSite(), 'portal_groups')
+    portal_groups.addPrincipalToGroup(user_id, group_id)
 
 
 def leave_group(username=None, user=None, groupname=None, group=None, *args):
@@ -292,7 +343,10 @@ def leave_group(username=None, user=None, groupname=None, group=None, *args):
     if groupname and group:
         raise ValueError
 
-    raise NotImplementedError
+    user_id = username or user.id
+    group_id = groupname or group.id
+    portal_groups = getToolByName(getSite(), 'portal_groups')
+    portal_groups.removePrincipalFromGroup(user_id, group_id)
 
 
 def is_anonymous():
@@ -302,7 +356,7 @@ def is_anonymous():
     :rtype: bool
     :Example: :ref:`is_anonymous_example`
     """
-    raise NotImplementedError
+    return getToolByName(getSite(), 'portal_membership').isAnonymousUser()
 
 
 def has_role(role=None, username=None, user=None, *args):
@@ -334,8 +388,9 @@ def has_role(role=None, username=None, user=None, *args):
     raise NotImplementedError
 
 
-def has_permission(permission=None, username=None, user=None, *args):
-    """Check if the user has the specified permission.
+def has_permission(permission=None, username=None, user=None,
+                   object=None, *args):
+    """Check if the user has the specified permission in the given context.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both. If no ``username` or ``user`` are
@@ -348,6 +403,8 @@ def has_permission(permission=None, username=None, user=None, *args):
     :type username: string
     :param user: User that we are checking the permission for
     :type user: MemberData object
+    :param object: Object that we are checking the permission for
+    :type object: object
     :returns: True if user has the specified permission, False otherwise.
     :rtype: bool
     :Example: :ref:`has_permission_example`
@@ -361,4 +418,10 @@ def has_permission(permission=None, username=None, user=None, *args):
     if username and user:
         raise ValueError
 
-    raise NotImplementedError
+    if not object:
+        raise ValueError
+
+    portal_membership = getToolByName(object, 'portal_membership')
+    if username:
+        user = portal_membership.getMemberById(username)
+    return portal_membership.checkPermission(permission, object)

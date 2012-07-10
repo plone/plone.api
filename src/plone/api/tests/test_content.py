@@ -36,18 +36,27 @@ class TestPloneApiContent(unittest.TestCase):
 
         """
         self.portal = self.layer['portal']
-        self.portal.manage_delObjects([x.id for x in self.portal.getFolderContents()])  # Clean up
+        self.portal.manage_delObjects(
+            [x.id for x in self.portal.getFolderContents()])  # Clean up
 
-        self.blog = content.create(type='Link', id='blog', container=self.portal)
-        self.about = content.create(type='Folder', id='about', container=self.portal)
-        self.events = content.create(type='Folder', id='events', container=self.portal)
+        self.blog = content.create(
+            type='Link', id='blog', container=self.portal)
+        self.about = content.create(
+            type='Folder', id='about', container=self.portal)
+        self.events = content.create(
+            type='Folder', id='events', container=self.portal)
 
-        self.team = content.create(container=self.about, type='Document', id='team')
-        self.contact = content.create(container=self.about, type='Document', id='contact')
+        self.team = content.create(
+            container=self.about, type='Document', id='team')
+        self.contact = content.create(
+            container=self.about, type='Document', id='contact')
 
-        self.training = content.create(container=self.events, type='Event', id='training')
-        self.conference = content.create(container=self.events, type='Event', id='conference')
-        self.sprint = content.create(container=self.events, type='Event', id='sprint')
+        self.training = content.create(
+            container=self.events, type='Event', id='training')
+        self.conference = content.create(
+            container=self.events, type='Event', id='conference')
+        self.sprint = content.create(
+            container=self.events, type='Event', id='sprint')
 
     def test_create_constraints(self):
         """ Test the constraints when creating content """
@@ -56,14 +65,17 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(ValueError, content.create)
 
         # Check the contraints for the type container
-        self.assertRaises(ValueError, content.create, type='Document', id='test-doc')
+        self.assertRaises(
+            ValueError, content.create, type='Document', id='test-doc')
 
         # Check the contraints for the type parameter
         container = mock.Mock()
-        self.assertRaises(ValueError, content.create, container=container, id='test-doc')
+        self.assertRaises(
+            ValueError, content.create, container=container, id='test-doc')
 
         # Check the contraints for id and title parameters
-        self.assertRaises(ValueError, content.create, container=container, type='Document')
+        self.assertRaises(
+            ValueError, content.create, container=container, type='Document')
 
     def test_create_dexterity(self):
         """ Test create content based on Dexterity """
@@ -79,13 +91,15 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
 
         # Create a folder
-        folder = content.create(container=container, type='Folder', id='test-folder')
+        folder = content.create(
+            container=container, type='Folder', id='test-folder')
         assert folder
         self.assertEqual(folder.id, 'test-folder')
         self.assertEqual(folder.portal_type, 'Folder')
 
         # Create a document
-        page = content.create(container=folder, type='Document', id='test-document')
+        page = content.create(
+            container=folder, type='Document', id='test-document')
         assert page
         self.assertEqual(page.id, 'test-document')
         self.assertEqual(page.portal_type, 'Document')
@@ -108,13 +122,17 @@ class TestPloneApiContent(unittest.TestCase):
         """" Test the content creating without strict mode. """
         container = self.portal
 
-        first_page = content.create(container=container, type='Document', id='test-document', strict=False)
+        first_page = content.create(
+            container=container, type='Document', id='test-document',
+            strict=False)
         assert first_page
         self.assertEqual(first_page.id, 'test-document')
         self.assertEqual(first_page.portal_type, 'Document')
 
         # Second page is created with non-conflicting id
-        second_page = content.create(container=container, type='Document', id='test-document', strict=False)
+        second_page = content.create(
+            container=container, type='Document', id='test-document',
+            strict=False)
         assert second_page
         self.assertEqual(second_page.id, 'test-document-1')
         self.assertEqual(second_page.portal_type, 'Document')
@@ -129,8 +147,8 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(ValueError, content.get)
 
     def test_get(self):
-        """ Test the getting of content. Create a simple structure with a folder which
-        contains a document
+        """ Test the getting of content. Create a simple structure with
+        a folder which contains a document
         """
 
         # Test getting the about folder by path and UID
@@ -146,7 +164,8 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(self.team, team_by_uid)
 
         # Test getting the team document by path that has portal id included
-        team_by_path = content.get('/{0}/about/team'.format(self.portal.getId()))
+        team_by_path = content.get(
+            '/{0}/about/team'.format(self.portal.getId()))
         self.assertEqual(self.team, team_by_path)
 
         # Test getting an non-existing item by path and UID
@@ -183,7 +202,9 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test with strict parameter disabled when moving content
         content.create(container=self.about, type='Link', id='link-to-blog')
-        content.move(source=self.blog, target=self.about, id='link-to-blog', strict=False)
+        content.move(
+            source=self.blog, target=self.about, id='link-to-blog',
+            strict=False)
         assert container['about']['link-to-blog-1']
         assert 'link-to-blog' not in container.keys()
 
@@ -217,7 +238,9 @@ class TestPloneApiContent(unittest.TestCase):
         # Test the strict parameter disabled when moving content
         content.create(container=self.about, type='Link', id='link-to-blog')
 
-        content.copy(source=self.blog, target=self.about, id='link-to-blog', strict=False)
+        content.copy(
+            source=self.blog, target=self.about, id='link-to-blog',
+            strict=False)
         assert container['about']['link-to-blog-1']
         self.assertRaises(KeyError, container['blog'])
 

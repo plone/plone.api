@@ -1,13 +1,13 @@
 """ Module that provides functionality for content manipulation """
 
-import random
-import transaction
-
-from Products.CMFPlone.utils import getToolByName
-from zope.app.component.hooks import getSite
 from plone.app.uuid.utils import uuidToObject
 from Products.Archetypes.interfaces.base import IBaseObject
+from Products.CMFPlone.utils import getToolByName
+from zope.app.component.hooks import getSite
 from zope.app.container.interfaces import INameChooser
+
+import random
+import transaction
 
 
 def create(container=None,
@@ -70,8 +70,10 @@ def create(container=None,
         chooser = INameChooser(container)
         derived_id = id or title
         new_id = chooser.chooseName(derived_id, content)
-        # kacee: we must do a commit, else the renaming fails because the object isn't in the zodb.
-        # Thus if it is not in zodb, there's nothing to move. We should choose a correct id when
+        # kacee: we must do a commit, else the renaming fails because
+        # the object isn't in the zodb.
+        # Thus if it is not in zodb, there's nothing to move. We should
+        # choose a correct id when
         # the object is created.
         transaction.commit()
         content.aq_parent.manage_renameObject(content_id, new_id)
@@ -93,12 +95,15 @@ def get(path=None, UID=None, *args, **kwargs):
         raise ValueError('Positional arguments are not allowed!')
 
     if path and UID:
-        raise ValueError('When getting an object combining path and UID attribute is not allowed')
+        raise ValueError('When getting an object combining path and UID '
+                         'attribute is not allowed')
 
     if not path and not UID:
-        raise ValueError('When getting an object path or UID attribute is required')
+        raise ValueError('When getting an object path or UID attribute is '
+                         'required')
 
-    # TODO: When no object is found, restrictedTraverse raises a KeyError and uuidToObject returns None.
+    # TODO: When no object is found, restrictedTraverse raises a KeyError
+    # and uuidToObject returns None.
     # Should we raise an error when no object is found using uid resolver?
     if path:
         site = getSite()

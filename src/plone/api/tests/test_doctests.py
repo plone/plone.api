@@ -49,7 +49,8 @@ def setUp(self):
     transaction.commit()
 
 
-def DocFileSuite(testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING):
+def DocFileSuite(testfile, flags=FLAGS, setUp=setUp,
+                 layer=PLONE_INTEGRATION_TESTING):
     """Returns a test suite configured with a test layer.
 
     :param testfile: Path to a doctest file.
@@ -70,7 +71,8 @@ def DocFileSuite(testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TES
     m += manuel.codeblock.Manuel()
 
     return layered(
-        manuel.testing.TestSuite(m, testfile, setUp=setUp, globs=dict(layer=layer)),
+        manuel.testing.TestSuite(m, testfile, setUp=setUp,
+                                 globs=dict(layer=layer)),
         layer=layer)
 
 

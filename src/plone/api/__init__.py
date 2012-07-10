@@ -36,13 +36,13 @@ def get_site_url():
     raise NotImplementedError
 
 
-def show_message(message=None, type='info', *args):
+def show_message(message=None, mtype='info', *args):
     """Display a status message.
 
     :param message: [required] Message to show.
     :type message: string
-    :param type: Message type. Possible values: 'info', 'warn', 'error'
-    :type type: string
+    :param mtype: Message type. Possible values: 'info', 'warn', 'error'
+    :type mtype: string
     :Example: :ref:`show_message_example`
     """
     if args:
@@ -51,7 +51,8 @@ def show_message(message=None, type='info', *args):
     if not message:
         raise ValueError
 
-    raise NotImplementedError
+    utils = get_tool('plone_utils')
+    utils.addPortalMessage(message, mtype)
 
 
 def get_tool(name=None, *args):
