@@ -1,6 +1,10 @@
+""" Module that provides functionality for content manipulation """
+
 import random
 import transaction
-from plone import api
+
+from Products.CMFPlone.utils import getToolByName
+from zope.app.component.hooks import getSite
 from plone.app.uuid.utils import uuidToObject
 from Products.Archetypes.interfaces.base import IBaseObject
 from zope.app.container.interfaces import INameChooser
@@ -101,7 +105,7 @@ def get(path=None, UID=None, *args, **kwargs):
     # TODO: When no object is found, restrictedTraverse raises a KeyError and uuidToObject returns None.
     # Should we raise an error when no object is found using uid resolver?
     if path:
-        site = api.get_site()
+        site = getSite()
         site_id = site.getId()
         if not path.startswith('/{0}'.format(site_id)):
             path = '/{0}{1}'.format(site_id, path)
@@ -228,7 +232,7 @@ def get_state(obj=None, *args):
     if not obj:
         raise ValueError
 
-    workflow = api.get_tool('portal_workflow')
+    workflow = getToolByName(getSite(), 'portal_workflow')
     return workflow.getInfoFor(obj, 'review_state')
 
 
@@ -248,5 +252,5 @@ def transition(obj=None, transition=None, *args):
     if not obj or not transition:
         raise ValueError
 
-    workflow = api.get_tool('portal_workflow')
+    workflow = getToolByName(getSite(), 'portal_workflow')
     return workflow.doActionFor(obj, transition)

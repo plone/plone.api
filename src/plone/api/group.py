@@ -1,4 +1,4 @@
-
+""" Module that provides functionality for group manipulation """
 
 def create(groupname=None, *args):
     """Create a group.
