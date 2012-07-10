@@ -4,6 +4,9 @@ plone.api (utils)
 .. automodule:: plone.api
     :members:
 
+
+.. _plone-api-content:
+
 plone.api.content
 =================
 

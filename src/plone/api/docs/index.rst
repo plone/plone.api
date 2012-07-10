@@ -8,12 +8,12 @@ A Plone API
     to develop with Plone.
 
 
-When documenting plone, an easy and understandable set of basic
-functions helps to keep the documentation focused on the current task
-and to keep it simple and small.
+When documenting plone, an easy and understandable set of basic functions helps
+to keep the documentation focused on the current task and to keep it simple and
+small.
 
-Instead of documenting the ZCA over and over again, we want to
-describe how to work with plone.
+Instead of documenting the ZCA over and over again, we want to describe how to
+work with plone.
 
 We want a simple entry point for 20% of tasks we do 80% of the time. Keeping
 everything in one place helps keep the API introspectable and discoverable,

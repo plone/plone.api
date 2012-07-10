@@ -6,56 +6,31 @@ Managing content
 Create content
 --------------
 
-First get the site object thru the api:
+First get the portal object that we will use as a container for new content:
 
 .. code-block:: python
 
     from plone import api
-    site = api.get_site()
+    portal = api.portal.get()
 
-If you want to create a new content item, use this method. The type attribute
-will automatically decide which content type (dexterity, archetype, ...) should
-be created.
+If you want to create a new content item, use the ``create`` method. The type
+attribute will automatically decide which content type (dexterity, archetype,
+...) should be created.
 
 .. code-block:: python
 
     from plone.api import content
-    obj = content.create(type='Document', title='My Content', container=site)
-
-.. invisible-code-block:: python
-
-    self.assertEquals(obj.Title(), 'My Content')
+    obj = content.create(
+        type='Document',
+        title='My Content',
+        container=portal
+    )
 
 The object's ``id`` gets generated (in a safe way) from it's ``title``.
 
 .. code-block:: python
 
     self.assertEquals(obj.id, 'my-content')
-
-.. invisible-code-block:: python
-
-    self.assertEquals(obj.Title(), 'My Content')
-
-
-If you want to make sure that the ``id`` will be the one you'd expect from your
-``title`` or ``id`` parameter, just pass the ``strict=True`` parameter and
-``create`` will raise a ``KeyError`` if ``id`` conflicts.
-
-.. invisible-code-block:: python
-
-    obj = None
-
-.. code-block:: python
-
-    self.assertRaises(
-        KeyError,
-        content.create,
-        type='Document', title='My Content', id='my-content', container=site, strict=True
-    )
-
-.. invisible-code-block:: python
-
-    self.assertFalse(obj)
 
 
 .. _get_content_example:
@@ -64,10 +39,10 @@ Get content object
 ------------------
 
 There are several approaches of getting to your content object. Consider
-the following site structure::
+the following portal structure::
 
-    Plone (site root)
-    |-- welcome
+    plone (portal root)
+    |-- blog
     |-- about
     |   |-- team
     |   `-- contact
@@ -78,10 +53,10 @@ the following site structure::
 
 .. invisible-code-block:: python
 
-    site = api.get_site()
-    welcome = api.content.create(type='Document', id='welcome', container=site)
-    about = api.content.create(type='Folder', id='about', container=site)
-    events = api.content.create(type='Folder', id='events', container=site)
+    portal = api.portal.get()
+    blog = api.content.create(type='Link', id='blog', container=portal)
+    about = api.content.create(type='Folder', id='about', container=portal)
+    events = api.content.create(type='Folder', id='events', container=portal)
 
     api.content.create(container=about, type='Document', id='team')
     api.content.create(container=about, type='Document', id='contact')
@@ -91,31 +66,38 @@ the following site structure::
     api.content.create(container=events, type='Event', id='sprint')
 
 
-We can do the following operations to get to various content objects in the
+You can do the following operations to get to various content objects in the
 stucture above:
 
 .. code-block:: python
 
+    # let's first get the portal object
     from plone import api
-    site = api.get_site()             # the root object
-    self.assertEqual(site.getId(), 'plone')
+    portal = api.portal.get()
+    assert portal.id == 'plone'
 
-    site = api.content.get(path='/')  # this also works
-    self.assertEqual(site.getId(), 'plone')
+    # content can be accessed directly with dict-like access
+    blog = portal['blog']
 
-    welcome = site['welcome']  # your can access children directly with dict-like access
-    welcome_by_path = api.content.get(path='/welcome')  # or indirectly by using the api.content.get() method
+    # another way is to use ``get()`` method and pass it a path
+    about = api.content.get(path='/about')
 
-    self.assertEqual(welcome, welcome_by_path)
     # more examples
-    conference = site['events']['conference']
-    sprint = api.content.get(path='/events/training')
+    conference = portal['events']['conference']
+    sprint = api.content.get(path='/events/sprint')
 
-    # Check resolving by UID
-    uid = conference.UID()
-    conference_by_uid = api.content.get(UID=uid)
+    # moreover, you can access content by it's UID
+    uid = about['team'].UID()
+    conference = api.content.get(UID=uid)
 
-    self.assertEqual(conference, conference_by_uid)
+
+.. invisible-code-block:: python
+
+    self.assertTrue(portal)
+    self.assertTrue(blog)
+    self.assertTrue(about)
+    self.assertTrue(conference)
+    self.assertTrue(sprint)
 
 
 .. _move_content_example:
@@ -123,42 +105,27 @@ stucture above:
 Move content
 ------------
 
-This is how you can move content around the site structure defined above.
-The code below moves item ``contact`` (with all objects that it contains) ouf
-of folder ``about`` into Plone site root.
+This is how you can move content around the portal structure defined above.
+The code below moves the ``contact`` item (with all objects that it contains)
+out of folder ``about`` into the Plone portal root.
 
 .. code-block:: python
 
     from plone import api
-    site = api.get_site()
-    contact = site['about']['contact']
+    portal = api.portal.get()
+    contact = portal['about']['contact']
 
-    api.content.move(source=contact, target=site)
+    api.content.move(source=contact, target=portal)
 
 .. invisible-code-block:: python
 
-    self.assertTrue(site['contact'])
+    self.assertFalse(portal['about'].get('contact'))
+    self.assertTrue(portal['contact'])
 
 Actually, ``move`` behaves like a filesystem move. If you pass it an ``id``
 argument, you can define to what target ID the object will be moved to.
 Otherwise it will be moved with the same ID that it had.
 
-If the ID in the target folder is already used, a new non-conflicting ID is
-being generated. If you don't like that, just add another argument
-``strict=True`` to make move raise a ``KeyError`` if the target ID exists.
-
-.. code-block:: python
-
-    from plone import api
-    site = api.get_site()
-    contact = site['contact']
-
-    from OFS.CopySupport import CopyError
-    self.assertRaises(
-        CopyError,
-        api.content.move,
-        source=contact, target=site, id='contact', strict=True
-    )
 
 .. _rename_content_example:
 
@@ -171,24 +138,13 @@ and omit ``target``.
 .. code-block:: python
 
     from plone import api
-    site = api.get_site()
-    api.content.move(source=site['welcome'], id='very-welcome')
+    portal = api.portal.get()
+    api.content.move(source=portal['blog'], id='old-blog')
 
 .. invisible-code-block:: python
 
-    self.assertTrue(site['very-welcome'])
-
-Again, you may use the argument ``strict=True`` to make move raise a
-``KeyError`` if the target ID was already used.
-
-.. code-block:: python
-
-    from plone import api
-    site = api.get_site()
-    try:
-        api.content.move(source=site['very-welcome'], id='very-welcome')
-    except KeyError:
-        pass  # do something meaningful, because the ID was already owned.
+    self.assertFalse(portal.get('blog'))
+    self.assertTrue(portal['old-blog'])
 
 
 .. _copy_content_example:
@@ -196,55 +152,39 @@ Again, you may use the argument ``strict=True`` to make move raise a
 Copy content
 ------------
 
-To copy a content object, use this:
+To copy a content object, use the following:
 
 .. code-block:: python
 
     from plone import api
-    site = api.get_site()
-    training = site['events']['training']
+    portal = api.portal.get()
+    training = portal['events']['training']
 
-    api.content.copy(source=training, target=site)
+    api.content.copy(source=training, target=portal)
 
 
 Note that the new object will have the same id as the old object (if not
-stated otherwise).
+stated otherwise). This is not a problem, since the new object is in a different
+container.
 
 .. code-block:: python
 
-    self.assertTrue(site['training'])
+    assert portal['events']['training'].id == 'training'
+    assert portal.id == 'training'
 
 
-However, if the new object's id conflicts with another object in the target
-container, a suffix will be added to the new object's id.
-
-.. code-block:: python
-
-    api.content.copy(source=training, target=site)  # copy again
-    self.assertTrue(site['training-1'])
-
-
-You can also just omit ``target`` which will duplicate your content object
-in the same container where it already is and assign it a non-conflicting id.
+You can also omit ``target`` and set ``strict=False`` which will duplicate your
+content object in the same container and assign it a non-conflicting id.
 
 .. code-block:: python
 
-    api.content.copy(source=training)
-    self.assertTrue(site['events']['training-1'])
-
-With the parameter ``strict=True``, copy will raise a ``KeyError`` if the
-target ID conflicts with an existing one in the target folder.
-
-.. code-block:: python
-
-    try:
-        api.content.copy(source=training, target=site, id='training', strict=True) # copy again
-    except KeyError:
-        pass # do something meaningful, because the ID was already owned.
+    api.content.copy(source=training, strict=False)
+    new_training = portal['events']['training-1']
 
 .. invisible-code-block:: python
 
-    self.assertTrue(site['training'])
+    self.assertTrue(portal['events']['training'])  # old object remains
+    self.assertTrue(portal['events']['training-1'])
 
 
 .. _delete_content_example:
@@ -252,18 +192,18 @@ target ID conflicts with an existing one in the target folder.
 Delete content
 --------------
 
-Deleting content works like this:
+Deleting content works by passing the object you want to delete to the
+``delete()`` method:
 
 .. code-block:: python
 
     from plone import api
-    site = api.get_site()
-    redundant_training = site['training-1']
-    api.content.delete(obj=redundant_training)
+    portal = api.portal.get()
+    api.content.delete(obj=portal['training-1'])
 
 .. invisible-code-block:: python
 
-    self.assertNotIn('training-1', site)
+    self.assertFalse(portal.get('training-1'))
 
 
 .. _get_state_example:
@@ -276,8 +216,8 @@ To find out in which workflow state your content is, use ``get_state``.
 .. code-block:: python
 
     from plone import api
-    about = site['about']
-    state = api.content.get_state(about)
+    portal = api.portal.get()
+    state = api.content.get_state(obj=portal['about'])
 
 .. invisible-code-block:: python
 
@@ -294,10 +234,16 @@ To transition your content into a new state, use ``transition``.
 .. code-block:: python
 
     from plone import api
-    about = site['about']
-    state = api.content.transition(obj=about, transition='publish')
+    portal = api.portal.get()
+    state = api.content.transition(obj=portal['about'], transition='publish')
 
 .. invisible-code-block:: python
 
     self.assertEquals(state, 'published')
 
+
+Further reading
+---------------
+
+For more information on possible flags and usage options please see the full
+:ref:`plone-api-content` specification.

@@ -34,11 +34,53 @@ Two libraries are especially inspiring:
 
 Design decisions
 ================
-No positional arguments.  Only named (keyword) arguments.
-  #. There will never be a doubt when writing a method on whether an argument should be positional or not.  Decision already made.
-  #. There will never be a doubt when using the API on which argument comes first, and which ones are named.  All arguments are named.
-  #. When using positional arguments, the method signature is dictated by the underlying implementation.  Think required vs. optional arguments.  Named arguments are always optional in Python.  This allows us to change implementation details and leave the signature unchanged.
-  #. The arguments can all be passed as a dictionary.
+
+Import and usage style
+----------------------
+
+API methods are grouped by their field of usage: portal, view, content, users,
+etc. Hence the importing and usage of API methods look like this:
+
+.. code-block:: python
+
+    from plone import api
+
+    portal = api.portal.get()
+    url = api.portal.url()
+    user = api.user.create('alice@plone.org')
+
+.. invisible-code-block:: python
+
+    self.assertEqual(portal, 'TODO')
+    self.assertEqual(url, 'TODO')
+    self.assertEqual(user, 'TODO')
+
+In other words, always import the top-level package (``from plone import api``)
+and then use the group namespace to access the method you want
+(``url = api.portal.url()``).
+
+All example code should adhere to this style, so we encourage one and only
+one prefered way of consuming API methods.
+
+
+Prefer keyword arguments
+------------------------
+
+For the following reasons the example code in the API (and hence the
+recommendation to people on how to use it) shall always prefer using keyword
+instead of positional arguments:
+
+#. There will never be a doubt when writing a method on whether an argument
+   should be positional or not.  Decision already made.
+#. There will never be a doubt when using the API on which argument comes
+   first, or which ones are named/positional.  All arguments are named.
+#. When using positional arguments, the method signature is dictated by the
+   underlying implementation.  Think required vs. optional arguments.  Named
+   arguments are always optional in Python.  This allows us to change
+   implementation details and leave the signature unchanged. In other words,
+   the underlying API code can change substantially and the code using it will
+   remain valid.
+#. The arguments can all be passed as a dictionary.
 
 The API provides grouped functional access to otherwise distributed logic
 in Plone. Plone's original distribution of logic is a result of two things:
@@ -56,17 +98,18 @@ document in code how to use Plone directly.
    tasks can't be documented in Plone in a sane way.
 
 Also, we don't intend to cover all possible use-cases. Only the absolutely
-most common ones. If you need to do something funky, just use the
-underlaying APIs directly. We will cover 20% of tasks that are done 80% of
-the time, and not one more.
+most common ones. If you need to do something that `plone.api` does not support,
+just use the underlaying APIs directly. We will cover 20% of tasks that are
+being done 80% of the time, and not one more.
 
 
 FAQ
 ===
 
-**Why we don't want to use wrappers**
+Why aren't we using wrappers?
+-----------------------------
 
-We could also wrap a object (like a user) with a API to make it more usable
+We could wrap an object (like a user) with an API to make it more usable
 right now. That would be an alternative to the convenience methods.
 
 But telling developers that they will get yet another object from the API which
@@ -81,3 +124,11 @@ no longer be needed and would therefore be removed::
 
     if users['bob'].__class__.__name__ == 'WrappedMemberDataObject':
         # do something
+
+
+Why ``delete`` instead of ``remove``?
+-------------------------------------
+
+* The underlying code uses methods that are named more similarly to *delete*
+  rather than to *remove*
+* ``CRUD`` has *delete*, not *remove*.
