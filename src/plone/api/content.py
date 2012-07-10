@@ -50,9 +50,6 @@ def create(container=None,
         raise ValueError('You have to provide either the ``id`` or the '
                          '``title`` attribute')
 
-    if strict and not id:
-        raise ValueError('You have to provide the ``id`` attribute when using strict')
-
     # Create a temporary id if the id is not given
     content_id = strict and id or str(random.randint(0, 99999999))
 
@@ -68,8 +65,7 @@ def create(container=None,
         # rename-after-creation and such
         content.processForm()
 
-    # Set the correct id, based on given id or title
-    if not strict:
+    if not id or (not strict and id):
         # Create a new id from title
         chooser = INameChooser(container)
         derived_id = id or title

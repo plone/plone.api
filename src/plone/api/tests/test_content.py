@@ -2,7 +2,16 @@
 """Tests for plone.api content."""
 import mock
 import unittest
+import pkg_resources
 from zExceptions import BadRequest
+
+try:
+    pkg_resources.get_distribution('plone.dexterity')
+except pkg_resources.DistributionNotFound:
+    HAS_DEXTERITY = False
+    pass
+else:
+    HAS_DEXTERITY = True
 
 from plone.api import content
 from plone.api.tests.base import INTEGRATION_TESTING
@@ -56,24 +65,37 @@ class TestPloneApiContent(unittest.TestCase):
         # Check the contraints for id and title parameters
         self.assertRaises(ValueError, content.create, container=container, type='Document')
 
-        # Check the contraints for the strict parameter, it required the id parameter
-        self.assertRaises(
-            ValueError, content.create,
-            container=container, type='Document', strict=True, title='Spam')
+    def test_create_dexterity(self):
+        """ Test create content based on Dexterity """
 
-    def test_create(self):
-        """ Test creating content """
+        if not HAS_DEXTERITY:
+            return  # bail out
+
+        raise NotImplemented
+
+    def test_create_archetypes(self):
+        """ Test creating content based on Archetypes """
 
         container = self.portal
 
+        # Create a folder
         folder = content.create(container=container, type='Folder', id='test-folder')
         assert folder
         self.assertEqual(folder.id, 'test-folder')
         self.assertEqual(folder.portal_type, 'Folder')
 
+        # Create a document
         page = content.create(container=folder, type='Document', id='test-document')
         assert page
         self.assertEqual(page.id, 'test-document')
+        self.assertEqual(page.portal_type, 'Document')
+
+        # Create a document with a title and without an id
+        page = content.create(
+            container=folder, type='Document', title='Test id generated')
+        assert page
+        self.assertEqual(page.id, 'test-id-generated')
+        self.assertEqual(page.Title(), 'Test id generated')
         self.assertEqual(page.portal_type, 'Document')
 
         # Try to create another page, this should fail because of strict mode
