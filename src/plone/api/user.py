@@ -1,6 +1,5 @@
 from plone import api
 
-
 def create(email=None, username=None, password=None, properties=None, *args):
     """Create a user.
 
