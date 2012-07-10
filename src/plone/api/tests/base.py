@@ -22,14 +22,14 @@ class PloneApiLayer(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         """Set up Zope."""
         # Load ZCML
-        import plone.api
-        self.loadZCML(package=plone.api)
-        z2.installProduct(app, 'plone.api')
+#        import plone.api
+#        self.loadZCML(package=plone.api)
+#        z2.installProduct(app, 'plone.api')
 
     def setUpPloneSite(self, portal):
         """Set up Plone."""
         # Install into Plone site using portal_setup
-        applyProfile(portal, 'plone.api:default')
+#        applyProfile(portal, 'plone.api:default')
 
         # Login as manager
         setRoles(portal, TEST_USER_ID, ['Manager'])

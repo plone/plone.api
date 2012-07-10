@@ -47,11 +47,12 @@ If you want to make sure that the ``id`` will be the one you'd expect from your
 
 .. code-block:: python
 
-    self.assertRaises(
-        KeyError,
-        content.create,
-        type='Document', title='My Content', id='my-content', container=site, strict=True
-    )
+    try:
+        content.create(
+            type='Document', title='My Content', id='my-content', container=site, strict=True
+        )
+    except KeyError:
+        pass
 
 .. invisible-code-block:: python
 

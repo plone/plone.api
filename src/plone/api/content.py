@@ -50,7 +50,6 @@ def create(container=None,
     if strict and not id:
         raise ValueError('You have to provide the ``id`` attribute when using strict')
 
-
     # Create a temporary id if the id is not given
     content_id = strict and id or str(random.randint(0, 99999999))
 
@@ -100,10 +99,12 @@ def get(path=None, UID=None, *args, **kwargs):
     if not path and not UID:
         raise ValueError('When getting an object path or UID attribute is required')
 
+    # TODO: When no object is found, restrictedTraverse raises a KeyError and uuidToObject returns None.
+    # Should we raise an error when no object is found using uid resolver?
     if path:
         site = api.get_site()
         site_id = site.getId()
-        if not path.startswith(site_id):
+        if not path.startswith('/{0}'.format(site_id)):
             path = '/{0}{1}'.format(site_id, path)
         return site.restrictedTraverse(path)
 
@@ -182,7 +183,20 @@ def copy(source=None, target=None, id=None, strict=False, *args):
     if not source:
         raise ValueError
 
-    raise NotImplementedError
+    if not target and not id:
+        raise ValueError
+
+    source_id = source.getId()
+    target.manage_pasteObjects(source.manage_copyObjects(source_id))
+
+    if id:
+        if strict:
+            new_id = id
+        else:
+            chooser = INameChooser(target)
+            new_id = chooser.chooseName(id, source)
+
+        target.manage_renameObject(source_id, new_id)
 
 
 def delete(obj=None, *args):
