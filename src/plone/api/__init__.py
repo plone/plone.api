@@ -2,6 +2,9 @@ from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
 from zope.globalrequest import getRequest
 
+# Magic imports for api modules
+from plone.api import content, user, group
+
 
 def get_site():
     """Get the Plone Site object out of thin air without importing fancy
