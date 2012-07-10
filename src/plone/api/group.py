@@ -1,10 +1,26 @@
 """ Module that provides functionality for group manipulation """
+from zope.app.component.hooks import getSite
+from Products.CMFCore.utils import getToolByName
 
-def create(groupname=None, *args):
+
+def create(groupname=None,
+           title=None,
+           description=None,
+           roles=[],
+           groups=[],
+           *args):
     """Create a group.
 
     :param groupname: [required] Name of the new group.
     :type groupname: string
+    :param title: Title of the new group
+    :type title: string
+    :param description: Description of the new group
+    :type description: string
+    :param roles: Roles that belong to this group
+    :type roles: list
+    :param groups: Groups that belong to this group
+    :type groups: list
     :returns: Newly created group
     :rtype: GroupData object
     :Example: :ref:`create_group_example`
@@ -16,7 +32,12 @@ def create(groupname=None, *args):
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    raise NotImplementedError
+    portal = getSite()
+    group_tool = getToolByName(portal, 'portal_groups')
+
+    return group_tool.addGroup(
+        groupname, roles, groups, title=title,
+        description=description)
 
 
 def get(groupname=None, *args):
@@ -35,7 +56,8 @@ def get(groupname=None, *args):
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    raise NotImplementedError
+    group_tool = getToolByName(getSite(), 'portal_groups')
+    return group_tool.getGroupById(groupname)
 
 
 def get_all():
@@ -45,7 +67,8 @@ def get_all():
     :rtype: List of GroupData objects
     :Example: :ref:`get_all_groups_example`
     """
-    raise NotImplementedError
+    group_tool = getToolByName(getSite(), 'portal_groups')
+    return group_tool.listGroups()
 
 
 def delete(groupname=None, group=None, *args):
@@ -70,4 +93,9 @@ def delete(groupname=None, group=None, *args):
     if groupname and group:
         raise ValueError
 
-    raise NotImplementedError
+    group_tool = getToolByName(getSite(), 'portal_groups')
+
+    if group:
+        groupname = group.id
+
+    return group_tool.removeGroup(groupname)
