@@ -100,10 +100,12 @@ class TestPloneApiUser(unittest.TestCase):
     def test_delete_username(self):
         """ """
 
-        api.user.create(username='chuck', password='secret')
+        api.user.create(username='unwanted', password='secret',
+                        email='unwanted@example.org')
         api.user.delete(username='unwanted')
 
-        user = api.user.create(username='steven', password='secret')
+        user = api.user.create(username='steven', password='secret',
+                               email='steven@example.org')
         api.user.delete(user=user)
 
     def test_create_roles(self):
