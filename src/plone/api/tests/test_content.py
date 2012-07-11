@@ -266,11 +266,18 @@ class TestPloneApiContent(unittest.TestCase):
     def test_get_state(self):
         """ Test retrieving the workflow state of a content item """
 
+        # This should fail because an content item is mandatory
+        self.assertRaises(ValueError, api.content.get_state)
+
         review_state = api.content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'private')
 
     def test_transition(self):
         """ Test transitioning the workflow state on a content item"""
+
+        self.assertRaises(ValueError, api.content.transition)
+        self.assertRaises(ValueError, api.content.transition, obj=mock.Mock())
+        self.assertRaises(ValueError, api.content.transition, transition='publish')
 
         api.content.transition(obj=self.blog, transition='publish')
         review_state = api.content.get_state(obj=self.blog)
