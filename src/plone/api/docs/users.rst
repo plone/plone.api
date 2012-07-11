@@ -177,43 +177,6 @@ the user object you want to delete.
     self.assertEqual(api.user.get(username='unwanted'), None)
 
 
-.. _get_user_property_example:
-
-Get user's property
--------------------
-
-Use ``get_property`` and pass in either the username or the user object you want
-to get property for, plus the name of the property.
-
-.. code-block:: python
-
-    from plone import api
-    email = api.user.get_property(username='bob', name='email')
-
-.. invisible-code-block:: python
-
-    self.assertEquals(email, 'bob@plone.org')
-
-
-.. _set_user_property_example:
-
-Set user's property
--------------------
-
-Setting a user's property is achieved by using ``set_property``, passing it
-either the username or the user object you want to get property for,
-plus the name of the property and it's new value.
-
-.. code-block:: python
-
-    from plone import api
-    api.user.set_property(username='bob', name='email', value='bob@plone.com')
-
-.. invisible-code-block:: python
-
-    self.assertEquals(bob.getProperty('email'), 'Bob Smith', 'bob@plone.com')
-
-
 .. _user_has_role_example:
 
 Check for role
