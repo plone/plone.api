@@ -6,6 +6,8 @@ Groups
 Create group
 ------------
 
+The ``add_user`` method accepts the groupname of the group you want to add.
+
 .. code-block:: python
 
     from plone import api
@@ -15,6 +17,27 @@ Create group
 
     self.assertEquals(group.id, 'staff')
 
+When creating groups ``title``, ``description``, ``roles`` and ``groups`` are optional.
+
+.. code-block:: python
+
+    from plone import api
+
+    group = api.group.create(
+        groupname='board_members',
+        title='Board members',
+        description='Just a description',
+        roles=['Readers', ],
+        groups=['Site Administrators', ]
+    )
+
+.. invisible-code-block:: python
+
+    self.assertEquals(group.id, 'board_members')
+    self.assertEquals(group.getProperty('title'), 'Board members')
+    self.assertEquals(group.getProperty('description'), 'Just a description')
+    assert 'Readers' in group.getRoles()
+    assert 'Site Administrators' in group.getMemberIds()
 
 .. _get_group_example:
 
@@ -33,17 +56,42 @@ Get group
 
 .. _get_all_groups_example:
 
+Editing a group
+---------------
+
+Using the ``group_tool`` groups can be edited. In this example the title, description and roles
+ are being changed for the staff group.
+
+.. code-block:: python
+
+    group_tool = api.portal.get_tool('portal_groups')
+    group_tool.editGroup('staff', title='Staff', description='Just a description', roles=['Editor', 'Reader'])
+
+    group = api.group.get(groupname='staff')
+
+    title = group.getProperty('title')
+    description = group.getProperty('description')
+    roles = group.getRoles()
+
+.. invisible-code-block:: python
+
+    self.assertEqual(title, 'Staff')
+    self.assertEqual(description, 'Just a description')
+    assert 'Editor' in roles
+    assert 'Reader' in roles
+
+
 Get all groups
 --------------
 
 .. code-block:: python
 
     from plone import api
-    users = api.group.get_all()
+    groups = api.group.get_all()
 
 .. invisible-code-block:: python
 
-    self.assertEquals(group[0].id, 'staff')
+    self.assertEquals(groups[0].id, 'Administrators')
 
 
 .. _delete_group_example:
@@ -62,7 +110,7 @@ group object you want to delete.
 
 .. invisible-code-block:: python
 
-    self.assertNone(api.group.get(groupname='unwanted'))
+    assert not api.group.get(groupname='unwanted')
 
 .. code-block:: python
 
@@ -71,4 +119,50 @@ group object you want to delete.
 
 .. invisible-code-block:: python
 
-    self.assertNone(api.group.get(groupname='unwanted'))
+    assert not api.group.get(groupname='unwanted')
+
+Add user to group
+-----------------
+
+The ``add_user`` method accepts either the groupname or the group object of the target group and
+the username or the user object you want to make a member of the group
+
+.. code-block:: python
+
+    from plone import api
+
+    api.user.create(email='jane@plone.org', username='jane')
+    api.user.create(email='bob@plone.org', username='bob')
+
+    api.group.add_user(groupname='staff', username='bob')
+
+    user = api.user.get(username='jane')
+    group = api.group.get(groupname='staff')
+    api.group.add_user(group=group, user=user)
+
+.. invisible-code-block:: python
+
+    assert 'staff' in api.user.get_groups(username='bob')
+    assert 'staff' in api.user.get_groups(username='jane')
+
+.. _delete_user_from_group_example:
+
+Delete user from group
+----------------------
+
+The ``delete_user`` method accepts either the groupname or the group object of the target
+group and either the username or the user object you want to remove from the group.
+
+.. code-block:: python
+
+    from plone import api
+    api.group.delete_user(groupname='staff', username='bob')
+
+    group = api.group.get(groupname='staff')
+    user = api.user.get(username='jane')
+    api.group.delete_user( group=group, user=user)
+
+.. invisible-code-block:: python
+
+    assert 'staff' not in api.user.get_groups(username='bob')
+    assert 'staff' not in api.user.get_groups(username='jane')
