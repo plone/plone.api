@@ -84,8 +84,41 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
     )
 
 
-def localized_time(datetime=None, request=None, *args):
-    raise NotImplementedError
+def localized_time(datetime=None, request=None, long_format=False,
+                   time_only=False, *args):
+    """Display a date/time in a user-friendly way.
+
+    It should be localized to the user's prefered language.
+
+    Note that you can specify both long_format and time_only as True
+    (or any other value that can be converted to a boolean True
+    value), but time_only then wins: the long_format value is ignored.
+
+    :param datetime: [required] Message to show.
+    :type message: DateTime
+    :param request: [required]Request.
+    :type request: TODO: hm?
+    :param long_format: When true, show long date format. When false
+        (default), show the short date format.
+    :type long_format: boolean
+    :param time_only: When true, show only the time, when false
+        (default), show the date.
+    :type time_only: boolean
+    :Example: :ref:`portal_localized_time_example`
+
+    """
+    if args:
+        raise ValueError('Positional arguments are not allowed!')
+
+    if not datetime:
+        raise ValueError
+
+    if not request:
+        raise ValueError
+
+    tool = get_tool('translation_service')
+    return tool.ulocalized_time(datetime, long_format, time_only,
+                                domain='plonelocales', request=request)
 
 
 def show_message(message=None, request=None, type='info', *args):
@@ -93,11 +126,11 @@ def show_message(message=None, request=None, type='info', *args):
 
     :param message: [required] Message to show.
     :type message: string
-    :param request: Request.
+    :param request: [required] Request.
     :type request: TODO: hm?
     :param type: Message type. Possible values: 'info', 'warn', 'error'
     :type type: string
-    :Example: :ref:`show_message_example`
+    :Example: :ref:`portal_show_message_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
