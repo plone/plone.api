@@ -32,7 +32,7 @@ Otherwise, you also need to pass in the username of the new user.
 
 .. code-block:: python
 
-    user = api.user.create_user(email='jane@plone.org', username='jane')
+    user = api.user.create(email='jane@plone.org', username='jane')
 
 .. invisible-code-block:: python
 
@@ -48,7 +48,7 @@ To set user properties when creating a new user, pass in a properties dict.
         fullname='Bob',
         location='Munich',
     )
-    user = api.user.create_user(
+    user = api.user.create(
         username='bob',
         email='bob@plone.org',
         properties=properties
