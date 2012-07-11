@@ -177,39 +177,6 @@ the user object you want to delete.
     self.assertEqual(api.user.get(username='unwanted'), None)
 
 
-.. _user_change_password_example:
-
-Change user's password
-----------------------
-
-To change a user's password, use :meth:`api.user.change_passwrd` and pass in
-either the username or the user object you want to change password for, plus the
-password you want the new user to have.
-
-If you don't pass in any password, a random one will be generated.
-
-.. code-block:: python
-
-    from plone import api
-    api.user.change_password(username='bob', password='newsecret')
-
-.. invisible-code-block:: python
-
-    self.assertEqual(user._getPassword(), password='newsecret')
-
-.. code-block:: python
-
-    api.user.change_password(user=user, password='newsecret')
-
-.. invisible-code-block:: python
-
-    self.assertEqulas(user._getPassword(), password='newnewsecret')
-
-.. code-block:: python
-
-    api.user.change_password(username='bob')  # generate a random password
-
-
 .. _get_user_property_example:
 
 Get user's property
