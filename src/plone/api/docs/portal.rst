@@ -75,7 +75,10 @@ To send an e-mail use :meth:`api.portal.send_email`:
     from Products.MailHost.interfaces import IMailHost
 
     mockmailhost = MockMailHost('MailHost')
+    if not hasattr(mockmailhost, 'smtp_host'):
+        mockmailhost.smtp_host = 'localhost'
     portal = api.portal.get()
+    portal._updateProperty('email_from_address', 'sender@example.org')
     portal.MailHost = mockmailhost
     sm = portal.getSiteManager()
     sm.registerUtility(component=mockmailhost, provided=IMailHost)
