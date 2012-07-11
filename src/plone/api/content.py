@@ -138,6 +138,7 @@ def move(source=None, target=None, id=None, strict=True, *args, **kwargs):
     :type param: boolean
     :Example: :ref:`move_content_example`
     """
+
     if args:
         raise ValueError('Positional arguments are not allowed!')
 

@@ -115,7 +115,7 @@ You can use the *catalog* to search for content. Here is a simple example:
 
 .. invisible-code-block:: python
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
-    self.assertEqual(len(documents), 2)
+    self.assertEqual(len(documents), 3)
 
 More about how to use the catalog and what parameters it supports is written
 in the `Collective Developer Documentation

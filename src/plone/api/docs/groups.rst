@@ -9,7 +9,7 @@ Create group
 .. code-block:: python
 
     from plone import api
-    group = api.group.create_group(groupname='staff')
+    group = api.group.create(groupname='staff')
 
 .. invisible-code-block:: python
 

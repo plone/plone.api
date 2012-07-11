@@ -18,12 +18,12 @@ in the email of the new user.
 .. code-block:: python
 
     from plone import api
-    user = api.user.create_user(email='alice@plone.org')
+    user = api.user.create(email='alice@plone.org')
 
 .. invisible-code-block:: python
 
     self.assertEquals(user.id, 'alice@plone.org')
-    self.assertEquals(api.user.get_property(user=user, name='email'), 'alice@plone.org')
+    self.assertEquals(user.getProperty('email'), 'alice@plone.org')
 
 
 Otherwise, you also need to pass in the username of the new user.

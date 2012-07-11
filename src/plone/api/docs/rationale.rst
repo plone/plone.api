@@ -41,13 +41,19 @@ Import and usage style
 API methods are grouped by their field of usage: portal, view, content, users,
 etc. Hence the importing and usage of API methods look like this:
 
+.. invisible-code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    portal.portal_properties.site_properties.use_email_as_login = True
+
 .. code-block:: python
 
     from plone import api
 
     portal = api.portal.get()
     url = api.portal.url()
-    user = api.user.create('alice@plone.org')
+    user = api.user.create(email='alice@plone.org')
 
 .. invisible-code-block:: python
 

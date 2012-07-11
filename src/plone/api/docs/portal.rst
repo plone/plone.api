@@ -82,21 +82,22 @@ To send an e-mail use ``send_email``:
 .. code-block:: python
 
     api.portal.send_email(
-        body="hello, bob",
         recipient="bob@plone.org",
         sender="noreply@plone.org",
-        subject="Hello Bob!",
+        subject="Trappist",
+        body="One for you Bob!",
     )
 
 .. invisible-code-block:: python
 
     self.assertEqual(len(mailhost.messages), 1)
 
-    msg = mailhost.messages[0]
-    self.assertTrue('To: bob@plone.org' in msg)
-    self.assertTrue('From: noreply@plone.ord' in msg)
-    self.assertTrue('Subject: =?utf-8?q?hello_world' in msg)
-    self.assertTrue('Hello Bob!' in msg)
+    from email import message_from_string
+    msg = message_from_string(mailhost.messages[0])
+    self.assertTrue(msg['To'], 'bob@plone.org')
+    self.assertTrue(msg['From'], 'noreply@plone.org')
+    self.assertTrue(msg['Subject'], '=?utf-8?q?Trappist?=')
+    self.assertTrue(msg.get_payload(), 'One for you Bob!')
 
 
 .. _portal_show_message_example:
