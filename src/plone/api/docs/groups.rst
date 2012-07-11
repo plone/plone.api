@@ -58,13 +58,13 @@ To get a group by it's name, use :meth:`api.group.get`.
     self.assertEquals(group.id, 'staff')
 
 
-.. __groups_get_all_example:
+.. _group_edit:
 
 Editing a group
 ---------------
 
-Using the ``group_tool`` groups can be edited. In this example the title, description and roles
-are changed for the staff group.
+Using the ``group_tool`` groups can be edited. In this example the title,
+description and roles are changed for the staff group.
 
 .. code-block:: python
 
