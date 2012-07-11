@@ -8,7 +8,7 @@ import string
 
 
 def create(email=None, username=None, password=None, roles=('Member', ),
-           properties={}):
+           properties=None):
     """Create a user.
 
     :param email: [required] Email for the new user.
@@ -26,6 +26,9 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     :rtype: MemberData object
     :Example: :ref:`user_create_example`
     """
+    if properties is None:
+        # Never use a dict as default for a keyword argument.
+        properties = {}
     # it may happen that someone passes email in the properties dict, catch
     # that and set the email so the code below this works fine
     if not email and properties.get('email'):
