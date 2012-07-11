@@ -276,14 +276,34 @@ class TestPloneApiContent(unittest.TestCase):
         review_state = content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'published')
 
+    def test_get_view_constraints(self):
+        """ Test the constraints for deleting content """
+        request = self.layer['request']
+
+        # When no parameters are given an error is raised
+        self.assertRaises(ValueError, content.get_view)
+
+        # name is required
+        self.assertRaises(ValueError, content.get_view,
+            context=self.blog, request=request)
+
+        # context is required
+        self.assertRaises(ValueError, content.get_view, name='plone',
+            request=request)
+
+        # request is required
+        self.assertRaises(ValueError, content.get_view, name='plone',
+            context=self.blog)
+
     def test_get_view(self):
+        request = self.layer['request']
         view = content.get_view(name='plone', context=self.blog,
-            request=self.layer['request'])
+            request=request)
         self.assertEqual(aq_base(view.context), aq_base(self.blog))
         self.assertEqual(view.__name__, u'plone')
         self.assertTrue(hasattr(view, 'getIcon'))
         # Try another standard view.
         view = content.get_view(name='plone_context_state', context=self.blog,
-            request=self.layer['request'])
+            request=request)
         self.assertEqual(view.__name__, u'plone_context_state')
         self.assertEqual(aq_base(view.canonical_object()), aq_base(self.blog))
