@@ -149,7 +149,12 @@ def move(source=None, target=None, id=None, strict=True, *args, **kwargs):
         raise ValueError
 
     source_id = source.getId()
-    target.manage_pasteObjects(source.manage_cutObjects(source_id))
+
+    # If no target is given the object is probably renamed
+    if target:
+        target.manage_pasteObjects(source.manage_cutObjects(source_id))
+    else:
+         target = source
 
     if id:
         if strict:
@@ -256,7 +261,7 @@ def transition(obj=None, transition=None, *args):
         raise ValueError
 
     workflow = getToolByName(getSite(), 'portal_workflow')
-    return workflow.doActionFor(obj, transition)
+    workflow.doActionFor(obj, transition)
 
 
 def get_view(name=None, context=None, request=None, *args):

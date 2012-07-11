@@ -6,6 +6,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.testing import applyProfile
 from plone.testing import layered
 from zope.testing import renormalizing
 from plone.testing.z2 import Browser
@@ -46,6 +47,8 @@ def setUp(self):
     portal.error_log._ignored_exceptions = ()
 
     setRoles(portal, TEST_USER_ID, ['Manager'])
+
+    applyProfile(portal, 'Products.CMFPlone:plone')
 
     transaction.commit()
 

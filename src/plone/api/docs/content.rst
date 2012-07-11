@@ -194,15 +194,14 @@ To copy a content object, use the :meth:`api.content.copy`.
 
     api.content.copy(source=training, target=portal)
 
-
 Note that the new object will have the same id as the old object (if not
 stated otherwise). This is not a problem, since the new object is in a different
 container.
 
-.. code-block:: python
+.. invisible-code-block:: python
 
     assert portal['events']['training'].id == 'training'
-    assert portal.id == 'training'
+    assert portal['training'].id == 'training'
 
 
 You can also omit ``target`` and set ``strict=False`` which will duplicate your
@@ -210,13 +209,13 @@ content object in the same container and assign it a non-conflicting id.
 
 .. code-block:: python
 
-    api.content.copy(source=training, strict=False)
-    new_training = portal['events']['training-1']
+    api.content.copy(source=training, target=portal['events'], strict=False)
+    new_training = portal['events']['copy_of_training']
 
 .. invisible-code-block:: python
 
     self.assertTrue(portal['events']['training'])  # old object remains
-    self.assertTrue(portal['events']['training-1'])
+    self.assertTrue(portal['events']['copy_of_training'])
 
 
 .. _content_delete_example:
@@ -231,11 +230,11 @@ Deleting content works by passing the object you want to delete to the
 
     from plone import api
     portal = api.portal.get()
-    api.content.delete(obj=portal['training-1'])
+    api.content.delete(obj=portal['events']['copy_of_training'])
 
 .. invisible-code-block:: python
 
-    self.assertFalse(portal.get('training-1'))
+    self.assertFalse(portal['events'].get('copy_of_training'))
 
 
 .. _content_manipulation_with_strict_option:
@@ -294,7 +293,10 @@ To transition your content into a new state, use :meth:`api.content.transition`.
 
 .. invisible-code-block:: python
 
-    self.assertEquals(state, 'published')
+    self.assertEquals(
+        api.content.get_state(obj=portal['about']),
+        'published'
+    )
 
 
 .. _conten_get_view_example:
@@ -307,7 +309,7 @@ To get a BrowserView for your content, use :meth:`api.content.get_view`.
 .. code-block:: python
 
     from plone import api
-    portal = api.conportal.get()
+    portal = api.portal.get()
     view = api.content.get_view(
         name='plone',
         context=portal['about'],
