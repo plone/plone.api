@@ -24,8 +24,8 @@ class TestPloneApiContent(unittest.TestCase):
     layer = INTEGRATION_TESTING
 
     def setUp(self):
-        """  Create a site structure which we can test against:
-        Plone (site root)
+        """  Create a portal structure which we can test against:
+        Plone (portal root)
         |-- blog
         |-- about
         |   |-- team

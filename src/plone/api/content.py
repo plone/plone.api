@@ -85,7 +85,7 @@ def create(container=None,
 def get(path=None, UID=None, *args, **kwargs):
     """Get an object.
 
-    :param path: Path to the object we want to get, relative to the site root.
+    :param path: Path to the object we want to get, relative to the portal root.
     :type path: string
     :param UID: UID of the object we want to get.
     :type UID: string

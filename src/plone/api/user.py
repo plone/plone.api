@@ -42,7 +42,7 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     use_email_as_username = props.site_properties.use_email_as_login
 
     if not use_email_as_username and not username:
-        raise ValueError("The site is configured to use username that is not \
+        raise ValueError("The portal is configured to use username that is not \
             email so you need to pass a username.")
 
     registration = getToolByName(site, 'portal_registration')

@@ -23,7 +23,7 @@ A shortcut to getting the portal's url is now always at hand.
 Get portal object
 -----------------
 
-Getting the Plone site object goes like this:
+Getting the Plone portal object goes like this:
 
 .. code-block:: python
 
@@ -84,8 +84,8 @@ To send an e-mail use ``send_email``:
     api.portal.send_email(
         body="hello, bob",
         recipient="bob@plone.org",
-        sender="admin@mysite.com",
-        subject="hello world",
+        sender="noreply@plone.org",
+        subject="Hello Bob!",
     )
 
 .. invisible-code-block:: python
@@ -94,9 +94,9 @@ To send an e-mail use ``send_email``:
 
     msg = mailhost.messages[0]
     self.assertTrue('To: bob@plone.org' in msg)
-    self.assertTrue('From: admin@mysite.com' in msg)
+    self.assertTrue('From: noreply@plone.ord' in msg)
     self.assertTrue('Subject: =?utf-8?q?hello_world' in msg)
-    self.assertTrue('hello, bob' in msg)
+    self.assertTrue('Hello Bob!' in msg)
 
 
 .. _portal_show_message_example:

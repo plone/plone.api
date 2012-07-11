@@ -6,14 +6,14 @@ Users
 Create user
 -----------
 
-If your site is configured to use emails as usernames you just need to pass
+If your portal is configured to use emails as usernames you just need to pass
 in the email of the new user.
 
 .. invisible-code-block:: python
 
     from plone import api
-    site = api.get_site()
-    site.portal_properties.use_email_as_username = True
+    portal = api.portal.get()
+    portal.portal_properties.site_properties.use_email_as_login = True
 
 .. code-block:: python
 

@@ -93,7 +93,7 @@ document in code how to use Plone directly.
 
 .. note ::
    If you doubt those last sentences: We had five different ways to get the
-   site root with different edge-cases. We had three different ways to move
+   portal root with different edge-cases. We had three different ways to move
    an object. With this in mind, it's obvious that even the most simple
    tasks can't be documented in Plone in a sane way.
 

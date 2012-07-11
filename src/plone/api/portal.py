@@ -4,19 +4,19 @@ from zope.app.component.hooks import getSite
 
 
 def get():
-    """Get the Plone Site object out of thin air without importing fancy
+    """Get the Plone portal object out of thin air without importing fancy
     Interfaces and doing multi adapter lookups.
 
-    :returns: Plone Site object
+    :returns: Plone portal object
     :Example: :ref:`portal_get_example`
     """
     return getSite()
 
 
 def url():
-    """Get the site url.
+    """Get the portal url.
 
-    :returns: Site url
+    :returns: portal url
     :rtype: string
     :Example: :ref:`portal_url_example`
     """
