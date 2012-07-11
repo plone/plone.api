@@ -23,7 +23,7 @@ def create(groupname=None,
     :type groups: list
     :returns: Newly created group
     :rtype: GroupData object
-    :Example: :ref:`create_group_example`
+    :Example: :ref:`group_create_example`
     """
 
     if args:
@@ -47,7 +47,7 @@ def get(groupname=None, *args):
     :type groupname: string
     :returns: Group
     :rtype: GroupData object
-    :Example: :ref:`get_group_example`
+    :Example: :ref:`group_get_example`
     """
 
     if args:
@@ -65,7 +65,7 @@ def get_all():
 
     :returns: All groups
     :rtype: List of GroupData objects
-    :Example: :ref:`get_all_groups_example`
+    :Example: :ref:`groups_get_all_example`
     """
     group_tool = getToolByName(getSite(), 'portal_groups')
     return group_tool.listGroups()
@@ -81,7 +81,7 @@ def delete(groupname=None, group=None, *args):
     :type groupname: string
     :param group: Group object to be deleted.
     :type group: GroupData object
-    :Example: :ref:`delete_group_example`
+    :Example: :ref:`group_delete_example`
     """
 
     if args:

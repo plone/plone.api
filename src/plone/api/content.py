@@ -39,7 +39,7 @@ def create(container=None,
     :type param: boolean
     :returns: Content object
 
-    :Example: :ref:`create_content_example`
+    :Example: :ref:`content_create_example`
     """
     if not container:
         raise ValueError('The ``container`` attribute is required.')
@@ -90,7 +90,7 @@ def get(path=None, UID=None, *args, **kwargs):
     :param UID: UID of the object we want to get.
     :type UID: string
     :returns: Content object
-    :Example: :ref:`get_content_example`
+    :Example: :ref:`content_get_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -136,7 +136,7 @@ def move(source=None, target=None, id=None, strict=True, *args, **kwargs):
         conflicting with another object in the target container, raise a
         KeyError. When False, move creates a new, non-conflicting id.
     :type param: boolean
-    :Example: :ref:`move_content_example`
+    :Example: :ref:`content_move_example`
     """
 
     if args:
@@ -180,7 +180,7 @@ def copy(source=None, target=None, id=None, strict=True, *args):
         conflicting with another object in the target container, raise a
         KeyError. When False, ``copy`` creates a new, non-conflicting id.
     :type param: boolean
-    :Example: :ref:`copy_content_example`
+    :Example: :ref:`content_copy_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -209,7 +209,7 @@ def delete(obj=None, *args):
 
     :param obj: [required] Object that we want to delete.
     :type obj: Content object
-    :Example: :ref:`delete_content_example`
+    :Example: :ref:`content_delete_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -227,7 +227,7 @@ def get_state(obj=None, *args):
     :type obj: Content object
     :returns: Object's current workflow state
     :rtype: string
-    :Example: :ref:`get_state_example`
+    :Example: :ref:`content_get_state_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -247,7 +247,7 @@ def transition(obj=None, transition=None, *args):
     :type obj: Content object
     :param transition: [required] Name of the workflow transition.
     :type transition: string
-    :Example: :ref:`transition_example`
+    :Example: :ref:`content_transition_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -268,7 +268,7 @@ def get_view(name=None, context=None, request=None, *args):
     :type context: TODO: hm?
     :param request: [required] Request on which to get view.
     :type request: TODO: hm?
-    :Example: :ref:`view_get_example`
+    :Example: :ref:`content_get_view_example`
     """
 
     if args:

@@ -1,7 +1,9 @@
+.. module:: plone
+
 Content
 =======
 
-.. _create_content_example:
+.. _content_create_example:
 
 Create content
 --------------
@@ -13,9 +15,9 @@ First get the portal object that we will use as a container for new content:
     from plone import api
     portal = api.portal.get()
 
-If you want to create a new content item, use the ``create`` method. The type
-attribute will automatically decide which content type (dexterity, archetype,
-...) should be created.
+If you want to create a new content item, use the :meth:`api.content.create`
+method. The type attribute will automatically decide which content type
+(dexterity, archetype, ...) should be created.
 
 .. code-block:: python
 
@@ -33,7 +35,7 @@ The object's ``id`` gets generated (in a safe way) from it's ``title``.
     assert obj.id == 'my-content'
 
 
-.. _get_content_example:
+.. _content_get_example:
 
 Get content object
 ------------------
@@ -67,7 +69,7 @@ the following portal structure::
 
 
 You can do the following operations to get to various content objects in the
-stucture above:
+stucture above, including using :meth:`api.content.get`.
 
 .. code-block:: python
 
@@ -100,7 +102,7 @@ stucture above:
     self.assertTrue(sprint)
 
 
-.. _find_content_example:
+.. _content_find_example:
 
 Find content object
 -------------------
@@ -130,14 +132,14 @@ object.
     document_obj = document_brain.getObject()
     assert document_obj.__class__.__name__ == 'ATDocument'
 
-.. _move_content_example:
+.. _content_move_example:
 
 Move content
 ------------
 
-This is how you can move content around the portal structure defined above.
-The code below moves the ``contact`` item (with all objects that it contains)
-out of folder ``about`` into the Plone portal root.
+To move content around the portal structure defined above use
+:meth:`api.content.move` The code below moves the ``contact`` item (with all
+objects that it contains) out of folder ``about`` into the Plone portal root.
 
 .. code-block:: python
 
@@ -157,13 +159,13 @@ argument, you can define to what target ID the object will be moved to.
 Otherwise it will be moved with the same ID that it had.
 
 
-.. _rename_content_example:
+.. _content_rename_example:
 
 Rename content
 --------------
 
-To rename, you still use the ``move`` method, just pass in a new ``id`` instead
-and omit ``target``.
+To rename, you still use the :meth:`api.content.move` method, just pass in a
+new ``id`` instead and omit ``target``.
 
 .. code-block:: python
 
@@ -177,12 +179,12 @@ and omit ``target``.
     self.assertTrue(portal['old-blog'])
 
 
-.. _copy_content_example:
+.. _content_copy_example:
 
 Copy content
 ------------
 
-To copy a content object, use the following:
+To copy a content object, use the :meth:`api.content.copy`.
 
 .. code-block:: python
 
@@ -217,13 +219,13 @@ content object in the same container and assign it a non-conflicting id.
     self.assertTrue(portal['events']['training-1'])
 
 
-.. _delete_content_example:
+.. _content_delete_example:
 
 Delete content
 --------------
 
 Deleting content works by passing the object you want to delete to the
-``delete()`` method:
+:meth:`api.content.delete` method:
 
 .. code-block:: python
 
@@ -236,13 +238,14 @@ Deleting content works by passing the object you want to delete to the
     self.assertFalse(portal.get('training-1'))
 
 
-.. _content_manipulation_with_strict_option
+.. _content_manipulation_with_strict_option:
 
 Content manipulation with strict option
 ---------------------------------------
 
-When manipulating content with ``api.content.create``, ``api.content.move`` and ``api.content.copy``
-the strict option is enabled by default. This means the id will be enforced, if the id is taken on
+When manipulating content with :meth:`api.content.create`,
+:meth:`api.content.move` and :meth:`api.content.copy` the strict option is
+enabled by default. This means the id will be enforced, if the id is taken on
 the target container the API method will raise an error.
 
 .. code-block:: python
@@ -257,12 +260,13 @@ If the strict option is disabled a non-conflicting id will be created.
     portal['non-strict-usage-1']
 
 
-.. _get_state_state:
+.. _content_get_state_example:
 
 Get workflow state
 ------------------
 
-To find out in which workflow state your content is, use ``get_state``.
+To find out in which workflow state your content is, use
+:meth:`api.content.get_state`.
 
 .. code-block:: python
 
@@ -275,12 +279,12 @@ To find out in which workflow state your content is, use ``get_state``.
     self.assertEquals(state, 'private')
 
 
-.. _transition_example:
+.. _content_transition_example:
 
 Transition
 ----------
 
-To transition your content into a new state, use ``transition``.
+To transition your content into a new state, use :meth:`api.content.transition`.
 
 .. code-block:: python
 
@@ -298,7 +302,7 @@ To transition your content into a new state, use ``transition``.
 Browser view
 ------------
 
-To get a BrowserView for your content, use ``get_view``.
+To get a BrowserView for your content, use :meth:`api.content.get_view`.
 
 .. code-block:: python
 
