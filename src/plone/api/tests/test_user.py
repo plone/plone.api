@@ -16,6 +16,9 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_create_no_email(self):
         """ Test that exception is raised if no email is given """
+
+        self.portal.portal_properties.site_properties.use_email_as_login = True
+
         self.assertRaises(
             ValueError,
             api.user.create,
