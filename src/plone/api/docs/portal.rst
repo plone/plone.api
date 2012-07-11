@@ -107,28 +107,6 @@ To send an e-mail use :meth:`api.portal.send_email`:
     mailhost.reset()
 
 
-.. _portal_show_message_example:
-
-Show notification message
--------------------------
-
-The :meth:`api.portal.show_message` helps yout to show a notification message to
-the user.
-
-.. code-block:: python
-
-    from plone import api
-    api.portal.show_message(message='Blueberries!', request=request)
-
-.. invisible-code-block:: python
-
-    from Products.statusmessages.interfaces import IStatusMessage
-    messages = IStatusMessage(request)
-    show = messages.show()
-    self.assertEquals(len(show), 1)
-    self.assertTrue('Blueberries!' in show[0].message)
-
-
 .. _portal_localized_time_example:
 
 Localized time
@@ -155,3 +133,25 @@ language, use :meth:`api.portal.localized_time`.
     result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
         request=request)
     self.assertEqual(result, 'Dec 31, 1999')
+
+
+.. _portal_show_message_example:
+
+Show notification message
+-------------------------
+
+The :meth:`api.portal.show_message` helps yout to show a notification message to
+the user.
+
+.. code-block:: python
+
+    from plone import api
+    api.portal.show_message(message='Blueberries!', request=request)
+
+.. invisible-code-block:: python
+
+    from Products.statusmessages.interfaces import IStatusMessage
+    messages = IStatusMessage(request)
+    show = messages.show()
+    self.assertEquals(len(show), 1)
+    self.assertTrue('Blueberries!' in show[0].message)
