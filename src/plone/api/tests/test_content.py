@@ -170,7 +170,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(self.team, team_by_path)
 
         # Test getting an non-existing item by path and UID
-        self.assertRaises(KeyError, api.content.get, '/spam/ham')
+        self.assertFalse(api.content.get('/spam/ham'))
         self.assertFalse(api.content.get(UID='bacon'))
 
     def test_move_constraints(self):
