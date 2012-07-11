@@ -133,7 +133,8 @@ language, use the following:
 
     from plone import api
     from DateTime import DateTime
-    api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59), request=request)
+    today = DateTime()
+    api.portal.localized_time(datetime=today, request=request)
 
 .. invisible-code-block:: python
 
