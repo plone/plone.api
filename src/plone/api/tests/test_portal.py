@@ -56,11 +56,15 @@ class TestPloneApiPortal(unittest.TestCase):
         from Products.MailHost.interfaces import IMailHost
         from email import message_from_string
         mockmailhost = MockMailHost('MailHost')
+        if not hasattr(mockmailhost, 'smtp_host'):
+            mockmailhost.smtp_host = 'localhost'
         self.portal.MailHost = mockmailhost
         sm = self.portal.getSiteManager()
         sm.registerUtility(component=mockmailhost, provided=IMailHost)
         mailhost = getToolByName(self.portal, 'MailHost')
         mailhost.reset()
+        self.portal._updateProperty('email_from_name', 'Portal Owner')
+        self.portal._updateProperty('email_from_address', 'sender@example.org')
         portal.send_email(
             recipient="bob@plone.org",
             sender="noreply@plone.org",
@@ -76,8 +80,6 @@ class TestPloneApiPortal(unittest.TestCase):
         mailhost.reset()
 
         # When no sender is set, we take the portal properties.
-        self.portal._updateProperty('email_from_name', 'Portal Owner')
-        self.portal._updateProperty('email_from_address', 'sender@example.org')
         portal.send_email(
             recipient="bob@plone.org",
             subject="Trappist",
@@ -86,3 +88,12 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(len(mailhost.messages), 1)
         msg = message_from_string(mailhost.messages[0])
         self.assertEqual(msg['From'], 'Portal Owner <sender@example.org>')
+
+    def test_send_email_without_configured_mailhost(self):
+        # By default, the MailHost is not configured yet, so we cannot
+        # send email.
+        self.assertRaises(ValueError, portal.send_email,
+                          recipient="bob@plone.org",
+                          sender="noreply@plone.org",
+                          subject="Trappist",
+                          body="One for you Bob!")

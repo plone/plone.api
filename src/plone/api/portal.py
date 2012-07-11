@@ -3,6 +3,7 @@ from email.utils import formataddr, parseaddr
 from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.app.component.hooks import getSite
+from zope.component import getMultiAdapter
 
 
 def get():
@@ -64,6 +65,11 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
         raise ValueError
 
     portal = getSite()
+    ctrlOverview = getMultiAdapter((portal, portal.REQUEST),
+                                   name='overview-controlpanel')
+    if ctrlOverview.mailhost_warning():
+        raise ValueError('MailHost is not configured.')
+
     encoding = portal.getProperty('email_charset', 'utf-8')
 
     if not sender:
