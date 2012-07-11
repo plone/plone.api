@@ -30,6 +30,10 @@ usernames you just need to pass in the email of the new user.
 
 Otherwise, you also need to pass in the username of the new user.
 
+.. invisible-code-block:: python
+
+    portal.portal_properties.site_properties.use_email_as_login = False
+
 .. code-block:: python
 
     user = api.user.create(email='jane@plone.org', username='jane')
