@@ -29,7 +29,6 @@ Narrative documentation
     rationale.rst
     portal.rst
     content.rst
-    view.rst
     users.rst
     groups.rst
 
