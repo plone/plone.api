@@ -60,8 +60,8 @@ To set user properties when creating a new user, pass in a properties dict.
 
 .. invisible-code-block:: python
 
-    self.assertEquals(api.user.getProperty('fullname'), 'Bob')
-    self.assertEquals(api.user.getProperty('location'), 'Munich')
+    self.assertEquals(user.getProperty('fullname'), 'Bob')
+    self.assertEquals(user.getProperty('location'), 'Munich')
 
 
 Besides user properties you can also specify a password for the new user.
