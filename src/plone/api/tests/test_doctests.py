@@ -32,6 +32,7 @@ def setUp(self):
     # Update global variables within the tests.
     self.globs.update({
         'portal': layer['portal'],
+        'request': layer['request'],
         'browser': Browser(layer['app']),
         'TEST_USER_NAME': TEST_USER_NAME,
         'TEST_USER_PASSWORD': TEST_USER_PASSWORD,
