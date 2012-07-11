@@ -4,6 +4,7 @@ import mock
 import unittest
 import pkg_resources
 from zExceptions import BadRequest
+from Acquisition import aq_base
 
 try:
     pkg_resources.get_distribution('plone.dexterity')
@@ -274,3 +275,15 @@ class TestPloneApiContent(unittest.TestCase):
         content.transition(obj=self.blog, transition='publish')
         review_state = content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'published')
+
+    def test_get_view(self):
+        view = content.get_view(name='plone', context=self.blog,
+            request=self.layer['request'])
+        self.assertEqual(aq_base(view.context), aq_base(self.blog))
+        self.assertEqual(view.__name__, u'plone')
+        self.assertTrue(hasattr(view, 'getIcon'))
+        # Try another standard view.
+        view = content.get_view(name='plone_context_state', context=self.blog,
+            request=self.layer['request'])
+        self.assertEqual(view.__name__, u'plone_context_state')
+        self.assertEqual(aq_base(view.canonical_object()), aq_base(self.blog))

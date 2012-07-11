@@ -5,6 +5,7 @@ from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
 from zope.app.container.interfaces import INameChooser
+from zope.component import getMultiAdapter
 
 import random
 import transaction
@@ -281,4 +282,4 @@ def get_view(name=None, context=None, request=None, *args):
     if not request:
         raise ValueError
 
-    raise NotImplementedError
+    return getMultiAdapter((context, request), name=name)
