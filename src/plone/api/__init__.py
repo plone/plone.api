@@ -1,6 +1,6 @@
 
 
-from plone.api import content, user, group, portal, view
+from plone.api import content, user, group, portal
 
 content  # pyflakes
 user     # pyflakes
