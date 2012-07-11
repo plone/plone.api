@@ -103,15 +103,16 @@ def get(path=None, UID=None, *args, **kwargs):
         raise ValueError('When getting an object path or UID attribute is '
                          'required')
 
-    # TODO: When no object is found, restrictedTraverse raises a KeyError
-    # and uuidToObject returns None.
-    # Should we raise an error when no object is found using uid resolver?
     if path:
         site = getSite()
         site_id = site.getId()
         if not path.startswith('/{0}'.format(site_id)):
             path = '/{0}{1}'.format(site_id, path)
-        return site.restrictedTraverse(path)
+
+        try:
+            return site.restrictedTraverse(path)
+        except KeyError:
+            return None  # When no object is found don't raise an error
 
     elif UID:
         return uuidToObject(UID)
