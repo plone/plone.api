@@ -133,35 +133,6 @@ def delete(username=None, user=None, *args):
     portal_membership.deleteMembers((user_id,))
 
 
-def change_password(username=None, user=None, password=None, *args):
-    """Change the user's password.
-
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both.
-
-    :param username: Username of the user for which to change the
-        password for.
-    :type username: string
-    :param user: User for which to change the password for.
-    :type user: MemberData object
-    :param password: New password for the user. If it's not set we generate
-        a random 8-char alpha-numeric one.
-    :type password: string
-    :Example: :ref:`change_password_example`
-    """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
-    if not username and not user:
-        raise ValueError
-
-    if username and user:
-        raise ValueError
-
-    raise NotImplementedError
-
-
 def get_groups(username=None, user=None, *args):
     """Get a list of groups that this user is a member of.
 
