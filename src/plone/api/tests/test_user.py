@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api user manipulation."""
+import mock
 import unittest
 
 from plone import api
@@ -80,6 +81,30 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
         self.assertEquals(user.getUserName(), 'chuck')
+
+    def test_delete_no_username(self):
+        """ Test deleting of a member with email login"""
+
+        self.portal.portal_properties.site_properties.use_email_as_login = True
+
+        # This should fail either an username or user object should be given
+        self.assertRaises(ValueError, api.user.delete)
+        self.assertRaises(ValueError, api.user.delete, username='chuck@norris.org', user=mock.Mock())
+
+        api.user.create(email='chuck@norris.org', password='secret')
+        api.user.delete(username='unwanted@norris.org')
+
+        user = api.user.create(email='steven@seagal.org', password='secret')
+        api.user.delete(user=user)
+
+    def test_delete_username(self):
+        """ """
+
+        api.user.create(username='chuck', password='secret')
+        api.user.delete(username='unwanted')
+
+        user = api.user.create(username='steven', password='secret')
+        api.user.delete(user=user)
 
     def test_create_roles(self):
         """ Test if user has the right roles set """
