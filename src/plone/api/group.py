@@ -32,12 +32,12 @@ def create(groupname=None,
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    portal = getSite()
-    group_tool = getToolByName(portal, 'portal_groups')
+    group_tool = getToolByName(getSite(), 'portal_groups')
 
-    return group_tool.addGroup(
+    group_tool.addGroup(
         groupname, roles, groups, title=title,
         description=description)
+    return group_tool.getGroupById(groupname)
 
 
 def get(groupname=None, *args):
@@ -99,3 +99,88 @@ def delete(groupname=None, group=None, *args):
         groupname = group.id
 
     return group_tool.removeGroup(groupname)
+
+
+def add_user(groupname=None, group=None, username=None, user=None, *args):
+    """Add the user to a group.
+
+    Arguments ``groupname`` and ``group`` are also mutually exclusive. You can
+    either set one or the other, but not both.
+
+    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    set one or the other, but not both.
+
+    :param groupname: Group name of the group to which to join the user.
+    :type groupname: string
+    :param group: Group to which to join the user.
+    :type group: GroupData object
+    :param username: Username of the user to join the group.
+    :type username: string
+    :param user: User to join the group.
+    :type user: MemberData object
+
+    :Example: :ref:`add_user_to_group_example`
+    """
+
+    if args:
+        raise ValueError('Positional arguments are not allowed!')
+
+    if not username and not user:
+        raise ValueError
+
+    if username and user:
+        raise ValueError
+
+    if not groupname and not group:
+        raise ValueError
+
+    if groupname and group:
+        raise ValueError
+
+    user_id = username or user.id
+    group_id = groupname or group.id
+    portal_groups = getToolByName(getSite(), 'portal_groups')
+    portal_groups.addPrincipalToGroup(user_id, group_id)
+
+
+
+def delete_user(groupname=None, group=None, username=None, user=None, *args):
+    """Remove the user from a group.
+
+    Arguments ``groupname`` and ``group`` are mutually exclusive. You can
+    either set one or the other, but not both.
+
+    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    set one or the other, but not both.
+
+    :param groupname: Group name of the group from which to remove the user.
+    :type groupname: string
+    :param group: Group from which to remove the user.
+    :type group: GroupData object
+    :param username: Username of the user to leave the group.
+    :type username: string
+    :param user: User to leave the group.
+    :type user: MemberData object
+
+    :Example: :ref:`delete_user_from_group_example`
+    """
+
+    if args:
+        raise ValueError('Positional arguments are not allowed!')
+
+    if not username and not user:
+        raise ValueError
+
+    if username and user:
+        raise ValueError
+
+    if not groupname and not group:
+        raise ValueError
+
+    if groupname and group:
+        raise ValueError
+
+    user_id = username or user.id
+    group_id = groupname or group.id
+    portal_groups = getToolByName(getSite(), 'portal_groups')
+    portal_groups.removePrincipalFromGroup(user_id, group_id)
