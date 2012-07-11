@@ -293,16 +293,22 @@ To transition your content into a new state, use ``transition``.
     self.assertEquals(state, 'published')
 
 
+.. _conten_get_view_example:
+
 Browser view
 ------------
 
-To get a browser view for your content, use ``get_view``.
+To get a BrowserView for your content, use ``get_view``.
 
 .. code-block:: python
 
     from plone import api
     portal = api.conportal.get()
-    view = api.content.get_view(context=portal['about'], request=self.request, name='plone')
+    view = api.content.get_view(
+        name='plone'
+        context=portal['about'],
+        request=self.request,
+    )
 
 .. invisible-code-block:: python
 

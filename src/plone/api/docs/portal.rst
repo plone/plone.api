@@ -98,6 +98,7 @@ To send an e-mail use ``send_email``:
     self.assertTrue('Subject: =?utf-8?q?hello_world' in msg)
     self.assertTrue('hello, bob' in msg)
 
+
 .. _portal_show_message_example:
 
 Show notification message
@@ -108,7 +109,7 @@ This is how to show a notification message to the user.
 .. code-block:: python
 
     from plone import api
-    api.view.show_message(message='Blueberries!')
+    api.view.show_message(message='Blüeberries!')
 
 .. invisible-code-block:: python
 
@@ -117,6 +118,18 @@ This is how to show a notification message to the user.
     self.assertEquals(len(messages), 1)
 
     message = messages.show()[0].message
-    self.assertIn('Blueberries!.', message)
+    self.assertIn('Blüeberries!.', message)
 
+
+.. _portal_localized_time_example:
+
+Localized time
+--------------
+
+To display a date/time in a user-friendly way, localized to the user's prefered
+language, use the following:
+
+.. code-block:: python
+
+    TODO: don't yet know how this will look
 
