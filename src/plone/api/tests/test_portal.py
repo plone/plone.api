@@ -123,3 +123,31 @@ class TestPloneApiPortal(unittest.TestCase):
         result = portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
             request=request)
         self.assertEqual(result, 'Dec 31, 1999')
+
+    def test_show_message_constraints(self):
+        """ Test the constraints for show_message. """
+
+        # When no parameters are given an error is raised
+        self.assertRaises(ValueError, portal.show_message)
+
+        # message and request are required
+        self.assertRaises(ValueError, portal.show_message,
+                          request=self.layer['request'])
+        self.assertRaises(ValueError, portal.show_message,
+                          message='Beer is brewing.')
+
+    def test_show_message(self):
+        from Products.statusmessages.interfaces import IStatusMessage
+        request = self.layer['request']
+        portal.show_message(message='Blueberries!', request=request)
+        messages = IStatusMessage(request)
+        show = messages.show()
+        self.assertEquals(len(show), 1)
+        self.assertTrue('Blueberries!' in show[0].message)
+        portal.show_message(message='One', request=request)
+        portal.show_message(message='Two', request=request)
+        messages = IStatusMessage(request)
+        show = messages.show()
+        self.assertEqual(len(show), 2)
+        self.assertEqual(show[0].message, 'One')
+        self.assertEqual(show[1].message, 'Two')
