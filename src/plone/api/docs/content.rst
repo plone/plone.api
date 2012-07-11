@@ -100,6 +100,36 @@ stucture above:
     self.assertTrue(sprint)
 
 
+.. _find_content_example:
+
+Find content object
+-------------------
+
+You can use the *catalog* to search for content. Here is a simple example:
+
+.. code-block:: python
+
+    from plone import api
+    catalog = api.portal.get_tool(name='portal_catalog')
+    documents = catalog(portal_type='Document')
+
+.. invisible-code-block:: python
+    self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
+    self.assertEqual(len(documents), 2)
+
+More about how to use the catalog and what parameters it supports is written
+in the `Collective Developer Documentation
+<http://collective-docs.readthedocs.org/en/latest/searching_and_indexing/query.html>`_.
+Note that the catalog returns *brains* (metadata stored in indexes) and not
+objects. However, calling ``getObject()`` on brains does in fact give you the
+object.
+
+.. code-block:: python
+
+    document_brain = documents[0]
+    document_obj = document_brain.getObject()
+    assert document_obj.__class__.__name__ == 'ATDocument'
+
 .. _move_content_example:
 
 Move content
