@@ -152,3 +152,47 @@ class TestPloneApiUser(unittest.TestCase):
         users = [user.getUserName() for user in api.user.get_all()]
 
         self.assertEqual(users, ['chuck', 'test-user'])
+
+    def test_has_permission(self):
+        """ Tests user permission lookup """
+
+        self.assertRaises(
+            ValueError,
+            api.user.has_permission
+        )
+        # Must supply object
+        self.assertRaises(
+            ValueError,
+            api.user.has_permission,
+            permission='foo',
+            username='chuck',
+        )
+        # username and user are mutually exclusive
+        self.assertRaises(
+            ValueError,
+            api.user.has_permission,
+            permission='foo',
+            username='chuck',
+            user=mock.Mock()
+        )
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        self.assertTrue(
+            api.user.has_permission(
+                permission='View',
+                user=user,
+                object=self.portal
+            )
+        )
+        self.assertTrue(
+            api.user.has_permission(
+                permission='Modify portal content',
+                user=user,
+                object=self.portal
+            )
+        )

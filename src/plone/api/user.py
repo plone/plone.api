@@ -218,4 +218,6 @@ def has_permission(permission=None, username=None, user=None,
     portal_membership = getToolByName(object, 'portal_membership')
     if username:
         user = portal_membership.getMemberById(username)
+
+    # TODO: this doesn't work because it checks te permission for the current user
     return portal_membership.checkPermission(permission, object)
