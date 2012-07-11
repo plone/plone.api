@@ -60,12 +60,17 @@ Editing a group
 ---------------
 
 Using the ``group_tool`` groups can be edited. In this example the title, description and roles
- are being changed for the staff group.
+are changed for the staff group.
 
 .. code-block:: python
 
     group_tool = api.portal.get_tool('portal_groups')
-    group_tool.editGroup('staff', title='Staff', description='Just a description', roles=['Editor', 'Reader'])
+    group_tool.editGroup(
+        groupname='staff',
+        title='Staff',
+        description='Just a description',
+        roles=['Editor', 'Reader']
+    )
 
     group = api.group.get(groupname='staff')
 
@@ -121,8 +126,8 @@ group object you want to delete.
 
     assert not api.group.get(groupname='unwanted')
 
-Add user to group
------------------
+Adding user to group
+--------------------
 
 The ``add_user`` method accepts either the groupname or the group object of the target group and
 the username or the user object you want to make a member of the group
@@ -147,8 +152,8 @@ the username or the user object you want to make a member of the group
 
 .. _delete_user_from_group_example:
 
-Delete user from group
-----------------------
+Deleting user from group
+------------------------
 
 The ``delete_user`` method accepts either the groupname or the group object of the target
 group and either the username or the user object you want to remove from the group.
