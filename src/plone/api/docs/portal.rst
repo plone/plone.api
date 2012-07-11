@@ -125,12 +125,6 @@ language, use :meth:`api.portal.localized_time`.
 .. invisible-code-block:: python
 
     result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
-        request=request, long_format=True, time_only=False)
-    self.assertEqual(result, 'Dec 31, 1999 11:59 PM')
-    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
-        request=request, time_only=True)
-    self.assertEqual(result, '11:59 PM')
-    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
         request=request)
     self.assertEqual(result, 'Dec 31, 1999')
 

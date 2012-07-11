@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.portal."""
 import unittest
+
+from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 
 from plone.api import portal
@@ -97,3 +99,27 @@ class TestPloneApiPortal(unittest.TestCase):
                           sender="noreply@plone.org",
                           subject="Trappist",
                           body="One for you Bob!")
+
+    def test_localized_time_constraints(self):
+        """ Test the constraints for localized_time. """
+
+        # When no parameters are given an error is raised
+        self.assertRaises(ValueError, portal.localized_time)
+
+        # datetime and request are required
+        self.assertRaises(ValueError, portal.localized_time,
+                          datetime=DateTime())
+        self.assertRaises(ValueError, portal.localized_time,
+                          request=self.layer['request'])
+
+    def test_localized_time(self):
+        request = self.layer['request']
+        result = portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
+            request=request, long_format=True, time_only=False)
+        self.assertEqual(result, 'Dec 31, 1999 11:59 PM')
+        result = portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
+            request=request, time_only=True)
+        self.assertEqual(result, '11:59 PM')
+        result = portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
+            request=request)
+        self.assertEqual(result, 'Dec 31, 1999')
