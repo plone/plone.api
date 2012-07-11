@@ -68,7 +68,7 @@ description and roles are changed for the staff group.
 
 .. code-block:: python
 
-    group_tool = api.portal.get_tool('portal_groups')
+    group_tool = api.portal.get_tool(name='portal_groups')
     group_tool.editGroup(
         'staff',
         roles=['Editor', 'Reader'],

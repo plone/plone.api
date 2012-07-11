@@ -31,11 +31,11 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(ValueError, portal.get_tool)
 
     def test_get_tool(self):
-        self.assertEqual(portal.get_tool('portal_catalog'),
+        self.assertEqual(portal.get_tool(name='portal_catalog'),
                          getToolByName(self.portal, 'portal_catalog'))
-        self.assertEqual(portal.get_tool('portal_membership'),
+        self.assertEqual(portal.get_tool(name='portal_membership'),
                          getToolByName(self.portal, 'portal_membership'))
-        self.assertRaises(AttributeError, portal.get_tool, 'non_existing')
+        self.assertRaises(AttributeError, portal.get_tool, name='non_existing')
 
     def test_send_email_constraints(self):
         """ Test the constraints for sending an email. """

@@ -128,7 +128,7 @@ def localized_time(datetime=None, request=None, long_format=False,
     if not request:
         raise ValueError
 
-    tool = get_tool('translation_service')
+    tool = get_tool(name='translation_service')
     return tool.ulocalized_time(datetime, long_format, time_only,
                                 domain='plonelocales', request=request)
 
