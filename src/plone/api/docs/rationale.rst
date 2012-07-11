@@ -57,9 +57,9 @@ etc. Hence the importing and usage of API methods look like this:
 
 .. invisible-code-block:: python
 
-    self.assertEqual(portal, 'TODO')
-    self.assertEqual(url, 'TODO')
-    self.assertEqual(user, 'TODO')
+    self.assertEqual(portal.__class__.__name__, 'PloneSite')
+    self.assertEqual(url, 'http://nohost/plone')
+    self.assertEqual(user.__class__.__name__, 'MemberData')
 
 In other words, always import the top-level package (``from plone import api``)
 and then use the group namespace to access the method you want
