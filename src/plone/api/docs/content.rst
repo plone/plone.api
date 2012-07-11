@@ -19,8 +19,8 @@ attribute will automatically decide which content type (dexterity, archetype,
 
 .. code-block:: python
 
-    from plone.api import content
-    obj = content.create(
+    from plone import api
+    obj = api.content.create(
         type='Document',
         title='My Content',
         container=portal
