@@ -305,7 +305,7 @@ To get a BrowserView for your content, use ``get_view``.
     from plone import api
     portal = api.conportal.get()
     view = api.content.get_view(
-        name='plone'
+        name='plone',
         context=portal['about'],
         request=self.request,
     )
