@@ -165,7 +165,7 @@ the user object you want to delete.
 
 .. invisible-code-block:: python
 
-    self.assertNone(api.user.get(username='unwanted'))
+    self.assertEqual(api.user.get(username='unwanted'), None)
 
 .. code-block:: python
 
@@ -174,7 +174,7 @@ the user object you want to delete.
 
 .. invisible-code-block:: python
 
-    self.assertNone(api.user.get(username='unwanted'))
+    self.assertEqual(api.user.get(username='unwanted'), None)
 
 
 .. _user_change_password_example:
@@ -195,7 +195,7 @@ If you don't pass in any password, a random one will be generated.
 
 .. invisible-code-block:: python
 
-    self.assertEqulas(user._getPassword(), password='newsecret')
+    self.assertEqual(user._getPassword(), password='newsecret')
 
 .. code-block:: python
 
