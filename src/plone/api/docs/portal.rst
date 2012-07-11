@@ -109,7 +109,6 @@ This is how to show a notification message to the user.
 .. code-block:: python
 
     from plone import api
-    request = api.portal.get().REQUEST
     api.portal.show_message(message='Blueberries!', request=self.request)
 
 .. invisible-code-block:: python
