@@ -1,4 +1,5 @@
 from Products.CMFPlone.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
 from zope.app.component.hooks import getSite
 
 
@@ -87,11 +88,13 @@ def localized_time(datetime=None, request=None, *args):
     raise NotImplementedError
 
 
-def show_message(message=None, type='info', *args):
+def show_message(message=None, request=None, type='info', *args):
     """Display a status message.
 
     :param message: [required] Message to show.
     :type message: string
+    :param request: Request.
+    :type request: TODO: hm?
     :param type: Message type. Possible values: 'info', 'warn', 'error'
     :type type: string
     :Example: :ref:`show_message_example`
@@ -102,4 +105,7 @@ def show_message(message=None, type='info', *args):
     if not message:
         raise ValueError
 
-    raise NotImplementedError
+    if not request:
+        raise ValueError
+
+    IStatusMessage(request).addStatusMessage(message, type=type)
