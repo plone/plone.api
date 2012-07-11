@@ -109,7 +109,7 @@ This is how to show a notification message to the user.
 .. code-block:: python
 
     from plone import api
-    api.view.show_message(message='Blüeberries!')
+    api.view.show_message(message='Blueberries!')
 
 .. invisible-code-block:: python
 
@@ -118,7 +118,7 @@ This is how to show a notification message to the user.
     self.assertEquals(len(messages), 1)
 
     message = messages.show()[0].message
-    self.assertIn('Blüeberries!.', message)
+    self.assertIn('Blueberries!.', message)
 
 
 .. _portal_localized_time_example:
