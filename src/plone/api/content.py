@@ -16,7 +16,6 @@ def create(container=None,
            id=None,
            title=None,
            strict=True,
-           *args,
            **kwargs):
     """Create a new content item in ZODB.
 
@@ -82,7 +81,7 @@ def create(container=None,
     return content
 
 
-def get(path=None, UID=None, *args, **kwargs):
+def get(path=None, UID=None, **kwargs):
     """Get an object.
 
     :param path: Path to the object we want to get, relative to the portal root.
@@ -92,9 +91,6 @@ def get(path=None, UID=None, *args, **kwargs):
     :returns: Content object
     :Example: :ref:`content_get_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if path and UID:
         raise ValueError('When getting an object combining path and UID '
                          'attribute is not allowed')
@@ -118,7 +114,7 @@ def get(path=None, UID=None, *args, **kwargs):
         return uuidToObject(UID)
 
 
-def move(source=None, target=None, id=None, strict=True, *args, **kwargs):
+def move(source=None, target=None, id=None, strict=True, **kwargs):
     """Move the object to the target container.
 
     :param source: [required] Object that we want to move.
@@ -139,10 +135,6 @@ def move(source=None, target=None, id=None, strict=True, *args, **kwargs):
     :type param: boolean
     :Example: :ref:`content_move_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not source:
         raise ValueError
 
@@ -167,7 +159,7 @@ def move(source=None, target=None, id=None, strict=True, *args, **kwargs):
         target.manage_renameObject(source_id, new_id)
 
 
-def copy(source=None, target=None, id=None, strict=True, *args):
+def copy(source=None, target=None, id=None, strict=True):
     """Copy the object to the target container.
 
     :param source: [required] Object that we want to copy.
@@ -188,9 +180,6 @@ def copy(source=None, target=None, id=None, strict=True, *args):
     :type param: boolean
     :Example: :ref:`content_copy_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not source:
         raise ValueError
 
@@ -210,23 +199,20 @@ def copy(source=None, target=None, id=None, strict=True, *args):
         target.manage_renameObject(source_id, new_id)
 
 
-def delete(obj=None, *args):
+def delete(obj=None):
     """Delete the object.
 
     :param obj: [required] Object that we want to delete.
     :type obj: Content object
     :Example: :ref:`content_delete_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not obj:
         raise ValueError
 
     obj.aq_parent.manage_delObjects([obj.getId()])
 
 
-def get_state(obj=None, *args):
+def get_state(obj=None):
     """Get the current workflow state of the object.
 
     :param obj: [required] Object that we want to get the state for.
@@ -235,9 +221,6 @@ def get_state(obj=None, *args):
     :rtype: string
     :Example: :ref:`content_get_state_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not obj:
         raise ValueError
 
@@ -245,7 +228,7 @@ def get_state(obj=None, *args):
     return workflow.getInfoFor(obj, 'review_state')
 
 
-def transition(obj=None, transition=None, *args):
+def transition(obj=None, transition=None):
     """Perform a workflow transition for the object.
 
     :param obj: [required] Object for which we want to perform the workflow
@@ -255,9 +238,6 @@ def transition(obj=None, transition=None, *args):
     :type transition: string
     :Example: :ref:`content_transition_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not obj or not transition:
         raise ValueError
 
@@ -265,7 +245,7 @@ def transition(obj=None, transition=None, *args):
     workflow.doActionFor(obj, transition)
 
 
-def get_view(name=None, context=None, request=None, *args):
+def get_view(name=None, context=None, request=None):
     """Get a BrowserView object.
 
     :param name: [required] Name of the view.
@@ -276,10 +256,6 @@ def get_view(name=None, context=None, request=None, *args):
     :type request: TODO: hm?
     :Example: :ref:`content_get_view_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not name:
         raise ValueError
 

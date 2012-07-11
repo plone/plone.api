@@ -7,8 +7,7 @@ def create(groupname=None,
            title=None,
            description=None,
            roles=[],
-           groups=[],
-           *args):
+           groups=[]):
     """Create a group.
 
     :param groupname: [required] Name of the new group.
@@ -25,10 +24,6 @@ def create(groupname=None,
     :rtype: GroupData object
     :Example: :ref:`group_create_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
@@ -40,7 +35,7 @@ def create(groupname=None,
     return group_tool.getGroupById(groupname)
 
 
-def get(groupname=None, *args):
+def get(groupname=None):
     """Get a group.
 
     :param groupname: [required] Name of the group we want to get.
@@ -49,10 +44,6 @@ def get(groupname=None, *args):
     :rtype: GroupData object
     :Example: :ref:`group_get_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
@@ -71,7 +62,7 @@ def get_all():
     return group_tool.listGroups()
 
 
-def delete(groupname=None, group=None, *args):
+def delete(groupname=None, group=None):
     """Delete a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
@@ -83,10 +74,6 @@ def delete(groupname=None, group=None, *args):
     :type group: GroupData object
     :Example: :ref:`group_delete_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not groupname and not group:
         raise ValueError
 
@@ -101,7 +88,7 @@ def delete(groupname=None, group=None, *args):
     return group_tool.removeGroup(groupname)
 
 
-def add_user(groupname=None, group=None, username=None, user=None, *args):
+def add_user(groupname=None, group=None, username=None, user=None):
     """Add the user to a group.
 
     Arguments ``groupname`` and ``group`` are also mutually exclusive. You can
@@ -121,10 +108,6 @@ def add_user(groupname=None, group=None, username=None, user=None, *args):
 
     :Example: :ref:`add_user_to_group_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not username and not user:
         raise ValueError
 
@@ -144,7 +127,7 @@ def add_user(groupname=None, group=None, username=None, user=None, *args):
 
 
 
-def delete_user(groupname=None, group=None, username=None, user=None, *args):
+def delete_user(groupname=None, group=None, username=None, user=None):
     """Remove the user from a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
@@ -164,10 +147,6 @@ def delete_user(groupname=None, group=None, username=None, user=None, *args):
 
     :Example: :ref:`delete_user_from_group_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not username and not user:
         raise ValueError
 

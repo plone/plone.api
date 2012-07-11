@@ -8,7 +8,7 @@ import string
 
 
 def create(email=None, username=None, password=None, roles=('Member', ),
-           properties={}, *args):
+           properties={}):
     """Create a user.
 
     :param email: [required] Email for the new user.
@@ -26,9 +26,6 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     :rtype: MemberData object
     :Example: :ref:`user_create_example`
     """
-    if args:
-        raise ValueError("Positional arguments are not allowed!")
-
     # it may happen that someone passes email in the properties dict, catch
     # that and set the email so the code below this works fine
     if not email and properties.get('email'):
@@ -64,7 +61,7 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     )
 
 
-def get(username=None, *args):
+def get(username=None):
     """Get a user.
 
     :param username: [required] Username of the user we want to get.
@@ -73,10 +70,6 @@ def get(username=None, *args):
     :rtype: MemberData object
     :Example: :ref:`user_get_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not username:
         raise ValueError
 
@@ -106,7 +99,7 @@ def get_all():
     return portal_membership.listMembers()
 
 
-def delete(username=None, user=None, *args):
+def delete(username=None, user=None):
     """Delete a user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
@@ -118,10 +111,6 @@ def delete(username=None, user=None, *args):
     :type user: MemberData object
     :Example: :ref:`user_delete_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not username and not user:
         raise ValueError
 
@@ -133,7 +122,7 @@ def delete(username=None, user=None, *args):
     portal_membership.deleteMembers((user_id,))
 
 
-def get_groups(username=None, user=None, *args):
+def get_groups(username=None, user=None):
     """Get a list of groups that this user is a member of.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
@@ -147,10 +136,6 @@ def get_groups(username=None, user=None, *args):
     :rtype: List of strings
     :Example: :ref:`get_groups_for_user_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not username and not user:
         raise ValueError
 
@@ -174,7 +159,7 @@ def is_anonymous():
     return getToolByName(getSite(), 'portal_membership').isAnonymousUser()
 
 
-def has_role(role=None, username=None, user=None, *args):
+def has_role(role=None, username=None, user=None):
     """Check if the user has the specified role.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
@@ -191,9 +176,6 @@ def has_role(role=None, username=None, user=None, *args):
     :rtype: bool
     :Example: :ref:`user_has_role_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not role:
         raise ValueError
 
@@ -204,7 +186,7 @@ def has_role(role=None, username=None, user=None, *args):
 
 
 def has_permission(permission=None, username=None, user=None,
-                   object=None, *args):
+                   object=None):
     """Check if the user has the specified permission in the given context.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
@@ -224,9 +206,6 @@ def has_permission(permission=None, username=None, user=None,
     :rtype: bool
     :Example: :ref:`user_has_permission_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not permission:
         ValueError
 

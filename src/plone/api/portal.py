@@ -26,7 +26,7 @@ def url():
     return getSite().absolute_url()
 
 
-def get_tool(name=None, *args):
+def get_tool(name=None):
     """Get a portal tool in a simple way.
 
     :param email: [required] Name of the tool you want.
@@ -34,16 +34,13 @@ def get_tool(name=None, *args):
     :returns: portal tool
     :Example: :ref:`portal_get_tool_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not name:
         raise ValueError
 
     return getToolByName(getSite(), name)
 
 
-def send_email(sender=None, recipient=None, subject=None, body=None, *args):
+def send_email(sender=None, recipient=None, subject=None, body=None):
     """Send an email.
 
     :param sender: Email sender, 'from' field. If not set, the portal default
@@ -57,10 +54,6 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
     :type body: string
     :Example: :ref:`portal_send_email_example`
     """
-
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not recipient or not subject or not body:
         raise ValueError
 
@@ -97,7 +90,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
 
 
 def localized_time(datetime=None, request=None, long_format=False,
-                   time_only=False, *args):
+                   time_only=False):
     """Display a date/time in a user-friendly way.
 
     It should be localized to the user's prefered language.
@@ -119,9 +112,6 @@ def localized_time(datetime=None, request=None, long_format=False,
     :Example: :ref:`portal_localized_time_example`
 
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not datetime:
         raise ValueError
 
@@ -133,7 +123,7 @@ def localized_time(datetime=None, request=None, long_format=False,
                                 domain='plonelocales', request=request)
 
 
-def show_message(message=None, request=None, type='info', *args):
+def show_message(message=None, request=None, type='info'):
     """Display a status message.
 
     :param message: [required] Message to show.
@@ -144,9 +134,6 @@ def show_message(message=None, request=None, type='info', *args):
     :type type: string
     :Example: :ref:`portal_show_message_example`
     """
-    if args:
-        raise ValueError('Positional arguments are not allowed!')
-
     if not message:
         raise ValueError
 
