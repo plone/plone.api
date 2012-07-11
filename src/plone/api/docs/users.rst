@@ -159,7 +159,7 @@ the user object you want to delete.
 .. code-block:: python
 
     from plone import api
-    api.user.create(username='unwanted')
+    api.user.create(username='unwanted', email='unwanted@example.org')
     api.user.delete(username='unwanted')
 
 
@@ -169,7 +169,7 @@ the user object you want to delete.
 
 .. code-block:: python
 
-    unwanted = api.user.create(username='unwanted')
+    unwanted = api.user.create(username='unwanted', email='unwanted@example.org')
     api.user.delete(user=unwanted)
 
 .. invisible-code-block:: python
