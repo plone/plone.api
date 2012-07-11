@@ -15,7 +15,7 @@ A shortcut to getting the portal's url is now always at hand.
 
 .. invisible-code-block:: python
 
-    self.assertEqual(url, 'http://nohost')
+    self.assertEqual(url, 'http://nohost/plone')
 
 
 .. _portal_get_example:
