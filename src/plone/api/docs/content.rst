@@ -307,7 +307,7 @@ To get a BrowserView for your content, use ``get_view``.
     view = api.content.get_view(
         name='plone',
         context=portal['about'],
-        request=self.request,
+        request=request,
     )
 
 .. invisible-code-block:: python
