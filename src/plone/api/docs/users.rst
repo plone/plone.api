@@ -145,7 +145,7 @@ Get all users in your portal with :meth:`api.user.get_all`.
 
 .. invisible-code-block:: python
 
-    self.assertEquals(users[0].id, 'test_user_1_')
+    self.assertTrue('test_user_1_' in [user.id for user in users])
 
 
 .. _user_delete_example:
