@@ -63,6 +63,9 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_get(self):
         """ Test adding of a group """
 
+        # This should fail because the groupname is mandatory
+        self.assertRaises(ValueError, api.group.create)
+
         # Create a group and retrieve it
         api.group.create(groupname='bacon')
         bacon = api.group.get(groupname='bacon')
@@ -121,6 +124,13 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         self.assertRaises(ValueError, api.group.add_user, groupname='staff')
         self.assertRaises(ValueError, api.group.add_user, username='jane')
+        self.assertRaises(
+            ValueError,
+            api.group.add_user,
+            username='jane',
+            group='group',
+            groupname='staff'
+        )
 
     def test_add_user(self):
         """ Test adding a user to a group """
@@ -164,7 +174,13 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         self.assertRaises(ValueError, api.group.delete_user, groupname='staff')
         self.assertRaises(ValueError, api.group.delete_user, username='jane')
-
+        self.assertRaises(
+            ValueError,
+            api.group.delete_user,
+            username='jane',
+            group='group',
+            groupname='staff'
+        )
 
     def test_delete_user(self):
         """ Test deleting a user from a group """
