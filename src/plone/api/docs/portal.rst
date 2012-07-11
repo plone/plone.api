@@ -1,3 +1,5 @@
+.. module:: plone
+
 Portal
 ======
 
