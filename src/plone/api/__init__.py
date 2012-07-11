@@ -6,4 +6,3 @@ content  # pyflakes
 user     # pyflakes
 group    # pyflakes
 portal   # pyflakes
-view     # pyflakes
