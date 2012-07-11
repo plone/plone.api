@@ -1,6 +1,9 @@
+from email.utils import formataddr, parseaddr
+
 from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.app.component.hooks import getSite
+from zope.component import getMultiAdapter
 
 
 def get():
@@ -62,13 +65,22 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
         raise ValueError
 
     portal = getSite()
+    ctrlOverview = getMultiAdapter((portal, portal.REQUEST),
+                                   name='overview-controlpanel')
+    if ctrlOverview.mailhost_warning():
+        raise ValueError('MailHost is not configured.')
+
     encoding = portal.getProperty('email_charset', 'utf-8')
 
     if not sender:
-        sender = portal.getProperty('email_from_name') + \
-            ' <' + portal.getProperty('email_from_address') + '>'
+        from_address = portal.getProperty('email_from_address', '')
+        from_name = portal.getProperty('email_from_name', '')
+        sender = formataddr((from_name, from_address))
+        if parseaddr(sender)[1] != from_address:
+            # formataddr probably got confused by special characters.
+            sender = from_address
 
-    # The mail headers are not properly encoded we need to extract
+    # If the mail headers are not properly encoded we need to extract
     # them and let MailHost manage the encoding.
     if isinstance(body, unicode):
         body = body.encode(encoding)

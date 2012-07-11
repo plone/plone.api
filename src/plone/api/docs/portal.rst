@@ -1,3 +1,5 @@
+.. module:: plone
+
 Portal
 ======
 
@@ -73,7 +75,10 @@ To send an e-mail use :meth:`api.portal.send_email`:
     from Products.MailHost.interfaces import IMailHost
 
     mockmailhost = MockMailHost('MailHost')
+    if not hasattr(mockmailhost, 'smtp_host'):
+        mockmailhost.smtp_host = 'localhost'
     portal = api.portal.get()
+    portal._updateProperty('email_from_address', 'sender@example.org')
     portal.MailHost = mockmailhost
     sm = portal.getSiteManager()
     sm.registerUtility(component=mockmailhost, provided=IMailHost)
@@ -95,10 +100,11 @@ To send an e-mail use :meth:`api.portal.send_email`:
 
     from email import message_from_string
     msg = message_from_string(mailhost.messages[0])
-    self.assertTrue(msg['To'], 'bob@plone.org')
-    self.assertTrue(msg['From'], 'noreply@plone.org')
-    self.assertTrue(msg['Subject'], '=?utf-8?q?Trappist?=')
-    self.assertTrue(msg.get_payload(), 'One for you Bob!')
+    self.assertEqual(msg['To'], 'bob@plone.org')
+    self.assertEqual(msg['From'], 'noreply@plone.org')
+    self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
+    self.assertEqual(msg.get_payload(), 'One for you Bob!')
+    mailhost.reset()
 
 
 .. _portal_show_message_example:

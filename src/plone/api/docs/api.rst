@@ -17,15 +17,6 @@ plone.api.content
     :members:
 
 
-.. _plone-api-view:
-
-plone.api.view
-==============
-
-.. automodule:: plone.api.view
-    :members:
-
-
 .. _plone-api-user:
 
 plone.api.user
