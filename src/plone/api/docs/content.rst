@@ -25,10 +25,9 @@ method. The type attribute will automatically decide which content type
     obj = api.content.create(
         type='Document',
         title='My Content',
-        container=portal
-    )
+        container=portal)
 
-The object's ``id`` gets generated (in a safe way) from it's ``title``.
+The ``id`` of the object gets generated (in a safe way) from its ``title``.
 
 .. code-block:: python
 
