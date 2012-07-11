@@ -70,12 +70,13 @@ def create(container=None,
         chooser = INameChooser(container)
         derived_id = id or title
         new_id = chooser.chooseName(derived_id, content)
-        # kacee: we must do a commit, else the renaming fails because
+        # kacee: we must do a partial commit, else the renaming fails because
         # the object isn't in the zodb.
         # Thus if it is not in zodb, there's nothing to move. We should
         # choose a correct id when
         # the object is created.
-        transaction.commit()
+        # maurits: tests run fine without this though.
+        transaction.savepoint(optimistic=True)
         content.aq_parent.manage_renameObject(content_id, new_id)
 
     return content
