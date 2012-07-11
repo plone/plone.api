@@ -81,3 +81,25 @@ def send_email(sender=None, recipient=None, subject=None, body=None, *args):
         charset=encoding,
         immediate=True
     )
+
+
+def localized_time(datetime=None, request=None, *args):
+    raise NotImplementedError
+
+
+def show_message(message=None, type='info', *args):
+    """Display a status message.
+
+    :param message: [required] Message to show.
+    :type message: string
+    :param type: Message type. Possible values: 'info', 'warn', 'error'
+    :type type: string
+    :Example: :ref:`show_message_example`
+    """
+    if args:
+        raise ValueError('Positional arguments are not allowed!')
+
+    if not message:
+        raise ValueError
+
+    raise NotImplementedError

@@ -255,3 +255,30 @@ def transition(obj=None, transition=None, *args):
 
     workflow = getToolByName(getSite(), 'portal_workflow')
     return workflow.doActionFor(obj, transition)
+
+
+def get_view(name=None, context=None, request=None, *args):
+    """Get a BrowserView object.
+
+    :param name: [required] Name of the view.
+    :type name: string
+    :param context: [required] Context on which to get view.
+    :type context: TODO: hm?
+    :param request: [required] Request on which to get view.
+    :type request: TODO: hm?
+    :Example: :ref:`view_get_example`
+    """
+
+    if args:
+        raise ValueError('Positional arguments are not allowed!')
+
+    if not name:
+        raise ValueError
+
+    if not context:
+        raise ValueError
+
+    if not request:
+        raise ValueError
+
+    raise NotImplementedError
