@@ -1,5 +1,6 @@
 *.pyc
 /.installed.cfg
+/local.cfg
 /bin/
 /develop-eggs/
 /docs/
