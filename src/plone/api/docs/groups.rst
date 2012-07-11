@@ -70,10 +70,10 @@ are changed for the staff group.
 
     group_tool = api.portal.get_tool('portal_groups')
     group_tool.editGroup(
-        groupname='staff',
+        'staff',
+        roles=['Editor', 'Reader'],
         title='Staff',
         description='Just a description',
-        roles=['Editor', 'Reader']
     )
 
     group = api.group.get(groupname='staff')
