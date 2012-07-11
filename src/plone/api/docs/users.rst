@@ -1,13 +1,15 @@
+.. module:: plone
+
 Users
 =====
 
-.. _create_user_example:
+.. _user_create_example:
 
 Create user
 -----------
 
-If your portal is configured to use emails as usernames you just need to pass
-in the email of the new user.
+Using :meth:`api.user.create`, ff your portal is configured to use emails as
+usernames you just need to pass in the email of the new user.
 
 .. invisible-code-block:: python
 
@@ -35,7 +37,7 @@ Otherwise, you also need to pass in the username of the new user.
 .. invisible-code-block:: python
 
     self.assertEquals(user.id, 'jane')
-    self.assertEquals(api.user.get_property(user=user, name='email'), 'jane@plone.org')
+    self.assertEquals(user.getProperty('email'), 'jane@plone.org')
 
 
 To set user properties when creating a new user, pass in a properties dict.
@@ -46,12 +48,16 @@ To set user properties when creating a new user, pass in a properties dict.
         fullname='Bob',
         location='Munich',
     )
-    user = api.user.create_user(username='bob', email='bob@plone.org', properties=properties)
+    user = api.user.create_user(
+        username='bob',
+        email='bob@plone.org',
+        properties=properties
+    )
 
 .. invisible-code-block:: python
 
-    self.assertEquals(api.user.get_property(user=user, name='fullname'), 'Bob')
-    self.assertEquals(api.user.get_property(user=user, name='location'), 'Munich')
+    self.assertEquals(api.user.getProperty('fullname'), 'Bob')
+    self.assertEquals(api.user.getProperty('location'), 'Munich')
 
 
 Besides user properties you can also specify a password for the new user.
@@ -59,17 +65,19 @@ Otherwise a random 8-char alphanumeric password will be generated.
 
 .. code-block:: python
 
-    user = api.user.create_user(username='noob', email='noob@plone.org', password='secret')
+    user = api.user.create(
+        username='noob',
+        email='noob@plone.org',
+        password='secret'
+    )
 
-.. invisible-code-block:: python
 
-    self.assertEquals(user._getPassword(), 'secret')
-
-
-.. _get_user_example:
+.. _user_get_example:
 
 Get user
 --------
+
+You can get a user with :meth:`api.user.get`.
 
 .. code-block:: python
 
@@ -81,10 +89,12 @@ Get user
     self.assertEquals(user.id, 'bob')
 
 
-.. _get_current_user_example:
+.. _user_get_current_example:
 
 Get currently logged-in user
 ----------------------------
+
+Getting the currently logged-in user is easy with :meth:`api.user.get_current`.
 
 .. code-block:: python
 
@@ -96,13 +106,14 @@ Get currently logged-in user
     self.assertEquals(current.id, 'test_user_1_')
 
 
-.. _is_anonymous_example:
+.. _user_is_anonymous_example:
 
 Check if current user is anonymous
 ----------------------------------
 
 Sometimes you need to trigger or display some piece of information only for
-logged-in users. It's easy to use ``is_anonymous`` to do a basic check for it.
+logged-in users. It's easy to use :meth:`api.user.is_anonymous` to do a basic
+check for it.
 
 .. code-block:: python
 
@@ -116,10 +127,12 @@ logged-in users. It's easy to use ``is_anonymous`` to do a basic check for it.
     self.assertTrue(trigger)
 
 
-.. _get_all_users_example:
+.. _user_get_all_example:
 
 Get all users
 -------------
+
+Get all users in your portal with :meth:`api.user.get_all`.
 
 .. code-block:: python
 
@@ -131,13 +144,13 @@ Get all users
     self.assertEquals(users[0].id, 'test_user_1_')
 
 
-.. _delete_user_example:
+.. _user_delete_example:
 
 Delete user
 -----------
 
-To delete a user, use ``delete`` and pass in either the username or the
-user object you want to delete.
+To delete a user, use :meth:`api.user.delete` and pass in either the username or
+the user object you want to delete.
 
 .. code-block:: python
 
@@ -160,14 +173,14 @@ user object you want to delete.
     self.assertNone(api.user.get(username='unwanted'))
 
 
-.. _change_password_example:
+.. _user_change_password_example:
 
 Change user's password
 ----------------------
 
-To change a user's password, use ``change_password`` and pass in either the
-username or the user object you want to change password for, plus the password
-you want the new user to have.
+To change a user's password, use :meth:`api.user.change_passwrd` and pass in
+either the username or the user object you want to change password for, plus the
+password you want the new user to have.
 
 If you don't pass in any password, a random one will be generated.
 
@@ -230,14 +243,14 @@ plus the name of the property and it's new value.
     self.assertEquals(bob.getProperty('email'), 'Bob Smith', 'bob@plone.com')
 
 
-.. _has_role_example:
+.. _user_has_role_example:
 
 Check for role
 --------------
 
-Again on the security aspects, checking if a user has a certain role goes
-like this. If you omit the ``user`` parameter, the currently logged-in
-user will be used.
+Again on the security aspects, checking if a user has a certain role can be done
+with :meth:`api.user.has_role`. If you omit the ``user`` parameter, the
+currently logged-in user will be used.
 
 .. code-block:: python
 
@@ -251,13 +264,14 @@ user will be used.
     self.assertFalse(trigger)
 
 
-.. _has_permission_example:
+.. _user_has_permission_example:
 
 Check for permission
 --------------------
 
-Likewise, you can also check if a user has a certain permission. Omitting the
-``user`` parameter means the currently logged-in user will be used.
+Likewise, you can also check if a user has a certain permission with
+:meth:`api.user.has_permission`. Omitting the ``user`` parameter means the
+currently logged-in user will be used.
 
 .. code-block:: python
 

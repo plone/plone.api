@@ -1,1 +1,2 @@
-See `docs/README.rst <http://readthedocs.org/docs/ploneapi/en/latest/index.html>`_.
+Please read the full documentation at
+`ReadTheDocs <http://readthedocs.org/docs/ploneapi/en/latest/index.html>`_.

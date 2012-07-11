@@ -6,7 +6,8 @@ Portal
 Get portal url
 --------------
 
-A shortcut to getting the portal's url is now always at hand.
+A shortcut to getting the portal's url is now always at hand:
+:meth:`api.portal.url`.
 
 .. code-block:: python
 
@@ -23,7 +24,7 @@ A shortcut to getting the portal's url is now always at hand.
 Get portal object
 -----------------
 
-Getting the Plone portal object goes like this:
+Getting the Plone portal object is easy with :meth:`api.portal.get`.
 
 .. code-block:: python
 
@@ -41,8 +42,8 @@ Getting the Plone portal object goes like this:
 Get tool
 --------
 
-To get a portal tool in a simple way, just use ``get_tool`` and pass in the
-name of the tool you need.
+To get a portal tool in a simple way, just use :meth:`api.portal.get_tool` and
+pass in the name of the tool you need.
 
 .. code-block:: python
 
@@ -59,7 +60,7 @@ name of the tool you need.
 Send E-Mail
 -----------
 
-To send an e-mail use ``send_email``:
+To send an e-mail use :meth:`api.portal.send_email`:
 
 .. Todo: Add example for creating a mime-mail
 
@@ -105,7 +106,8 @@ To send an e-mail use ``send_email``:
 Show notification message
 -------------------------
 
-This is how to show a notification message to the user.
+The :meth:`api.portal.show_message` helps yout to show a notification message to
+the user.
 
 .. code-block:: python
 
@@ -127,8 +129,23 @@ Localized time
 --------------
 
 To display a date/time in a user-friendly way, localized to the user's prefered
-language, use the following:
+language, use :meth:`api.portal.localized_time`.
 
 .. code-block:: python
 
-    # TODO: don't yet know how this will look
+    from plone import api
+    from DateTime import DateTime
+    today = DateTime()
+    api.portal.localized_time(datetime=today, request=request)
+
+.. invisible-code-block:: python
+
+    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
+        request=request, long_format=True, time_only=False)
+    self.assertEqual(result, 'Dec 31, 1999 11:59 PM')
+    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
+        request=request, time_only=True)
+    self.assertEqual(result, '11:59 PM')
+    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
+        request=request)
+    self.assertEqual(result, 'Dec 31, 1999')

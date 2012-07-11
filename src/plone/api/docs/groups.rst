@@ -1,12 +1,14 @@
+.. module:: plone
+
 Groups
 ======
 
-.. _create_group_example:
+.. _group_create_example:
 
 Create group
 ------------
 
-The ``add_user`` method accepts the groupname of the group you want to add.
+To create a new portal group, use :meth:`api.group.create`.
 
 .. code-block:: python
 
@@ -39,10 +41,12 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
     assert 'Readers' in group.getRoles()
     assert 'Site Administrators' in group.getMemberIds()
 
-.. _get_group_example:
+.. _group_get_example:
 
 Get group
 ---------
+
+To get a group by it's name, use :meth:`api.group.get`.
 
 .. code-block:: python
 
@@ -54,7 +58,7 @@ Get group
     self.assertEquals(group.id, 'staff')
 
 
-.. _get_all_groups_example:
+.. __groups_get_all_example:
 
 Editing a group
 ---------------
@@ -89,6 +93,8 @@ are changed for the staff group.
 Get all groups
 --------------
 
+You can also get all groups, by using :meth:`api.group.get_all`.
+
 .. code-block:: python
 
     from plone import api
@@ -99,13 +105,13 @@ Get all groups
     self.assertEquals(groups[0].id, 'Administrators')
 
 
-.. _delete_group_example:
+.. _group_delete_example:
 
 Delete group
 ------------
 
-To delete a group, use ``delete`` and pass in either the groupname or the
-group object you want to delete.
+To delete a group, use :meth:`api.group.delete` and pass in either the groupname
+or the group object you want to delete.
 
 .. code-block:: python
 

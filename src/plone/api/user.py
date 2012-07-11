@@ -24,7 +24,7 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     :type properties: dict
     :returns: Newly created user
     :rtype: MemberData object
-    :Example: :ref:`create_user_example`
+    :Example: :ref:`user_create_example`
     """
     if args:
         raise ValueError("Positional arguments are not allowed!")
@@ -71,7 +71,7 @@ def get(username=None, *args):
     :type username: string
     :returns: User
     :rtype: MemberData object
-    :Example: :ref:`get_user_example`
+    :Example: :ref:`user_get_example`
     """
 
     if args:
@@ -89,7 +89,7 @@ def get_current():
 
     :returns: Currently logged-in user
     :rtype: MemberData object
-    :Example: :ref:`get_current_user_example`
+    :Example: :ref:`user_get_current_example`
     """
     portal_membership = getToolByName(getSite(), 'portal_membership')
     return portal_membership.getAuthenticatedMember()
@@ -100,7 +100,7 @@ def get_all():
 
     :returns: All users
     :rtype: List of MemberData objects
-    :Example: :ref:`get_all_users_example`
+    :Example: :ref:`users_get_all_example`
     """
     portal_membership = getToolByName(getSite(), 'portal_membership')
     return portal_membership.listMembers()
@@ -116,7 +116,7 @@ def delete(username=None, user=None, *args):
     :type username: string
     :param user: User object to be deleted.
     :type user: MemberData object
-    :Example: :ref:`delete_user_example`
+    :Example: :ref:`user_delete_example`
     """
 
     if args:
@@ -169,7 +169,7 @@ def is_anonymous():
 
     :returns: True if the current user is anonymous, False otherwise.
     :rtype: bool
-    :Example: :ref:`is_anonymous_example`
+    :Example: :ref:`user_is_anonymous_example`
     """
     return getToolByName(getSite(), 'portal_membership').isAnonymousUser()
 
@@ -189,7 +189,7 @@ def has_role(role=None, username=None, user=None, *args):
     :type user: MemberData object
     :returns: True if user has the specified role, False otherwise.
     :rtype: bool
-    :Example: :ref:`has_role_example`
+    :Example: :ref:`user_has_role_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
@@ -222,7 +222,7 @@ def has_permission(permission=None, username=None, user=None,
     :type object: object
     :returns: True if user has the specified permission, False otherwise.
     :rtype: bool
-    :Example: :ref:`has_permission_example`
+    :Example: :ref:`user_has_permission_example`
     """
     if args:
         raise ValueError('Positional arguments are not allowed!')
