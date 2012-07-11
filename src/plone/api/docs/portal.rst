@@ -97,10 +97,11 @@ To send an e-mail use :meth:`api.portal.send_email`:
 
     from email import message_from_string
     msg = message_from_string(mailhost.messages[0])
-    self.assertTrue(msg['To'], 'bob@plone.org')
-    self.assertTrue(msg['From'], 'noreply@plone.org')
-    self.assertTrue(msg['Subject'], '=?utf-8?q?Trappist?=')
-    self.assertTrue(msg.get_payload(), 'One for you Bob!')
+    self.assertEqual(msg['To'], 'bob@plone.org')
+    self.assertEqual(msg['From'], 'noreply@plone.org')
+    self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
+    self.assertEqual(msg.get_payload(), 'One for you Bob!')
+    mailhost.reset()
 
 
 .. _portal_show_message_example:
