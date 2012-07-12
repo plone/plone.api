@@ -218,6 +218,9 @@ class TestPloneApiContent(unittest.TestCase):
         assert container['about']['link-to-blog-1']
         assert 'link-to-blog' not in container.keys()
 
+        api.content.move(source=self.conference, id='conference-renamed')
+        self.assertEqual(self.conference.id, 'conference-renamed')
+
     def test_copy_constraints(self):
         """ Test the constraints for moving content """
 
