@@ -9,6 +9,7 @@ from Products.CMFCore.utils import getToolByName
 
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.app.testing import logout
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import setRoles
@@ -21,7 +22,8 @@ class TestPloneApiUser(unittest.TestCase):
 
     def setUp(self):
         self.portal = self.layer['portal']
-        self.portal_membership = getToolByName(self.portal, 'portal_membership')
+        self.portal_membership = getToolByName(
+            self.portal, 'portal_membership')
 
     def test_create_no_email(self):
         """ Test that exception is raised if no email is given """
@@ -199,6 +201,30 @@ class TestPloneApiUser(unittest.TestCase):
             ['AuthenticatedUsers']
         )
 
+    def test_is_anonymous(self):
+        """ """
+        self.assertEqual(api.user.is_anonymous(), False)
+        logout()
+        self.assertEqual(api.user.is_anonymous(), True)
+
+    def test_has_role_constraints(self):
+        """ """
+        # must provide a role
+        self.assertRaises(ValueError, api.user.has_role)
+
+        # username and user are mutually exclusive
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret'
+        )
+
+        self.assertRaises(
+            ValueError,
+            api.user.has_role,
+            role='Member', username=user.id, user=user
+        )
+
     def test_has_role_specific_user(self):
         """ Tests user roles lookup for a specific user"""
 
@@ -307,4 +333,3 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.has_permission(
                 permission=ModifyPortalContent, object=self.portal)
         )
-
