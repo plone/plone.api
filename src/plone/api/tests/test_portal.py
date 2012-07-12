@@ -112,6 +112,21 @@ class TestPloneApiPortal(unittest.TestCase):
             subject="Trappist",
             body=u"One for you Bob!")
 
+    @mock.patch('plone.api.portal.parseaddr')
+    def test_send_email_parseaddr(self, mock_parseaddr):
+        """ Simulate faulty parsing in parseaddr, from_address should be
+        default email_from_address.
+        """
+
+        self.mailhost.reset()
+
+        mock_parseaddr.return_value = ('Chuck Norris', 'chuck@norris.org')
+        portal.send_email(
+            recipient="bob@plone.org",
+            subject="Trappist",
+            body=u"One for you Bob!",
+        )
+
     def test_localized_time_constraints(self):
         """ Test the constraints for localized_time. """
 
