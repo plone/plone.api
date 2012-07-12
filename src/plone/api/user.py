@@ -1,4 +1,5 @@
 """ Module that provides functionality for user manipulation """
+from AccessControl.ImplPython import rolesForPermissionOn
 
 from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
@@ -222,5 +223,8 @@ def has_permission(permission=None, username=None, user=None,
     if username:
         user = portal_membership.getMemberById(username)
 
-    # TODO: this doesn't work because it checks te permission for the current user
-    return portal_membership.checkPermission(permission, object)
+    if not user or user == portal_membership.getAuthenticatedMember():
+        return portal_membership.checkPermission(permission, object)
+    else:
+        roles = rolesForPermissionOn(permission, object)
+        return user.allowed(object, roles)

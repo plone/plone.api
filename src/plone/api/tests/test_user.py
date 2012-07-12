@@ -155,13 +155,10 @@ class TestPloneApiUser(unittest.TestCase):
 
         self.assertEqual(users, ['chuck', 'test-user'])
 
-    def test_has_permission(self):
+    def test_has_permission_contraints(self):
         """ Tests user permission lookup """
 
-        self.assertRaises(
-            ValueError,
-            api.user.has_permission
-        )
+        self.assertRaises(ValueError, api.user.has_permission)
         # Must supply object
         self.assertRaises(
             ValueError,
@@ -178,6 +175,9 @@ class TestPloneApiUser(unittest.TestCase):
             user=mock.Mock()
         )
 
+    def test_has_permission_specific_user(self):
+        """ Tests user permission lookup for a specific user"""
+
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -185,16 +185,45 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         self.assertTrue(
+            api.user.has_permission(permission='View', user=user, object=self.portal)
+        )
+        self.assertTrue(
+            api.user.has_permission(permission='View', username='chuck', object=self.portal)
+        )
+        self.assertFalse(
             api.user.has_permission(
-                permission='View',
-                user=user,
-                object=self.portal
+                permission='Modify portal content', user=user, object=self.portal
             )
+        )
+        self.assertFalse(
+            api.user.has_permission(
+                permission='Modify portal content', username='chuck', object=self.portal
+            )
+        )
+
+    def test_has_permission_current_user(self):
+        """ Tests user permission lookup for a specific user"""
+
+        mtool = api.portal.get_tool('portal_membership')
+        user = mtool.getAuthenticatedMember()
+
+        self.assertTrue(
+            api.user.has_permission(permission='View', user=user, object=self.portal)
+        )
+        self.assertTrue(
+            api.user.has_permission(permission='View', username=user.id, object=self.portal)
+        )
+        self.assertTrue(
+            api.user.has_permission(permission='View', object=self.portal)
         )
         self.assertTrue(
             api.user.has_permission(
-                permission='Modify portal content',
-                user=user,
-                object=self.portal
-            )
+                permission='Modify portal content', user=user, object=self.portal)
+        )
+        self.assertTrue(
+            api.user.has_permission(
+                permission='Modify portal content', username=user.id, object=self.portal)
+        )
+        self.assertTrue(
+            api.user.has_permission(permission='Modify portal content', object=self.portal)
         )
