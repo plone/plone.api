@@ -254,11 +254,11 @@ to get groups for.
 .. code-block:: python
 
     from plone import api
+    api.group.add_user(groupname='Reviewers', username='bob')
     groups = api.user.get_groups(username='bob')
 
 .. invisible-code-block:: python
 
-    self.assertEquals(groups, ['staff', ])
-
+    assert 'Reviewers' in groups
 
 .. _add_user_to_group_example:
