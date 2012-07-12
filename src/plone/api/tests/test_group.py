@@ -18,6 +18,7 @@ class TestPloneApiGroup(unittest.TestCase):
         """  """
         self.portal = self.layer['portal']
         self.group_tool = getToolByName(self.portal, 'portal_groups')
+        self.portal_membership = getToolByName(self.portal, 'portal_membership')
 
     def test_create_contraints(self):
         """ Test the contraints for creating a group """
