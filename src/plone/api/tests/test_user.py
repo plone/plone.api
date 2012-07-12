@@ -12,7 +12,6 @@ from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, TEST_USER_PASSWORD
 from plone.app.testing import setRoles
 
 
-
 class TestPloneApiUser(unittest.TestCase):
     """Test plone.api.user"""
 

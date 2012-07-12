@@ -197,6 +197,7 @@ def has_role(role=None, username=None, user=None):
     else:
         return role in user.getRoles()
 
+
 def has_permission(permission=None, username=None, user=None,
                    object=None):
     """Check if the user has the specified permission in the given context.

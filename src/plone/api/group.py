@@ -126,7 +126,6 @@ def add_user(groupname=None, group=None, username=None, user=None):
     portal_groups.addPrincipalToGroup(user_id, group_id)
 
 
-
 def delete_user(groupname=None, group=None, username=None, user=None):
     """Remove the user from a group.
 

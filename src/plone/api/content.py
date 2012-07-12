@@ -148,7 +148,7 @@ def move(source=None, target=None, id=None, strict=True, **kwargs):
     if target:
         target.manage_pasteObjects(source.manage_cutObjects(source_id))
     else:
-         target = source
+        target = source
 
     if id:
         if strict:

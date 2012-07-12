@@ -205,4 +205,3 @@ class TestPloneApiGroup(unittest.TestCase):
 
         assert 'bob' not in group.getMemberIds()
         assert 'jane' not in group.getMemberIds()
-
