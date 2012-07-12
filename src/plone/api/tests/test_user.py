@@ -94,7 +94,8 @@ class TestPloneApiUser(unittest.TestCase):
 
         # This should fail either an username or user object should be given
         self.assertRaises(ValueError, api.user.delete)
-        self.assertRaises(ValueError, api.user.delete, username='chuck@norris.org', user=mock.Mock())
+        self.assertRaises(ValueError, api.user.delete,
+                          username='chuck@norris.org', user=mock.Mock())
 
         api.user.create(email='chuck@norris.org', password='secret')
         api.user.delete(username='unwanted@norris.org')
@@ -112,6 +113,41 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(username='steven', password='secret',
                                email='steven@example.org')
         api.user.delete(user=user)
+
+    def test_get_groups_constraints(self):
+        """ Test that exception is raised if wrong arguments are given """
+
+        # must provide username or user
+        self.assertRaises(ValueError, api.user.get_groups)
+
+        # username and user are mutually exclusive
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret'
+        )
+        self.assertRaises(
+            ValueError,
+            api.user.get_groups,
+            username='chuck', user=user
+        )
+
+    def test_get_groups(self):
+        """ Test getting groups for a user/username """
+        user = api.user.create(
+            username='chuck',
+            password='secret',
+            email='chuck@norris.org'
+        )
+
+        self.assertEqual(
+            api.user.get_groups(user=user),
+            ['AuthenticatedUsers']
+        )
+        self.assertEqual(
+            api.user.get_groups(username='chuck'),
+            ['AuthenticatedUsers']
+        )
 
     def test_create_roles(self):
         """ Test if user has the right roles set """
@@ -221,10 +257,12 @@ class TestPloneApiUser(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
         self.assertTrue(
-            api.user.has_permission(permission=View, user=user, object=self.portal)
+            api.user.has_permission(
+                permission=View, user=user, object=self.portal)
         )
         self.assertTrue(
-            api.user.has_permission(permission=View, username=user.id, object=self.portal)
+            api.user.has_permission(
+                permission=View, username=user.id, object=self.portal)
         )
         self.assertFalse(
             api.user.has_permission(
@@ -233,7 +271,8 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertFalse(
             api.user.has_permission(
-                permission=ModifyPortalContent, username=user.id, object=self.portal
+                permission=ModifyPortalContent, username=user.id,
+                object=self.portal
             )
         )
 
@@ -244,10 +283,12 @@ class TestPloneApiUser(unittest.TestCase):
         user = mtool.getAuthenticatedMember()
 
         self.assertTrue(
-            api.user.has_permission(permission=View, user=user, object=self.portal)
+            api.user.has_permission(
+                permission=View, user=user, object=self.portal)
         )
         self.assertTrue(
-            api.user.has_permission(permission=View, username=user.id, object=self.portal)
+            api.user.has_permission(
+                permission=View, username=user.id, object=self.portal)
         )
         self.assertTrue(
             api.user.has_permission(permission=View, object=self.portal)
@@ -258,8 +299,10 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertTrue(
             api.user.has_permission(
-                permission=ModifyPortalContent, username=user.id, object=self.portal)
+                permission=ModifyPortalContent, username=user.id,
+                object=self.portal)
         )
         self.assertTrue(
-            api.user.has_permission(permission=ModifyPortalContent, object=self.portal)
+            api.user.has_permission(
+                permission=ModifyPortalContent, object=self.portal)
         )
