@@ -18,7 +18,8 @@ class TestPloneApiGroup(unittest.TestCase):
         """  """
         self.portal = self.layer['portal']
         self.group_tool = getToolByName(self.portal, 'portal_groups')
-        self.portal_membership = getToolByName(self.portal, 'portal_membership')
+        self.portal_membership = getToolByName(
+            self.portal, 'portal_membership')
 
     def test_create_contraints(self):
         """ Test the contraints for creating a group """
@@ -61,8 +62,12 @@ class TestPloneApiGroup(unittest.TestCase):
         assert 'Editor' in ham_group.getRoles()
         assert 'Reviewer' in ham_group.getMemberIds()
 
+    def test_get_constraints(self):
+        """ Test the constraints for geting a group """
+        self.assertRaises(ValueError, api.group.get)
+
     def test_get(self):
-        """ Test adding of a group """
+        """ Test getting a group """
 
         # This should fail because the groupname is mandatory
         self.assertRaises(ValueError, api.group.create)
@@ -77,9 +82,9 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
     def test_get_all(self):
-        """ Test adding of a group """
+        """ Test getting all groups """
 
-        groups = self.group_tool.listGroups()
+        groups = api.group.get_all()
         self.assertEqual(len(groups), 4)
 
     def test_delete_contraints(self):
@@ -98,12 +103,20 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
     def test_delete(self):
-        """ Test adding of a group """
+        """ Test deleting a group """
 
+        # Test deleting a group by passing in a groupname
         api.group.create(groupname='bacon')
         assert api.group.get('bacon')
 
-        api.group.delete('bacon')
+        api.group.delete(groupname='bacon')
+        assert not api.group.get('bacon')
+
+        # Test deleting a group by passing in a group object
+        group = api.group.create(groupname='bacon')
+        assert api.group.get('bacon')
+
+        api.group.delete(group=group)
         assert not api.group.get('bacon')
 
     def test_add_user_contraints(self):
@@ -154,7 +167,6 @@ class TestPloneApiGroup(unittest.TestCase):
 
         assert 'bob' in group.getMemberIds()
         assert 'jane' in group.getMemberIds()
-
 
     def test_delete_user_contraints(self):
         """ Test the constraints when a user is deleted from a group """
