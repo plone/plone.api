@@ -196,7 +196,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertFalse(api.user.has_role(role='Manager', username=user.id))
 
     def test_has_role_current_user(self):
-        """ Tests user permission lookup for a specific user"""
+        """ Tests user roles lookup for a specific user"""
 
         mtool = api.portal.get_tool('portal_membership')
         user = mtool.getAuthenticatedMember()

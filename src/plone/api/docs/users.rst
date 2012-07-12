@@ -189,14 +189,22 @@ currently logged-in user will be used.
 .. code-block:: python
 
     from plone import api
-    if not api.user.has_role(username='bob', role='Manager'):
-        trigger = False
-    trigger = True
+    has_role = api.user.has_role(username='bob', role='Manager')
 
 .. invisible-code-block:: python
 
-    self.assertFalse(trigger)
+    self.assertFalse(has_role)
 
+When user is omitted the current user is used for role lookup.
+
+.. code-block:: python
+
+    from plone import api
+    has_role = api.user.has_role(role='Manager')
+
+.. invisible-code-block:: python
+
+    self.assertTrue(has_role)
 
 .. _user_has_permission_example:
 
@@ -210,14 +218,30 @@ currently logged-in user will be used.
 .. code-block:: python
 
     from plone import api
-    if not api.user.has_permission(username='bob', permission='Manage portal content'):
-        trigger = False
-    trigger = True
+
+    has_perm = api.user.has_permission(
+        username='bob',
+        permission='Manage portal content',
+        object=api.portal.get()
+    )
 
 .. invisible-code-block:: python
 
-    self.assertFalse(trigger)
+    self.assertFalse(has_perm)
 
+When user is omitted the current user is used for the permission check.
+
+.. code-block:: python
+
+    from plone import api
+    has_perm = api.user.has_permission(
+        permission='Manage portal content',
+        object=api.portal.get()
+    )
+
+.. invisible-code-block:: python
+
+    self.assertTrue(has_perm)
 
 .. _get_groups_for_user_example:
 
