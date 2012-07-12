@@ -16,7 +16,7 @@ def create(groupname=None,
     :type title: string
     :param description: Description of the new group
     :type description: string
-    :param roles: Roles that belong to this group
+    :param roles: Roles to assign to this group
     :type roles: list
     :param groups: Groups that belong to this group
     :type groups: list
@@ -52,7 +52,7 @@ def get(groupname=None):
 
 
 def get_all():
-    """Returns all groups.
+    """Get all groups.
 
     :returns: All groups
     :rtype: List of GroupData objects
@@ -91,19 +91,19 @@ def delete(groupname=None, group=None):
 def add_user(groupname=None, group=None, username=None, user=None):
     """Add the user to a group.
 
-    Arguments ``groupname`` and ``group`` are also mutually exclusive. You can
+    Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both.
+    Arguments ``username`` and ``user`` are mutually exclusive. You can
+    either set one or the other, but not both.
 
-    :param groupname: Group name of the group to which to join the user.
+    :param groupname: Name of the group to which to add the user.
     :type groupname: string
-    :param group: Group to which to join the user.
+    :param group: Group to which to add the user.
     :type group: GroupData object
-    :param username: Username of the user to join the group.
+    :param username: Username of the user to add to the group.
     :type username: string
-    :param user: User to join the group.
+    :param user: User to add to the group.
     :type user: MemberData object
 
     :Example: :ref:`add_user_to_group_example`
@@ -135,13 +135,13 @@ def delete_user(groupname=None, group=None, username=None, user=None):
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
 
-    :param groupname: Group name of the group from which to remove the user.
+    :param groupname: Name of the group to remove the user from.
     :type groupname: string
-    :param group: Group from which to remove the user.
+    :param group: Group to remove the user from.
     :type group: GroupData object
-    :param username: Username of the user to leave the group.
+    :param username: Username of the user to delete from the group.
     :type username: string
-    :param user: User to leave the group.
+    :param user: User to delete from the group.
     :type user: MemberData object
 
     :Example: :ref:`delete_user_from_group_example`
