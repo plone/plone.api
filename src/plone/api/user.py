@@ -186,8 +186,16 @@ def has_role(role=None, username=None, user=None):
     if username and user:
         raise ValueError
 
-    raise NotImplementedError
+    portal_membership = getToolByName(getSite(), 'portal_membership')
+    current_user = portal_membership.getAuthenticatedMember()
 
+    if username:
+        user = portal_membership.getMemberById(username)
+
+    if not user or user == current_user:
+        return role in current_user.getRoles()
+    else:
+        return role in user.getRoles()
 
 def has_permission(permission=None, username=None, user=None,
                    object=None):
@@ -219,7 +227,7 @@ def has_permission(permission=None, username=None, user=None,
     if not object:
         raise ValueError
 
-    portal_membership = getToolByName(object, 'portal_membership')
+    portal_membership = getToolByName(getSite(), 'portal_membership')
     if username:
         user = portal_membership.getMemberById(username)
 

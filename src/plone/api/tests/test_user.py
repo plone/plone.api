@@ -5,6 +5,8 @@ import unittest
 
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, TEST_USER_PASSWORD
+from plone.app.testing import setRoles
 
 
 class TestPloneApiUser(unittest.TestCase):
@@ -175,14 +177,45 @@ class TestPloneApiUser(unittest.TestCase):
             user=mock.Mock()
         )
 
-    def test_has_permission_specific_user(self):
-        """ Tests user permission lookup for a specific user"""
+    def test_has_role_specific_user(self):
+        """ Tests user roles lookup for a specific user"""
 
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
             password='secret',
         )
+
+        self.assertTrue(api.user.has_role(role='Member', user=user))
+        self.assertTrue(api.user.has_role(role='Member', username=user.id))
+        self.assertFalse(api.user.has_role(role='Manager', user=user))
+        self.assertFalse(api.user.has_role(role='Manager', username=user.id))
+
+    def test_has_role_current_user(self):
+        """ Tests user permission lookup for a specific user"""
+
+        mtool = api.portal.get_tool('portal_membership')
+        user = mtool.getAuthenticatedMember()
+
+        setRoles(self.portal, TEST_USER_ID, ['Member', 'Manager'])
+
+        self.assertTrue(api.user.has_role(role='Member', user=user))
+        self.assertTrue(api.user.has_role(role='Member', username=user.id))
+        self.assertTrue(api.user.has_role(role='Member'))
+        self.assertTrue(api.user.has_role(role='Manager', user=user))
+        self.assertTrue(api.user.has_role(role='Manager', username=user.id))
+        self.assertTrue(api.user.has_role(role='Manager'))
+
+    def test_has_permission_specific_user(self):
+        """ Tests user roles lookup for a specific user"""
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
         self.assertTrue(
             api.user.has_permission(permission='View', user=user, object=self.portal)
