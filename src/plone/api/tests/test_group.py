@@ -205,3 +205,16 @@ class TestPloneApiGroup(unittest.TestCase):
 
         assert 'bob' not in group.getMemberIds()
         assert 'jane' not in group.getMemberIds()
+
+    def test_get_groups(self):
+        """ Test retrieving of groups """
+        user = self.portal_membership.getAuthenticatedMember()
+
+        api.group.create(groupname='staff')
+        api.group.add_user(groupname='staff', user=user)
+
+        assert 'AuthenticatedUsers' in api.user.get_groups(user=user)
+        assert 'staff' in api.user.get_groups(user=user)
+
+        assert 'AuthenticatedUsers' in api.user.get_groups(username=user.id)
+        assert 'staff' in api.user.get_groups(username=user.id)
