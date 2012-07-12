@@ -5,6 +5,7 @@ from Products.CMFCore.permissions import View
 
 import unittest
 import mock
+from Products.CMFCore.utils import getToolByName
 
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
@@ -19,6 +20,7 @@ class TestPloneApiUser(unittest.TestCase):
 
     def setUp(self):
         self.portal = self.layer['portal']
+        self.portal_membership = getToolByName(self.portal, 'portal_membership')
 
     def test_create_no_email(self):
         """ Test that exception is raised if no email is given """
@@ -197,8 +199,7 @@ class TestPloneApiUser(unittest.TestCase):
     def test_has_role_current_user(self):
         """ Tests user roles lookup for a specific user"""
 
-        mtool = api.portal.get_tool('portal_membership')
-        user = mtool.getAuthenticatedMember()
+        user = self.portal_membership.getAuthenticatedMember()
 
         setRoles(self.portal, TEST_USER_ID, ['Member', 'Manager'])
 
@@ -240,8 +241,7 @@ class TestPloneApiUser(unittest.TestCase):
     def test_has_permission_current_user(self):
         """ Tests user permission lookup for a specific user"""
 
-        mtool = api.portal.get_tool('portal_membership')
-        user = mtool.getAuthenticatedMember()
+        user = self.portal_membership.getAuthenticatedMember()
 
         self.assertTrue(
             api.user.has_permission(permission=View, user=user, object=self.portal)
@@ -263,3 +263,4 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertTrue(
             api.user.has_permission(permission=ModifyPortalContent, object=self.portal)
         )
+
