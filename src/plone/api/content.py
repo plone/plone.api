@@ -82,10 +82,11 @@ def create(container=None,
     return content
 
 
-def get(path=None, UID=None, **kwargs):
+def get(path=None, UID=None):
     """Get an object.
 
-    :param path: Path to the object we want to get, relative to the portal root.
+    :param path: Path to the object we want to get, relative to
+        the portal root.
     :type path: string
     :param UID: UID of the object we want to get.
     :type UID: string
@@ -115,7 +116,7 @@ def get(path=None, UID=None, **kwargs):
         return uuidToObject(UID)
 
 
-def move(source=None, target=None, id=None, strict=True, **kwargs):
+def move(source=None, target=None, id=None, strict=True):
     """Move the object to the target container.
 
     :param source: [required] Object that we want to move.
