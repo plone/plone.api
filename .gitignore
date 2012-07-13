@@ -10,3 +10,6 @@
 /parts/
 /var/
 /src/plone.api.egg-info/
+/.coverage
+/coverage
+/htmlcov

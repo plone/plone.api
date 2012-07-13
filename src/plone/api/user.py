@@ -1,6 +1,5 @@
 """ Module that provides functionality for user manipulation """
 from AccessControl.ImplPython import rolesForPermissionOn
-
 from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
 
@@ -30,6 +29,7 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     if properties is None:
         # Never use a dict as default for a keyword argument.
         properties = {}
+
     # it may happen that someone passes email in the properties dict, catch
     # that and set the email so the code below this works fine
     if not email and properties.get('email'):
@@ -93,7 +93,7 @@ def get_current():
 
 
 def get_all():
-    """Returns all users.
+    """Return all users.
 
     :returns: All users
     :rtype: List of MemberData objects
@@ -109,7 +109,7 @@ def delete(username=None, user=None):
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
 
-    :param username: Username of the to be deleted user.
+    :param username: Username of the user to be deleted.
     :type username: string
     :param user: User object to be deleted.
     :type user: MemberData object
@@ -136,7 +136,7 @@ def get_groups(username=None, user=None):
     :type username: string
     :param user: User for which to return groups.
     :type user: MemberData object
-    :returns: List of group names of groups this user is member of.
+    :returns: List of names of groups this user is a member of.
     :rtype: List of strings
     :Example: :ref:`get_groups_for_user_example`
     """
@@ -200,7 +200,7 @@ def has_role(role=None, username=None, user=None):
 
 def has_permission(permission=None, username=None, user=None,
                    object=None):
-    """Check if the user has the specified permission in the given context.
+    """Check if the user has the specified permission on the given object.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both. If no ``username` or ``user`` are

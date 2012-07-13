@@ -76,7 +76,10 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Check the contraints for id and title parameters
         self.assertRaises(
-            ValueError, api.content.create, container=container, type='Document')
+            ValueError,
+            api.content.create,
+            container=container, type='Document'
+        )
 
     def test_create_dexterity(self):
         """ Test create content based on Dexterity """
@@ -190,6 +193,11 @@ class TestPloneApiContent(unittest.TestCase):
 
         container = self.portal
 
+        # Move contact to the same folder (basically a rename)
+        api.content.move(source=self.contact, id='nu-contact')
+        assert container['about']['nu-contact']
+        assert 'contact' not in container['about'].keys()
+
         # Move team page to portal root
         api.content.move(source=self.team, target=container)
         assert container['team']
@@ -202,12 +210,16 @@ class TestPloneApiContent(unittest.TestCase):
         assert 'team' not in container.keys()
 
         # Test with strict parameter disabled when moving content
-        api.content.create(container=self.about, type='Link', id='link-to-blog')
+        api.content.create(
+            container=self.about, type='Link', id='link-to-blog')
         api.content.move(
             source=self.blog, target=self.about, id='link-to-blog',
             strict=False)
         assert container['about']['link-to-blog-1']
         assert 'link-to-blog' not in container.keys()
+
+        api.content.move(source=self.conference, id='conference-renamed')
+        self.assertEqual(self.conference.id, 'conference-renamed')
 
     def test_copy_constraints(self):
         """ Test the constraints for moving content """
@@ -237,7 +249,8 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(KeyError, container['team'])
 
         # Test the strict parameter disabled when moving content
-        api.content.create(container=self.about, type='Link', id='link-to-blog')
+        api.content.create(
+            container=self.about, type='Link', id='link-to-blog')
 
         api.content.copy(
             source=self.blog, target=self.about, id='link-to-blog',
@@ -277,7 +290,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         self.assertRaises(ValueError, api.content.transition)
         self.assertRaises(ValueError, api.content.transition, obj=mock.Mock())
-        self.assertRaises(ValueError, api.content.transition, transition='publish')
+        self.assertRaises(
+            ValueError, api.content.transition, transition='publish')
 
         api.content.transition(obj=self.blog, transition='publish')
         review_state = api.content.get_state(obj=self.blog)

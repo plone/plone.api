@@ -29,9 +29,9 @@ def url():
 def get_tool(name=None):
     """Get a portal tool in a simple way.
 
-    :param email: [required] Name of the tool you want.
-    :type email: string
-    :returns: portal tool
+    :param name: [required] Name of the tool you want.
+    :type name: string
+    :returns: The tool that was found by name
     :Example: :ref:`portal_get_tool_example`
     """
     if not name:
@@ -93,16 +93,16 @@ def localized_time(datetime=None, request=None, long_format=False,
                    time_only=False):
     """Display a date/time in a user-friendly way.
 
-    It should be localized to the user's prefered language.
+    It should be localized to the user's preferred language.
 
     Note that you can specify both long_format and time_only as True
     (or any other value that can be converted to a boolean True
     value), but time_only then wins: the long_format value is ignored.
 
     :param datetime: [required] Message to show.
-    :type message: DateTime
+    :type datetime: DateTime
     :param request: [required]Request.
-    :type request: TODO: hm?
+    :type request: request object
     :param long_format: When true, show long date format. When false
         (default), show the short date format.
     :type long_format: boolean

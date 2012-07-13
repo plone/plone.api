@@ -17,7 +17,7 @@ def create(container=None,
            title=None,
            strict=True,
            **kwargs):
-    """Create a new content item in ZODB.
+    """Create a new content item.
 
     :param container: [required] Container object in which to create the new
         object.
@@ -35,7 +35,7 @@ def create(container=None,
     :param strict: When True, the given id will be enforced. If the id is
         conflicting with another object in the target container, raise a
         KeyError. When False, ``create`` creates a new, non-conflicting id.
-    :type param: boolean
+    :type strict: boolean
     :returns: Content object
 
     :Example: :ref:`content_create_example`
@@ -82,10 +82,11 @@ def create(container=None,
     return content
 
 
-def get(path=None, UID=None, **kwargs):
+def get(path=None, UID=None):
     """Get an object.
 
-    :param path: Path to the object we want to get, relative to the portal root.
+    :param path: Path to the object we want to get, relative to
+        the portal root.
     :type path: string
     :param UID: UID of the object we want to get.
     :type UID: string
@@ -115,7 +116,7 @@ def get(path=None, UID=None, **kwargs):
         return uuidToObject(UID)
 
 
-def move(source=None, target=None, id=None, strict=True, **kwargs):
+def move(source=None, target=None, id=None, strict=True):
     """Move the object to the target container.
 
     :param source: [required] Object that we want to move.
@@ -133,7 +134,7 @@ def move(source=None, target=None, id=None, strict=True, **kwargs):
     :param strict: When True, the given id will be enforced. If the id is
         conflicting with another object in the target container, raise a
         KeyError. When False, move creates a new, non-conflicting id.
-    :type param: boolean
+    :type strict: boolean
     :Example: :ref:`content_move_example`
     """
     if not source:
@@ -252,9 +253,9 @@ def get_view(name=None, context=None, request=None):
     :param name: [required] Name of the view.
     :type name: string
     :param context: [required] Context on which to get view.
-    :type context: TODO: hm?
+    :type context: context object
     :param request: [required] Request on which to get view.
-    :type request: TODO: hm?
+    :type request: request object
     :Example: :ref:`content_get_view_example`
     """
     if not name:
