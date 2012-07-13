@@ -8,8 +8,9 @@ Users
 Create user
 -----------
 
-Using :meth:`api.user.create`, ff your portal is configured to use emails as
-usernames you just need to pass in the email of the new user.
+To create a new user, use :meth:`api.user.create`. If your portal is
+configured to use emails as usernames, you just need to pass in the email of
+the new user.
 
 .. invisible-code-block:: python
 
@@ -44,7 +45,7 @@ Otherwise, you also need to pass in the username of the new user.
     self.assertEquals(user.getProperty('email'), 'jane@plone.org')
 
 
-To set user properties when creating a new user, pass in a properties dict.
+To set the user properties when creating a new user, pass in a properties dict.
 
 .. code-block:: python
 

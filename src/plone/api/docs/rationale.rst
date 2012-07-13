@@ -93,8 +93,8 @@ in Plone. Plone's original distribution of logic is a result of two things:
 The historic re-use of CMF- and Zope-methods and reasonable, but
 at first hard to understand splits like acl_users.* and portal_memberdata.
 
-So we created some modules with a bunch of useful methods that implement
-best-practice access to the original distributed APIs. In this way we also
+That's why we've created a set of useful methods that implement best-practice
+access to the original distributed APIs. In this way we also
 document in code how to use Plone directly.
 
 .. note ::
@@ -103,9 +103,9 @@ document in code how to use Plone directly.
    an object. With this in mind, it's obvious that even the most simple
    tasks can't be documented in Plone in a sane way.
 
-Also, we don't intend to cover all possible use-cases. Only the absolutely
-most common ones. If you need to do something that `plone.api` does not support,
-just use the underlaying APIs directly. We will cover 20% of tasks that are
+Also, we don't intend to cover all possible use-cases. Only the most common
+ones. If you need to do something that `plone.api` does not support,
+just use the underlying APIs directly. We will cover 20% of tasks that are
 being done 80% of the time, and not one more.
 
 
@@ -119,9 +119,9 @@ We could wrap an object (like a user) with an API to make it more usable
 right now. That would be an alternative to the convenience methods.
 
 But telling developers that they will get yet another object from the API which
-isn't the requested object, but a API-wrapped one instead, would be very hard.
-Also, making this wrap transparent, in order to make the returned object
-directly usable, would be nearly impossible, because we'd have to proxy all the
+isn't the requested object, but an API-wrapped one instead, would be very hard.
+Also, making this wrap transparent in order to make the returned object
+directly usable would be nearly impossible, because we'd have to proxy all the
 :mod:`zope.interface` stuff, annotations and more.
 
 Furthermore, we want to avoid people writing code like this in tests or their

@@ -63,8 +63,8 @@ To get a group by it's name, use :meth:`api.group.get`.
 Editing a group
 ---------------
 
-Using the ``group_tool`` groups can be edited. In this example the title,
-description and roles are changed for the staff group.
+Groups can be edited by using the ``group_tool``. In this example the ``title``,
+``description`` and ``roles`` are updated for the group 'Staff'.
 
 .. code-block:: python
 
@@ -136,7 +136,7 @@ Adding user to group
 --------------------
 
 The ``add_user`` method accepts either the groupname or the group object of the target group and
-the username or the user object you want to make a member of the group
+the username or the user object you want to add to the group.
 
 .. code-block:: python
 

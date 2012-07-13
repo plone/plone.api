@@ -8,7 +8,7 @@ Portal
 Get portal url
 --------------
 
-A shortcut to getting the url of the portal is now always at hand:
+A shortcut for getting the url of the portal is now always at hand:
 :meth:`api.portal.url`.
 
 .. code-block:: python
@@ -112,7 +112,7 @@ To send an e-mail use :meth:`api.portal.send_email`:
 Localized time
 --------------
 
-To display a date/time in a user-friendly way, localized to the user's prefered
+To display the date/time in a user-friendly way, localized to the user's prefered
 language, use :meth:`api.portal.localized_time`.
 
 .. code-block:: python
@@ -134,7 +134,7 @@ language, use :meth:`api.portal.localized_time`.
 Show notification message
 -------------------------
 
-The :meth:`api.portal.show_message` helps you to show a notification message to
+With :meth:`api.portal.show_message` you can show a notification message to
 the user.
 
 .. code-block:: python
