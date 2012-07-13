@@ -47,7 +47,7 @@ Otherwise, you also need to pass in the username of the new user.
     self.assertEquals(user.getProperty('email'), 'jane@plone.org')
 
 
-To set the user properties when creating a new user, pass in a properties dict.
+To set user properties when creating a new user, pass in a properties dict.
 
 .. code-block:: python
 
