@@ -17,6 +17,7 @@ setup(name='plone.api',
       install_requires=[
         'setuptools',
         'Plone',  # this is needed so we can pull docstrings into Sphinx
+        'zope.location<4.0.0',  # needed so autodoc can import
       ],
       extras_require={
         'test': ['plone.app.testing', 'mock'],
