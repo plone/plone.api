@@ -1,5 +1,7 @@
 .. module:: plone
 
+.. _chapter_groups:
+
 Groups
 ======
 

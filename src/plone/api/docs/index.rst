@@ -7,17 +7,21 @@ A Plone API
     The :mod:`plone.api` is an elegant and simple API, built for humans wishing
     to develop with Plone.
 
+    It comes with *cookbook*-like documentation with step-by-step instructions
+    for doing common development tasks in Plone. Recipes try to assume the user
+    does not have extensive knowledge about Plone internals.
 
-When documenting plone, an easy and understandable set of basic functions helps
-to keep the documentation focused on the current task and to keep it simple and
-small.
+The intention of this package is to be transitional. It points out which parts
+of Plone are particularly nasty -- we wish they get fixed so we can deprecate
+*plone.api* methods that cover them up, but leave the documentation in place.
 
-Instead of documenting the ZCA over and over again, we want to describe how to
-work with plone.
+Some parts of documentation already are this way: they don't use *plone.api*
+methods directly, but simply provide guidance on achiving a task using Plone's
+internals. Example: usage of the catalog in :ref:`content_find_example`.
 
-We want a simple entry point for 20% of tasks we do 80% of the time. Keeping
-everything in one place helps keep the API introspectable and discoverable,
-which are important aspects of being Pythonic.
+The intention is to cover 20% of tasks we do 80% of the time. Keeping everything
+in one place helps keep the API introspectable and discoverable, which are
+important aspects of being Pythonic.
 
 
 Narrative documentation
