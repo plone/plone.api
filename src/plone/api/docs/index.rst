@@ -23,6 +23,11 @@ The intention is to cover 20% of tasks we do 80% of the time. Keeping everything
 in one place helps keep the API introspectable and discoverable, which are
 important aspects of being Pythonic.
 
+.. warning::
+
+    This package is still under heavy development. Do not use it yet unless you
+    are completely sure what you are doing.
+
 
 Narrative documentation
 =======================

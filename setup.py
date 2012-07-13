@@ -1,10 +1,17 @@
 from setuptools import setup, find_packages
 
+import os
+
+
+def read(*rnames):
+    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+
 version = '1.0a1'
 
 setup(name='plone.api',
       version=version,
       description='A Plone API.',
+      long_description=read('README.rst'),
       author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
       license='GPL version 2',
