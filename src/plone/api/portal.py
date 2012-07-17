@@ -140,4 +140,4 @@ def show_message(message=None, request=None, type='info'):
     if not request:
         raise ValueError
 
-    IStatusMessage(request).addStatusMessage(message, type=type)
+    IStatusMessage(request).add(message, type=type)
