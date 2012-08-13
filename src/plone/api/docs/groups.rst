@@ -173,7 +173,7 @@ group and either the username or the user object you want to remove from the gro
 
     group = api.group.get(groupname='staff')
     user = api.user.get(username='jane')
-    api.group.delete_user( group=group, user=user)
+    api.group.delete_user(group=group, user=user)
 
 .. invisible-code-block:: python
 
