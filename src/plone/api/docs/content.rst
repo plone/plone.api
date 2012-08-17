@@ -2,7 +2,9 @@
 
     foo
 
-    bar
+    .. code-block:: python
+        
+        bar
 
 
 .. module:: plone
