@@ -27,6 +27,7 @@ setup(name='plone.api',
         'zope.location<4.0.0',  # needed so autodoc can import
       ],
       extras_require={
+        'develop': ['Sphinx', 'manuel', '', 'pep8', 'setuptools-flakes',],
         'test': ['plone.app.testing', 'mock'],
       },
       classifiers=[
