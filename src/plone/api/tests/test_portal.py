@@ -51,11 +51,19 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(ValueError, portal.get_tool)
 
     def test_get_tool(self):
-        self.assertEqual(portal.get_tool(name='portal_catalog'),
-            getToolByName(self.portal, 'portal_catalog'))
-        self.assertEqual(portal.get_tool(name='portal_membership'),
-            getToolByName(self.portal, 'portal_membership'))
-        self.assertRaises(AttributeError, portal.get_tool, name='non_existing')
+        self.assertEqual(
+            portal.get_tool(name='portal_catalog'),
+            getToolByName(self.portal, 'portal_catalog')
+        )
+        self.assertEqual(
+            portal.get_tool(name='portal_membership'),
+            getToolByName(self.portal, 'portal_membership')
+        )
+        self.assertRaises(
+            AttributeError,
+            portal.get_tool,
+            name='non_existing'
+        )
 
     def test_send_email_constraints(self):
         """ Test the constraints for sending an email. """
@@ -64,13 +72,24 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(ValueError, portal.send_email)
 
         # recipient, subject and body are required
-        self.assertRaises(ValueError, portal.send_email, subject='Beer',
-            body="To beer or not to beer, that is the question")
-        self.assertRaises(ValueError, portal.send_email,
-            recipient='joe@example.org', subject='Beer')
-        self.assertRaises(ValueError, portal.send_email,
+        self.assertRaises(
+            ValueError,
+            portal.send_email,
+            subject='Beer',
+            body="To beer or not to beer, that is the question"
+        )
+        self.assertRaises(
+            ValueError,
+            portal.send_email,
             recipient='joe@example.org',
-            body="To beer or not to beer, that is the question")
+            subject='Beer'
+        )
+        self.assertRaises(
+            ValueError,
+            portal.send_email,
+            recipient='joe@example.org',
+            body="To beer or not to beer, that is the question"
+        )
 
     def test_send_email(self):
         self.mailhost.reset()
@@ -106,11 +125,14 @@ class TestPloneApiPortal(unittest.TestCase):
         send email.
         """
         self.portal._updateProperty('email_from_address', None)
-        self.assertRaises(ValueError, portal.send_email,
+        self.assertRaises(
+            ValueError,
+            portal.send_email,
             recipient="bob@plone.org",
             sender="noreply@plone.org",
             subject="Trappist",
-            body=u"One for you Bob!")
+            body=u"One for you Bob!"
+        )
 
     @mock.patch('plone.api.portal.parseaddr')
     def test_send_email_parseaddr(self, mock_parseaddr):
@@ -141,14 +163,25 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def test_localized_time(self):
         request = self.layer['request']
-        result = portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
-            request=request, long_format=True, time_only=False)
+        result = portal.localized_time(
+            datetime=DateTime(1999, 12, 31, 23, 59),
+            request=request,
+            long_format=True,
+            time_only=False
+        )
         self.assertEqual(result, 'Dec 31, 1999 11:59 PM')
-        result = portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
-            request=request, time_only=True)
+
+        result = portal.localized_time(
+            datetime=DateTime(1999, 12, 31, 23, 59),
+            request=request,
+            time_only=True
+        )
         self.assertEqual(result, '11:59 PM')
-        result = portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
-            request=request)
+
+        result = portal.localized_time(
+            datetime=DateTime(1999, 12, 31, 23, 59),
+            request=request
+        )
         self.assertEqual(result, 'Dec 31, 1999')
 
     def test_show_message_constraints(self):

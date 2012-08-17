@@ -10,17 +10,11 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import login
 from plone.app.testing import setRoles
 from plone.app.testing import applyProfile
-from plone.testing import z2
 
 
 class PloneApiLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_FIXTURE,)
-
-    def setUpZope(self, app, configurationContext):
-        """Set up Zope."""
-        # Load ZCML
-        import plone.api
 
     def setUpPloneSite(self, portal):
         """Set up Plone."""

@@ -305,16 +305,28 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(ValueError, api.content.get_view)
 
         # name is required
-        self.assertRaises(ValueError, api.content.get_view,
-            context=self.blog, request=request)
+        self.assertRaises(
+            ValueError,
+            api.content.get_view,
+            context=self.blog,
+            request=request
+        )
 
         # context is required
-        self.assertRaises(ValueError, api.content.get_view, name='plone',
-            request=request)
+        self.assertRaises(
+            ValueError,
+            api.content.get_view,
+            name='plone',
+            request=request
+        )
 
         # request is required
-        self.assertRaises(ValueError, api.content.get_view, name='plone',
-            context=self.blog)
+        self.assertRaises(
+            ValueError,
+            api.content.get_view,
+            name='plone',
+            context=self.blog
+        )
 
     def test_get_view(self):
         request = self.layer['request']
