@@ -1,10 +1,6 @@
-.. htmlonly::
+.. line-block::
 
     foo
-
-    .. code-block:: python
-        
-        bar
 
 
 .. module:: plone
