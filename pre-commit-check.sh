@@ -6,6 +6,8 @@ function handle_exit {
     fi
 }
 
+EXITCODE=0
+
 echo 'Running tests'
 bin/test; handle_exit
 
