@@ -1,3 +1,9 @@
+.. hidden-block::
+
+    If you are reading this via GitHub, don't! Read it on `ReadTheDocs
+    <http://ploneapi.readthedocs.org/en/latest/content.html>`_ so you
+    have proper formatting and working references!
+
 .. module:: plone
 
 .. _chapter_content:
