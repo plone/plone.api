@@ -1,3 +1,10 @@
+.. line-block::
+
+    WARNING: If you are reading this on GitHub, DON'T! Read it on ReadTheDocs:
+    http://ploneapi.readthedocs.org/en/latest/portal.html so you have working
+    references and proper formatting.
+
+
 .. module:: plone
 
 .. _chapter_portal:
