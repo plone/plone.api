@@ -1,8 +1,8 @@
 .. line-block::
 
-    **If you are reading this via GitHub, don't! Read it on `ReadTheDocs
-    <http://ploneapi.readthedocs.org/en/latest/content.html>`_ so you
-    have proper formatting and working references!**
+    WARNINNG: If you are reading this via GitHub, don't! Read it on ReadTheDocs:
+    http://ploneapi.readthedocs.org/en/latest/content.html so you
+    have proper formatting and you can see all content!**
 
 
 .. module:: plone
