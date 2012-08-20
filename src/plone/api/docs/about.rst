@@ -213,11 +213,15 @@ Below is a collection of ideas we have for the long run in no particular order:
   the (updated) documentation:
 
   - getting/setting member properties
-  - tools
+  - tools:
+
+    - portal_groupdata, portal_groups, portal_memberdata, portal_membership
+    - portal_quickinstaller, portal_undo
 
 - JSON webservices
 
-  - one view (@@api for example) that you can call in your JS and be sure it
+  - probably in a separate package plone.jsonapi
+  - one view (@@jsonapi for example) that you can call in your JS and be sure it
     won't change
   - easier to AJAXify stuff
 
