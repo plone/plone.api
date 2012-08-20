@@ -5,9 +5,9 @@
     references and proper formatting.
 
 
-=========
-Rationale
-=========
+=====
+About
+=====
 
 Inspiration
 ===========
@@ -146,3 +146,83 @@ Why ``delete`` instead of ``remove``?
 * The underlying code uses methods that are named more similarly to *delete*
   rather than to *remove*
 * ``CRUD`` has *delete*, not *remove*.
+
+
+Roadmap
+=======
+
+Short term
+----------
+
+In the short-term, we are planning to add more api methods to `plone.api`. An
+up-to-date list of them (and ideas for them) can be found `on GitHub
+<https://github.com/plone/plone.api/issues>`_.
+
+TODO: add this to GitHub issues:
+
+- descriptive error messages
+
+  - see where code breaks with stupid messages
+  - catch them and make them more descriptive
+  - have a list of all possible error messages, what they mean and how to
+    overcome them
+
+
+Medium- to long-term:
+---------------------
+
+Below is a collection of ideas we have for the long run in no particular order:
+
+- api.role context manager (to use with ``with``)
+
+  .. code-block:: python
+
+      with api.role('Manager'):
+          # do something bypassing all constraints, permissions, etc.
+
+      with api.role('Reviewer'):
+          # do something as a reviewer to see if permission are set correctly
+
+- api.system
+
+  - for sysadmin tasks
+  - zope/plone version info
+  - run upgrades, stay up-to-date
+  - cleanup broken objects, interfaces, utilities, etc.
+  - mounting things
+
+- unify permissions
+
+  - have all different types of permission in one place and one way to use them
+
+- style guide
+
+  - have a style guide for how Plone files should be formatted -- this needs to
+    be finalized before we start fixing underlying APIs so new code can use the
+    style guide
+  - define guidelines for:
+
+    - python
+    - javascript
+    - rst
+    - zpt
+    - xml
+    - zcml
+
+- rewrite sub-optimal underlying APIs and deprecate plone.api methods, but leave
+  the (updated) documentation:
+
+  - getting/setting member properties
+  - tools
+
+- JSON webservices
+
+  - one view (@@api for example) that you can call in your JS and be sure it
+    won't change
+  - easier to AJAXify stuff
+
+- Flask-time url_for_view() and view_for_url()
+
+
+
+

@@ -42,7 +42,7 @@ Narrative documentation
 .. toctree::
     :maxdepth: 2
 
-    rationale.rst
+    about.rst
     portal.rst
     content.rst
     users.rst
