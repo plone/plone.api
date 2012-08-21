@@ -339,6 +339,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(aq_base(view.context), aq_base(self.blog))
         self.assertEqual(view.__name__, u'plone')
         self.assertTrue(hasattr(view, 'getIcon'))
+        self.assertEqual(request['ACTUAL_URL'], 'http://nohost')
 
         # Try another standard view.
         view = api.content.get_view(

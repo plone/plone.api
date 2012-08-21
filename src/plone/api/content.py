@@ -1,5 +1,6 @@
 """ Module that provides functionality for content manipulation """
 
+from App.config import getConfiguration
 from plone.app.uuid.utils import uuidToObject
 from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFPlone.utils import getToolByName
@@ -266,5 +267,12 @@ def get_view(name=None, context=None, request=None):
 
     if not request:
         raise ValueError
+
+    # It happens sometimes that ACTUAL_URL is not set in tests. To be nice
+    # and not throw strange errors, we set it to be the same as URL.
+    # TODO: if/when we have api.env.test_mode() boolean in the future, use that
+    config = getConfiguration()
+    if config.dbtab.__module__ == 'plone.testing.z2':
+        request['ACTUAL_URL'] = request['URL']
 
     return getMultiAdapter((context, request), name=name)
