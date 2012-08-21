@@ -183,10 +183,14 @@ Below is a collection of ideas we have for the long run in no particular order:
       with api.role('Reviewer'):
           # do something as a reviewer to see if permission are set correctly
 
+- api.env
+
+  - debug_mode, test_mode booleans (to check if you are in debug/test)
+  - zope/plone version info
+
 - api.system
 
   - for sysadmin tasks
-  - zope/plone version info
   - run upgrades, stay up-to-date
   - cleanup broken objects, interfaces, utilities, etc.
   - mounting things
