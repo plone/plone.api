@@ -81,12 +81,9 @@ class TestPloneApiContent(unittest.TestCase):
             container=container, type='Document'
         )
 
+    @unittest.skipUnless(HAS_DEXTERITY, "Only run when Dexterity is available.")
     def test_create_dexterity(self):
         """ Test create content based on Dexterity """
-
-        if not HAS_DEXTERITY:
-            return  # bail out
-
         raise NotImplemented
 
     def test_create_archetypes(self):
