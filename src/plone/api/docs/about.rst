@@ -171,7 +171,7 @@ TODO: add this to GitHub issues:
 Medium- to long-term:
 ---------------------
 
-Below is a collection of ideas we have for the long run in no particular order:
+Below is a collection of ideas we have for the long run, in no particular order:
 
 - api.role context manager (to use with ``with``)
 
@@ -229,7 +229,7 @@ Below is a collection of ideas we have for the long run in no particular order:
     won't change
   - easier to AJAXify stuff
 
-- Flask-time url_for_view() and view_for_url()
+- Flask-type url_for_view() and view_for_url()
 
 
 
