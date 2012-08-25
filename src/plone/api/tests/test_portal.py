@@ -156,7 +156,6 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(ValueError, portal.localized_time)
 
     def test_localized_time(self):
-        request = self.layer['request']
         result = portal.localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
             long_format=True,
