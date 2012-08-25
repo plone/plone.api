@@ -5,6 +5,9 @@ from Products.statusmessages.interfaces import IStatusMessage
 from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter
 
+from plone.api.exceptions import InvalidParameterError
+from plone.api.exceptions import MissingParameterError
+
 
 def get():
     """Get the Plone portal object out of thin air without importing fancy
@@ -35,9 +38,23 @@ def get_tool(name=None):
     :Example: :ref:`portal_get_tool_example`
     """
     if not name:
-        raise ValueError
+        raise MissingParameterError("Missing required parameter: name")
 
-    return getToolByName(getSite(), name)
+    try:
+        return getToolByName(getSite(), name)
+    except AttributeError:
+
+        # get a list of all tools so we can display their names in the error msg
+        portal = getSite()
+        tools = []
+        for id in portal.objectIds():
+            if id.startswith('portal_'):
+                tools.append(id)
+
+        raise InvalidParameterError(
+            "Cannot find a tool with name '%s'. \n"
+            "Available tools are:\n"
+            "%s" % (name, '\n'.join(tools)))
 
 
 def send_email(sender=None, recipient=None, subject=None, body=None):

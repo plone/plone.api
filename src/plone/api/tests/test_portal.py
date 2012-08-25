@@ -11,6 +11,8 @@ from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
 
 from plone.api import portal
+from plone.api.exceptions import MissingParameterError
+from plone.api.exceptions import InvalidParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 
 
@@ -49,7 +51,66 @@ class TestPloneApiPortal(unittest.TestCase):
         """ Test the constraints for getting a tool. """
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, portal.get_tool)
+        self.assertRaises(MissingParameterError, portal.get_tool)
+
+    def test_get_tool_tool_not_found(self):
+        """Test that error msg lists available tools if a tools is not found."""
+
+        with self.assertRaises(InvalidParameterError) as cm:
+            portal.get_tool('portal_foo')
+
+        self.maxDiff = None  # to see assert diff
+        self.assertMultiLineEqual(
+            cm.exception.message,
+            "Cannot find a tool with name 'portal_foo'. \n"
+            "Available tools are:\n"
+            "portal_setup\n"
+            "portal_actionicons\n"
+            "portal_actions\n"
+            "portal_atct\n"
+            "portal_calendar\n"
+            "portal_catalog\n"
+            "portal_controlpanel\n"
+            "portal_css\n"
+            "portal_diff\n"
+            "portal_factory\n"
+            "portal_groupdata\n"
+            "portal_groups\n"
+            "portal_interface\n"
+            "portal_javascripts\n"
+            "portal_kss\n"
+            "portal_memberdata\n"
+            "portal_membership\n"
+            "portal_metadata\n"
+            "portal_migration\n"
+            "portal_password_reset\n"
+            "portal_properties\n"
+            "portal_quickinstaller\n"
+            "portal_registration\n"
+            "portal_skins\n"
+            "portal_syndication\n"
+            "portal_types\n"
+            "portal_uidannotation\n"
+            "portal_uidgenerator\n"
+            "portal_uidhandler\n"
+            "portal_undo\n"
+            "portal_url\n"
+            "portal_view_customizations\n"
+            "portal_workflow\n"
+            "portal_form_controller\n"
+            "portal_transforms\n"
+            "portal_archivist\n"
+            "portal_historiesstorage\n"
+            "portal_historyidhandler\n"
+            "portal_modifier\n"
+            "portal_purgepolicy\n"
+            "portal_referencefactories\n"
+            "portal_repository\n"
+            "portal_languages\n"
+            "portal_tinymce\n"
+            "portal_registry\n"
+            "portal_discussion"
+        )
 
     def test_get_tool(self):
         """ Test to validate the tool name """
@@ -61,11 +122,6 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(
             portal.get_tool(name='portal_membership'),
             getToolByName(self.portal, 'portal_membership')
-        )
-        self.assertRaises(
-            AttributeError,
-            portal.get_tool,
-            name='non_existing'
         )
 
     def test_send_email_constraints(self):
