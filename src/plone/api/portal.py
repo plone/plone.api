@@ -4,6 +4,7 @@ from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter
+from zope.globalrequest import getRequest
 
 
 def get():
@@ -89,8 +90,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     )
 
 
-def localized_time(datetime=None, request=None, long_format=False,
-                   time_only=False):
+def localized_time(datetime=None, long_format=False, time_only=False):
     """Display a date/time in a user-friendly way.
 
     It should be localized to the user's preferred language.
@@ -101,8 +101,6 @@ def localized_time(datetime=None, request=None, long_format=False,
 
     :param datetime: [required] Message to show.
     :type datetime: DateTime
-    :param request: [required]Request.
-    :type request: request object
     :param long_format: When true, show long date format. When false
         (default), show the short date format.
     :type long_format: boolean
@@ -115,10 +113,8 @@ def localized_time(datetime=None, request=None, long_format=False,
     if not datetime:
         raise ValueError
 
-    if not request:
-        raise ValueError
-
     tool = get_tool(name='translation_service')
+    request = getRequest()
     return tool.ulocalized_time(datetime, long_format, time_only,
                                 domain='plonelocales', request=request)
 

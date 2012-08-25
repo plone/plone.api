@@ -129,12 +129,11 @@ language, use :meth:`api.portal.localized_time`.
     from plone import api
     from DateTime import DateTime
     today = DateTime()
-    api.portal.localized_time(datetime=today, request=request)
+    api.portal.localized_time(datetime=today)
 
 .. invisible-code-block:: python
 
-    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59),
-        request=request)
+    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59))
     self.assertEqual(result, 'Dec 31, 1999')
 
 
