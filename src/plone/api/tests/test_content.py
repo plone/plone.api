@@ -93,26 +93,26 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(folder.id, 'test-folder')
         self.assertEqual(folder.portal_type, 'Dexterity Folder')
 
-        # Create a document
+        # Create an item
         page = api.content.create(
-            container=folder, type='Dexterity Document', id='test-document')
+            container=folder, type='Dexterity Item', id='test-item')
         assert page
-        self.assertEqual(page.id, 'test-document')
-        self.assertEqual(page.portal_type, 'Dexterity Document')
+        self.assertEqual(page.id, 'test-item')
+        self.assertEqual(page.portal_type, 'Dexterity Item')
 
-        # Create a document with a title and without an id
+        # Create an item with a title and without an id
         page = api.content.create(
-            container=folder, type='Dexterity Document',
+            container=folder, type='Dexterity Item',
             title='Test id generated')
         assert page
         self.assertEqual(page.id, 'test-id-generated')
         self.assertEqual(page.Title(), 'Test id generated')
-        self.assertEqual(page.portal_type, 'Dexterity Document')
+        self.assertEqual(page.portal_type, 'Dexterity Item')
 
-        # Try to create another page, this should fail because of strict mode
+        # Try to create another item, this should fail because of strict mode
         self.assertRaises(
             BadRequest, api.content.create,
-            container=folder, type='Document', id='test-document'
+            container=folder, type='Dexterity Item', id='test-item'
         )
 
     def test_create_archetypes(self):

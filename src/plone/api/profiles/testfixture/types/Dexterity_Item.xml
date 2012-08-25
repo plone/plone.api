@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<object name="Dexterity Document" meta_type="Dexterity FTI"
+<object name="Dexterity Item" meta_type="Dexterity FTI"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">Dexterity Document</property>
+ <property name="title">Dexterity Item</property>
  <property name="description"></property>
  <property name="content_icon"></property>
  <property name="link_target"></property>
