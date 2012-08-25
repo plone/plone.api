@@ -81,11 +81,11 @@ def DocFileSuite(testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TES
 
 def test_suite():
     doctests = []
-    docs_path = os.path.join(os.path.dirname(__file__), '../../../../docs/en')
+    docs_path = os.path.join(os.path.dirname(__file__), '../../../../docs')
 
     for filename in os.listdir(docs_path):
         if filename == 'static':
             continue
-        doctests.append(DocFileSuite(os.path.join('../../../../docs/en', filename)))
+        doctests.append(DocFileSuite(os.path.join('../../../../docs', filename)))
 
     return unittest.TestSuite(doctests)

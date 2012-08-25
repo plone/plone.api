@@ -1,0 +1,183 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, Plone Foundation
+# This file is distributed under the same license as the plone.api package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: plone.api 0.1a1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-25 18:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../content.rst:13
+# f9808c16c46747b79877b4e590f587ea
+msgid "Content"
+msgstr ""
+
+#: ../content.rst:18
+# f064bf432ab84f3d889e492d31b4ad7d
+msgid "Create content"
+msgstr ""
+
+#: ../content.rst:20
+# c38f4ce1405b405fa5edcff6f1d68034
+msgid "First get the portal object that we will use as a container for new content:"
+msgstr ""
+
+#: ../content.rst:27
+# 57ea2a1f70a244dba586b91d3d3cf777
+msgid "If you want to create a new content item, use the :meth:`api.content.create` method. The type attribute will automatically decide which content type (dexterity, archetype, ...) should be created."
+msgstr ""
+
+#: ../content.rst:39
+# b7195471a9314758a518d34d91fcebdb
+msgid "The ``id`` of the object gets generated (in a safe way) from its ``title``."
+msgstr ""
+
+#: ../content.rst:49
+# d9bc13c7bfd24ec2a9db5afad7aeb8de
+msgid "Get content object"
+msgstr ""
+
+#: ../content.rst:51
+# b15f9e177058456f86c049297eeaa2d4
+msgid "There are several approaches of getting to your content object. Consider the following portal structure::"
+msgstr ""
+
+#: ../content.rst:79
+# 388e8767723947de9f5de13c84f352d0
+msgid "You can do the following operations to get to various content objects in the stucture above, including using :meth:`api.content.get`."
+msgstr ""
+
+#: ../content.rst:116
+# e5ac677d7e9e42ecbdbedca9b8e61e94
+msgid "Find content object"
+msgstr ""
+
+#: ../content.rst:118
+# b7ec0d1aa3144acb8e0f5ddf65276e9d
+msgid "You can use the *catalog* to search for content. Here is a simple example:"
+msgstr ""
+
+#: ../content.rst:130
+# 87821035cbff4c288418f6dc77c8f253
+msgid "More about how to use the catalog and what parameters it supports is written in the `Collective Developer Documentation <http://collective-docs.readthedocs.org/en/latest/searching_and_indexing/query.html>`_. Note that the catalog returns *brains* (metadata stored in indexes) and not objects. However, calling ``getObject()`` on brains does in fact give you the object."
+msgstr ""
+
+#: ../content.rst:146
+# cd37b225d62f4ada8a9c53b8a59058c2
+msgid "Move content"
+msgstr ""
+
+#: ../content.rst:148
+# fdf12cc1429d4f04b2f0f7b34e7d597f
+msgid "To move content around the portal structure defined above use :meth:`api.content.move` The code below moves the ``contact`` item (with all objects that it contains) out of folder ``about`` into the Plone portal root."
+msgstr ""
+
+#: ../content.rst:165
+# edb0085b525a42178c0fac496ff20803
+msgid "Actually, ``move`` behaves like a filesystem move. If you pass it an ``id`` argument, you can define to what target ID the object will be moved to. Otherwise it will be moved with the same ID that it had."
+msgstr ""
+
+#: ../content.rst:173
+# 1dcf5261803b493399da52b63bc3fbea
+msgid "Rename content"
+msgstr ""
+
+#: ../content.rst:175
+# faa9fcef181849569584a26275e7667c
+msgid "To rename, you still use the :meth:`api.content.move` method, just pass in a new ``id`` instead and omit ``target``."
+msgstr ""
+
+#: ../content.rst:193
+# f2e3484ddb1c483b9a6ec53b684772f3
+msgid "Copy content"
+msgstr ""
+
+#: ../content.rst:195
+# e2a2b16d6f3f49af8c353fed03e7f1bc
+msgid "To copy a content object, use the :meth:`api.content.copy`."
+msgstr ""
+
+#: ../content.rst:205
+# b3ce7ee6963342b88a852087c1d85eac
+msgid "Note that the new object will have the same id as the old object (if not stated otherwise). This is not a problem, since the new object is in a different container."
+msgstr ""
+
+#: ../content.rst:215
+# b71261866c1f4b16a0dcd9f18e38d75a
+msgid "You can also omit ``target`` and set ``strict=False`` which will duplicate your content object in the same container and assign it a non-conflicting id."
+msgstr ""
+
+#: ../content.rst:232
+# 07547cfbc8c244a382bcc2a21326db69
+msgid "Delete content"
+msgstr ""
+
+#: ../content.rst:234
+# 92e3474f9db24822a3cf4b61fc166634
+msgid "Deleting content works by passing the object you want to delete to the :meth:`api.content.delete` method:"
+msgstr ""
+
+#: ../content.rst:251
+# 2c95b661210b42289b1162e38e253692
+msgid "Content manipulation with strict option"
+msgstr ""
+
+#: ../content.rst:253
+# dfb38ff46fe7475085f3bdfc144ce884
+msgid "When manipulating content with :meth:`api.content.create`, :meth:`api.content.move` and :meth:`api.content.copy` the strict option is enabled by default. This means the id will be enforced, if the id is taken on the target container the API method will raise an error."
+msgstr ""
+
+#: ../content.rst:263
+# 7739a32517b84869be510a2c329b2649
+msgid "If the strict option is disabled a non-conflicting id will be created."
+msgstr ""
+
+#: ../content.rst:273
+# bd86a51620624dada144ac6c9e241ef1
+msgid "Get workflow state"
+msgstr ""
+
+#: ../content.rst:275
+# 46329475116d4a33b5d618f60e5eb2bd
+msgid "To find out in which workflow state your content is, use :meth:`api.content.get_state`."
+msgstr ""
+
+#: ../content.rst:292
+# fffb873c06a54e14a968609cace8589e
+msgid "Transition"
+msgstr ""
+
+#: ../content.rst:294
+# 0b8c3d4abe9f41fb94aadf9efdbe8d66
+msgid "To transition your content into a new state, use :meth:`api.content.transition`."
+msgstr ""
+
+#: ../content.rst:313
+# 5079fd47c007477b95bef5e7de5e3b2d
+msgid "Browser view"
+msgstr ""
+
+#: ../content.rst:315
+# ff2672996a6b46eea6f8df8ce3201cf1
+msgid "To get a BrowserView for your content, use :meth:`api.content.get_view`."
+msgstr ""
+
+#: ../content.rst:333
+# 9a005ae8ef174043bd06dfcf63b69485
+msgid "Further reading"
+msgstr ""
+
+#: ../content.rst:335
+# 1f6d92cc6a984056a3ebb6150b697029
+msgid "For more information on possible flags and usage options please see the full :ref:`plone-api-content` specification."
+msgstr ""
+

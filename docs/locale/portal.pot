@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, Plone Foundation
+# This file is distributed under the same license as the plone.api package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: plone.api 0.1a1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-25 18:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../portal.rst:13
+# dadb9d29f6804082aa01070a3cfc9102
+msgid "Portal"
+msgstr ""
+
+#: ../portal.rst:18
+# 8db8368037e64f5abd7a745568aa6b8d
+msgid "Get portal url"
+msgstr ""
+
+#: ../portal.rst:20
+# 85af7a05697d439b881952dad55b00a1
+msgid "A shortcut for getting the url of the portal is now always at hand: :meth:`api.portal.url`."
+msgstr ""
+
+#: ../portal.rst:36
+# c50879d0a894463cb84a7cecd8726bd2
+msgid "Get portal object"
+msgstr ""
+
+#: ../portal.rst:38
+# c35120519c2547da93feb34bfbc48ba9
+msgid "Getting the Plone portal object is easy with :meth:`api.portal.get`."
+msgstr ""
+
+#: ../portal.rst:54
+# 78a35eb7f40d4e65871768fc3e91aac1
+msgid "Get tool"
+msgstr ""
+
+#: ../portal.rst:56
+# 9fb34e4553644d5a8f54345bb34554f8
+msgid "To get a portal tool in a simple way, just use :meth:`api.portal.get_tool` and pass in the name of the tool you need."
+msgstr ""
+
+#: ../portal.rst:72
+# 6fadb24e93c94912afe22067cf106701
+msgid "Send E-Mail"
+msgstr ""
+
+#: ../portal.rst:74
+# c95e4a80ccde41799a094dfba81b0b6c
+msgid "To send an e-mail use :meth:`api.portal.send_email`:"
+msgstr ""
+
+#: ../portal.rst:122
+# 9de94720386c4561bc38b37621be612a
+msgid "Localized time"
+msgstr ""
+
+#: ../portal.rst:124
+# 96567c9f43314ac69780a968cb283024
+msgid "To display the date/time in a user-friendly way, localized to the user's prefered language, use :meth:`api.portal.localized_time`."
+msgstr ""
+
+#: ../portal.rst:143
+# 751fc57f5ba5410583e59c4411658178
+msgid "Show notification message"
+msgstr ""
+
+#: ../portal.rst:145
+# f1d4de4b58d54aca8bf17ec68128ca46
+msgid "With :meth:`api.portal.show_message` you can show a notification message to the user."
+msgstr ""
+

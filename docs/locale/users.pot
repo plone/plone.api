@@ -1,0 +1,138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, Plone Foundation
+# This file is distributed under the same license as the plone.api package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: plone.api 0.1a1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-25 18:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../users.rst:13
+# b10297c179bf4f1a9c830df3ace53479
+msgid "Users"
+msgstr ""
+
+#: ../users.rst:18
+# 4e3f794d26c4450ba41129671a46c2e3
+msgid "Create user"
+msgstr ""
+
+#: ../users.rst:20
+# 3986095a924a4e13aaec287750b8f788
+msgid "To create a new user, use :meth:`api.user.create`. If your portal is configured to use emails as usernames, you just need to pass in the email of the new user."
+msgstr ""
+
+#: ../users.rst:41
+# 516b9be860554f5fb9354b59c965bfd0
+msgid "Otherwise, you also need to pass in the username of the new user."
+msgstr ""
+
+#: ../users.rst:57
+# b18e0d436abe4e19b1a663f7891442cb
+msgid "To set user properties when creating a new user, pass in a properties dict."
+msgstr ""
+
+#: ../users.rst:77
+# da65341ea52a492e9a38544129107a02
+msgid "Besides user properties you can also specify a password for the new user. Otherwise a random 8-char alphanumeric password will be generated."
+msgstr ""
+
+#: ../users.rst:92
+# be1390cf5bf64aacbbb61d1dae673c0f
+msgid "Get user"
+msgstr ""
+
+#: ../users.rst:94
+# d3a862a9a77147ae906fbb5118dae1bd
+msgid "You can get a user with :meth:`api.user.get`."
+msgstr ""
+
+#: ../users.rst:109
+# 0d78eb3491a849bba1ae8082f64411e0
+msgid "Get currently logged-in user"
+msgstr ""
+
+#: ../users.rst:111
+# 5b310c5f33964819b27fd39bb934a473
+msgid "Getting the currently logged-in user is easy with :meth:`api.user.get_current`."
+msgstr ""
+
+#: ../users.rst:126
+# 51e01ad9f9a24f9ba1282153bcea8351
+msgid "Check if current user is anonymous"
+msgstr ""
+
+#: ../users.rst:128
+# 4db2cff962f04d898406f755dff004ba
+msgid "Sometimes you need to trigger or display some piece of information only for logged-in users. It's easy to use :meth:`api.user.is_anonymous` to do a basic check for it."
+msgstr ""
+
+#: ../users.rst:147
+# 3153968efc1f475eb70b53a0da67ee75
+msgid "Get all users"
+msgstr ""
+
+#: ../users.rst:149
+# 442af592b40847ffb973fd858845b1c9
+msgid "Get all users in your portal with :meth:`api.user.get_all`."
+msgstr ""
+
+#: ../users.rst:164
+# b01d126846774fc9b1c635f474a2e763
+msgid "Delete user"
+msgstr ""
+
+#: ../users.rst:166
+# 2cc9a28dd2fc43a39b13c3c859777625
+msgid "To delete a user, use :meth:`api.user.delete` and pass in either the username or the user object you want to delete."
+msgstr ""
+
+#: ../users.rst:193
+# 1bef28537ebc49c7879224812a1f1aeb
+msgid "Check for role"
+msgstr ""
+
+#: ../users.rst:195
+# 4fa3cacefd5144c0b473554fb2e45ea8
+msgid "Again on the security aspects, checking if a user has a certain role can be done with :meth:`api.user.has_role`. If you omit the ``user`` parameter, the currently logged-in user will be used."
+msgstr ""
+
+#: ../users.rst:208
+# a7a76e7c2a154d7192f186441c2e06bc
+msgid "When user is omitted the current user is used for role lookup."
+msgstr ""
+
+#: ../users.rst:222
+# a8172c3fef8c49c4beafef9ab74f1192
+msgid "Check for permission"
+msgstr ""
+
+#: ../users.rst:224
+# 12d6a2d8aa394309ae3c00bcefc223e6
+msgid "Likewise, you can also check if a user has a certain permission with :meth:`api.user.has_permission`. Omitting the ``user`` parameter means the currently logged-in user will be used."
+msgstr ""
+
+#: ../users.rst:242
+# ac796486c4b749e19b944e5991d87959
+msgid "When user is omitted the current user is used for the permission check."
+msgstr ""
+
+#: ../users.rst:259
+# 8f3f7c4e537f40e3b37a45e7c5c8f1f6
+msgid "Get groups that user is a member of"
+msgstr ""
+
+#: ../users.rst:261
+# cc57b910281d4c47bf708c04e5d1e4c9
+msgid "Use ``get_groups``, passing in either the username or the user object you want to get groups for."
+msgstr ""
+

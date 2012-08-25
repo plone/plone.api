@@ -3,7 +3,10 @@
 /local.cfg
 /bin/
 /develop-eggs/
-/docs/
+/docs/doctrees
+/docs/html
+/docs/make.bat
+/docs/Makefile
 /eggs/
 /include/
 /lib/

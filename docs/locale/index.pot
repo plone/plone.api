@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, Plone Foundation
+# This file is distributed under the same license as the plone.api package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: plone.api 0.1a1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-25 18:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../index.rst:10
+# 36a498fd29f44ea08b73a81e9575712b
+msgid "A Plone API"
+msgstr ""
+
+#: ../index.rst:14
+# 2d772929e66f41f49b270dd4f9841235
+msgid "The :mod:`plone.api` is an elegant and simple API, built for humans wishing to develop with Plone."
+msgstr ""
+
+#: ../index.rst:17
+# 8734d5794e9e4767a682abb425197da8
+msgid "It comes with *cookbook*-like documentation with step-by-step instructions for doing common development tasks in Plone. Recipes try to assume the user does not have extensive knowledge about Plone internals."
+msgstr ""
+
+#: ../index.rst:21
+# de356adae1744fa0b7659b9861ec432b
+msgid "The intention of this package is to be transitional. It points out which parts of Plone are particularly nasty -- we wish they get fixed so we can deprecate *plone.api* methods that cover them up, but leave the documentation in place."
+msgstr ""
+
+#: ../index.rst:25
+# a77ac56676014f9383515b6ef53ac99b
+msgid "Some parts of documentation already are this way: they don't use *plone.api* methods directly, but simply provide guidance on achiving a task using Plone's internals. Example: usage of the catalog in :ref:`content_find_example`."
+msgstr ""
+
+#: ../index.rst:29
+# 08a89e1f7ffa4b0ab2348f84446a726e
+msgid "The intention is to cover 20% of tasks we do 80% of the time. Keeping everything in one place helps keep the API introspectable and discoverable, which are important aspects of being Pythonic."
+msgstr ""
+
+#: ../index.rst:35
+# a972eb56a166473b9f27f685f7f3914a
+msgid "This package is still under heavy development. Do not use it yet unless you are completely sure what you are doing."
+msgstr ""
+
+#: ../index.rst:40
+# f870fce2dcd64b0295053823ae2644c9
+msgid "Narrative documentation"
+msgstr ""
+
+#: ../index.rst:53
+# 6729934995ca48dea471df348aebe55b
+msgid "Complete API and advanced usage"
+msgstr ""
+
+#: ../index.rst:61
+# 9dab33e814754aa3b5a95633ad02e0ab
+msgid "Indices and tables"
+msgstr ""
+
+#: ../index.rst:63
+# bfaad08851ee498d8004eb526a1dc3d1
+msgid ":ref:`genindex`"
+msgstr ""
+
+#: ../index.rst:64
+# 08a9699e06de4c80a9c5eee2bbe5b82a
+msgid ":ref:`modindex`"
+msgstr ""
+
+#: ../index.rst:65
+# 9f6cfa3173aa4119bd9450ae352c414b
+msgid ":ref:`search`"
+msgstr ""
+

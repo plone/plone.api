@@ -1,0 +1,98 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, Plone Foundation
+# This file is distributed under the same license as the plone.api package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: plone.api 0.1a1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-25 18:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../groups.rst:13
+# 9e122e7a75ac459686b27ce95ff81b2c
+msgid "Groups"
+msgstr ""
+
+#: ../groups.rst:18
+# cd6fabd9120a4f86a81fcea9cad45b5f
+msgid "Create group"
+msgstr ""
+
+#: ../groups.rst:20
+# da45a6ae32c54cfda3b81ded153f7c47
+msgid "To create a new portal group, use :meth:`api.group.create`."
+msgstr ""
+
+#: ../groups.rst:31
+# 149e8a041c8744f8a37a81c03026f964
+msgid "When creating groups ``title``, ``description``, ``roles`` and ``groups`` are optional."
+msgstr ""
+
+#: ../groups.rst:56
+# 47bc8e1452fb449bbc948322f5a674c2
+msgid "Get group"
+msgstr ""
+
+#: ../groups.rst:58
+# f3e7f6198fcf4c229c3760ec6d321b20
+msgid "To get a group by it's name, use :meth:`api.group.get`."
+msgstr ""
+
+#: ../groups.rst:73
+# 4130edd849d0404594ca596cf49c2354
+msgid "Editing a group"
+msgstr ""
+
+#: ../groups.rst:75
+# 2f9267af057645c690cce6e99a634f8c
+msgid "Groups can be edited by using the ``group_tool``. In this example the ``title``, ``description`` and ``roles`` are updated for the group 'Staff'."
+msgstr ""
+
+#: ../groups.rst:103
+# f0352146c1a648f2aee5bc2ed06cdc87
+msgid "Get all groups"
+msgstr ""
+
+#: ../groups.rst:105
+# d4a47757b5c04627b8edfcf7ccca4361
+msgid "You can also get all groups, by using :meth:`api.group.get_all`."
+msgstr ""
+
+#: ../groups.rst:120
+# 2c387b09ea95471493a587b11d5a52f2
+msgid "Delete group"
+msgstr ""
+
+#: ../groups.rst:122
+# d35743255adc4169a5fcd366aacc4729
+msgid "To delete a group, use :meth:`api.group.delete` and pass in either the groupname or the group object you want to delete."
+msgstr ""
+
+#: ../groups.rst:145
+# bacaba3724d14de4adc1a4afdcc88c4f
+msgid "Adding user to group"
+msgstr ""
+
+#: ../groups.rst:147
+# f05d93fbc61c43f8a22fab1f34ddd0d1
+msgid "The ``add_user`` method accepts either the groupname or the group object of the target group and the username or the user object you want to add to the group."
+msgstr ""
+
+#: ../groups.rst:171
+# 12480286674a46bfb9e16c9e03dbb9c0
+msgid "Deleting user from group"
+msgstr ""
+
+#: ../groups.rst:173
+# 33d87dcabec046e6965ba42c5189ff88
+msgid "The ``delete_user`` method accepts either the groupname or the group object of the target group and either the username or the user object you want to remove from the group."
+msgstr ""
+

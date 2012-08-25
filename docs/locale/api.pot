@@ -1,0 +1,383 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, Plone Foundation
+# This file is distributed under the same license as the plone.api package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: plone.api 0.1a1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-25 18:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../api.rst:11
+# 480a38b206b2475391f2d3d79c8e9969
+msgid "plone.api.portal"
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.get:1
+# 51b11cc6c4a94ba6bd4ce7efbf19fb72
+msgid "Get the Plone portal object out of thin air without importing fancy Interfaces and doing multi adapter lookups."
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.get:5
+# 9661f7993fb941e9ad8a6f77abeebc8c
+msgid ":ref:`portal_get_example`"
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.get_tool:1
+# 9946f74dbe4f4942a84685c422b70204
+msgid "Get a portal tool in a simple way."
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.get_tool:6
+# 303d4142b78643159543af2eced7d8d2
+msgid ":ref:`portal_get_tool_example`"
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.localized_time:1
+# 14a5048acbf647fdab38e1d72fb93210
+msgid "Display a date/time in a user-friendly way."
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.localized_time:3
+# 0e98e961b9b14bacad2c19c9df1f5b58
+msgid "It should be localized to the user's preferred language."
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.localized_time:5
+# 538f804bfd914d93883b586bb739c98b
+msgid "Note that you can specify both long_format and time_only as True (or any other value that can be converted to a boolean True value), but time_only then wins: the long_format value is ignored."
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.localized_time:17
+# 313967f5c5a145e28bf9f6d9c6dc6da6
+msgid ":ref:`portal_localized_time_example`"
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.send_email:1
+# b8bf9ef5bab64ae09fdce8ea2756f83b
+msgid "Send an email."
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.send_email:12
+# 21d22f52555f4f6dbee4e6aa5a0a76a8
+msgid ":ref:`portal_send_email_example`"
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.show_message:1
+# 5abb28404c9a4d78883da28239200d61
+msgid "Display a status message."
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.show_message:9
+# 7c23da81ee494e8d925432984376b7af
+msgid ":ref:`portal_show_message_example`"
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.url:1
+# 84a23dad8bad40eb83e5e4ff3ecb0a4d
+msgid "Get the portal url."
+msgstr ""
+
+#: ../../src/plone/api/portal.py:docstring of plone.api.portal.url:5
+# c78fe44107b64f0abde3b93823397f7d
+msgid ":ref:`portal_url_example`"
+msgstr ""
+
+#: ../api.rst:20
+# 2848de370f5e4baca839997fec889cd1
+msgid "plone.api.content"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content:1
+# 2f0a375446974867b4a6baf1dfa889c6
+msgid "Module that provides functionality for content manipulation"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.copy:1
+# c8d6ede085604149bf0b8083f8e14670
+msgid "Copy the object to the target container."
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.copy:19
+# 518dce2c419a40b9932cf8e27cbfd850
+msgid ":ref:`content_copy_example`"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.create:1
+# 8bba347c47354866af427c267ef16883
+msgid "Create a new content item."
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.create:22
+# 4224826f335e496ba2b874e1bf7615ec
+msgid ":ref:`content_create_example`"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.delete:1
+# 10937e6316e54b749aeaf287859565d8
+msgid "Delete the object."
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.delete:5
+# 4052f87bbb4342a3a9d1d46a55c4cdf2
+msgid ":ref:`content_delete_example`"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.get:1
+# d4c2d8a6d5c84ce782c579d4037e5908
+msgid "Get an object."
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.get:9
+# c26cfff6cbd04cf8b12b0ea6e5e2d9ca
+msgid ":ref:`content_get_example`"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.get_state:1
+# 8141774ea6104054a66a936c6f580b7c
+msgid "Get the current workflow state of the object."
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.get_state:7
+# 372de95e5ecc4d3fa6f541eb028f773a
+msgid ":ref:`content_get_state_example`"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.get_view:1
+# a508d86d35cd492482c3d7cab7082084
+msgid "Get a BrowserView object."
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.get_view:9
+# c2a4fa03f54749aba8d081d78842f003
+msgid ":ref:`content_get_view_example`"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.move:1
+# 6215d3c9916446c68403e1034d5a927e
+msgid "Move the object to the target container."
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.move:19
+# 6fb1f02cd33342c885d78d17ec327b82
+msgid ":ref:`content_move_example`"
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.transition:1
+# aa53251f9f2f4e49902283068ac3ecbe
+msgid "Perform a workflow transition for the object."
+msgstr ""
+
+#: ../../src/plone/api/content.py:docstring of plone.api.content.transition:8
+# e6f66b38694f4959bb2b4613404b16a6
+msgid ":ref:`content_transition_example`"
+msgstr ""
+
+#: ../api.rst:29
+# 14a1dceb0e7a48bd89da5bd88d041212
+msgid "plone.api.user"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user:1
+# 5e134ab2814f4d5db9a75ba6071f352a
+msgid "Module that provides functionality for user manipulation"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.create:1
+# 8a3d40c144114f4abe0585639dc0562b
+msgid "Create a user."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.create:16
+# 66ae0183575f40b989624dc5a82cd082
+msgid ":ref:`user_create_example`"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.delete:1
+# 21730d259f724349b488646eb197bd0d
+msgid "Delete a user."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.delete:3
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get_groups:3
+#: ../../src/plone/api/group.py:docstring of plone.api.group.add_user:6
+#: ../../src/plone/api/group.py:docstring of plone.api.group.delete_user:6
+# 033fc14da1c84dbfbaccdc9fe680ca40
+# 95d40533be9647188c051c95a55773f7
+# de3567855b3b42c99da50b5e796fa067
+# 2d4d6a39c05b474cbcd548b409de4e66
+msgid "Arguments ``username`` and ``user`` are mutually exclusive. You can either set one or the other, but not both."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.delete:10
+# 0b4127e5b1244f14b650f5457b89361c
+msgid ":ref:`user_delete_example`"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get:1
+# b8379a06e39f4fd1a4243935fd6d6cb7
+msgid "Get a user."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get:7
+# 8d731b07d107459ebbd9b184ee722bdc
+msgid ":ref:`user_get_example`"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get_all:1
+# 67cc68a80d4a4298930d416b4949743c
+msgid "Return all users."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get_all:5
+# 186e401e18444e55bacd15cba8690780
+msgid ":ref:`users_get_all_example`"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get_current:1
+# 61b837494178416ca10271e98fada1fc
+msgid "Get the currently logged-in user."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get_current:5
+# 5cbc0c81860849f6859ad5f201641cee
+msgid ":ref:`user_get_current_example`"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get_groups:1
+# fe8a9759d0454a4cacb32f01e8f328ba
+msgid "Get a list of groups that this user is a member of."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.get_groups:12
+# 135d4af554d34a899aca449584552f3c
+msgid ":ref:`get_groups_for_user_example`"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.has_permission:1
+# 8eeb2b36b2f3490b8f52fbd28c9cf1c0
+msgid "Check if the user has the specified permission on the given object."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.has_permission:3
+# 280dfb6f06294ee1a024c3bd6e5b1dc6
+msgid "Arguments ``username`` and ``user`` are mutually exclusive. You can either set one or the other, but not both. If no ``username` or ``user`` are provided, check the permission for the currently logged-in user."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.has_permission:18
+# 3aa8154b81c441a485bf8d6f63a06578
+msgid ":ref:`user_has_permission_example`"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.has_role:1
+# 043da8f8753a473a99ac14f97ee83f9e
+msgid "Check if the user has the specified role."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.has_role:3
+# 096b857c8b2e4780bc7a31d32fe8db76
+msgid "Arguments ``username`` and ``user`` are mutually exclusive. You can either set one or the other, but not both. If no ``username` or ``user`` are provided, check the role for the currently logged-in user."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.has_role:15
+# ef5946ed1be74b1a960f03ae3610f2bc
+msgid ":ref:`user_has_role_example`"
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.is_anonymous:1
+# 615f8b9f05b34c1d8dac2a8e7088a18d
+msgid "Check if the currently logged-in user is anonymous."
+msgstr ""
+
+#: ../../src/plone/api/user.py:docstring of plone.api.user.is_anonymous:5
+# 7af2eef10d65478ebf2a2edaf88ab09d
+msgid ":ref:`user_is_anonymous_example`"
+msgstr ""
+
+#: ../api.rst:38
+# d9f0041ca1ce478590146e53900b2189
+msgid "plone.api.group"
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group:1
+# 64cdbec2cb454ce493214db7c1a427c1
+msgid "Module that provides functionality for group manipulation"
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.add_user:1
+# c2d15c31611f41cba41d1910284d49b7
+msgid "Add the user to a group."
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.add_user:3
+#: ../../src/plone/api/group.py:docstring of plone.api.group.delete:3
+#: ../../src/plone/api/group.py:docstring of plone.api.group.delete_user:3
+# 9eb142ce333c4e41b0276ab74ad7ac37
+# 09af61d0819e4826b442cfd33706e1d8
+# a7e16e93d6254c22bb0c9efc560ae2a3
+msgid "Arguments ``groupname`` and ``group`` are mutually exclusive. You can either set one or the other, but not both."
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.add_user:18
+# 8f13dc96088443b88528f9646a707047
+msgid ":ref:`add_user_to_group_example`"
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.create:1
+# 3d60a49da6b94380988979c46a798e40
+msgid "Create a group."
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.create:15
+# 2ae0c92c4f0f4d97bf77fd48f5c4718d
+msgid ":ref:`group_create_example`"
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.delete:1
+# f56a876af5164c4bb2d8b12850a3082e
+msgid "Delete a group."
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.delete:10
+# 60197691ac8547c3a458bb8f153e3e31
+msgid ":ref:`group_delete_example`"
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.delete_user:1
+# 0d55877112a340ddba8b5d5036fc8b51
+msgid "Remove the user from a group."
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.delete_user:18
+# 6b9f5d17c1b7444694463a0cfcfe4b52
+msgid ":ref:`delete_user_from_group_example`"
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.get:1
+# a5656b2cda6f47d4bed5df1864769206
+msgid "Get a group."
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.get:7
+# 1ae80c16441845188c1defe728d3f6bd
+msgid ":ref:`group_get_example`"
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.get_all:1
+# 4d0292acb5474e5e9a70dbe4eb835be1
+msgid "Get all groups."
+msgstr ""
+
+#: ../../src/plone/api/group.py:docstring of plone.api.group.get_all:5
+# 69399a9ba20048a184be5a0ecdacb861
+msgid ":ref:`groups_get_all_example`"
+msgstr ""
+
