@@ -156,7 +156,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.delete(user=user)
 
     def test_delete_username(self):
-        """ """
+        """ test whether the user has been deleted """
 
         api.user.create(username='unwanted', password='secret',
                         email='unwanted@example.org')
@@ -202,13 +202,15 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
     def test_is_anonymous(self):
-        """ """
+        """ Test anonymous access """
+
         self.assertEqual(api.user.is_anonymous(), False)
         logout()
         self.assertEqual(api.user.is_anonymous(), True)
 
     def test_has_role_constraints(self):
-        """ """
+        """ test to see if the rule has constraints """
+
         # must provide a role
         self.assertRaises(ValueError, api.user.has_role)
 
