@@ -1,0 +1,17 @@
+<configure 
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone.api">
+
+    <includeDependencies package="." />
+
+    <genericsetup:registerProfile
+        name="testfixture"
+        title="plone.api: Test fixture"
+        directory="profiles/testfixture"
+        description="Extension profile to configure a test fixture"
+        for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />       
+
+</configure>

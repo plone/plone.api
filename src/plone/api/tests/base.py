@@ -9,17 +9,26 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import login
 from plone.app.testing import setRoles
-from plone.app.testing import applyProfile
 
 
 class PloneApiLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_FIXTURE,)
 
+    def setUpZope(self, app, configurationContext):
+        # Load ZCML
+        import plone.app.dexterity
+        self.loadZCML(package=plone.app.dexterity)
+        import plone.api
+        self.loadZCML(package=plone.api)
+
     def setUpPloneSite(self, portal):
         """Set up Plone."""
         # Install into Plone site using portal_setup
-        applyProfile(portal, 'Products.CMFPlone:plone')
+        self.applyProfile(portal, 'Products.CMFPlone:plone')
+
+        # Create dummy content types for Dexterity tests
+        self.applyProfile(portal, 'plone.api:testfixture')
 
         # Login as manager
         setRoles(portal, TEST_USER_ID, ['Manager'])

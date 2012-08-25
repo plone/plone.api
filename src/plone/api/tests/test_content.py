@@ -84,7 +84,36 @@ class TestPloneApiContent(unittest.TestCase):
     @unittest.skipUnless(HAS_DEXTERITY, "Only run when Dexterity is available.")
     def test_create_dexterity(self):
         """ Test create content based on Dexterity """
-        raise NotImplemented
+        container = self.portal
+
+        # Create a folder
+        folder = api.content.create(
+            container=container, type='Dexterity Folder', id='test-folder')
+        assert folder
+        self.assertEqual(folder.id, 'test-folder')
+        self.assertEqual(folder.portal_type, 'Dexterity Folder')
+
+        # Create a document
+        page = api.content.create(
+            container=folder, type='Dexterity Document', id='test-document')
+        assert page
+        self.assertEqual(page.id, 'test-document')
+        self.assertEqual(page.portal_type, 'Dexterity Document')
+
+        # Create a document with a title and without an id
+        page = api.content.create(
+            container=folder, type='Dexterity Document',
+            title='Test id generated')
+        assert page
+        self.assertEqual(page.id, 'test-id-generated')
+        self.assertEqual(page.Title(), 'Test id generated')
+        self.assertEqual(page.portal_type, 'Dexterity Document')
+
+        # Try to create another page, this should fail because of strict mode
+        self.assertRaises(
+            BadRequest, api.content.create,
+            container=folder, type='Document', id='test-document'
+        )
 
     def test_create_archetypes(self):
         """ Test creating content based on Archetypes """
