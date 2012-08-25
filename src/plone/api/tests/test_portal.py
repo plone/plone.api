@@ -219,3 +219,8 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(portal.getSite().owner_info()['path'], u'acl_users')
         self.assertEqual(portal.getSite().owner_info()['explicit'], True)
         self.assertEqual(portal.getSite().owner_info()['userCanChangeOwnershipType'], None)
+
+    def test_getsite_get_tag_name(self):
+        """ Test get tag name site """
+
+        self.assertEqual(portal.getSite().getTagName(), u'PloneSite')
