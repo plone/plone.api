@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
-<object name="Dexterity Folder" meta_type="Dexterity FTI"
+<object name="Dexterity Document" meta_type="Dexterity FTI"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">Dexterity Folder</property>
+ <property name="title">Dexterity Document</property>
  <property name="description"></property>
  <property name="content_icon"></property>
- <property name="factory">test_folder</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
  <property name="global_allow">True</property>
- <property name="filter_content_types">False</property>
+ <property name="filter_content_types">True</property>
  <property name="allowed_content_types"/>
  <property name="allow_discussion">False</property>
  <property name="default_view">view</property>
@@ -17,13 +16,13 @@
  </property>
  <property name="default_view_fallback">False</property>
  <property name="add_permission">cmf.AddPortalContent</property>
- <property name="klass">plone.dexterity.content.Container</property>
+ <property name="klass">plone.dexterity.content.Item</property>
  <property name="behaviors">
   <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
  </property>
  <property name="schema"></property>
  <property name="model_source"></property>
- <property name="model_file">plone.api.tests:test_folder.xml</property>
+ <property name="model_file">plone.api.tests:Dexterity_Item.xml</property>
  <alias from="(Default)" to="(dynamic view)"/>
  <alias from="edit" to="@@edit"/>
  <alias from="sharing" to="@@sharing"/>
