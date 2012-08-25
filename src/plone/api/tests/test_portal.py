@@ -155,17 +155,10 @@ class TestPloneApiPortal(unittest.TestCase):
         # When no parameters are given an error is raised
         self.assertRaises(ValueError, portal.localized_time)
 
-        # datetime and request are required
-        self.assertRaises(ValueError, portal.localized_time,
-                          datetime=DateTime())
-        self.assertRaises(ValueError, portal.localized_time,
-                          request=self.layer['request'])
-
     def test_localized_time(self):
         request = self.layer['request']
         result = portal.localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
-            request=request,
             long_format=True,
             time_only=False
         )
@@ -173,14 +166,12 @@ class TestPloneApiPortal(unittest.TestCase):
 
         result = portal.localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
-            request=request,
             time_only=True
         )
         self.assertEqual(result, '11:59 PM')
 
         result = portal.localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
-            request=request
         )
         self.assertEqual(result, 'Dec 31, 1999')
 
