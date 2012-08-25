@@ -129,7 +129,7 @@ language, use :meth:`api.portal.localized_time`.
     from plone import api
     from DateTime import DateTime
     today = DateTime()
-    api.portal.localized_time(datetime=today, request=request)
+    api.portal.localized_time(datetime=today)
 
 .. invisible-code-block:: python
 
