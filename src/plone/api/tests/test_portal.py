@@ -225,3 +225,4 @@ class TestPloneApiPortal(unittest.TestCase):
         """ Test get tag name site """
 
         self.assertEqual(portal.getSite().getTagName(), u'PloneSite')
+        self.assertEqual(portal.getSite().portal_type, u'Plone Site')
