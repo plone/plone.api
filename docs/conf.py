@@ -11,6 +11,8 @@ extensions = [
 ]
 master_doc = 'index'
 
+locale_dirs = ["translated/"]
+language = 'en'
 
 # Use-case: we want to display a warning message that is only visible on GitHub
 # and not on ReadTheDocs. We achieve this by adding a custom CSS that hides

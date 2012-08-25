@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plone.api 0.1a1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-25 18:42\n"
+"POT-Creation-Date: 2012-08-25 18:07\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,352 +17,352 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../about.rst:10
-# 2a436744b5074106a4d3c1e7db23907d
+# d6f22570c4df4af3a574e56e6748fc1d
 msgid "About"
 msgstr ""
 
 #: ../about.rst:13
-# f29f9648a2c64ceab3a58837c46f84c3
+# 929433e6861348b4a5c173e703ed6ad9
 msgid "Inspiration"
-msgstr ""
+msgstr "Inspiracion"
 
 #: ../about.rst:15
-# 2d3ee5a2fe0143399f5b58ba22e4eda1
+# e9e8b115f6d24517a79ee891cf2297d9
 msgid "We want `plone.api` to be developed with `PEP 20 <http://www.python.org/dev/peps/pep-0020/>`_ idioms in mind, in particular:"
 msgstr ""
 
 #: ../about.rst:25
-# 7d4b894e6cbb420fac9251ec2fb46d70
+# d89823a23f6342a2975e56a77adba8f1
 msgid "All contributions to `plone.api` should keep these important rules in mind."
 msgstr ""
 
 #: ../about.rst:27
-# cba995aac8fc43aa99709d8004865bb3
+# 2641bc6430754b5fb8624f062cfc7db6
 msgid "Two libraries are especially inspiring:"
 msgstr ""
 
 #: ../about.rst:30
-# 6084d6e706274019a8f4fb7aaa19d1d5
+# f8d45704bb874e76ade8bcf31be7e9f4
 msgid "Arguably, the reason for SQLAlchemy's success in the developer community lies as much in its feature set as in the fact that its API is very well designed, is consistent, explicit, and easy to learn."
 msgstr ""
 
 #: ../about.rst:35
-# a691aa3dabd84cf28f90c99c585e1ff5
+# 8c74d41d7ba8484ab11acd9df4273b16
 msgid "As of this writing, this is still a very new library, but just looking at `a comparison between the urllib2 way and the requests way <https://gist.github.com/973705>`_, as well as the rest of its documentation, one cannot but see a parallel between the way we *have been* and the way we *should be* writing code for Plone (or at least have that option)."
 msgstr ""
 
 #: ../about.rst:43
-# d03775b84e504b988c0640c82a21a306
+# 87089d43ce0a44bba5af3a77e5246e8e
 msgid "Design decisions"
 msgstr ""
 
 #: ../about.rst:46
-# 95ffc3de9a55416f95ea3c05afbf9a4d
+# 5b7444cac8054ac98be671d18ad03688
 msgid "Import and usage style"
 msgstr ""
 
 #: ../about.rst:48
-# 672e9312309c43709fd6d2acc2023e2d
+# 005c3be7a1a04dca8d2da44040cd1d1a
 msgid "API methods are grouped by their field of usage: :ref:`chapter_portal`, :ref:`chapter_content`, :ref:`chapter_users` and :ref:`chapter_groups`. Hence the importing and usage of API methods look like this:"
 msgstr ""
 
 #: ../about.rst:72
-# 349b5fd6487e40ea9dd81987978c2f5e
+# c9c9a8833de44d6a97bcc4447eed8e9c
 msgid "In other words, always import the top-level package (``from plone import api``) and then use the group namespace to access the method you want (``url = api.portal.url()``)."
 msgstr ""
 
 #: ../about.rst:76
-# f8239b769bdf4a778da77b3c7e02bf23
+# 7bc0a6a949bb4b758cc2ce9173cc001a
 msgid "All example code should adhere to this style, so we encourage one and only one prefered way of consuming API methods."
 msgstr ""
 
 #: ../about.rst:81
-# f21cac0fa09c473c97d47508b064c72a
+# 2ca6fed8d167492085b39481c1047292
 msgid "Prefer keyword arguments"
 msgstr ""
 
 #: ../about.rst:83
-# 5f321e76bf214e3cb3a72ccb2e2eb7a6
+# 8d0e6860ddf64b1ebe06f7769f256556
 msgid "For the following reasons the example code in the API (and hence the recommendation to people on how to use it) shall always prefer using keyword instead of positional arguments:"
 msgstr ""
 
 #: ../about.rst:87
-# 203486d7854545f3be3181502c63f0c9
+# 0ea03c5859fd4e35bf0aec1212cbea9c
 msgid "There will never be a doubt when writing a method on whether an argument should be positional or not.  Decision already made."
 msgstr ""
 
 #: ../about.rst:89
-# 51132b05a09e422bbcd7d7d731e79a9e
+# 34202755affc4163bd7a848fd6e1823a
 msgid "There will never be a doubt when using the API on which argument comes first, or which ones are named/positional.  All arguments are named."
 msgstr ""
 
 #: ../about.rst:91
-# 94d78f7dd2284323a551bc70c1bcaccb
+# 7047864e7a7b4f839e917da7a7b5bfab
 msgid "When using positional arguments, the method signature is dictated by the underlying implementation.  Think required vs. optional arguments.  Named arguments are always optional in Python.  This allows us to change implementation details and leave the signature unchanged. In other words, the underlying API code can change substantially and the code using it will remain valid."
 msgstr ""
 
 #: ../about.rst:97
-# f9101ada75c34ab4a49ac2649e2c86c6
+# 023882595fae483da4d8a3db5f4fec25
 msgid "The arguments can all be passed as a dictionary."
 msgstr ""
 
 #: ../about.rst:99
-# e6447bf1c1cc407980d43e369123bd3c
+# 49dbb84f82924e52992aad1d0824d049
 msgid "The API provides grouped functional access to otherwise distributed logic in Plone. Plone's original distribution of logic is a result of two things: The historic re-use of CMF- and Zope-methods and reasonable, but at first hard to understand splits like acl_users.* and portal_memberdata."
 msgstr ""
 
 #: ../about.rst:104
-# a1ced08ad5c448ce96cf067f65e7631e
+# c3164f2b1a7e4b489fadd5ccfaef9201
 msgid "That's why we've created a set of useful methods that implement best-practice access to the original distributed APIs. In this way we also document in code how to use Plone directly."
 msgstr ""
 
 #: ../about.rst:109
-# 6264cd574bc64f9d97dddba7f620e57b
+# 400b235775994ab4933199094575b49b
 msgid "If you doubt those last sentences: We had five different ways to get the portal root with different edge-cases. We had three different ways to move an object. With this in mind, it's obvious that even the most simple tasks can't be documented in Plone in a sane way."
 msgstr ""
 
 #: ../about.rst:114
-# 34554f35d96445cb8cea6a18400b4f5a
+# ae5bf8585cdf40a7b516c93adf28df5f
 msgid "Also, we don't intend to cover all possible use-cases. Only the most common ones. If you need to do something that `plone.api` does not support, just use the underlying APIs directly. We will cover 20% of tasks that are being done 80% of the time, and not one more."
 msgstr ""
 
 #: ../about.rst:121
-# b4b07582223e44dca3469a6bc0ee6699
+# c66864ad865744e18813061cc8ced082
 msgid "FAQ"
 msgstr ""
 
 #: ../about.rst:124
-# 99216352a3a8460187898ba11d724b9a
+# a090827ce88b418782abd0cc46a229ba
 msgid "Why aren't we using wrappers?"
 msgstr ""
 
 #: ../about.rst:126
-# 5d5493b748f340779cb1ddffd215fc90
+# e536bc62a3e44822a2c8785c26053635
 msgid "We could wrap an object (like a user) with an API to make it more usable right now. That would be an alternative to the convenience methods."
 msgstr ""
 
 #: ../about.rst:129
-# ebc49b52ce3d43dbbaa635bd6553c1a5
+# fc5d947c300a42d4b7c3f087a6ef9f61
 msgid "But telling developers that they will get yet another object from the API which isn't the requested object, but an API-wrapped one instead, would be very hard. Also, making this wrap transparent in order to make the returned object directly usable would be nearly impossible, because we'd have to proxy all the :mod:`zope.interface` stuff, annotations and more."
 msgstr ""
 
 #: ../about.rst:135
-# 0d4d150359a84f0594821afc047a6809
+# 837bc126d553440c93c39aa43ca60189
 msgid "Furthermore, we want to avoid people writing code like this in tests or their internal utility code and failing miserably in the future if wrappers would no longer be needed and would therefore be removed::"
 msgstr ""
 
 #: ../about.rst:144
-# 85967fd7653f425382711bd500730255
+# bcc8254ee1b247dd813aba43f5f0ab0f
 msgid "Why ``delete`` instead of ``remove``?"
 msgstr ""
 
 #: ../about.rst:146
-# 401809f8d97f49a08faa1f6e52254109
+# c96fb6140a9545f8980123ff9f8ec15f
 msgid "The underlying code uses methods that are named more similarly to *delete* rather than to *remove*"
 msgstr ""
 
 #: ../about.rst:148
-# 763c8c4c889d49028ba6c6a9bd7b7325
+# 5c900c509c0b48529299e8bc94e2ab0e
 msgid "``CRUD`` has *delete*, not *remove*."
 msgstr ""
 
 #: ../about.rst:152
-# 0436b19cd5b041ca8b591ef5ab64d096
+# 4554d121841943098de957f2c4fc2b32
 msgid "Roadmap"
 msgstr ""
 
 #: ../about.rst:155
-# 3c062a5a96b740ef8778f0e8a55ed39a
+# 487b3b9fbaaf4e82ae1cc7f3bfdfc1e1
 msgid "Short term"
 msgstr ""
 
 #: ../about.rst:157
-# 5ec374a7a3f647b5a6d2859005e1f2c0
+# a6b64c3db42040a797cadb746b2ea05a
 msgid "In the short-term, we are planning to add more api methods to `plone.api`. An up-to-date list of them (and ideas for them) can be found `on GitHub <https://github.com/plone/plone.api/issues>`_."
 msgstr ""
 
 #: ../about.rst:161
-# e31adb5b97d648dab373d9706e32c99c
+# 3b191b831a214a4eaf85c54fd5ef9692
 msgid "TODO: add this to GitHub issues:"
 msgstr ""
 
 #: ../about.rst:163
-# f8929ca807a7428b800714f7fd25deeb
+# e585d0d977ed404181ab3c169ebc252b
 msgid "descriptive error messages"
 msgstr ""
 
 #: ../about.rst:165
-# 04d3a21173064ec3b7066d3fad50ac28
+# 35404a62561746ff999ce0c2f99bbfb9
 msgid "see where code breaks with stupid messages"
 msgstr ""
 
 #: ../about.rst:166
-# d057b078035c4066989c25d4e8ba13f0
+# a939473deae94fcbae4dbc5192f422d1
 msgid "catch them and make them more descriptive"
 msgstr ""
 
 #: ../about.rst:167
-# f49fae0ea7f84216a791f1a105873e74
+# b42f91dec6a44afc8c98eac2e40fd30f
 msgid "have a list of all possible error messages, what they mean and how to overcome them"
 msgstr ""
 
 #: ../about.rst:172
-# 4650e9d3bd564bd7b0af72919bc37a45
+# 83cde3bc79e74fe3a7c27e7e5fcedcb7
 msgid "Medium- to long-term:"
 msgstr ""
 
 #: ../about.rst:174
-# a1f8f342c2ac45ebaced9ad6f912f5a9
+# 406534e02e3d4d4bb59179d67320bdf5
 msgid "Below is a collection of ideas we have for the long run, in no particular order:"
 msgstr ""
 
 #: ../about.rst:176
-# f65e026a179346bf8b1384e3ed937b08
+# fc9613d9d50b492aa3852904cd881fd2
 msgid "api.role context manager (to use with ``with``)"
 msgstr ""
 
 #: ../about.rst:186
-# 7e1b68bc127e4288a81ac58f89f730d2
+# 175cd90565fc46e08bd3e4e4a8101a24
 msgid "api.env"
 msgstr ""
 
 #: ../about.rst:188
-# 1f4ae1500be34a828b334872383f1b53
+# 1db6566780284ce996487731ec2b03e3
 msgid "debug_mode, test_mode booleans (to check if you are in debug/test)"
 msgstr ""
 
 #: ../about.rst:189
-# 2fd5bc2e3bcb44128285857362cd136b
+# ce8c67593e384265bc723eca914177de
 msgid "zope/plone version info"
 msgstr ""
 
 #: ../about.rst:191
-# 680e221b3c1b4c59816189dd5dca883f
+# 163d0f7a14694be0a4c14c57d8a8a686
 msgid "api.system"
 msgstr ""
 
 #: ../about.rst:193
-# 3b98c601ff9a49d2bda68a897862863d
+# 2c2a9ab8dd5a46f5b3280ebe52e79645
 msgid "for sysadmin tasks"
 msgstr ""
 
 #: ../about.rst:194
-# 8eb71408396944deae13edd284d87c43
+# 0fcdc7da8b9243e0ab462007a148448e
 msgid "run upgrades, stay up-to-date"
 msgstr ""
 
 #: ../about.rst:195
-# dc6ef86847c6487a8d28abd46fa6bfcd
+# ab78f927417e45e9ac62447ea77035ca
 msgid "cleanup broken objects, interfaces, utilities, etc."
 msgstr ""
 
 #: ../about.rst:196
-# aa5a7f885c874a84b963c78fcb46ed98
+# c6f6445a1629431abc0c8c506da2bfbf
 msgid "mounting things"
 msgstr ""
 
 #: ../about.rst:198
-# 9e22a02a18124701b38b58f9162b8715
+# c164ef626e3f47119c6f1a55bba020f4
 msgid "unify permissions"
 msgstr ""
 
 #: ../about.rst:200
-# 1dbdc51bc8144212942b0e848840ed10
+# e4513dfbe1ca4cc6bc2896d774cbcd9d
 msgid "have all different types of permission in one place and one way to use them"
 msgstr ""
 
 #: ../about.rst:202
-# 58acee587c1f407f994bd1ee046891c5
+# de48cceafe494012b3a4e00b312869da
 msgid "style guide"
 msgstr ""
 
 #: ../about.rst:204
-# 0c10ec9c6adc467680422e88b28cb9cd
+# 3c016cfe70ca40599c0b8350d4e2291c
 msgid "have a style guide for how Plone files should be formatted -- this needs to be finalized before we start fixing underlying APIs so new code can use the style guide"
 msgstr ""
 
 #: ../about.rst:207
-# 059393d646df4807b6e0bf60fcded4bd
+# 4f9d840985b74a33aa25e0e91da3db3e
 msgid "define guidelines for:"
 msgstr ""
 
 #: ../about.rst:209
-# 4f66feaababa4915bbeae3c82ffc11ea
+# db52052e5bfa4ec38fdc66ec3b150c54
 msgid "python"
 msgstr ""
 
 #: ../about.rst:210
-# 4c4b33b5972a44f38fa7bf26f4bbf549
+# b6cdd747740e414ab6f50fccbfd7254b
 msgid "javascript"
 msgstr ""
 
 #: ../about.rst:211
-# 8a6d258332214849925967b682c1c96a
+# 8bb905e5282c46599265eb0a932cc9f4
 msgid "rst"
 msgstr ""
 
 #: ../about.rst:212
-# 7ac71372fdd141c893ce90cc9992ebfa
+# 33e7fd9b7d534ccfbfe6f0d4c8587eb2
 msgid "zpt"
 msgstr ""
 
 #: ../about.rst:213
-# 3ada99fc0f444c36a17ddd5efb3018f4
+# 13360f966e55431286b579d3a7c72754
 msgid "xml"
 msgstr ""
 
 #: ../about.rst:214
-# 27d5db7138d24562b926c1939cd03a0e
+# 140f91230bfc4a2d84080f970c617df8
 msgid "zcml"
 msgstr ""
 
 #: ../about.rst:216
-# 219ad0b7744f4b148974776df461ad9d
+# 9668b4e8cad9420a957e8b6df1660c99
 msgid "rewrite sub-optimal underlying APIs and deprecate plone.api methods, but leave the (updated) documentation:"
 msgstr ""
 
 #: ../about.rst:219
-# dc05069dcdb6450f8413b6e4aa112a94
+# 25328c2383a84fd6ba22535d598e395c
 msgid "getting/setting member properties"
 msgstr ""
 
 #: ../about.rst:220
-# 8399fc5ba7194909a459de3cb9aaff81
+# 584f892ab7244865b1a2b49cb97aa68a
 msgid "tools:"
 msgstr ""
 
 #: ../about.rst:222
-# 410d5fd4d48d40f5b2b632c2c26b5e02
+# e1d613379ffa4eb28dc4e3e501804c02
 msgid "portal_groupdata, portal_groups, portal_memberdata, portal_membership"
 msgstr ""
 
 #: ../about.rst:223
-# e4725801d2194b57b48e143190136411
+# a7acf5e33c8143bdbc795f91a5efb8ec
 msgid "portal_quickinstaller, portal_undo"
 msgstr ""
 
 #: ../about.rst:225
-# 3078b079855f4f41b04ab1c7794cf50c
+# 6b9ef5601701414aa5ccd6b3f4341d29
 msgid "JSON webservices"
 msgstr ""
 
 #: ../about.rst:227
-# aff2f6b63fe242fcb418c28cfdf15328
+# 92bec24c8e07438e8f1d122ab3c92e32
 msgid "probably in a separate package plone.jsonapi"
 msgstr ""
 
 #: ../about.rst:228
-# ba9d6aef442341a18631fc8f4145f334
+# 367e892699c84897b09c682ed291af64
 msgid "one view (@@jsonapi for example) that you can call in your JS and be sure it won't change"
 msgstr ""
 
 #: ../about.rst:230
-# 36cd035b06a849a983dcbc6601e1e2d5
+# 16d8483cf95c4e1989fc7c1a0dc42b75
 msgid "easier to AJAXify stuff"
 msgstr ""
 
 #: ../about.rst:232
-# f4f27b60ac2c44ca997c10f296883309
+# 2da8280a5b07495c8a7be4da287fd4de
 msgid "Flask-type url_for_view() and view_for_url()"
 msgstr ""
 

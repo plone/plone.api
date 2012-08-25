@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plone.api 0.1a1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-25 18:42\n"
+"POT-Creation-Date: 2012-08-25 18:07\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,82 +17,82 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../groups.rst:13
-# 61712135fcb44d78a7992dd942074285
+# 9e122e7a75ac459686b27ce95ff81b2c
 msgid "Groups"
 msgstr ""
 
 #: ../groups.rst:18
-# 4c8b0191c2a743068edb4aaf4e59ce01
+# cd6fabd9120a4f86a81fcea9cad45b5f
 msgid "Create group"
 msgstr ""
 
 #: ../groups.rst:20
-# 37c5fe3be98f411186ac7acb411a64fc
+# da45a6ae32c54cfda3b81ded153f7c47
 msgid "To create a new portal group, use :meth:`api.group.create`."
 msgstr ""
 
 #: ../groups.rst:31
-# 64d60273470f4c59a74c88e3b8f5c5c1
+# 149e8a041c8744f8a37a81c03026f964
 msgid "When creating groups ``title``, ``description``, ``roles`` and ``groups`` are optional."
 msgstr ""
 
 #: ../groups.rst:56
-# b297efffe8754950a56625ec8d98cb98
+# 47bc8e1452fb449bbc948322f5a674c2
 msgid "Get group"
 msgstr ""
 
 #: ../groups.rst:58
-# f303d69452a64d6eaa8a19d65a492066
+# f3e7f6198fcf4c229c3760ec6d321b20
 msgid "To get a group by it's name, use :meth:`api.group.get`."
 msgstr ""
 
 #: ../groups.rst:73
-# d0b4f62758714617aadbf0bd3e513ed0
+# 4130edd849d0404594ca596cf49c2354
 msgid "Editing a group"
 msgstr ""
 
 #: ../groups.rst:75
-# 047640d319fb44b5bdfe25a53374ef00
+# 2f9267af057645c690cce6e99a634f8c
 msgid "Groups can be edited by using the ``group_tool``. In this example the ``title``, ``description`` and ``roles`` are updated for the group 'Staff'."
 msgstr ""
 
 #: ../groups.rst:103
-# dccbe1ecf7654d22b7961db5f9633375
+# f0352146c1a648f2aee5bc2ed06cdc87
 msgid "Get all groups"
 msgstr ""
 
 #: ../groups.rst:105
-# 2b144517b8a143a09af88b3f2dedd497
+# d4a47757b5c04627b8edfcf7ccca4361
 msgid "You can also get all groups, by using :meth:`api.group.get_all`."
 msgstr ""
 
 #: ../groups.rst:120
-# 45a8821f48b4448a911fd84daedeba9a
+# 2c387b09ea95471493a587b11d5a52f2
 msgid "Delete group"
 msgstr ""
 
 #: ../groups.rst:122
-# 648e21e43f964079a8c328665dc6db3e
+# d35743255adc4169a5fcd366aacc4729
 msgid "To delete a group, use :meth:`api.group.delete` and pass in either the groupname or the group object you want to delete."
 msgstr ""
 
 #: ../groups.rst:145
-# 83c3da3eb6d24ea0bc1f0464ee26e135
+# bacaba3724d14de4adc1a4afdcc88c4f
 msgid "Adding user to group"
 msgstr ""
 
 #: ../groups.rst:147
-# 5901bbe8f258498ca81a244a9e9ee1ac
+# f05d93fbc61c43f8a22fab1f34ddd0d1
 msgid "The ``add_user`` method accepts either the groupname or the group object of the target group and the username or the user object you want to add to the group."
 msgstr ""
 
 #: ../groups.rst:171
-# 8473615345a84c039643f433d211283c
+# 12480286674a46bfb9e16c9e03dbb9c0
 msgid "Deleting user from group"
 msgstr ""
 
 #: ../groups.rst:173
-# 33476754e6fe409e8cf971e4329bd82c
+# 33d87dcabec046e6965ba42c5189ff88
 msgid "The ``delete_user`` method accepts either the groupname or the group object of the target group and either the username or the user object you want to remove from the group."
 msgstr ""
 
