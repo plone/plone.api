@@ -84,7 +84,7 @@ def test_suite():
     docs_path = os.path.join(os.path.dirname(__file__), '../../../../docs')
 
     for filename in os.listdir(docs_path):
-        if filename == 'static':
+        if filename in ['static', 'translated', 'locale', 'doctrees', 'html']:
             continue
         doctests.append(DocFileSuite(os.path.join('../../../../docs', filename)))
 
