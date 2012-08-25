@@ -42,6 +42,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(portal.get(), self.portal)
 
     def test_url(self):
+        """ Test to see if the url exists """
         self.assertEqual(portal.url(), 'http://nohost/plone')
 
     def test_get_tool_constraints(self):
@@ -51,6 +52,8 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(ValueError, portal.get_tool)
 
     def test_get_tool(self):
+        """ Test to validate the tool name """
+
         self.assertEqual(
             portal.get_tool(name='portal_catalog'),
             getToolByName(self.portal, 'portal_catalog')
@@ -92,6 +95,8 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
     def test_send_email(self):
+        """ Test sending mail """
+
         self.mailhost.reset()
 
         portal.send_email(
@@ -197,6 +202,8 @@ class TestPloneApiPortal(unittest.TestCase):
                           message='Beer is brewing.')
 
     def test_show_message(self):
+        """ Test to see if message appears """
+
         from Products.statusmessages.interfaces import IStatusMessage
         request = self.layer['request']
         portal.show_message(message='Blueberries!', request=request)
