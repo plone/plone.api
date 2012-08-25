@@ -34,6 +34,7 @@ setup(
             'setuptools-flakes',
         ],
         'test': [
+            'plone.app.dexterity',
             'plone.app.testing',
             'mock',
         ],
