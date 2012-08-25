@@ -326,6 +326,7 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
     def test_get_view(self):
+        """ Test the view """
         request = self.layer['request']
 
         view = api.content.get_view(
