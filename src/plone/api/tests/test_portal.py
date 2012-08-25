@@ -216,6 +216,7 @@ class TestPloneApiPortal(unittest.TestCase):
         """" Test get owner info site """
 
         self.assertEqual(portal.getSite().owner_info()['id'], u'admin')
+        self.assertEqual(portal.getSite().getOwner().getUserName(), u'admin')
         self.assertEqual(portal.getSite().owner_info()['path'], u'acl_users')
         self.assertEqual(portal.getSite().owner_info()['explicit'], True)
         self.assertEqual(portal.getSite().owner_info()['userCanChangeOwnershipType'], None)
