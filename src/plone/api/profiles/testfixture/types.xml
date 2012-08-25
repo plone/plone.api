@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<object name="portal_types" meta_type="Plone Types Tool">
+ <object name="Dexterity Item" meta_type="Dexterity FTI"/>
+ <object name="Dexterity Folder" meta_type="Dexterity FTI"/>
+</object>
