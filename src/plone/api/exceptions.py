@@ -2,9 +2,22 @@ class PloneApiError(Exception):
     """Base exception class for plone.api errors."""
 
 
-class MissingParameterError(Exception):
+class MissingParameterError(PloneApiError):
     """Raised when a parameter is missing."""
 
 
-class InvalidParameterError(Exception):
+class InvalidParameterError(PloneApiError):
     """Raised when a parameter is invalid."""
+
+
+class CannotGetPortalError(PloneApiError):
+    """Raised when the portal object cannot be retrieved.
+
+    This normally happens if you are using plone.api ``bin/instance debug``,
+    because debug sessions do not have a request and so the getSite() cannot
+    know which Plone portal you want to get (as there can be multiple Plone
+    sites).
+
+    The solution is to use the ``-P <portal_id>`` parameter to tell Zope to
+    traverse to a portal, for example ``bin/instance -P Plone debug.``
+    """
