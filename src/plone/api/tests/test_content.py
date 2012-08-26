@@ -8,6 +8,7 @@ from Acquisition import aq_base
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
 from zope.component import getUtility
+from OFS.CopySupport import CopyError
 
 try:
     pkg_resources.get_distribution('plone.dexterity')
@@ -285,6 +286,47 @@ class TestPloneApiContent(unittest.TestCase):
 
         api.content.move(source=self.conference, id='conference-renamed')
         self.assertEqual(self.conference.id, 'conference-renamed')
+
+    def test_rename_constraints(self):
+        """ Test the constraints for rename content """
+
+        # When no parameters are given an error is raised
+        self.assertRaises(api.exceptions.MissingParameterError, api.content.rename)
+
+        container = mock.Mock()
+        # Source is missing an should raise an error
+        self.assertRaises(api.exceptions.MissingParameterError, api.content.rename, source=container)
+
+    def test_rename(self):
+        """ Test renaming of content """
+
+        container = self.portal
+
+        # Rename contact
+        api.content.rename(source=self.contact, id='nu-contact')
+        assert container['about']['nu-contact']
+        assert 'contact' not in container['about'].keys()
+
+        # Test with strict parameter disabled when moving content
+        api.content.create(
+            container=self.about, type='Link', id='link-to-blog')
+        api.content.rename(
+            source=container['about']['link-to-blog'], id='link-to-blog',
+            strict=False)
+        assert container['about']['link-to-blog-1']
+        assert 'link-to-blog' not in container.keys()
+
+        # Rename to existing id
+        api.content.create(
+            container=self.about, type='Link', id='link-to-blog')
+        self.assertRaises(CopyError, api.content.rename,
+                          source=container['about']['link-to-blog'],
+                          id='link-to-blog-1')
+        api.content.rename(
+            source=container['about']['link-to-blog'], id='link-to-blog-1',
+            strict=False)
+        assert container['about']['link-to-blog-1-1']
+        assert 'link-to-blog' not in container.keys()
 
     def test_copy_constraints(self):
         """ Test the constraints for moving content """
