@@ -3,7 +3,7 @@ Update translations
 
 $ cd docs
 $ make gettext
-$ msgfmt "locale/es/LC_MESSAGES/about.po" -o "translated/es/LC_MESSAGES/about.mo"
+$ msgfmt -c -vv --statistics "locale/es/LC_MESSAGES/about.po" -o "translated/es/LC_MESSAGES/about.mo"
 
 Build localized documentation
 =============================
