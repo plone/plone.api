@@ -161,7 +161,7 @@ gets the UUID of the ``contact`` document.
     portal = api.portal.get()
     contact = portal['about']['contact']
 
-    uuid = api.content.uid(obj=contact)
+    uuid = api.content.uuid(obj=contact)
 
 .. invisible-code-block:: python
 
