@@ -2,6 +2,7 @@
 
 from App.config import getConfiguration
 from plone.app.uuid.utils import uuidToObject
+from plone.uuid.interfaces import IUUID
 from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
@@ -315,3 +316,18 @@ def get_view(name=None, context=None, request=None):
             "Cannot find a view with name '%s'. \n"
             "Available views are:\n"
             "%s" % (name, '\n'.join(sorted(views_names))))
+
+
+def uuid(obj=None):
+    """Get the object's Universally Unique IDentifier (UUID).
+
+    :param obj: [required] Object we want its UUID.
+    :type obj: Content object
+    :returns: Object's UUID
+    :rtype: string
+    :Example: :ref:`content_uuid_example`
+    """
+    if not obj:
+        raise ValueError
+
+    return IUUID(obj)
