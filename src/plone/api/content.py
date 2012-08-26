@@ -175,10 +175,37 @@ def move(source=None, target=None, id=None, strict=True):
         if strict:
             new_id = id
         else:
-            chooser = INameChooser(target)
+            try:
+                chooser = INameChooser(target)
+            except TypeError:
+                chooser = INameChooser(target.aq_parent)
             new_id = chooser.chooseName(id, source)
 
         target.manage_renameObject(source_id, new_id)
+
+
+def rename(source=None, id=None, strict=True):
+    """Rename the object.
+
+    :param source: [required] Object that we want to rename.
+    :type source: Content object
+    :param id: New id of the object. If the new id conflicts with another
+        object in the container, a suffix will be added to the renamed
+        object's id.
+    :type id: string
+    :param strict: When True, the given id will be enforced. If the id is
+        conflicting with another object in the container, raise a
+        KeyError. When False, rename creates a new, non-conflicting id.
+    :type strict: boolean
+    :Example: :ref:`content_rename_example`
+    """
+    if not source:
+        raise MissingParameterError("Missing required parameter: source")
+
+    if not id:
+        raise MissingParameterError("Missing required parameter: id")
+
+    move(source=source, id=id, strict=strict)
 
 
 def copy(source=None, target=None, id=None, strict=True):
