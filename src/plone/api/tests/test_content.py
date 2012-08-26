@@ -7,7 +7,6 @@ from zExceptions import BadRequest
 from Acquisition import aq_base
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
-from Products.Archetypes.interfaces.base import IBaseObject
 from zope.component import getUtility
 
 try:
