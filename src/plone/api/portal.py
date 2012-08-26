@@ -19,11 +19,12 @@ def get():
     :Example: :ref:`portal_get_example`
     """
     portal = getSite()
-    if not portal:
-        raise CannotGetPortalError(
-            "Unable to get the portal object. More info "
-            "on http://ploneapi.readthedocs.org/en/latest/api.html"
-            "#plone.api.exceptions.CannotGetPortalError")
+    if portal:
+        return portal
+    raise CannotGetPortalError(
+        "Unable to get the portal object. More info on "
+        "http://ploneapi.readthedocs.org/en/latest/api.html"
+        "#plone.api.exceptions.CannotGetPortalError")
 
 
 def url():

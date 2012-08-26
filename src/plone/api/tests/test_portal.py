@@ -41,7 +41,15 @@ class TestPloneApiPortal(unittest.TestCase):
         self.portal._updateProperty('email_from_address', 'sender@example.org')
 
     def test_get(self):
+        """Test getting the portal object."""
         self.assertEqual(portal.get(), self.portal)
+
+    @mock.patch('plone.api.portal.getSite')
+    def test_get_no_site(self, getSite):
+        """Test error msg when getSite() returns None."""
+        getSite.return_value = None
+        from plone.api.exceptions import CannotGetPortalError
+        self.assertRaises(CannotGetPortalError, portal.get)
 
     def test_url(self):
         """ Test to see if the url exists """
