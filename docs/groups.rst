@@ -141,6 +141,9 @@ or the group object you want to delete.
 
     assert not api.group.get(groupname='unwanted')
 
+
+.. _add_user_to_group_example:
+
 Adding user to group
 --------------------
 
