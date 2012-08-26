@@ -197,7 +197,10 @@ def has_role(role=None, username=None, user=None, obj=None):
     if not user or user == current_user:
         user = current_user
 
-    return role in user.getRoles()
+    if obj:
+        return role in user.getRolesInContext(obj)
+    else:
+        return role in user.getRoles()
 
 
 def has_permission(permission=None, username=None, user=None,
