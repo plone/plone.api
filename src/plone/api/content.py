@@ -2,6 +2,7 @@
 
 from App.config import getConfiguration
 from plone.app.uuid.utils import uuidToObject
+from plone.uuid.interfaces import IUUID
 from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
@@ -276,3 +277,14 @@ def get_view(name=None, context=None, request=None):
         request['ACTUAL_URL'] = request['URL']
 
     return getMultiAdapter((context, request), name=name)
+
+
+def uuid(obj=None):
+    """Get the object's UUID.
+
+    :param obj: [required] Object we want its UUID.
+    """
+    if not obj:
+        raise ValueError
+
+    return IUUID(obj)
