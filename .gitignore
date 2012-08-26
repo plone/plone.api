@@ -1,4 +1,6 @@
 *~
+*.egg-info
+*.mo
 *.pyc
 /.installed.cfg
 /local.cfg
@@ -14,7 +16,6 @@
 /lib/
 /parts/
 /var/
-/src/plone.api.egg-info/
 /.coverage
 /coverage
 /htmlcov
