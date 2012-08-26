@@ -6,10 +6,16 @@ from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFPlone.utils import getToolByName
 from zope.app.component.hooks import getSite
 from zope.app.container.interfaces import INameChooser
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, getSiteManager
+from zope.interface import Interface, providedBy
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.WorkflowCore import WorkflowException
 
 import random
 import transaction
+
+from plone.api.exceptions import InvalidParameterError
+from plone.api.exceptions import MissingParameterError
 
 
 def create(container=None,
@@ -42,14 +48,14 @@ def create(container=None,
     :Example: :ref:`content_create_example`
     """
     if not container:
-        raise ValueError('The ``container`` attribute is required.')
+        raise MissingParameterError("Missing required parameter: container")
 
     if not type:
-        raise ValueError('The ``type`` attribute is required.')
+        raise MissingParameterError("Missing required parameter: type")
 
     if not id and not title:
-        raise ValueError('You have to provide either the ``id`` or the '
-                         '``title`` attribute')
+        raise MissingParameterError('You have to provide either the ``id`` or the '
+                                    '``title`` parameter')
 
     # Create a temporary id if the id is not given
     content_id = strict and id or str(random.randint(0, 99999999))
@@ -57,7 +63,19 @@ def create(container=None,
     if title:
         kwargs['title'] = title
 
-    container.invokeFactory(type, content_id, **kwargs)
+    try:
+        container.invokeFactory(type, content_id, **kwargs)
+    except:
+        if ISiteRoot.providedBy(container):
+            types = [type.id for type in container.allowedContentTypes()]
+        else:
+            types = container.getLocallyAllowedTypes()
+
+        raise InvalidParameterError(
+            "Cannot add a '%s' object to the container. \n"
+            "Allowed types are:\n"
+            "%s" % (type, '\n'.join(sorted(types))))
+
     content = container[content_id]
 
     # Archetypes specific code
@@ -242,10 +260,19 @@ def transition(obj=None, transition=None):
     :Example: :ref:`content_transition_example`
     """
     if not obj or not transition:
-        raise ValueError
+        raise MissingParameterError('You have to provide the ``obj`` and the '
+                                    '``transition`` parameters')
 
     workflow = getToolByName(getSite(), 'portal_workflow')
-    workflow.doActionFor(obj, transition)
+    try:
+        workflow.doActionFor(obj, transition)
+    except WorkflowException:
+        transitions = [action['id'] for action in workflow.listActions(object=obj)]
+
+        raise InvalidParameterError(
+            "Invalid transition '%s'. \n"
+            "Valid transitions are:\n"
+            "%s" % (transition, '\n'.join(sorted(transitions))))
 
 
 def get_view(name=None, context=None, request=None):
@@ -260,13 +287,13 @@ def get_view(name=None, context=None, request=None):
     :Example: :ref:`content_get_view_example`
     """
     if not name:
-        raise ValueError
+        raise MissingParameterError("Missing required parameter: name")
 
     if not context:
-        raise ValueError
+        raise MissingParameterError("Missing required parameter: context")
 
     if not request:
-        raise ValueError
+        raise MissingParameterError("Missing required parameter: request")
 
     # It happens sometimes that ACTUAL_URL is not set in tests. To be nice
     # and not throw strange errors, we set it to be the same as URL.
@@ -275,4 +302,16 @@ def get_view(name=None, context=None, request=None):
     if config.dbtab.__module__ == 'plone.testing.z2':
         request['ACTUAL_URL'] = request['URL']
 
-    return getMultiAdapter((context, request), name=name)
+    try:
+        return getMultiAdapter((context, request), name=name)
+    except:
+        # get a list of all views so we can display their names in the error msg
+        sm = getSiteManager()
+        views = sm.adapters.lookupAll(required=(providedBy(context), providedBy(request)),
+                                      provided=Interface)
+        views_names = [view[0] for view in views]
+
+        raise InvalidParameterError(
+            "Cannot find a view with name '%s'. \n"
+            "Available views are:\n"
+            "%s" % (name, '\n'.join(sorted(views_names))))
