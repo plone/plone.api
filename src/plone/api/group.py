@@ -1,6 +1,6 @@
 """ Module that provides functionality for group manipulation """
-from zope.app.component.hooks import getSite
 from Products.CMFCore.utils import getToolByName
+from plone.api import portal
 
 
 def create(groupname=None,
@@ -27,7 +27,7 @@ def create(groupname=None,
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    group_tool = getToolByName(getSite(), 'portal_groups')
+    group_tool = getToolByName(portal.get(), 'portal_groups')
 
     group_tool.addGroup(
         groupname, roles, groups, title=title,
@@ -47,7 +47,7 @@ def get(groupname=None):
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    group_tool = getToolByName(getSite(), 'portal_groups')
+    group_tool = getToolByName(portal.get(), 'portal_groups')
     return group_tool.getGroupById(groupname)
 
 
@@ -58,7 +58,7 @@ def get_all():
     :rtype: List of GroupData objects
     :Example: :ref:`groups_get_all_example`
     """
-    group_tool = getToolByName(getSite(), 'portal_groups')
+    group_tool = getToolByName(portal.get(), 'portal_groups')
     return group_tool.listGroups()
 
 
@@ -80,7 +80,7 @@ def delete(groupname=None, group=None):
     if groupname and group:
         raise ValueError
 
-    group_tool = getToolByName(getSite(), 'portal_groups')
+    group_tool = getToolByName(portal.get(), 'portal_groups')
 
     if group:
         groupname = group.id
@@ -122,7 +122,7 @@ def add_user(groupname=None, group=None, username=None, user=None):
 
     user_id = username or user.id
     group_id = groupname or group.id
-    portal_groups = getToolByName(getSite(), 'portal_groups')
+    portal_groups = getToolByName(portal.get(), 'portal_groups')
     portal_groups.addPrincipalToGroup(user_id, group_id)
 
 
@@ -160,5 +160,5 @@ def delete_user(groupname=None, group=None, username=None, user=None):
 
     user_id = username or user.id
     group_id = groupname or group.id
-    portal_groups = getToolByName(getSite(), 'portal_groups')
+    portal_groups = getToolByName(portal.get(), 'portal_groups')
     portal_groups.removePrincipalFromGroup(user_id, group_id)

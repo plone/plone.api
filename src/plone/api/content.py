@@ -5,7 +5,6 @@ from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFPlone.utils import getToolByName
-from zope.app.component.hooks import getSite
 from zope.app.container.interfaces import INameChooser
 from zope.component import getMultiAdapter, getSiteManager
 from zope.interface import Interface, providedBy
@@ -17,6 +16,7 @@ import transaction
 
 from plone.api.exceptions import InvalidParameterError
 from plone.api.exceptions import MissingParameterError
+from plone.api import portal
 
 
 def create(container=None,
@@ -122,7 +122,7 @@ def get(path=None, UID=None):
                          'required')
 
     if path:
-        site = getSite()
+        site = portal.get()
         site_id = site.getId()
         if not path.startswith('/{0}'.format(site_id)):
             path = '/{0}{1}'.format(site_id, path)
@@ -273,7 +273,7 @@ def get_state(obj=None):
     if not obj:
         raise ValueError
 
-    workflow = getToolByName(getSite(), 'portal_workflow')
+    workflow = getToolByName(portal.get(), 'portal_workflow')
     return workflow.getInfoFor(obj, 'review_state')
 
 
@@ -291,7 +291,7 @@ def transition(obj=None, transition=None):
         raise MissingParameterError('You have to provide the ``obj`` and the '
                                     '``transition`` parameters')
 
-    workflow = getToolByName(getSite(), 'portal_workflow')
+    workflow = getToolByName(portal.get(), 'portal_workflow')
     try:
         workflow.doActionFor(obj, transition)
     except WorkflowException:

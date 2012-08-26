@@ -27,7 +27,7 @@ def url():
     :rtype: string
     :Example: :ref:`portal_url_example`
     """
-    return getSite().absolute_url()
+    return get().absolute_url()
 
 
 def get_tool(name=None):
@@ -42,11 +42,11 @@ def get_tool(name=None):
         raise MissingParameterError("Missing required parameter: name")
 
     try:
-        return getToolByName(getSite(), name)
+        return getToolByName(get(), name)
     except AttributeError:
 
         # get a list of all tools so we can display their names in the error msg
-        portal = getSite()
+        portal = get()
         tools = []
         for id in portal.objectIds():
             if id.startswith('portal_'):
@@ -75,7 +75,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     if not recipient or not subject or not body:
         raise ValueError
 
-    portal = getSite()
+    portal = get()
     ctrlOverview = getMultiAdapter((portal, portal.REQUEST),
                                    name='overview-controlpanel')
     if ctrlOverview.mailhost_warning():
