@@ -158,15 +158,6 @@ In the short-term, we are planning to add more api methods to `plone.api`. An
 up-to-date list of them (and ideas for them) can be found `on GitHub
 <https://github.com/plone/plone.api/issues>`_.
 
-TODO: add this to GitHub issues:
-
-- descriptive error messages
-
-  - see where code breaks with stupid messages
-  - catch them and make them more descriptive
-  - have a list of all possible error messages, what they mean and how to
-    overcome them
-
 
 Medium- to long-term:
 ---------------------
