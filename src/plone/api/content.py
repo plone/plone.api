@@ -66,7 +66,7 @@ def create(container=None,
 
     try:
         container.invokeFactory(type, content_id, **kwargs)
-    except:
+    except ValueError:
         if ISiteRoot.providedBy(container):
             types = [type.id for type in container.allowedContentTypes()]
         else:
