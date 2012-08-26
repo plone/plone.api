@@ -192,7 +192,7 @@ def has_role(role=None, username=None, user=None):
     if username:
         user = portal_membership.getMemberById(username)
 
-    if not user:
+    if not user or user == current_user:
         user = current_user
 
     return role in user.getRoles()
