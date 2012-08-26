@@ -216,6 +216,34 @@ When user is omitted the current user is used for role lookup.
 
     self.assertTrue(has_role)
 
+Also, it is possible to lookup for the role only in a specific context.
+
+Considering the following portal structure ::
+
+    plone (portal root)
+    |
+    `-- blog
+
+You could lookup if the current logged user has the Reviewer role in the
+object blog.
+
+.. invisible-code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    blog = api.content.create(type='Folder', id='blog', container=portal)
+    current = api.user.get_current()
+    blog.manage_setLocalRoles(current.id, ['Reviewer', ])
+
+.. code-block:: python
+
+    from plone import api
+    has_role = api.user.has_role(role='Reviewer', obj=blog)
+
+.. invisible-code-block:: python
+
+    self.assertTrue(has_role)
+
 .. _user_has_permission_example:
 
 Check for permission
