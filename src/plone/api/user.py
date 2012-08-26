@@ -163,7 +163,7 @@ def is_anonymous():
     return getToolByName(getSite(), 'portal_membership').isAnonymousUser()
 
 
-def has_role(role=None, username=None, user=None):
+def has_role(role=None, username=None, user=None, obj=None):
     """Check if the user has the specified role.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
@@ -176,6 +176,8 @@ def has_role(role=None, username=None, user=None):
     :type username: string
     :param user: User that we are checking the role for
     :type user: MemberData object
+    :param obj: Object that we want to look in for the role.
+    :type obj: Content object
     :returns: True if user has the specified role, False otherwise.
     :rtype: bool
     :Example: :ref:`user_has_role_example`
@@ -193,7 +195,10 @@ def has_role(role=None, username=None, user=None):
         user = portal_membership.getMemberById(username)
 
     if not user or user == current_user:
-        return role in current_user.getRoles()
+        user = current_user
+
+    if obj:
+        return role in user.getRolesInContext(obj)
     else:
         return role in user.getRoles()
 
