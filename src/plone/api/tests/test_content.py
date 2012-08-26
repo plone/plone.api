@@ -5,6 +5,9 @@ import unittest
 import pkg_resources
 from zExceptions import BadRequest
 from Acquisition import aq_base
+from plone.uuid.interfaces import IMutableUUID
+from plone.uuid.interfaces import IUUIDGenerator
+from zope.component import getUtility
 
 try:
     pkg_resources.get_distribution('plone.dexterity')
@@ -426,6 +429,37 @@ class TestPloneApiContent(unittest.TestCase):
         )
         self.assertEqual(view.__name__, 'plone_context_state')
         self.assertEqual(aq_base(view.canonical_object()), aq_base(self.blog))
+
+    def test_uuid(self):
+        """ Test getting a content item's UUID """
+
+        container = self.portal
+
+        # The content item must be given as parameter
+        self.assertRaises(ValueError, api.content.uuid)
+
+        generator = getUtility(IUUIDGenerator)
+
+        # Set the UUID and compare it with the one we get from our function
+        # Dexterity
+        container.invokeFactory('Dexterity Item', 'test-dexterity')
+        item = container['test-dexterity']
+        uuid1 = generator()
+        IMutableUUID(item).set(uuid1)
+
+        uuid2 = api.content.uuid(item)
+        self.assertEqual(uuid1, uuid2)
+        self.assertTrue(isinstance(uuid2, str))
+
+        # Archetypes
+        container.invokeFactory('Document', 'test-archetype')
+        document = container['test-archetype']
+        uuid1 = generator()
+        document._setUID(uuid1)
+
+        uuid2 = api.content.uuid(document)
+        self.assertEqual(uuid1, uuid2)
+        self.assertTrue(isinstance(uuid2, str))
 
     def test_get_view_view_not_found(self):
         """Test that error msg lists available views if a view is not found."""
