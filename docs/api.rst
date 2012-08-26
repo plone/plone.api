@@ -39,3 +39,12 @@ plone.api.group
 
 .. automodule:: plone.api.group
     :members:
+
+
+.. _plone-api-errors:
+
+Errors and Exceptions
+=====================
+
+.. automodule:: plone.api.exceptions
+    :members:

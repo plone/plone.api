@@ -24,6 +24,8 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     :type properties: dict
     :returns: Newly created user
     :rtype: MemberData object
+    :raises:
+        ValueError
     :Example: :ref:`user_create_example`
     """
     if properties is None:
@@ -72,6 +74,8 @@ def get(username=None):
     :type username: string
     :returns: User
     :rtype: MemberData object
+    :raises:
+        ValueError
     :Example: :ref:`user_get_example`
     """
     if not username:
@@ -86,6 +90,8 @@ def get_current():
 
     :returns: Currently logged-in user
     :rtype: MemberData object
+    :raises:
+        ValueError
     :Example: :ref:`user_get_current_example`
     """
     portal_membership = getToolByName(getSite(), 'portal_membership')
@@ -113,6 +119,8 @@ def delete(username=None, user=None):
     :type username: string
     :param user: User object to be deleted.
     :type user: MemberData object
+    :raises:
+        ValueError
     :Example: :ref:`user_delete_example`
     """
     if not username and not user:
@@ -138,6 +146,8 @@ def get_groups(username=None, user=None):
     :type user: MemberData object
     :returns: List of names of groups this user is a member of.
     :rtype: List of strings
+    :raises:
+        ValueError
     :Example: :ref:`get_groups_for_user_example`
     """
     if not username and not user:
@@ -180,6 +190,8 @@ def has_role(role=None, username=None, user=None, obj=None):
     :type obj: Content object
     :returns: True if user has the specified role, False otherwise.
     :rtype: bool
+    :raises:
+        ValueError
     :Example: :ref:`user_has_role_example`
     """
     if not role:
@@ -222,6 +234,8 @@ def has_permission(permission=None, username=None, user=None,
     :type obj: object
     :returns: True if user has the specified permission, False otherwise.
     :rtype: bool
+    :raises:
+        ValueError
     :Example: :ref:`user_has_permission_example`
     """
     if not permission:

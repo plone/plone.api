@@ -22,6 +22,8 @@ def create(groupname=None,
     :type groups: list
     :returns: Newly created group
     :rtype: GroupData object
+    :raises:
+        ValueError
     :Example: :ref:`group_create_example`
     """
     if not groupname:
@@ -42,6 +44,8 @@ def get(groupname=None):
     :type groupname: string
     :returns: Group
     :rtype: GroupData object
+    :raises:
+        ValueError
     :Example: :ref:`group_get_example`
     """
     if not groupname:
@@ -72,6 +76,8 @@ def delete(groupname=None, group=None):
     :type groupname: string
     :param group: Group object to be deleted.
     :type group: GroupData object
+    :raises:
+        ValueError
     :Example: :ref:`group_delete_example`
     """
     if not groupname and not group:
@@ -105,7 +111,8 @@ def add_user(groupname=None, group=None, username=None, user=None):
     :type username: string
     :param user: User to add to the group.
     :type user: MemberData object
-
+    :raises:
+        ValueError
     :Example: :ref:`add_user_to_group_example`
     """
     if not username and not user:
@@ -143,7 +150,8 @@ def delete_user(groupname=None, group=None, username=None, user=None):
     :type username: string
     :param user: User to delete from the group.
     :type user: MemberData object
-
+    :raises:
+        ValueError
     :Example: :ref:`delete_user_from_group_example`
     """
     if not username and not user:

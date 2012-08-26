@@ -45,7 +45,10 @@ def create(container=None,
         KeyError. When False, ``create`` creates a new, non-conflicting id.
     :type strict: boolean
     :returns: Content object
-
+    :raises:
+        KeyError,
+        :class:`~plone.api.exceptions.MissingParameterError`,
+        :class:`~plone.api.exceptions.InvalidParameterError`
     :Example: :ref:`content_create_example`
     """
     if not container:
@@ -111,6 +114,8 @@ def get(path=None, UID=None):
     :param UID: UID of the object we want to get.
     :type UID: string
     :returns: Content object
+    :raises:
+        ValueError,
     :Example: :ref:`content_get_example`
     """
     if path and UID:
@@ -155,6 +160,9 @@ def move(source=None, target=None, id=None, strict=True):
         conflicting with another object in the target container, raise a
         KeyError. When False, move creates a new, non-conflicting id.
     :type strict: boolean
+    :raises:
+        KeyError
+        ValueError
     :Example: :ref:`content_move_example`
     """
     if not source:
@@ -227,6 +235,9 @@ def copy(source=None, target=None, id=None, strict=True):
         conflicting with another object in the target container, raise a
         KeyError. When False, ``copy`` creates a new, non-conflicting id.
     :type param: boolean
+    :raises:
+        KeyError,
+        ValueError
     :Example: :ref:`content_copy_example`
     """
     if not source:
@@ -253,6 +264,8 @@ def delete(obj=None):
 
     :param obj: [required] Object that we want to delete.
     :type obj: Content object
+    :raises:
+        ValueError
     :Example: :ref:`content_delete_example`
     """
     if not obj:
@@ -268,6 +281,8 @@ def get_state(obj=None):
     :type obj: Content object
     :returns: Object's current workflow state
     :rtype: string
+    :raises:
+        ValueError
     :Example: :ref:`content_get_state_example`
     """
     if not obj:
@@ -285,6 +300,9 @@ def transition(obj=None, transition=None):
     :type obj: Content object
     :param transition: [required] Name of the workflow transition.
     :type transition: string
+    :raises:
+        :class:`~plone.api.exceptions.MissingParameterError`,
+        :class:`~plone.api.exceptions.InvalidParameterError`
     :Example: :ref:`content_transition_example`
     """
     if not obj or not transition:
@@ -312,6 +330,9 @@ def get_view(name=None, context=None, request=None):
     :type context: context object
     :param request: [required] Request on which to get view.
     :type request: request object
+    :raises:
+        :class:`~plone.api.exceptions.MissingParameterError`,
+        :class:`~plone.api.exceptions.InvalidParameterError`
     :Example: :ref:`content_get_view_example`
     """
     if not name:
@@ -352,6 +373,8 @@ def uuid(obj=None):
     :type obj: Content object
     :returns: Object's UUID
     :rtype: string
+    :raises:
+        ValueError
     :Example: :ref:`content_uuid_example`
     """
     if not obj:

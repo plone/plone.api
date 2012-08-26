@@ -36,6 +36,9 @@ def get_tool(name=None):
     :param name: [required] Name of the tool you want.
     :type name: string
     :returns: The tool that was found by name
+    :raises:
+        :class:`~plone.api.exceptions.MissingParameterError`,
+        :class:`~plone.api.exceptions.InvalidParameterError`
     :Example: :ref:`portal_get_tool_example`
     """
     if not name:
@@ -70,6 +73,8 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     :type subject: string
     :param body: [required] Body text of the email
     :type body: string
+    :raises:
+        ValueError
     :Example: :ref:`portal_send_email_example`
     """
     if not recipient or not subject or not body:
@@ -124,8 +129,9 @@ def localized_time(datetime=None, long_format=False, time_only=False):
     :param time_only: When true, show only the time, when false
         (default), show the date.
     :type time_only: boolean
+    :raises:
+        ValueError
     :Example: :ref:`portal_localized_time_example`
-
     """
     if not datetime:
         raise ValueError
@@ -145,6 +151,8 @@ def show_message(message=None, request=None, type='info'):
     :type request: TODO: hm?
     :param type: Message type. Possible values: 'info', 'warn', 'error'
     :type type: string
+    :raises:
+        ValueError
     :Example: :ref:`portal_show_message_example`
     """
     if not message:
