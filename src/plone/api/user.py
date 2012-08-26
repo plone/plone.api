@@ -1,7 +1,7 @@
 """ Module that provides functionality for user manipulation """
 from AccessControl.ImplPython import rolesForPermissionOn
 from Products.CMFPlone.utils import getToolByName
-from zope.app.component.hooks import getSite
+from plone.api import portal
 
 import random
 import string
@@ -40,7 +40,7 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     if not email:
         raise ValueError("You need to pass the new user's email.")
 
-    site = getSite()
+    site = portal.get()
     props = site.portal_properties
     use_email_as_username = props.site_properties.use_email_as_login
 
@@ -81,7 +81,7 @@ def get(username=None):
     if not username:
         raise ValueError
 
-    portal_membership = getToolByName(getSite(), 'portal_membership')
+    portal_membership = getToolByName(portal.get(), 'portal_membership')
     return portal_membership.getMemberById(username)
 
 
@@ -94,7 +94,7 @@ def get_current():
         ValueError
     :Example: :ref:`user_get_current_example`
     """
-    portal_membership = getToolByName(getSite(), 'portal_membership')
+    portal_membership = getToolByName(portal.get(), 'portal_membership')
     return portal_membership.getAuthenticatedMember()
 
 
@@ -105,7 +105,7 @@ def get_all():
     :rtype: List of MemberData objects
     :Example: :ref:`users_get_all_example`
     """
-    portal_membership = getToolByName(getSite(), 'portal_membership')
+    portal_membership = getToolByName(portal.get(), 'portal_membership')
     return portal_membership.listMembers()
 
 
@@ -129,7 +129,7 @@ def delete(username=None, user=None):
     if username and user:
         raise ValueError
 
-    portal_membership = getToolByName(getSite(), 'portal_membership')
+    portal_membership = getToolByName(portal.get(), 'portal_membership')
     user_id = username or user.id
     portal_membership.deleteMembers((user_id,))
 
@@ -156,7 +156,7 @@ def get_groups(username=None, user=None):
     if username and user:
         raise ValueError
 
-    site = getSite()
+    site = portal.get()
 
     if username:
         user = getToolByName(site, 'portal_membership').getMemberById(username)
@@ -170,7 +170,7 @@ def is_anonymous():
     :rtype: bool
     :Example: :ref:`user_is_anonymous_example`
     """
-    return getToolByName(getSite(), 'portal_membership').isAnonymousUser()
+    return getToolByName(portal.get(), 'portal_membership').isAnonymousUser()
 
 
 def has_role(role=None, username=None, user=None, obj=None):
@@ -200,7 +200,7 @@ def has_role(role=None, username=None, user=None, obj=None):
     if username and user:
         raise ValueError
 
-    portal_membership = getToolByName(getSite(), 'portal_membership')
+    portal_membership = getToolByName(portal.get(), 'portal_membership')
     current_user = portal_membership.getAuthenticatedMember()
 
     if username:
@@ -247,7 +247,7 @@ def has_permission(permission=None, username=None, user=None,
     if not obj:
         raise ValueError
 
-    portal_membership = getToolByName(getSite(), 'portal_membership')
+    portal_membership = getToolByName(portal.get(), 'portal_membership')
     if username:
         user = portal_membership.getMemberById(username)
 
