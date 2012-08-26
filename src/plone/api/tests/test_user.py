@@ -288,21 +288,21 @@ class TestPloneApiUser(unittest.TestCase):
 
         self.assertTrue(
             api.user.has_permission(
-                permission=View, user=user, object=self.portal)
+                permission=View, user=user, obj=self.portal)
         )
         self.assertTrue(
             api.user.has_permission(
-                permission=View, username=user.id, object=self.portal)
+                permission=View, username=user.id, obj=self.portal)
         )
         self.assertFalse(
             api.user.has_permission(
-                permission=ModifyPortalContent, user=user, object=self.portal
+                permission=ModifyPortalContent, user=user, obj=self.portal
             )
         )
         self.assertFalse(
             api.user.has_permission(
                 permission=ModifyPortalContent, username=user.id,
-                object=self.portal
+                obj=self.portal
             )
         )
 
@@ -313,25 +313,25 @@ class TestPloneApiUser(unittest.TestCase):
 
         self.assertTrue(
             api.user.has_permission(
-                permission=View, user=user, object=self.portal)
+                permission=View, user=user, obj=self.portal)
         )
         self.assertTrue(
             api.user.has_permission(
-                permission=View, username=user.id, object=self.portal)
+                permission=View, username=user.id, obj=self.portal)
         )
         self.assertTrue(
-            api.user.has_permission(permission=View, object=self.portal)
+            api.user.has_permission(permission=View, obj=self.portal)
         )
         self.assertTrue(
             api.user.has_permission(
-                permission=ModifyPortalContent, user=user, object=self.portal)
+                permission=ModifyPortalContent, user=user, obj=self.portal)
         )
         self.assertTrue(
             api.user.has_permission(
                 permission=ModifyPortalContent, username=user.id,
-                object=self.portal)
+                obj=self.portal)
         )
         self.assertTrue(
             api.user.has_permission(
-                permission=ModifyPortalContent, object=self.portal)
+                permission=ModifyPortalContent, obj=self.portal)
         )

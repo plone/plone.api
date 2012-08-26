@@ -199,7 +199,7 @@ def has_role(role=None, username=None, user=None):
 
 
 def has_permission(permission=None, username=None, user=None,
-                   object=None):
+                   obj=None):
     """Check if the user has the specified permission on the given object.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
@@ -213,8 +213,8 @@ def has_permission(permission=None, username=None, user=None,
     :type username: string
     :param user: User that we are checking the permission for
     :type user: MemberData object
-    :param object: Object that we are checking the permission for
-    :type object: object
+    :param obj: Object that we are checking the permission for
+    :type obj: object
     :returns: True if user has the specified permission, False otherwise.
     :rtype: bool
     :Example: :ref:`user_has_permission_example`
@@ -225,7 +225,7 @@ def has_permission(permission=None, username=None, user=None,
     if username and user:
         raise ValueError
 
-    if not object:
+    if not obj:
         raise ValueError
 
     portal_membership = getToolByName(getSite(), 'portal_membership')
@@ -233,7 +233,7 @@ def has_permission(permission=None, username=None, user=None,
         user = portal_membership.getMemberById(username)
 
     if not user or user == portal_membership.getAuthenticatedMember():
-        return portal_membership.checkPermission(permission, object)
+        return portal_membership.checkPermission(permission, obj)
     else:
-        roles = rolesForPermissionOn(permission, object)
-        return user.allowed(object, roles)
+        roles = rolesForPermissionOn(permission, obj)
+        return user.allowed(obj, roles)

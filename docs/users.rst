@@ -232,7 +232,7 @@ currently logged-in user will be used.
     has_perm = api.user.has_permission(
         username='bob',
         permission='Manage portal content',
-        object=api.portal.get()
+        obj=api.portal.get()
     )
 
 .. invisible-code-block:: python
@@ -246,7 +246,7 @@ When user is omitted the current user is used for the permission check.
     from plone import api
     has_perm = api.user.has_permission(
         permission='Manage portal content',
-        object=api.portal.get()
+        obj=api.portal.get()
     )
 
 .. invisible-code-block:: python
