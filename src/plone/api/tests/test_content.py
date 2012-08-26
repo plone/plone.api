@@ -3,6 +3,7 @@
 import mock
 import unittest
 import pkg_resources
+from zExceptions import BadRequest
 from Acquisition import aq_base
 
 try:
@@ -119,7 +120,36 @@ class TestPloneApiContent(unittest.TestCase):
     @unittest.skipUnless(HAS_DEXTERITY, "Only run when Dexterity is available.")
     def test_create_dexterity(self):
         """ Test create content based on Dexterity """
-        raise NotImplemented
+        container = self.portal
+
+        # Create a folder
+        folder = api.content.create(
+            container=container, type='Dexterity Folder', id='test-folder')
+        assert folder
+        self.assertEqual(folder.id, 'test-folder')
+        self.assertEqual(folder.portal_type, 'Dexterity Folder')
+
+        # Create an item
+        page = api.content.create(
+            container=folder, type='Dexterity Item', id='test-item')
+        assert page
+        self.assertEqual(page.id, 'test-item')
+        self.assertEqual(page.portal_type, 'Dexterity Item')
+
+        # Create an item with a title and without an id
+        page = api.content.create(
+            container=folder, type='Dexterity Item',
+            title='Test id generated')
+        assert page
+        self.assertEqual(page.id, 'test-id-generated')
+        self.assertEqual(page.Title(), 'Test id generated')
+        self.assertEqual(page.portal_type, 'Dexterity Item')
+
+        # Try to create another item, this should fail because of strict mode
+        self.assertRaises(
+            BadRequest, api.content.create,
+            container=folder, type='Dexterity Item', id='test-item'
+        )
 
     def test_create_archetypes(self):
         """ Test creating content based on Archetypes """
@@ -150,7 +180,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Try to create another page, this should fail because of strict mode
         self.assertRaises(
-            api.exceptions.InvalidParameterError, api.content.create,
+            BadRequest, api.content.create,
             container=folder, type='Document', id='test-document'
         )
 
