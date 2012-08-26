@@ -255,6 +255,26 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertTrue(api.user.has_role(role='Manager', username=user.id))
         self.assertTrue(api.user.has_role(role='Manager'))
 
+    def test_has_role_in_context(self):
+        """ Tests user roles lookup in a specific context """
+
+        user = self.portal_membership.getAuthenticatedMember()
+
+        # Create a folder at portal's root
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder = self.portal['folder1']
+
+        folder.manage_setLocalRoles(user.id, ['Reviewer', ])
+
+        self.assertTrue(api.user.has_role(role='Reviewer',
+                                          user=user,
+                                          obj=folder))
+        self.assertTrue(api.user.has_role(role='Reviewer',
+                                          username=user.id,
+                                          obj=folder))
+        self.assertTrue(api.user.has_role(role='Reviewer',
+                                          obj=folder))
+
     def test_has_permission_contraints(self):
         """ Tests user permission lookup """
 
