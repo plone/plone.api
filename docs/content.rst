@@ -140,6 +140,33 @@ object.
     document_obj = document_brain.getObject()
     assert document_obj.__class__.__name__ == 'ATDocument'
 
+.. _content_uuid_example:
+
+Get content object UUID
+-----------------------
+
+An Universally Unique IDentifier (UUID) is a unique, non-human-readable
+identifier for a content object which stays on the object even if the object
+is moved.
+
+Plone uses UUIDs for storing content-to-content references and for linking by
+UIDs, enabling persistent links.
+
+To get a content object UUID use :meth:`api.content.uuid`. The following code
+gets the UUID of the ``contact`` document.
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    contact = portal['about']['contact']
+
+    uuid = api.content.uid(obj=contact)
+
+.. invisible-code-block:: python
+
+    self.assertTrue(isinstance(uuid, str))
+
 .. _content_move_example:
 
 Move content

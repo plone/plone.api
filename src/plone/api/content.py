@@ -280,9 +280,13 @@ def get_view(name=None, context=None, request=None):
 
 
 def uuid(obj=None):
-    """Get the object's UUID.
+    """Get the object's Universally Unique IDentifier (UUID).
 
     :param obj: [required] Object we want its UUID.
+    :type obj: Content object
+    :returns: Object's UUID
+    :rtype: string
+    :Example: :ref:`content_uuid_example`
     """
     if not obj:
         raise ValueError
