@@ -12,24 +12,6 @@
 Portal
 ======
 
-.. _portal_url_example:
-
-Get portal url
---------------
-
-A shortcut for getting the url of the portal is now always at hand:
-:meth:`api.portal.url`.
-
-.. code-block:: python
-
-    from plone import api
-    url = api.portal.url()
-
-.. invisible-code-block:: python
-
-    self.assertEqual(url, 'http://nohost/plone')
-
-
 .. _portal_get_example:
 
 Get portal object
@@ -46,6 +28,21 @@ Getting the Plone portal object is easy with :meth:`api.portal.get`.
 
     self.assertEquals(portal.getPortalTypeName(), 'Plone Site')
     self.assertEquals(portal.getId(), 'plone')
+
+
+Get portal url
+--------------
+
+Since we now have the portal object, it's easy to get the portal url.
+
+.. code-block:: python
+
+    from plone import api
+    url = api.portal.get().absolute_url()
+
+.. invisible-code-block:: python
+
+    self.assertEqual(url, 'http://nohost/plone')
 
 
 .. _portal_get_tool_example:

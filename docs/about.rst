@@ -60,18 +60,18 @@ Hence the importing and usage of API methods look like this:
     from plone import api
 
     portal = api.portal.get()
-    url = api.portal.url()
+    tool = api.portal.get_tool(name="portal_catalog")
     user = api.user.create(email='alice@plone.org')
 
 .. invisible-code-block:: python
 
     self.assertEqual(portal.__class__.__name__, 'PloneSite')
-    self.assertEqual(url, 'http://nohost/plone')
+    self.assertEqual(tool.__class__.__name__, 'CatalogTool')
     self.assertEqual(user.__class__.__name__, 'MemberData')
 
 In other words, always import the top-level package (``from plone import api``)
 and then use the group namespace to access the method you want
-(``url = api.portal.url()``).
+(``portal = api.portal.get()``).
 
 All example code should adhere to this style, so we encourage one and only
 one prefered way of consuming API methods.
@@ -95,6 +95,8 @@ instead of positional arguments:
    the underlying API code can change substantially and the code using it will
    remain valid.
 #. The arguments can all be passed as a dictionary.
+
+TODO: example
 
 The API provides grouped functional access to otherwise distributed logic
 in Plone. Plone's original distribution of logic is a result of two things:

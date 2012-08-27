@@ -16,7 +16,6 @@ api.portal
 .. autosummary::
 
     api.portal.get
-    api.portal.get_url
     api.portal.get_navigation_root
     api.portal.get_tool
     api.portal.get_localized_time

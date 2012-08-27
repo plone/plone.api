@@ -51,10 +51,6 @@ class TestPloneApiPortal(unittest.TestCase):
         from plone.api.exceptions import CannotGetPortalError
         self.assertRaises(CannotGetPortalError, portal.get)
 
-    def test_url(self):
-        """ Test to see if the url exists """
-        self.assertEqual(portal.url(), 'http://nohost/plone')
-
     def test_get_tool_constraints(self):
         """ Test the constraints for getting a tool. """
 

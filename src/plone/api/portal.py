@@ -27,16 +27,6 @@ def get():
         "#plone.api.exceptions.CannotGetPortalError")
 
 
-def url():
-    """Get the portal url.
-
-    :returns: portal url
-    :rtype: string
-    :Example: :ref:`portal_url_example`
-    """
-    return get().absolute_url()
-
-
 def get_tool(name=None):
     """Get a portal tool in a simple way.
 
