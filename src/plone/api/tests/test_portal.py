@@ -58,7 +58,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(MissingParameterError, portal.get_tool)
 
     def test_get_tool_tool_not_found(self):
-        """Test that error msg lists available tools if a tools is not found."""
+        """Test that error msg lists available tools if a tool is not found."""
 
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_tool('portal_foo')
