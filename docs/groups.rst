@@ -77,6 +77,7 @@ Groups can be edited by using the ``group_tool``. In this example the ``title``,
 
 .. code-block:: python
 
+    from plone import api
     group_tool = api.portal.get_tool(name='portal_groups')
     group_tool.editGroup(
         'staff',

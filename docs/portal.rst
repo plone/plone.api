@@ -93,6 +93,7 @@ To send an e-mail use :meth:`api.portal.send_email`:
 
 .. code-block:: python
 
+    from plone import api
     api.portal.send_email(
         recipient="bob@plone.org",
         sender="noreply@plone.org",
