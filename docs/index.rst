@@ -54,7 +54,7 @@ Complete API and advanced usage
 
 .. toctree::
 
-    api.rst
+    api/index.rst
 
 
 Indices and tables

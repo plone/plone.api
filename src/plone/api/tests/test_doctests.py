@@ -80,12 +80,14 @@ def DocFileSuite(testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TES
 
 
 def test_suite():
+    path = '../../../../docs'
     doctests = []
-    docs_path = os.path.join(os.path.dirname(__file__), '../../../../docs')
+    docs_path = os.path.join(os.path.dirname(__file__), path)
 
     for filename in os.listdir(docs_path):
-        if filename in ['static', 'translated', 'locale', 'doctrees', 'html']:
-            continue
-        doctests.append(DocFileSuite(os.path.join('../../../../docs', filename)))
+        try:
+            doctests.append(DocFileSuite(os.path.join(path, filename)))
+        except IOError:
+            print 'test_doctest.py skipping %s' % filename
 
     return unittest.TestSuite(doctests)

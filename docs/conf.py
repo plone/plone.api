@@ -8,6 +8,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    'sphinx.ext.autosummary',
 ]
 master_doc = 'index'
 
