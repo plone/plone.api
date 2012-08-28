@@ -30,6 +30,25 @@ Getting the Plone portal object is easy with :meth:`api.portal.get`.
     self.assertEquals(portal.getId(), 'plone')
 
 
+.. _portal_get_navigation_root_example:
+
+Get navigation root
+-------------------
+
+In multi-lingual Plone installations you probably want to get the
+language-specific navigation root, not the top portal object. You do this with
+:meth:`api.portal.get_navigation_root`.
+
+.. code-block:: python
+
+    from plone import api
+    nav_root = api.portal.get_navigation_root()
+
+.. invisible-code-block:: python
+
+    self.assertEquals(nav_root, '/plone')
+
+
 Get portal url
 --------------
 

@@ -5,6 +5,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter
 from zope.globalrequest import getRequest
+from plone.app.layout.navigation.root import getNavigationRoot
 
 from plone.api.exceptions import InvalidParameterError
 from plone.api.exceptions import MissingParameterError
@@ -16,6 +17,7 @@ def get():
     Interfaces and doing multi adapter lookups.
 
     :returns: Plone portal object
+    :rtype: Portal object
     :Example: :ref:`portal_get_example`
     """
     portal = getSite()
@@ -25,6 +27,17 @@ def get():
         "Unable to get the portal object. More info on "
         "http://ploneapi.readthedocs.org/en/latest/api.html"
         "#plone.api.exceptions.CannotGetPortalError")
+
+
+def get_navigation_root():
+    """Returns Plone's Navigation Root object. Useful in multi-lingual
+    installations.
+
+    :returns: Navigation Root
+    :rtype: Portal object
+    :Example: :ref:`portal_get_navigation_root_example`
+    """
+    return getNavigationRoot(get())
 
 
 def get_tool(name=None):
