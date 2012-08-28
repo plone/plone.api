@@ -184,3 +184,13 @@ def get_helpers():
     :Example: :ref:`portal_get_helpers_example`
     """
     raise NotImplementedError
+
+
+def get_registry_record():
+    """Easy access to the ``plone.app.registry`` configuration records.
+
+    :returns: Registry record
+    :rtype: plone.app.registry registry record
+    :Example: :ref:`portal_get_helpers_example`
+    """
+    raise NotImplementedError

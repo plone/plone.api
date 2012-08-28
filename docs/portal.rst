@@ -191,3 +191,18 @@ available on TODO.
 
     from plone import api
     # Not implemented yet
+
+.. _portal_get_helpers_example:
+
+Get plone.app.registry record
+-----------------------------
+
+Plone comes with a package ``plone.app.registry`` that provides a common way to
+store various configuration and settings. The
+:meth:`api.portal.get_registry_record` provides an easy way to access these
+records.
+
+.. code-block:: python
+
+    from plone import api
+    # Not implemented yet
