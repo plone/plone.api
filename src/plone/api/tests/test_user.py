@@ -166,41 +166,6 @@ class TestPloneApiUser(unittest.TestCase):
                                email='steven@example.org')
         api.user.delete(user=user)
 
-    def test_get_groups_constraints(self):
-        """ Test that exception is raised if wrong arguments are given """
-
-        # must provide username or user
-        self.assertRaises(ValueError, api.user.get_groups)
-
-        # username and user are mutually exclusive
-        user = api.user.create(
-            username='chuck',
-            email='chuck@norris.org',
-            password='secret'
-        )
-        self.assertRaises(
-            ValueError,
-            api.user.get_groups,
-            username='chuck', user=user
-        )
-
-    def test_get_groups(self):
-        """ Test getting groups for a user/username """
-        user = api.user.create(
-            username='chuck',
-            password='secret',
-            email='chuck@norris.org'
-        )
-
-        self.assertEqual(
-            api.user.get_groups(user=user),
-            ['AuthenticatedUsers']
-        )
-        self.assertEqual(
-            api.user.get_groups(username='chuck'),
-            ['AuthenticatedUsers']
-        )
-
     def test_is_anonymous(self):
         """ Test anonymous access """
 

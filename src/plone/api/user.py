@@ -134,35 +134,6 @@ def delete(username=None, user=None):
     portal_membership.deleteMembers((user_id,))
 
 
-def get_groups(username=None, user=None):
-    """Get a list of groups that this user is a member of.
-
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both.
-
-    :param username: Username of the user for which to return groups.
-    :type username: string
-    :param user: User for which to return groups.
-    :type user: MemberData object
-    :returns: List of names of groups this user is a member of.
-    :rtype: List of strings
-    :raises:
-        ValueError
-    :Example: :ref:`get_groups_for_user_example`
-    """
-    if not username and not user:
-        raise ValueError
-
-    if username and user:
-        raise ValueError
-
-    site = portal.get()
-
-    if username:
-        user = getToolByName(site, 'portal_membership').getMemberById(username)
-    return getToolByName(site, 'portal_groups').getGroupsForPrincipal(user)
-
-
 def is_anonymous():
     """Check if the currently logged-in user is anonymous.
 

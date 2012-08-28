@@ -280,23 +280,3 @@ When user is omitted the current user is used for the permission check.
 .. invisible-code-block:: python
 
     self.assertTrue(has_perm)
-
-.. _get_groups_for_user_example:
-
-Get groups that user is a member of
------------------------------------
-
-Use ``get_groups``, passing in either the username or the user object you want
-to get groups for.
-
-.. code-block:: python
-
-    from plone import api
-    api.group.add_user(groupname='Reviewers', username='bob')
-    groups = api.user.get_groups(username='bob')
-
-.. invisible-code-block:: python
-
-    assert 'Reviewers' in groups
-
-.. _add_user_to_group_example:

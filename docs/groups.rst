@@ -50,6 +50,7 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
     assert 'Readers' in group.getRoles()
     assert 'Site Administrators' in group.getMemberIds()
 
+
 .. _group_get_example:
 
 Get group
@@ -67,7 +68,7 @@ To get a group by it's name, use :meth:`api.group.get`.
     self.assertEquals(group.id, 'staff')
 
 
-.. _group_edit:
+.. _group_edit_example:
 
 Editing a group
 ---------------
@@ -86,13 +87,13 @@ Groups can be edited by using the ``group_tool``. In this example the ``title``,
         description='Just a description',
     )
 
+.. invisible-code-block:: python
+
     group = api.group.get(groupname='staff')
 
     title = group.getProperty('title')
     description = group.getProperty('description')
     roles = group.getRoles()
-
-.. invisible-code-block:: python
 
     self.assertEqual(title, 'Staff')
     self.assertEqual(description, 'Just a description')
@@ -100,19 +101,48 @@ Groups can be edited by using the ``group_tool``. In this example the ``title``,
     assert 'Reader' in roles
 
 
+.. _group_get_all_groups_example:
+
 Get all groups
 --------------
 
-You can also get all groups, by using :meth:`api.group.get_all`.
+You can also get all groups, by using :meth:`api.group.get_groups`.
 
 .. code-block:: python
 
     from plone import api
-    groups = api.group.get_all()
+    groups = api.group.get_groups()
 
 .. invisible-code-block:: python
 
     self.assertEquals(groups[0].id, 'Administrators')
+
+
+.. _group_get_users_groups_example:
+
+Get user's groups
+-----------------
+
+If you pass in a `user`, then :meth:`api.group.get_groups` will return groups
+that the user is member of.
+
+.. invisible-code-block:: python
+
+    api.user.create(email='jane@plone.org', username='jane')
+    api.group.add_user(username='jane', groupname='staff')
+    api.group.add_user(username='jane', groupname='Reviewers')
+
+.. code-block:: python
+
+    from plone import api
+    user = api.user.get(username='jane')
+    groups = api.group.get_groups(username='jane')
+
+.. invisible-code-block:: python
+
+    self.assertEquals(groups[0].id, 'Reviewers')
+    self.assertEquals(groups[1].id, 'AuthenticatedUsers')
+    self.assertEquals(groups[2].id, 'staff')
 
 
 .. _group_delete_example:
@@ -143,50 +173,42 @@ or the group object you want to delete.
     assert not api.group.get(groupname='unwanted')
 
 
-.. _add_user_to_group_example:
+.. _group_add_user_example:
 
 Adding user to group
 --------------------
 
-The ``add_user`` method accepts either the groupname or the group object of the target group and
-the username or the user object you want to add to the group.
+The :meth:`api.group.add_user` method accepts either the groupname or the group
+object of the target group and the username or the user object you want to add
+to the group.
 
 .. code-block:: python
 
     from plone import api
 
-    api.user.create(email='jane@plone.org', username='jane')
     api.user.create(email='bob@plone.org', username='bob')
-
     api.group.add_user(groupname='staff', username='bob')
 
-    user = api.user.get(username='jane')
-    group = api.group.get(groupname='staff')
-    api.group.add_user(group=group, user=user)
-
 .. invisible-code-block:: python
 
-    assert 'staff' in api.user.get_groups(username='bob')
-    assert 'staff' in api.user.get_groups(username='jane')
+    assert 'staff' in [g.id for g in api.group.get_groups(username='bob')]
 
-.. _delete_user_from_group_example:
 
-Deleting user from group
+.. _group_remove_user_example:
+
+Removing user from group
 ------------------------
 
-The ``delete_user`` method accepts either the groupname or the group object of the target
-group and either the username or the user object you want to remove from the group.
+The :meth:`api.group.remove_user` method accepts either the groupname or the
+group object of the target group and either the username or the user object you
+want to remove from the group.
 
 .. code-block:: python
 
     from plone import api
-    api.group.delete_user(groupname='staff', username='bob')
+    api.group.remove_user(groupname='staff', username='bob')
 
-    group = api.group.get(groupname='staff')
-    user = api.user.get(username='jane')
-    api.group.delete_user(group=group, user=user)
 
 .. invisible-code-block:: python
 
-    assert 'staff' not in api.user.get_groups(username='bob')
-    assert 'staff' not in api.user.get_groups(username='jane')
+    assert 'staff' not in [g.id for g in api.group.get_groups(username='bob')]
