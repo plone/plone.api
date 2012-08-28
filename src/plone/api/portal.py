@@ -122,7 +122,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     )
 
 
-def localized_time(datetime=None, long_format=False, time_only=False):
+def get_localized_time(datetime=None, long_format=False, time_only=False):
     """Display a date/time in a user-friendly way.
 
     It should be localized to the user's preferred language.
@@ -139,9 +139,11 @@ def localized_time(datetime=None, long_format=False, time_only=False):
     :param time_only: When true, show only the time, when false
         (default), show the date.
     :type time_only: boolean
+    :returns: Localized time
+    :rtype: string
     :raises:
         ValueError
-    :Example: :ref:`portal_localized_time_example`
+    :Example: :ref:`portal_get_localized_time_example`
     """
     if not datetime:
         raise ValueError

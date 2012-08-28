@@ -133,24 +133,25 @@ To send an e-mail use :meth:`api.portal.send_email`:
     mailhost.reset()
 
 
-.. _portal_localized_time_example:
+.. _portal_get_localized_time_example:
 
-Localized time
---------------
+Get localized time
+------------------
 
-To display the date/time in a user-friendly way, localized to the user's prefered
-language, use :meth:`api.portal.localized_time`.
+To display the date/time in a user-friendly way, localized to the user's
+prefered language, use :meth:`api.portal.get_localized_time`.
 
 .. code-block:: python
 
     from plone import api
     from DateTime import DateTime
     today = DateTime()
-    api.portal.localized_time(datetime=today)
+    api.portal.get_localized_time(datetime=today)
 
 .. invisible-code-block:: python
 
-    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59))
+    result = api.portal.get_localized_time(
+        datetime=DateTime(1999, 12, 31, 23, 59))
     self.assertEqual(result, 'Dec 31, 1999')
 
 

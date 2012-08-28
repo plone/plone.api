@@ -214,27 +214,26 @@ class TestPloneApiPortal(unittest.TestCase):
             body=u"One for you Bob!",
         )
 
-    def test_localized_time_constraints(self):
-        """ Test the constraints for localized_time. """
+    def test_get_localized_time_constraints(self):
+        """ Test the constraints for get_localized_time. """
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, portal.localized_time)
+        self.assertRaises(ValueError, portal.get_localized_time)
 
-    def test_localized_time(self):
-        result = portal.localized_time(
+    def test_get_localized_time(self):
+        result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
             long_format=True,
-            time_only=False
         )
         self.assertEqual(result, 'Dec 31, 1999 11:59 PM')
 
-        result = portal.localized_time(
+        result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
-            time_only=True
+            time_only=True,
         )
         self.assertEqual(result, '11:59 PM')
 
-        result = portal.localized_time(
+        result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
         )
         self.assertEqual(result, 'Dec 31, 1999')
