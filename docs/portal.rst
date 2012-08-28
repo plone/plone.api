@@ -82,6 +82,28 @@ pass in the name of the tool you need.
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
 
 
+.. _portal_get_localized_time_example:
+
+Get localized time
+------------------
+
+To display the date/time in a user-friendly way, localized to the user's
+prefered language, use :meth:`api.portal.get_localized_time`.
+
+.. code-block:: python
+
+    from plone import api
+    from DateTime import DateTime
+    today = DateTime()
+    api.portal.get_localized_time(datetime=today)
+
+.. invisible-code-block:: python
+
+    result = api.portal.get_localized_time(
+        datetime=DateTime(1999, 12, 31, 23, 59))
+    self.assertEqual(result, 'Dec 31, 1999')
+
+
 .. _portal_send_email_example:
 
 Send E-Mail
@@ -131,28 +153,6 @@ To send an e-mail use :meth:`api.portal.send_email`:
     self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
     self.assertEqual(msg.get_payload(), 'One for you Bob!')
     mailhost.reset()
-
-
-.. _portal_get_localized_time_example:
-
-Get localized time
-------------------
-
-To display the date/time in a user-friendly way, localized to the user's
-prefered language, use :meth:`api.portal.get_localized_time`.
-
-.. code-block:: python
-
-    from plone import api
-    from DateTime import DateTime
-    today = DateTime()
-    api.portal.get_localized_time(datetime=today)
-
-.. invisible-code-block:: python
-
-    result = api.portal.get_localized_time(
-        datetime=DateTime(1999, 12, 31, 23, 59))
-    self.assertEqual(result, 'Dec 31, 1999')
 
 
 .. _portal_show_message_example:
