@@ -194,3 +194,79 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     group_id = groupname or group.id
     portal_groups = getToolByName(portal.get(), 'portal_groups')
     portal_groups.removePrincipalFromGroup(user_id, group_id)
+
+
+def get_roles(groupname=None, group=None, obj=None):
+    """Get group's site-wide or local roles.
+
+    Arguments ``groupname`` and ``group`` are mutually exclusive. You can
+    either set one or the other, but not both.
+
+    :param groupname: Name of the group to remove the user from.
+    :type groupname: string
+    :param group: Group to remove the user from.
+    :type group: GroupData object
+    :param obj: If obj is set then return local roles on this context
+    :type obj: content object
+    :raises:
+        ValueError
+    :Example: :ref:`group_get_roles_example`
+    """
+    raise NotImplementedError
+
+
+def get_permissions(groupname=None, group=None, obj=None):
+    """Get group's site-wide or local permissions.
+
+    Arguments ``groupname`` and ``group`` are mutually exclusive. You can
+    either set one or the other, but not both.
+
+    :param groupname: Name of the group to remove the user from.
+    :type groupname: string
+    :param group: Group to remove the user from.
+    :type group: GroupData object
+    :param obj: If obj is set then return local permissions on this context
+    :type obj: content object
+    :raises:
+        ValueError
+    :Example: :ref:`group_get_permissions_example`
+    """
+    raise NotImplementedError
+
+
+def grant_roles(groupname=None, group=None, roles=None):
+    """Grant roles to a group.
+
+    Arguments ``groupname`` and ``group`` are mutually exclusive. You can
+    either set one or the other, but not both.
+
+    :param groupname: Name of the group to remove the user from.
+    :type groupname: string
+    :param group: Group to remove the user from.
+    :type group: GroupData object
+    :param roles: List of roles to grant
+    :type roles: list of strings
+    :raises:
+        ValueError
+    :Example: :ref:`group_grant_roles_example`
+    """
+    raise NotImplementedError
+
+
+def revoke_roles(groupname=None, group=None, roles=None):
+    """Revoke roles from a group.
+
+    Arguments ``groupname`` and ``group`` are mutually exclusive. You can
+    either set one or the other, but not both.
+
+    :param groupname: Name of the group to remove the user from.
+    :type groupname: string
+    :param group: Group to remove the user from.
+    :type group: GroupData object
+    :param roles: List of roles to grant
+    :type roles: list of strings
+    :raises:
+        ValueError
+    :Example: :ref:`group_revoke_roles_example`
+    """
+    raise NotImplementedError

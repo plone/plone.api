@@ -212,3 +212,87 @@ want to remove from the group.
 .. invisible-code-block:: python
 
     assert 'staff' not in [g.id for g in api.group.get_groups(username='bob')]
+
+
+.. _group_get_roles_example:
+
+Get group roles
+---------------
+
+The :meth:`api.group.get_roles` method is used to getting group's roles.
+By default it returns site-wide roles.
+
+.. code-block:: python
+
+    from plone import api
+    # roles = api.group.get_roles(groupname='staff')
+    # Not implemented yet
+
+If you pass in a content object, it will return local roles of the group
+in that particular context.
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    # roles = api.group.get_roles(groupname='staff', obj=portal['blog'])
+    # Not implemented yet
+
+
+.. _group_get_permissions_example:
+
+Get group permissions
+---------------------
+
+The :meth:`api.group.get_permissions` method is used to getting group's
+permissions. By default it returns site-wide permissions.
+
+.. code-block:: python
+
+    from plone import api
+    # permissions = api.group.get_permissions(groupname='staff')
+    # Not implemented yet
+
+If you pass in a content object, it will return local permissions of the group
+in that particular context.
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    # permissions = api.group.get_permissions(
+    #    groupname='staff', obj=portal['blog'])
+    # Not implemented yet
+
+
+.. _group_grant_roles_example:
+
+Grant roles to group
+--------------------
+
+The :meth:`api.group.grant_roles` allows us to grant a list of roles to the
+group.
+
+.. code-block:: python
+
+    from plone import api
+    # api.group.grant_roles(groupname='staff',
+        roles=['Reviewer, SiteAdministrator'])
+    # Not implemented yet
+
+
+.. _group_revoke_roles_example:
+
+Revoke roles from group
+-----------------------
+
+The :meth:`api.group.revoke_roles` allows us to revoke a list of roles from the
+group.
+
+.. code-block:: python
+
+    from plone import api
+    # api.group.revoke_roles(groupname='staff',
+        roles=['Reviewer, SiteAdministrator'])
+    # Not implemented yet
+
