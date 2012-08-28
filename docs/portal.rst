@@ -175,3 +175,19 @@ the user.
     show = messages.show()
     self.assertEquals(len(show), 1)
     self.assertTrue('Blueberries!' in show[0].message)
+
+
+.. _portal_get_helpers_example:
+
+Get the @@plone_portal_state helpers
+------------------------------------
+
+Plone comes with a handy view ``@@plone_portal_state`` that contains numerous
+utility methods. The :meth:`api.portal.get_helpers` provides an easy way to
+access this view. The list of methods provided by ``@@plone_portal_state`` is
+available on TODO.
+
+.. code-block:: python
+
+    from plone import api
+    # Not implemented yet

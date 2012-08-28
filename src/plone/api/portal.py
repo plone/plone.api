@@ -174,3 +174,13 @@ def show_message(message=None, request=None, type='info'):
         raise ValueError
 
     IStatusMessage(request).add(message, type=type)
+
+
+def get_helpers():
+    """Easy access to the ``@@plone_portal_state`` view.
+
+    :returns: @@plone_portal_state view
+    :rtype: BrowserView
+    :Example: :ref:`portal_get_helpers_example`
+    """
+    raise NotImplementedError
