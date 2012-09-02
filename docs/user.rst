@@ -141,21 +141,44 @@ check for it.
     self.assertTrue(trigger)
 
 
-.. _user_get_all_example:
+.. _user_get_all_users_example:
 
 Get all users
 -------------
 
-Get all users in your portal with :meth:`api.user.get_all`.
+Get all users in your portal with :meth:`api.user.get_users`.
 
 .. code-block:: python
 
     from plone import api
-    users = api.user.get_all()
+    users = api.user.get_users()
 
 .. invisible-code-block:: python
 
     self.assertTrue('test_user_1_' in [user.id for user in users])
+
+
+.. _group_get_users_groups_example:
+
+Get user's groups
+-----------------
+
+If you set the `groupname` parameter, then :meth:`api.user.get_users` will
+return only users that are members of this group.
+
+.. invisible-code-block:: python
+
+    api.group.create(groupname='staff')
+    api.group.add_user(username='jane', groupname='staff')
+
+.. code-block:: python
+
+    from plone import api
+    users = api.user.get_users(groupname='staff')
+
+.. invisible-code-block:: python
+
+    self.assertEquals(users[0].id, 'jane')
 
 
 .. _user_delete_example:
@@ -187,96 +210,84 @@ the user object you want to delete.
     self.assertEqual(api.user.get(username='unwanted'), None)
 
 
-.. _user_has_role_example:
+.. _user_get_roles_example:
 
-Check for role
---------------
+Get user's roles
+----------------
 
-Again on the security aspects, checking if a user has a certain role can be done
-with :meth:`api.user.has_role`. If you omit the ``user`` parameter, the
-currently logged-in user will be used.
-
-.. code-block:: python
-
-    from plone import api
-    has_role = api.user.has_role(username='bob', role='Manager')
-
-.. invisible-code-block:: python
-
-    self.assertFalse(has_role)
-
-When user is omitted the current user is used for role lookup.
+The :meth:`api.user.get_roles` method is used to getting user's roles.
+By default it returns site-wide roles.
 
 .. code-block:: python
 
     from plone import api
-    has_role = api.user.has_role(role='Manager')
+    # roles = api.user.get_roles(username='jane')
+    # Not implemented yet
 
-.. invisible-code-block:: python
+If you pass in a content object, it will return local roles of the user
+in that particular context.
 
-    self.assertTrue(has_role)
-
-Also, it is possible to lookup for the role only in a specific context.
-
-Considering the following portal structure ::
-
-    plone (portal root)
-    |
-    `-- blog
-
-You could lookup if the current logged user has the Reviewer role in the
-object blog.
-
-.. invisible-code-block:: python
+.. code-block:: python
 
     from plone import api
     portal = api.portal.get()
-    blog = api.content.create(type='Folder', id='blog', container=portal)
-    current = api.user.get_current()
-    blog.manage_setLocalRoles(current.id, ['Reviewer', ])
+    # roles = api.user.get_roles(username='staff', obj=portal['blog'])
+    # Not implemented yet
 
-.. code-block:: python
 
-    from plone import api
-    has_role = api.user.has_role(role='Reviewer', obj=blog)
+.. _user_get_permissions_example:
 
-.. invisible-code-block:: python
-
-    self.assertTrue(has_role)
-
-.. _user_has_permission_example:
-
-Check for permission
+Get user permissions
 --------------------
 
-Likewise, you can also check if a user has a certain permission with
-:meth:`api.user.has_permission`. Omitting the ``user`` parameter means the
-currently logged-in user will be used.
+The :meth:`api.user.get_permissions` method is used to getting user's
+permissions. By default it returns site-wide permissions.
 
 .. code-block:: python
 
     from plone import api
+    # permissions = api.user.get_permissions(username='jane')
+    # Not implemented yet
 
-    has_perm = api.user.has_permission(
-        username='bob',
-        permission='Manage portal content',
-        obj=api.portal.get()
-    )
-
-.. invisible-code-block:: python
-
-    self.assertFalse(has_perm)
-
-When user is omitted the current user is used for the permission check.
+If you pass in a content object, it will return local permissions of the user
+in that particular context.
 
 .. code-block:: python
 
     from plone import api
-    has_perm = api.user.has_permission(
-        permission='Manage portal content',
-        obj=api.portal.get()
-    )
+    portal = api.portal.get()
+    # permissions = api.user.get_permissions(
+    #    username='jane', obj=portal['blog'])
+    # Not implemented yet
 
-.. invisible-code-block:: python
 
-    self.assertTrue(has_perm)
+.. _user_grant_roles_example:
+
+Grant roles to user
+-------------------
+
+The :meth:`api.user.grant_roles` allows us to grant a list of roles to the
+user.
+
+.. code-block:: python
+
+    from plone import api
+    # api.user.grant_roles(username='jane',
+    #    roles=['Reviewer, SiteAdministrator'])
+    # Not implemented yet
+
+
+.. _user_revoke_roles_example:
+
+Revoke roles from user
+----------------------
+
+The :meth:`api.user.revoke_roles` allows us to revoke a list of roles from the
+user.
+
+.. code-block:: python
+
+    from plone import api
+    # api.user.revoke_roles(username='jane',
+    #    roles=['Reviewer, SiteAdministrator'])
+    # Not implemented yet

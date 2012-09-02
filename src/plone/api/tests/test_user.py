@@ -128,16 +128,31 @@ class TestPloneApiUser(unittest.TestCase):
         """ Test getting the currently logged-in user """
         self.assertEqual(api.user.get_current().getUserName(), TEST_USER_NAME)
 
-    def test_get_all(self):
+    def test_get_all_users(self):
         """ Test getting all users """
         api.user.create(
             username='chuck',
             email='chuck@norris.org',
             password='secret',
         )
-        users = [user.getUserName() for user in api.user.get_all()]
+        users = [user.getUserName() for user in api.user.get_users()]
 
         self.assertEqual(users, ['chuck', TEST_USER_NAME])
+
+    def test_get_groups_users(self):
+        """ Test getting all users of a certain group """
+        api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+        api.group.create(groupname='staff')
+        api.group.add_user(username='chuck', groupname='staff')
+
+        users = api.user.get_users(groupname='staff')
+        usernames = [user.getUserName() for user in users]
+
+        self.assertEqual(usernames, ['chuck'])
 
     def test_delete_no_username(self):
         """ Test deleting of a member with email login"""

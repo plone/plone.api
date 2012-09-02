@@ -98,15 +98,39 @@ def get_current():
     return portal_membership.getAuthenticatedMember()
 
 
-def get_all():
-    """Return all users.
+def get_users(groupname=None, group=None):
+    """Get all users or all users filtered by group.
 
-    :returns: All users
+    Arguments ``group`` and ``groupname`` are mutually exclusive. You can either
+    set one or the other, but not both.
+
+    :param groupname: Groupname of the group of which to return users. If set,
+        only return users that are member of this group.
+    :type username: string
+    :param user: Group of which to return users. If set, only return users that
+        are member of this group.
+    :type user: MemberData object
+    :returns: All users (optionlly filtered by group)
     :rtype: List of MemberData objects
-    :Example: :ref:`users_get_all_example`
+    :Example: :ref:`user_get_all_users_example`,
+        :ref:`user_get_groups_users_example`
     """
+
+    if groupname and group:
+        raise ValueError
+
+    if groupname:
+        group_tool = getToolByName(portal.get(), 'portal_groups')
+        group = group_tool.getGroupById(groupname)
+        if not group:
+            raise ValueError
+
     portal_membership = getToolByName(portal.get(), 'portal_membership')
-    return portal_membership.listMembers()
+
+    if group:
+        return group.getGroupMembers()
+    else:
+        return portal_membership.listMembers()
 
 
 def delete(username=None, user=None):

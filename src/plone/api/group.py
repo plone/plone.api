@@ -67,7 +67,7 @@ def get_groups(username=None, user=None):
     :param user: User for which to return groups. If set, only return groups
         that this user is member of.
     :type user: MemberData object
-    :returns: All groups or all groups filtered by user
+    :returns: All groups (optionlly filtered by user)
     :rtype: List of GroupData objects
     :Example: :ref:`group_get_all_groups_example`,
         :ref:`group_get_users_groups_example`
