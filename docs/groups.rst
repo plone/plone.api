@@ -277,7 +277,7 @@ group.
 
     from plone import api
     # api.group.grant_roles(groupname='staff',
-        roles=['Reviewer, SiteAdministrator'])
+    #    roles=['Reviewer, SiteAdministrator'])
     # Not implemented yet
 
 
@@ -293,6 +293,6 @@ group.
 
     from plone import api
     # api.group.revoke_roles(groupname='staff',
-        roles=['Reviewer, SiteAdministrator'])
+    #    roles=['Reviewer, SiteAdministrator'])
     # Not implemented yet
 
