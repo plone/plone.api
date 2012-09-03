@@ -24,6 +24,7 @@ setup(
     install_requires=[
         'setuptools',
         'Plone',  # this is needed so we can pull docstrings into Sphinx
+        'Products.PluggableAuthService',      # this also
         'Products.PlonePAS',      # this also
         'zope.deprecation',       # this also
         'plone.i18n',             # this also
