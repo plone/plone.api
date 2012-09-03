@@ -2,7 +2,7 @@ from email.utils import formataddr, parseaddr
 
 from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
-from zope.app.component.hooks import getSite
+from zope.component.hooks import getSite
 from zope.component import getMultiAdapter
 from zope.globalrequest import getRequest
 from plone.app.layout.navigation.root import getNavigationRoot
