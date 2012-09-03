@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api user manipulation."""
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.CMFCore.permissions import View
 
 import unittest
 import mock
@@ -10,9 +8,7 @@ from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
-from plone.app.testing import setRoles
 
 
 class TestPloneApiUser(unittest.TestCase):

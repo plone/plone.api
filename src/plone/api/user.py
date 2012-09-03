@@ -1,5 +1,5 @@
 """ Module that provides functionality for user manipulation """
-from AccessControl.ImplPython import rolesForPermissionOn
+
 from Products.CMFPlone.utils import getToolByName
 from plone.api import portal
 

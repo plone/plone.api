@@ -391,4 +391,3 @@ def get_helpers():
     :Example: :ref:`content_get_helpers_example`
     """
     raise NotImplementedError
-
