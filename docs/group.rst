@@ -145,6 +145,23 @@ groups that the user is member of.
     self.assertEquals(groups[2].id, 'staff')
 
 
+Get group members
+-----------------
+
+Remember to use the :meth:`api.user.get_users` method to get all users that are
+members of a certain group.
+
+
+.. code-block:: python
+
+    from plone import api
+    members = api.user.get_users(groupname='staff')
+
+.. invisible-code-block:: python
+
+    self.assertEquals(members[0].id, 'jane')
+
+
 .. _group_delete_example:
 
 Delete group
