@@ -80,13 +80,13 @@ Hence the importing and usage of API methods look like this:
     from plone import api
 
     portal = api.portal.get()
-    catlog = api.portal.get_tool(name="portal_catalog")
+    catalog = api.portal.get_tool(name="portal_catalog")
     user = api.user.create(email='alice@plone.org')
 
 .. invisible-code-block:: python
 
     self.assertEqual(portal.__class__.__name__, 'PloneSite')
-    self.assertEqual(tool.__class__.__name__, 'CatalogTool')
+    self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
     self.assertEqual(user.__class__.__name__, 'MemberData')
 
 In other words, always import the top-level package (``from plone import api``)
