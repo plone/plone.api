@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api user manipulation."""
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.CMFCore.permissions import View
 
 import unittest
 import mock
@@ -10,9 +8,7 @@ from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
-from plone.app.testing import setRoles
 
 
 class TestPloneApiUser(unittest.TestCase):
@@ -128,16 +124,31 @@ class TestPloneApiUser(unittest.TestCase):
         """ Test getting the currently logged-in user """
         self.assertEqual(api.user.get_current().getUserName(), TEST_USER_NAME)
 
-    def test_get_all(self):
+    def test_get_all_users(self):
         """ Test getting all users """
         api.user.create(
             username='chuck',
             email='chuck@norris.org',
             password='secret',
         )
-        users = [user.getUserName() for user in api.user.get_all()]
+        users = [user.getUserName() for user in api.user.get_users()]
 
         self.assertEqual(users, ['chuck', TEST_USER_NAME])
+
+    def test_get_groups_users(self):
+        """ Test getting all users of a certain group """
+        api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+        api.group.create(groupname='staff')
+        api.group.add_user(username='chuck', groupname='staff')
+
+        users = api.user.get_users(groupname='staff')
+        usernames = [user.getUserName() for user in users]
+
+        self.assertEqual(usernames, ['chuck'])
 
     def test_delete_no_username(self):
         """ Test deleting of a member with email login"""
@@ -166,192 +177,9 @@ class TestPloneApiUser(unittest.TestCase):
                                email='steven@example.org')
         api.user.delete(user=user)
 
-    def test_get_groups_constraints(self):
-        """ Test that exception is raised if wrong arguments are given """
-
-        # must provide username or user
-        self.assertRaises(ValueError, api.user.get_groups)
-
-        # username and user are mutually exclusive
-        user = api.user.create(
-            username='chuck',
-            email='chuck@norris.org',
-            password='secret'
-        )
-        self.assertRaises(
-            ValueError,
-            api.user.get_groups,
-            username='chuck', user=user
-        )
-
-    def test_get_groups(self):
-        """ Test getting groups for a user/username """
-        user = api.user.create(
-            username='chuck',
-            password='secret',
-            email='chuck@norris.org'
-        )
-
-        self.assertEqual(
-            api.user.get_groups(user=user),
-            ['AuthenticatedUsers']
-        )
-        self.assertEqual(
-            api.user.get_groups(username='chuck'),
-            ['AuthenticatedUsers']
-        )
-
     def test_is_anonymous(self):
         """ Test anonymous access """
 
         self.assertEqual(api.user.is_anonymous(), False)
         logout()
         self.assertEqual(api.user.is_anonymous(), True)
-
-    def test_has_role_constraints(self):
-        """ test to see if the rule has constraints """
-
-        # must provide a role
-        self.assertRaises(ValueError, api.user.has_role)
-
-        # username and user are mutually exclusive
-        user = api.user.create(
-            username='chuck',
-            email='chuck@norris.org',
-            password='secret'
-        )
-
-        self.assertRaises(
-            ValueError,
-            api.user.has_role,
-            role='Member', username=user.id, user=user
-        )
-
-    def test_has_role_specific_user(self):
-        """ Tests user roles lookup for a specific user"""
-
-        user = api.user.create(
-            username='chuck',
-            email='chuck@norris.org',
-            password='secret',
-        )
-
-        self.assertTrue(api.user.has_role(role='Member', user=user))
-        self.assertTrue(api.user.has_role(role='Member', username=user.id))
-        self.assertFalse(api.user.has_role(role='Manager', user=user))
-        self.assertFalse(api.user.has_role(role='Manager', username=user.id))
-
-    def test_has_role_current_user(self):
-        """ Tests user roles lookup for a specific user"""
-
-        user = self.portal_membership.getAuthenticatedMember()
-
-        setRoles(self.portal, TEST_USER_ID, ['Member', 'Manager'])
-
-        self.assertTrue(api.user.has_role(role='Member', user=user))
-        self.assertTrue(api.user.has_role(role='Member', username=user.id))
-        self.assertTrue(api.user.has_role(role='Member'))
-        self.assertTrue(api.user.has_role(role='Manager', user=user))
-        self.assertTrue(api.user.has_role(role='Manager', username=user.id))
-        self.assertTrue(api.user.has_role(role='Manager'))
-
-    def test_has_role_in_context(self):
-        """ Tests user roles lookup in a specific context """
-
-        user = self.portal_membership.getAuthenticatedMember()
-
-        # Create a folder at portal's root
-        self.portal.invokeFactory('Folder', 'folder1')
-        folder = self.portal['folder1']
-
-        folder.manage_setLocalRoles(user.id, ['Reviewer', ])
-
-        self.assertTrue(api.user.has_role(role='Reviewer',
-                                          user=user,
-                                          obj=folder))
-        self.assertTrue(api.user.has_role(role='Reviewer',
-                                          username=user.id,
-                                          obj=folder))
-        self.assertTrue(api.user.has_role(role='Reviewer',
-                                          obj=folder))
-
-    def test_has_permission_contraints(self):
-        """ Tests user permission lookup """
-
-        self.assertRaises(ValueError, api.user.has_permission)
-        # Must supply object
-        self.assertRaises(
-            ValueError,
-            api.user.has_permission,
-            permission='foo',
-            username='chuck',
-        )
-        # username and user are mutually exclusive
-        self.assertRaises(
-            ValueError,
-            api.user.has_permission,
-            permission='foo',
-            username='chuck',
-            user=mock.Mock()
-        )
-
-    def test_has_permission_specific_user(self):
-        """ Tests user roles lookup for a specific user"""
-
-        user = api.user.create(
-            username='chuck',
-            email='chuck@norris.org',
-            password='secret',
-        )
-
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
-
-        self.assertTrue(
-            api.user.has_permission(
-                permission=View, user=user, obj=self.portal)
-        )
-        self.assertTrue(
-            api.user.has_permission(
-                permission=View, username=user.id, obj=self.portal)
-        )
-        self.assertFalse(
-            api.user.has_permission(
-                permission=ModifyPortalContent, user=user, obj=self.portal
-            )
-        )
-        self.assertFalse(
-            api.user.has_permission(
-                permission=ModifyPortalContent, username=user.id,
-                obj=self.portal
-            )
-        )
-
-    def test_has_permission_current_user(self):
-        """ Tests user permission lookup for a specific user"""
-
-        user = self.portal_membership.getAuthenticatedMember()
-
-        self.assertTrue(
-            api.user.has_permission(
-                permission=View, user=user, obj=self.portal)
-        )
-        self.assertTrue(
-            api.user.has_permission(
-                permission=View, username=user.id, obj=self.portal)
-        )
-        self.assertTrue(
-            api.user.has_permission(permission=View, obj=self.portal)
-        )
-        self.assertTrue(
-            api.user.has_permission(
-                permission=ModifyPortalContent, user=user, obj=self.portal)
-        )
-        self.assertTrue(
-            api.user.has_permission(
-                permission=ModifyPortalContent, username=user.id,
-                obj=self.portal)
-        )
-        self.assertTrue(
-            api.user.has_permission(
-                permission=ModifyPortalContent, obj=self.portal)
-        )

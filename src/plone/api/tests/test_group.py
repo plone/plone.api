@@ -81,11 +81,42 @@ class TestPloneApiGroup(unittest.TestCase):
             self.group_tool.getGroupById('bacon')
         )
 
-    def test_get_all(self):
+    def test_get_all_groups(self):
         """ Test getting all groups """
 
-        groups = api.group.get_all()
+        groups = api.group.get_groups()
         self.assertEqual(len(groups), 4)
+
+    def test_get_groups_constraints(self):
+        """ Test that exception is raised if wrong arguments are given """
+
+        # username and user are mutually exclusive
+        user = mock.Mock()
+        # user = api.user.create(
+        #     username='chuck',
+        #     email='chuck@norris.org',
+        #     password='secret'
+        # )
+        self.assertRaises(
+            ValueError,
+            api.group.get_groups,
+            username='chuck', user=user,
+        )
+
+    def test_get_users_groups(self):
+        """ Test retrieving of groups that the user is member of. """
+        user = self.portal_membership.getAuthenticatedMember()
+
+        api.group.create(groupname='staff')
+        api.group.add_user(groupname='staff', user=user)
+
+        groups = [g.id for g in api.group.get_groups(user=user)]
+        assert 'AuthenticatedUsers' in groups
+        assert 'staff' in groups
+
+        groups = [g.id for g in api.group.get_groups(username=user.id)]
+        assert 'AuthenticatedUsers' in groups
+        assert 'staff' in groups
 
     def test_delete_contraints(self):
         """ Test the contraints for deleting a group """
@@ -156,47 +187,46 @@ class TestPloneApiGroup(unittest.TestCase):
         # Add user by username to group
         api.group.add_user(groupname='staff', username='bob')
 
+        # Add user by user object to group
         user = api.user.get(username='jane')
         group = api.group.get(groupname='staff')
-
-        # Add user by user object to group
         api.group.add_user(group=group, user=user)
 
-        assert 'staff' in api.user.get_groups(username='bob')
-        assert 'staff' in api.user.get_groups(username='jane')
+        assert 'staff' in [g.id for g in api.group.get_groups(username='bob')]
+        assert 'staff' in [g.id for g in api.group.get_groups(username='jane')]
 
         assert 'bob' in group.getMemberIds()
         assert 'jane' in group.getMemberIds()
 
-    def test_delete_user_contraints(self):
-        """ Test the constraints when a user is deleted from a group """
+    def test_remove_user_contraints(self):
+        """ Test the constraints when a user is removed from a group """
 
         group, user = mock.Mock(), mock.Mock()
 
         # Arguments ``groupname`` and ``group`` are also mutually exclusive.
         self.assertRaises(
             ValueError,
-            api.group.delete_user,
+            api.group.remove_user,
             groupname='staff', group=group
         )
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
             ValueError,
-            api.group.delete_user,
+            api.group.remove_user,
             username='staff', user=user
         )
-        self.assertRaises(ValueError, api.group.delete_user, groupname='staff')
-        self.assertRaises(ValueError, api.group.delete_user, username='jane')
+        self.assertRaises(ValueError, api.group.remove_user, groupname='staff')
+        self.assertRaises(ValueError, api.group.remove_user, username='jane')
         self.assertRaises(
             ValueError,
-            api.group.delete_user,
+            api.group.remove_user,
             username='jane',
             group='group',
             groupname='staff'
         )
 
-    def test_delete_user(self):
-        """ Test deleting a user from a group """
+    def test_remove_user(self):
+        """ Test removing a user from a group """
 
         api.group.create(groupname='staff')
         api.user.create(email='jane@plone.org', username='jane')
@@ -205,29 +235,16 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.add_user(groupname='staff', username='bob')
 
         # Delete user by username from group
-        api.group.delete_user(groupname='staff', username='bob')
+        api.group.remove_user(groupname='staff', username='bob')
 
         group = api.group.get(groupname='staff')
         user = api.user.get(username='jane')
 
         # Delete user by user object from group
-        api.group.delete_user(group=group, user=user)
+        api.group.remove_user(group=group, user=user)
 
-        assert 'staff' not in api.user.get_groups(username='bob')
-        assert 'staff' not in api.user.get_groups(username='jane')
+        assert 'staff' not in api.group.get_groups(username='bob')
+        assert 'staff' not in api.group.get_groups(username='jane')
 
         assert 'bob' not in group.getMemberIds()
         assert 'jane' not in group.getMemberIds()
-
-    def test_get_groups(self):
-        """ Test retrieving of groups """
-        user = self.portal_membership.getAuthenticatedMember()
-
-        api.group.create(groupname='staff')
-        api.group.add_user(groupname='staff', user=user)
-
-        assert 'AuthenticatedUsers' in api.user.get_groups(user=user)
-        assert 'staff' in api.user.get_groups(user=user)
-
-        assert 'AuthenticatedUsers' in api.user.get_groups(username=user.id)
-        assert 'staff' in api.user.get_groups(username=user.id)

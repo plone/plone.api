@@ -5,6 +5,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter
 from zope.globalrequest import getRequest
+from plone.app.layout.navigation.root import getNavigationRoot
 
 from plone.api.exceptions import InvalidParameterError
 from plone.api.exceptions import MissingParameterError
@@ -16,6 +17,7 @@ def get():
     Interfaces and doing multi adapter lookups.
 
     :returns: Plone portal object
+    :rtype: Portal object
     :Example: :ref:`portal_get_example`
     """
     portal = getSite()
@@ -27,14 +29,15 @@ def get():
         "#plone.api.exceptions.CannotGetPortalError")
 
 
-def url():
-    """Get the portal url.
+def get_navigation_root():
+    """Returns Plone's Navigation Root object. Useful in multi-lingual
+    installations.
 
-    :returns: portal url
-    :rtype: string
-    :Example: :ref:`portal_url_example`
+    :returns: Navigation Root
+    :rtype: Portal object
+    :Example: :ref:`portal_get_navigation_root_example`
     """
-    return get().absolute_url()
+    return getNavigationRoot(get())
 
 
 def get_tool(name=None):
@@ -119,7 +122,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     )
 
 
-def localized_time(datetime=None, long_format=False, time_only=False):
+def get_localized_time(datetime=None, long_format=False, time_only=False):
     """Display a date/time in a user-friendly way.
 
     It should be localized to the user's preferred language.
@@ -136,9 +139,11 @@ def localized_time(datetime=None, long_format=False, time_only=False):
     :param time_only: When true, show only the time, when false
         (default), show the date.
     :type time_only: boolean
+    :returns: Localized time
+    :rtype: string
     :raises:
         ValueError
-    :Example: :ref:`portal_localized_time_example`
+    :Example: :ref:`portal_get_localized_time_example`
     """
     if not datetime:
         raise ValueError
@@ -169,3 +174,23 @@ def show_message(message=None, request=None, type='info'):
         raise ValueError
 
     IStatusMessage(request).add(message, type=type)
+
+
+def get_helpers():
+    """Not yet implemented. Easy access to the ``@@plone_portal_state`` view.
+
+    :returns: @@plone_portal_state view
+    :rtype: BrowserView
+    :Example: :ref:`portal_get_helpers_example`
+    """
+    raise NotImplementedError
+
+
+def get_registry_record():
+    """Not yet implemented. Easy access to the ``plone.app.registry`` configuration records.
+
+    :returns: Registry record
+    :rtype: plone.app.registry registry record
+    :Example: :ref:`portal_get_helpers_example`
+    """
+    raise NotImplementedError

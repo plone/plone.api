@@ -51,10 +51,6 @@ class TestPloneApiPortal(unittest.TestCase):
         from plone.api.exceptions import CannotGetPortalError
         self.assertRaises(CannotGetPortalError, portal.get)
 
-    def test_url(self):
-        """ Test to see if the url exists """
-        self.assertEqual(portal.url(), 'http://nohost/plone')
-
     def test_get_tool_constraints(self):
         """ Test the constraints for getting a tool. """
 
@@ -62,7 +58,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(MissingParameterError, portal.get_tool)
 
     def test_get_tool_tool_not_found(self):
-        """Test that error msg lists available tools if a tools is not found."""
+        """Test that error msg lists available tools if a tool is not found."""
 
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_tool('portal_foo')
@@ -218,27 +214,26 @@ class TestPloneApiPortal(unittest.TestCase):
             body=u"One for you Bob!",
         )
 
-    def test_localized_time_constraints(self):
-        """ Test the constraints for localized_time. """
+    def test_get_localized_time_constraints(self):
+        """ Test the constraints for get_localized_time. """
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, portal.localized_time)
+        self.assertRaises(ValueError, portal.get_localized_time)
 
-    def test_localized_time(self):
-        result = portal.localized_time(
+    def test_get_localized_time(self):
+        result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
             long_format=True,
-            time_only=False
         )
         self.assertEqual(result, 'Dec 31, 1999 11:59 PM')
 
-        result = portal.localized_time(
+        result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
-            time_only=True
+            time_only=True,
         )
         self.assertEqual(result, '11:59 PM')
 
-        result = portal.localized_time(
+        result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
         )
         self.assertEqual(result, 'Dec 31, 1999')

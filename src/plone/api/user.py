@@ -1,5 +1,5 @@
 """ Module that provides functionality for user manipulation """
-from AccessControl.ImplPython import rolesForPermissionOn
+
 from Products.CMFPlone.utils import getToolByName
 from plone.api import portal
 
@@ -98,15 +98,39 @@ def get_current():
     return portal_membership.getAuthenticatedMember()
 
 
-def get_all():
-    """Return all users.
+def get_users(groupname=None, group=None):
+    """Get all users or all users filtered by group.
 
-    :returns: All users
+    Arguments ``group`` and ``groupname`` are mutually exclusive. You can either
+    set one or the other, but not both.
+
+    :param groupname: Groupname of the group of which to return users. If set,
+        only return users that are member of this group.
+    :type username: string
+    :param user: Group of which to return users. If set, only return users that
+        are member of this group.
+    :type user: MemberData object
+    :returns: All users (optionlly filtered by group)
     :rtype: List of MemberData objects
-    :Example: :ref:`users_get_all_example`
+    :Example: :ref:`user_get_all_users_example`,
+        :ref:`user_get_groups_users_example`
     """
+
+    if groupname and group:
+        raise ValueError
+
+    if groupname:
+        group_tool = getToolByName(portal.get(), 'portal_groups')
+        group = group_tool.getGroupById(groupname)
+        if not group:
+            raise ValueError
+
     portal_membership = getToolByName(portal.get(), 'portal_membership')
-    return portal_membership.listMembers()
+
+    if group:
+        return group.getGroupMembers()
+    else:
+        return portal_membership.listMembers()
 
 
 def delete(username=None, user=None):
@@ -134,35 +158,6 @@ def delete(username=None, user=None):
     portal_membership.deleteMembers((user_id,))
 
 
-def get_groups(username=None, user=None):
-    """Get a list of groups that this user is a member of.
-
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both.
-
-    :param username: Username of the user for which to return groups.
-    :type username: string
-    :param user: User for which to return groups.
-    :type user: MemberData object
-    :returns: List of names of groups this user is a member of.
-    :rtype: List of strings
-    :raises:
-        ValueError
-    :Example: :ref:`get_groups_for_user_example`
-    """
-    if not username and not user:
-        raise ValueError
-
-    if username and user:
-        raise ValueError
-
-    site = portal.get()
-
-    if username:
-        user = getToolByName(site, 'portal_membership').getMemberById(username)
-    return getToolByName(site, 'portal_groups').getGroupsForPrincipal(user)
-
-
 def is_anonymous():
     """Check if the currently logged-in user is anonymous.
 
@@ -173,86 +168,77 @@ def is_anonymous():
     return getToolByName(portal.get(), 'portal_membership').isAnonymousUser()
 
 
-def has_role(role=None, username=None, user=None, obj=None):
-    """Check if the user has the specified role.
+def get_roles(username=None, user=None, obj=None):
+    """Not implemented yet. Get user's site-wide or local roles.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both. If no ``username` or ``user`` are
-    provided, check the role for the currently logged-in user.
+    set one or the other, but not both.
 
-    :param role: [required] Role of the user to check for
-    :type role: string
-    :param username: Username of the user that we are checking the role for
+    :param username: Username of the user to be deleted.
     :type username: string
-    :param user: User that we are checking the role for
+    :param user: User object to be deleted.
     :type user: MemberData object
-    :param obj: Object that we want to look in for the role.
-    :type obj: Content object
-    :returns: True if user has the specified role, False otherwise.
-    :rtype: bool
+    :param obj: If obj is set then return local roles on this context
+    :type obj: content object
     :raises:
         ValueError
-    :Example: :ref:`user_has_role_example`
+    :Example: :ref:`user_get_roles_example`
     """
-    if not role:
-        raise ValueError
-
-    if username and user:
-        raise ValueError
-
-    portal_membership = getToolByName(portal.get(), 'portal_membership')
-    current_user = portal_membership.getAuthenticatedMember()
-
-    if username:
-        user = portal_membership.getMemberById(username)
-
-    if not user or user == current_user:
-        user = current_user
-
-    if obj:
-        return role in user.getRolesInContext(obj)
-    else:
-        return role in user.getRoles()
+    raise NotImplementedError
 
 
-def has_permission(permission=None, username=None, user=None,
-                   obj=None):
-    """Check if the user has the specified permission on the given object.
+def get_permissions(username=None, user=None, obj=None):
+    """Not implemented yet. Get user's site-wide or local permissions.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both. If no ``username` or ``user`` are
-    provided, check the permission for the currently logged-in user.
+    set one or the other, but not both.
 
-    :param permission: [required] Permission of the user to check for
-    :type permission: string
-    :param username: Username of the user that we are checking the permission
-        for
+    :param username: Username of the user to be deleted.
     :type username: string
-    :param user: User that we are checking the permission for
+    :param user: User object to be deleted.
     :type user: MemberData object
-    :param obj: Object that we are checking the permission for
-    :type obj: object
-    :returns: True if user has the specified permission, False otherwise.
-    :rtype: bool
+    :param obj: If obj is set then return local permissions on this context
+    :type obj: content object
     :raises:
         ValueError
-    :Example: :ref:`user_has_permission_example`
+    :Example: :ref:`user_get_permissions_example`
     """
-    if not permission:
+    raise NotImplementedError
+
+
+def grant_roles(username=None, user=None, roles=None):
+    """Not implemented yet. Grant roles to a user.
+
+    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    set one or the other, but not both.
+
+    :param username: Username of the user to be deleted.
+    :type username: string
+    :param user: User object to be deleted.
+    :type user: MemberData object
+    :param roles: List of roles to grant
+    :type roles: list of strings
+    :raises:
         ValueError
+    :Example: :ref:`user_grant_roles_example`
+    """
+    raise NotImplementedError
 
-    if username and user:
-        raise ValueError
 
-    if not obj:
-        raise ValueError
+def revoke_roles(username=None, user=None, roles=None):
+    """Not implemented yet. Revoke roles from a user.
 
-    portal_membership = getToolByName(portal.get(), 'portal_membership')
-    if username:
-        user = portal_membership.getMemberById(username)
+    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    set one or the other, but not both.
 
-    if not user or user == portal_membership.getAuthenticatedMember():
-        return portal_membership.checkPermission(permission, obj)
-    else:
-        roles = rolesForPermissionOn(permission, obj)
-        return user.allowed(obj, roles)
+    :param username: Username of the user to be deleted.
+    :type username: string
+    :param user: User object to be deleted.
+    :type user: MemberData object
+    :param roles: List of roles to grant
+    :type roles: list of strings
+    :raises:
+        ValueError
+    :Example: :ref:`user_revoke_roles_example`
+    """
+    raise NotImplementedError
