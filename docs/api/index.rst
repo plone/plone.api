@@ -83,8 +83,8 @@ Exceptions and errors
 
 .. autosummary::
 
-    api.exceptions.PloneApiError
-    api.exceptions.MissingParameterError
-    api.exceptions.InvalidParameterError
-    api.exceptions.CannotGetPortalError
+    api.exc.PloneApiError
+    api.exc.MissingParameterError
+    api.exc.InvalidParameterError
+    api.exc.CannotGetPortalError
 

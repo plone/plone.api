@@ -11,8 +11,8 @@ from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
 
 from plone.api import portal
-from plone.api.exceptions import MissingParameterError
-from plone.api.exceptions import InvalidParameterError
+from plone.api.exc import MissingParameterError
+from plone.api.exc import InvalidParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 
 
@@ -48,7 +48,7 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_get_no_site(self, getSite):
         """Test error msg when getSite() returns None."""
         getSite.return_value = None
-        from plone.api.exceptions import CannotGetPortalError
+        from plone.api.exc import CannotGetPortalError
         self.assertRaises(CannotGetPortalError, portal.get)
 
     def test_get_tool_constraints(self):

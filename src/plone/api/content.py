@@ -14,8 +14,8 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 import random
 import transaction
 
-from plone.api.exceptions import InvalidParameterError
-from plone.api.exceptions import MissingParameterError
+from plone.api.exc import InvalidParameterError
+from plone.api.exc import MissingParameterError
 from plone.api import portal
 
 
@@ -47,8 +47,8 @@ def create(container=None,
     :returns: Content object
     :raises:
         KeyError,
-        :class:`~plone.api.exceptions.MissingParameterError`,
-        :class:`~plone.api.exceptions.InvalidParameterError`
+        :class:`~plone.api.exc.MissingParameterError`,
+        :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_create_example`
     """
     if not container:
@@ -299,8 +299,8 @@ def transition(obj=None, transition=None):
     :param transition: [required] Name of the workflow transition.
     :type transition: string
     :raises:
-        :class:`~plone.api.exceptions.MissingParameterError`,
-        :class:`~plone.api.exceptions.InvalidParameterError`
+        :class:`~plone.api.exc.MissingParameterError`,
+        :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_transition_example`
     """
     if not obj or not transition:
@@ -329,8 +329,8 @@ def get_view(name=None, context=None, request=None):
     :param request: [required] Request on which to get view.
     :type request: request object
     :raises:
-        :class:`~plone.api.exceptions.MissingParameterError`,
-        :class:`~plone.api.exceptions.InvalidParameterError`
+        :class:`~plone.api.exc.MissingParameterError`,
+        :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_get_view_example`
     """
     if not name:

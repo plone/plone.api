@@ -3,5 +3,5 @@
 Errors and Exceptions
 =====================
 
-.. automodule:: plone.api.exceptions
+.. automodule:: plone.api.exc
     :members:

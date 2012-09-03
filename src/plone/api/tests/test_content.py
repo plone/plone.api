@@ -67,20 +67,20 @@ class TestPloneApiContent(unittest.TestCase):
         """ Test the constraints when creating content """
 
         # This will definitely fail
-        self.assertRaises(api.exceptions.MissingParameterError, api.content.create)
+        self.assertRaises(api.exc.MissingParameterError, api.content.create)
 
         # Check the contraints for the type container
         self.assertRaises(
-            api.exceptions.MissingParameterError, api.content.create, type='Document', id='test-doc')
+            api.exc.MissingParameterError, api.content.create, type='Document', id='test-doc')
 
         # Check the contraints for the type parameter
         container = mock.Mock()
         self.assertRaises(
-            api.exceptions.MissingParameterError, api.content.create, container=container, id='test-doc')
+            api.exc.MissingParameterError, api.content.create, container=container, id='test-doc')
 
         # Check the contraints for id and title parameters
         self.assertRaises(
-            api.exceptions.MissingParameterError,
+            api.exc.MissingParameterError,
             api.content.create,
             container=container, type='Document'
         )
@@ -88,7 +88,7 @@ class TestPloneApiContent(unittest.TestCase):
         # Check the contraints for allowed types in the container
         container = self.events
         self.assertRaises(
-            api.exceptions.InvalidParameterError,
+            api.exc.InvalidParameterError,
             api.content.create,
             container=container,
             type='foo',
@@ -98,7 +98,7 @@ class TestPloneApiContent(unittest.TestCase):
         # Check the contraints for allowed types in the container if the container is the portal
         container = self.portal
         self.assertRaises(
-            api.exceptions.InvalidParameterError,
+            api.exc.InvalidParameterError,
             api.content.create,
             container=container,
             type='foo',
@@ -114,7 +114,7 @@ class TestPloneApiContent(unittest.TestCase):
         folder.setConstrainTypesMode(1)
         folder.setLocallyAllowedTypes(('News Item',))
         self.assertRaises(
-            api.exceptions.InvalidParameterError,
+            api.exc.InvalidParameterError,
             api.content.create,
             container=folder,
             type='Document',
@@ -291,11 +291,11 @@ class TestPloneApiContent(unittest.TestCase):
         """ Test the constraints for rename content """
 
         # When no parameters are given an error is raised
-        self.assertRaises(api.exceptions.MissingParameterError, api.content.rename)
+        self.assertRaises(api.exc.MissingParameterError, api.content.rename)
 
         container = mock.Mock()
         # Source is missing an should raise an error
-        self.assertRaises(api.exceptions.MissingParameterError, api.content.rename, obj=container)
+        self.assertRaises(api.exc.MissingParameterError, api.content.rename, obj=container)
 
     def test_rename(self):
         """ Test renaming of content """
@@ -395,17 +395,17 @@ class TestPloneApiContent(unittest.TestCase):
     def test_transition(self):
         """ Test transitioning the workflow state on a content item"""
 
-        self.assertRaises(api.exceptions.MissingParameterError, api.content.transition)
-        self.assertRaises(api.exceptions.MissingParameterError, api.content.transition, obj=mock.Mock())
+        self.assertRaises(api.exc.MissingParameterError, api.content.transition)
+        self.assertRaises(api.exc.MissingParameterError, api.content.transition, obj=mock.Mock())
         self.assertRaises(
-            api.exceptions.MissingParameterError, api.content.transition, transition='publish')
+            api.exc.MissingParameterError, api.content.transition, transition='publish')
 
         api.content.transition(obj=self.blog, transition='publish')
         review_state = api.content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'published')
 
         # This should fail because the transition doesn't exist
-        with self.assertRaises(api.exceptions.InvalidParameterError) as cm:
+        with self.assertRaises(api.exc.InvalidParameterError) as cm:
             api.content.transition(transition='foo',
                                    obj=self.blog)
 
@@ -423,11 +423,11 @@ class TestPloneApiContent(unittest.TestCase):
         request = self.layer['request']
 
         # When no parameters are given an error is raised
-        self.assertRaises(api.exceptions.MissingParameterError, api.content.get_view)
+        self.assertRaises(api.exc.MissingParameterError, api.content.get_view)
 
         # name is required
         self.assertRaises(
-            api.exceptions.MissingParameterError,
+            api.exc.MissingParameterError,
             api.content.get_view,
             context=self.blog,
             request=request
@@ -435,7 +435,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # context is required
         self.assertRaises(
-            api.exceptions.MissingParameterError,
+            api.exc.MissingParameterError,
             api.content.get_view,
             name='plone',
             request=request
@@ -443,7 +443,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # request is required
         self.assertRaises(
-            api.exceptions.MissingParameterError,
+            api.exc.MissingParameterError,
             api.content.get_view,
             name='plone',
             context=self.blog
@@ -507,7 +507,7 @@ class TestPloneApiContent(unittest.TestCase):
         """Test that error msg lists available views if a view is not found."""
         request = self.layer['request']
 
-        with self.assertRaises(api.exceptions.InvalidParameterError) as cm:
+        with self.assertRaises(api.exc.InvalidParameterError) as cm:
             api.content.get_view(name='foo',
                                  context=self.blog,
                                  request=request)

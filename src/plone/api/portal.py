@@ -7,9 +7,9 @@ from zope.component import getMultiAdapter
 from zope.globalrequest import getRequest
 from plone.app.layout.navigation.root import getNavigationRoot
 
-from plone.api.exceptions import InvalidParameterError
-from plone.api.exceptions import MissingParameterError
-from plone.api.exceptions import CannotGetPortalError
+from plone.api.exc import InvalidParameterError
+from plone.api.exc import MissingParameterError
+from plone.api.exc import CannotGetPortalError
 
 
 def get():
@@ -26,7 +26,7 @@ def get():
     raise CannotGetPortalError(
         "Unable to get the portal object. More info on "
         "http://ploneapi.readthedocs.org/en/latest/api.html"
-        "#plone.api.exceptions.CannotGetPortalError")
+        "#plone.api.exc.CannotGetPortalError")
 
 
 def get_navigation_root():
@@ -47,8 +47,8 @@ def get_tool(name=None):
     :type name: string
     :returns: The tool that was found by name
     :raises:
-        :class:`~plone.api.exceptions.MissingParameterError`,
-        :class:`~plone.api.exceptions.InvalidParameterError`
+        :class:`~plone.api.exc.MissingParameterError`,
+        :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`portal_get_tool_example`
     """
     if not name:
