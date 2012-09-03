@@ -158,9 +158,9 @@ Get all users in your portal with :meth:`api.user.get_users`.
     self.assertTrue('test_user_1_' in [user.id for user in users])
 
 
-.. _group_get_users_groups_example:
+.. _user_get_groups_users_example:
 
-Get user's groups
+Get group's users
 -----------------
 
 If you set the `groupname` parameter, then :meth:`api.user.get_users` will

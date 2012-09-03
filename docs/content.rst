@@ -140,7 +140,7 @@ object.
     document_obj = document_brain.getObject()
     assert document_obj.__class__.__name__ == 'ATDocument'
 
-.. _content_uuid_example:
+.. _content_get_uuid_example:
 
 Get content object UUID
 -----------------------
@@ -334,7 +334,7 @@ To transition your content into a new state, use :meth:`api.content.transition`.
     )
 
 
-.. _conten_get_view_example:
+.. _content_get_view_example:
 
 Get view
 --------
