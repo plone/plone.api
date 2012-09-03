@@ -177,7 +177,7 @@ def show_message(message=None, request=None, type='info'):
 
 
 def get_helpers():
-    """Easy access to the ``@@plone_portal_state`` view.
+    """Not yet implemented. Easy access to the ``@@plone_portal_state`` view.
 
     :returns: @@plone_portal_state view
     :rtype: BrowserView
@@ -187,7 +187,7 @@ def get_helpers():
 
 
 def get_registry_record():
-    """Easy access to the ``plone.app.registry`` configuration records.
+    """Not yet implemented. Easy access to the ``plone.app.registry`` configuration records.
 
     :returns: Registry record
     :rtype: plone.app.registry registry record
