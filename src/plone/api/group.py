@@ -197,7 +197,7 @@ def remove_user(groupname=None, group=None, username=None, user=None):
 
 
 def get_roles(groupname=None, group=None, obj=None):
-    """Get group's site-wide or local roles.
+    """Not implemented yet. Get group's site-wide or local roles.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
@@ -216,7 +216,7 @@ def get_roles(groupname=None, group=None, obj=None):
 
 
 def get_permissions(groupname=None, group=None, obj=None):
-    """Get group's site-wide or local permissions.
+    """Not implemented yet. Get group's site-wide or local permissions.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
@@ -235,7 +235,7 @@ def get_permissions(groupname=None, group=None, obj=None):
 
 
 def grant_roles(groupname=None, group=None, roles=None):
-    """Grant roles to a group.
+    """Not implemented yet. Grant roles to a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
@@ -254,7 +254,7 @@ def grant_roles(groupname=None, group=None, roles=None):
 
 
 def revoke_roles(groupname=None, group=None, roles=None):
-    """Revoke roles from a group.
+    """Not implemented yet. Revoke roles from a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
