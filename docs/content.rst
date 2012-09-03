@@ -336,8 +336,8 @@ To transition your content into a new state, use :meth:`api.content.transition`.
 
 .. _conten_get_view_example:
 
-Browser view
-------------
+Get view
+--------
 
 To get a BrowserView for your content, use :meth:`api.content.get_view`.
 
