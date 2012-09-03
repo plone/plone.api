@@ -24,6 +24,7 @@ setup(
     install_requires=[
         'setuptools',
         'Plone',  # this is needed so we can pull docstrings into Sphinx
+        'plone.i18n',             # this also
         'Products.Archetypes',    # this also
         'zope.app.container',     # this also
         'zope.globalrequest',     # this also
