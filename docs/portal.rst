@@ -185,7 +185,8 @@ Get the @@plone_portal_state helpers
 Plone comes with a handy view ``@@plone_portal_state`` that contains numerous
 utility methods. The :meth:`api.portal.get_helpers` provides an easy way to
 access this view. The list of methods provided by ``@@plone_portal_state`` is
-available on TODO.
+available in `plone.app.layout's interfaces.py
+<https://github.com/plone/plone.app.layout/blob/master/plone/app/layout/globals/interfaces.py#L93>`_.
 
 .. code-block:: python
 
