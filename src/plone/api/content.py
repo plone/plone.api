@@ -381,3 +381,14 @@ def get_uuid(obj=None):
         raise ValueError
 
     return IUUID(obj)
+
+
+def get_helpers():
+    """Not yet implemented. Easy access to the ``@@plone_context_state`` view.
+
+    :returns: @@plone_context_state view
+    :rtype: BrowserView
+    :Example: :ref:`content_get_helpers_example`
+    """
+    raise NotImplementedError
+
