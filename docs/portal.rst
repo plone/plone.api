@@ -12,24 +12,6 @@
 Portal
 ======
 
-.. _portal_url_example:
-
-Get portal url
---------------
-
-A shortcut for getting the url of the portal is now always at hand:
-:meth:`api.portal.url`.
-
-.. code-block:: python
-
-    from plone import api
-    url = api.portal.url()
-
-.. invisible-code-block:: python
-
-    self.assertEqual(url, 'http://nohost/plone')
-
-
 .. _portal_get_example:
 
 Get portal object
@@ -48,6 +30,40 @@ Getting the Plone portal object is easy with :meth:`api.portal.get`.
     self.assertEquals(portal.getId(), 'plone')
 
 
+.. _portal_get_navigation_root_example:
+
+Get navigation root
+-------------------
+
+In multi-lingual Plone installations you probably want to get the
+language-specific navigation root, not the top portal object. You do this with
+:meth:`api.portal.get_navigation_root`.
+
+.. code-block:: python
+
+    from plone import api
+    nav_root = api.portal.get_navigation_root()
+
+.. invisible-code-block:: python
+
+    self.assertEquals(nav_root, '/plone')
+
+
+Get portal url
+--------------
+
+Since we now have the portal object, it's easy to get the portal url.
+
+.. code-block:: python
+
+    from plone import api
+    url = api.portal.get().absolute_url()
+
+.. invisible-code-block:: python
+
+    self.assertEqual(url, 'http://nohost/plone')
+
+
 .. _portal_get_tool_example:
 
 Get tool
@@ -64,6 +80,28 @@ pass in the name of the tool you need.
 .. invisible-code-block:: python
 
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
+
+
+.. _portal_get_localized_time_example:
+
+Get localized time
+------------------
+
+To display the date/time in a user-friendly way, localized to the user's
+prefered language, use :meth:`api.portal.get_localized_time`.
+
+.. code-block:: python
+
+    from plone import api
+    from DateTime import DateTime
+    today = DateTime()
+    api.portal.get_localized_time(datetime=today)
+
+.. invisible-code-block:: python
+
+    result = api.portal.get_localized_time(
+        datetime=DateTime(1999, 12, 31, 23, 59))
+    self.assertEqual(result, 'Dec 31, 1999')
 
 
 .. _portal_send_email_example:
@@ -96,6 +134,7 @@ To send an e-mail use :meth:`api.portal.send_email`:
 
 .. code-block:: python
 
+    from plone import api
     api.portal.send_email(
         recipient="bob@plone.org",
         sender="noreply@plone.org",
@@ -114,27 +153,6 @@ To send an e-mail use :meth:`api.portal.send_email`:
     self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
     self.assertEqual(msg.get_payload(), 'One for you Bob!')
     mailhost.reset()
-
-
-.. _portal_localized_time_example:
-
-Localized time
---------------
-
-To display the date/time in a user-friendly way, localized to the user's prefered
-language, use :meth:`api.portal.localized_time`.
-
-.. code-block:: python
-
-    from plone import api
-    from DateTime import DateTime
-    today = DateTime()
-    api.portal.localized_time(datetime=today)
-
-.. invisible-code-block:: python
-
-    result = api.portal.localized_time(datetime=DateTime(1999, 12, 31, 23, 59))
-    self.assertEqual(result, 'Dec 31, 1999')
 
 
 .. _portal_show_message_example:
@@ -157,3 +175,35 @@ the user.
     show = messages.show()
     self.assertEquals(len(show), 1)
     self.assertTrue('Blueberries!' in show[0].message)
+
+
+.. _portal_get_helpers_example:
+
+Get the @@plone_portal_state helpers
+------------------------------------
+
+Plone comes with a handy view ``@@plone_portal_state`` that contains numerous
+utility methods. The :meth:`api.portal.get_helpers` provides an easy way to
+access this view. The list of methods provided by ``@@plone_portal_state`` is
+available in `plone.app.layout's interfaces.py
+<https://github.com/plone/plone.app.layout/blob/master/plone/app/layout/globals/interfaces.py#L93>`_.
+
+.. code-block:: python
+
+    from plone import api
+    # Not implemented yet
+
+.. _portal_get_helpers_example:
+
+Get plone.app.registry record
+-----------------------------
+
+Plone comes with a package ``plone.app.registry`` that provides a common way to
+store various configuration and settings. The
+:meth:`api.portal.get_registry_record` provides an easy way to access these
+records.
+
+.. code-block:: python
+
+    from plone import api
+    # Not implemented yet

@@ -38,6 +38,26 @@ Two libraries are especially inspiring:
   one cannot but see a parallel between the way we *have been* and the way we
   *should be* writing code for Plone (or at least have that option).
 
+The API provides grouped functional access to otherwise distributed logic
+in Plone. Plone's original distribution of logic is a result of two things:
+The historic re-use of CMF- and Zope-methods and reasonable, but
+at first hard to understand splits like acl_users.* and portal_memberdata.
+
+That's why we've created a set of useful methods that implement best-practice
+access to the original distributed APIs. In this way we also document in code
+how to use Plone directly.
+
+.. note ::
+   If you doubt those last sentences: We had five different ways to get the
+   portal root with different edge-cases. We had three different ways to move
+   an object. With this in mind, it's obvious that even the most simple
+   tasks can't be documented in Plone in a sane way.
+
+Also, we don't intend to cover all possible use-cases. Only the most common
+ones. If you need to do something that `plone.api` does not support,
+just use the underlying APIs directly. We will cover 20% of tasks that are
+being done 80% of the time, and not one more.
+
 
 Design decisions
 ================
@@ -60,18 +80,18 @@ Hence the importing and usage of API methods look like this:
     from plone import api
 
     portal = api.portal.get()
-    url = api.portal.url()
+    catalog = api.portal.get_tool(name="portal_catalog")
     user = api.user.create(email='alice@plone.org')
 
 .. invisible-code-block:: python
 
     self.assertEqual(portal.__class__.__name__, 'PloneSite')
-    self.assertEqual(url, 'http://nohost/plone')
+    self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
     self.assertEqual(user.__class__.__name__, 'MemberData')
 
 In other words, always import the top-level package (``from plone import api``)
 and then use the group namespace to access the method you want
-(``url = api.portal.url()``).
+(``portal = api.portal.get()``).
 
 All example code should adhere to this style, so we encourage one and only
 one prefered way of consuming API methods.
@@ -96,25 +116,18 @@ instead of positional arguments:
    remain valid.
 #. The arguments can all be passed as a dictionary.
 
-The API provides grouped functional access to otherwise distributed logic
-in Plone. Plone's original distribution of logic is a result of two things:
-The historic re-use of CMF- and Zope-methods and reasonable, but
-at first hard to understand splits like acl_users.* and portal_memberdata.
 
-That's why we've created a set of useful methods that implement best-practice
-access to the original distributed APIs. In this way we also
-document in code how to use Plone directly.
+.. code-block:: python
 
-.. note ::
-   If you doubt those last sentences: We had five different ways to get the
-   portal root with different edge-cases. We had three different ways to move
-   an object. With this in mind, it's obvious that even the most simple
-   tasks can't be documented in Plone in a sane way.
+    # GOOD
+    from plone import api
+    portal = api.portal.get()
+    alice = api.user.get(username='alice@plone.org')
 
-Also, we don't intend to cover all possible use-cases. Only the most common
-ones. If you need to do something that `plone.api` does not support,
-just use the underlying APIs directly. We will cover 20% of tasks that are
-being done 80% of the time, and not one more.
+    # BAD
+    from plone.api import portal, user
+    portal = portal.get()
+    alie = user.get('alice@plone.org')
 
 
 FAQ

@@ -45,8 +45,8 @@ Narrative documentation
     about.rst
     portal.rst
     content.rst
-    users.rst
-    groups.rst
+    user.rst
+    group.rst
 
 
 Complete API and advanced usage
