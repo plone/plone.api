@@ -472,13 +472,13 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(view.__name__, 'plone_context_state')
         self.assertEqual(aq_base(view.canonical_object()), aq_base(self.blog))
 
-    def test_uuid(self):
+    def test_get_uuid(self):
         """ Test getting a content item's UUID """
 
         container = self.portal
 
         # The content item must be given as parameter
-        self.assertRaises(ValueError, api.content.uuid)
+        self.assertRaises(ValueError, api.content.get_uuid)
 
         generator = getUtility(IUUIDGenerator)
 
@@ -489,7 +489,7 @@ class TestPloneApiContent(unittest.TestCase):
         uuid1 = generator()
         IMutableUUID(item).set(uuid1)
 
-        uuid2 = api.content.uuid(item)
+        uuid2 = api.content.get_uuid(item)
         self.assertEqual(uuid1, uuid2)
         self.assertTrue(isinstance(uuid2, str))
 
@@ -499,7 +499,7 @@ class TestPloneApiContent(unittest.TestCase):
         uuid1 = generator()
         document._setUID(uuid1)
 
-        uuid2 = api.content.uuid(document)
+        uuid2 = api.content.get_uuid(document)
         self.assertEqual(uuid1, uuid2)
         self.assertTrue(isinstance(uuid2, str))
 

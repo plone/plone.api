@@ -366,7 +366,7 @@ def get_view(name=None, context=None, request=None):
             "%s" % (name, '\n'.join(sorted(views_names))))
 
 
-def uuid(obj=None):
+def get_uuid(obj=None):
     """Get the object's Universally Unique IDentifier (UUID).
 
     :param obj: [required] Object we want its UUID.
@@ -375,7 +375,7 @@ def uuid(obj=None):
     :rtype: string
     :raises:
         ValueError
-    :Example: :ref:`content_uuid_example`
+    :Example: :ref:`content_get_uuid_example`
     """
     if not obj:
         raise ValueError

@@ -152,8 +152,8 @@ is moved.
 Plone uses UUIDs for storing content-to-content references and for linking by
 UIDs, enabling persistent links.
 
-To get a content object UUID use :meth:`api.content.uuid`. The following code
-gets the UUID of the ``contact`` document.
+To get a content object UUID use :meth:`api.content.get_uuid`. The following
+code gets the UUID of the ``contact`` document.
 
 .. code-block:: python
 
@@ -161,7 +161,7 @@ gets the UUID of the ``contact`` document.
     portal = api.portal.get()
     contact = portal['about']['contact']
 
-    uuid = api.content.uuid(obj=contact)
+    uuid = api.content.get_uuid(obj=contact)
 
 .. invisible-code-block:: python
 
