@@ -80,7 +80,7 @@ Hence the importing and usage of API methods look like this:
     from plone import api
 
     portal = api.portal.get()
-    tool = api.portal.get_tool(name="portal_catalog")
+    catlog = api.portal.get_tool(name="portal_catalog")
     user = api.user.create(email='alice@plone.org')
 
 .. invisible-code-block:: python
