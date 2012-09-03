@@ -149,7 +149,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(page.Title(), 'Test id generated')
         self.assertEqual(page.portal_type, 'Dexterity Item')
 
-        # Try to create another item, this should fail because of strict mode
+        # Try to create another item with same id, this should fail
         self.assertRaises(
             BadRequest, api.content.create,
             container=folder, type='Dexterity Item', id='test-item'
@@ -182,19 +182,19 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(page.Title(), 'Test id generated')
         self.assertEqual(page.portal_type, 'Document')
 
-        # Try to create another page, this should fail because of strict mode
+        # Try to create another page with same id, this should fail
         self.assertRaises(
             BadRequest, api.content.create,
             container=folder, type='Document', id='test-document'
         )
 
-    def test_create_non_strict(self):
-        """" Test the content creating without strict mode. """
+    def test_create_with_safe_id(self):
+        """" Test the content creating with safe_id mode. """
         container = self.portal
 
         first_page = api.content.create(
             container=container, type='Document', id='test-document',
-            strict=False)
+            safe_id=True)
         assert first_page
         self.assertEqual(first_page.id, 'test-document')
         self.assertEqual(first_page.portal_type, 'Document')
@@ -202,7 +202,7 @@ class TestPloneApiContent(unittest.TestCase):
         # Second page is created with non-conflicting id
         second_page = api.content.create(
             container=container, type='Document', id='test-document',
-            strict=False)
+            safe_id=True)
         assert second_page
         self.assertEqual(second_page.id, 'test-document-1')
         self.assertEqual(second_page.portal_type, 'Document')
@@ -275,12 +275,12 @@ class TestPloneApiContent(unittest.TestCase):
         assert container['about']['our-team']
         assert 'team' not in container.keys()
 
-        # Test with strict parameter disabled when moving content
+        # Test with safe_id option when moving content
         api.content.create(
             container=self.about, type='Link', id='link-to-blog')
         api.content.move(
             source=self.blog, target=self.about, id='link-to-blog',
-            strict=False)
+            safe_id=True)
         assert container['about']['link-to-blog-1']
         assert 'link-to-blog' not in container.keys()
 
@@ -295,7 +295,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         container = mock.Mock()
         # Source is missing an should raise an error
-        self.assertRaises(api.exceptions.MissingParameterError, api.content.rename, source=container)
+        self.assertRaises(api.exceptions.MissingParameterError, api.content.rename, obj=container)
 
     def test_rename(self):
         """ Test renaming of content """
@@ -303,16 +303,17 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
 
         # Rename contact
-        api.content.rename(source=self.contact, id='nu-contact')
+        api.content.rename(obj=self.contact, new_id='nu-contact')
         assert container['about']['nu-contact']
         assert 'contact' not in container['about'].keys()
 
-        # Test with strict parameter disabled when moving content
+        # Test with safe_id option when moving content
         api.content.create(
             container=self.about, type='Link', id='link-to-blog')
         api.content.rename(
-            source=container['about']['link-to-blog'], id='link-to-blog',
-            strict=False)
+            obj=container['about']['link-to-blog'],
+            new_id='link-to-blog',
+            safe_id=True)
         assert container['about']['link-to-blog-1']
         assert 'link-to-blog' not in container.keys()
 
@@ -320,11 +321,12 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.create(
             container=self.about, type='Link', id='link-to-blog')
         self.assertRaises(CopyError, api.content.rename,
-                          source=container['about']['link-to-blog'],
-                          id='link-to-blog-1')
+                          obj=container['about']['link-to-blog'],
+                          new_id='link-to-blog-1')
         api.content.rename(
-            source=container['about']['link-to-blog'], id='link-to-blog-1',
-            strict=False)
+            obj=container['about']['link-to-blog'],
+            new_id='link-to-blog-1',
+            safe_id=True)
         assert container['about']['link-to-blog-1-1']
         assert 'link-to-blog' not in container.keys()
 
@@ -337,8 +339,6 @@ class TestPloneApiContent(unittest.TestCase):
         container = mock.Mock()
         # Source is missing an should raise an error
         self.assertRaises(ValueError, api.content.copy, source=container)
-        # Target is missing an should raise an error
-        self.assertRaises(ValueError, api.content.copy, target=container)
 
     def test_copy(self):
         """ Test the copying of content """
@@ -355,13 +355,13 @@ class TestPloneApiContent(unittest.TestCase):
         assert container['about']['our-team']
         self.assertRaises(KeyError, container['team'])
 
-        # Test the strict parameter disabled when moving content
+        # Test the safe_id option when moving content
         api.content.create(
             container=self.about, type='Link', id='link-to-blog')
 
         api.content.copy(
             source=self.blog, target=self.about, id='link-to-blog',
-            strict=False)
+            safe_id=True)
         assert container['about']['link-to-blog-1']
         self.assertRaises(KeyError, container['blog'])
 

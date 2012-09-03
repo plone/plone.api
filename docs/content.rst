@@ -199,14 +199,13 @@ Otherwise it will be moved with the same ID that it had.
 Rename content
 --------------
 
-To rename, you still use the :meth:`api.content.move` method, just pass in a
-new ``id`` instead and omit ``target``.
+To rename, use the :meth:`api.content.rename` method.
 
 .. code-block:: python
 
     from plone import api
     portal = api.portal.get()
-    api.content.move(source=portal['blog'], id='old-blog')
+    api.content.rename(obj=portal['blog'], new_id='old-blog')
 
 .. invisible-code-block:: python
 
@@ -239,18 +238,19 @@ container.
     assert portal['training'].id == 'training'
 
 
-You can also omit ``target`` and set ``strict=False`` which will duplicate your
-content object in the same container and assign it a non-conflicting id.
+You can also set ``target`` to source's container and set ``safe_id=True`` which
+will duplicate your content object in the same container and assign it a
+non-conflicting id.
 
 .. code-block:: python
 
-    api.content.copy(source=training, target=portal['events'], strict=False)
-    new_training = portal['events']['copy_of_training']
+    api.content.copy(source=portal['training'], target=portal, safe_id=True)
+    new_training = portal['copy_of_training']
 
 .. invisible-code-block:: python
 
-    self.assertTrue(portal['events']['training'])  # old object remains
-    self.assertTrue(portal['events']['copy_of_training'])
+    self.assertTrue(portal['training'])  # old object remains
+    self.assertTrue(portal['copy_of_training'])
 
 
 .. _content_delete_example:
@@ -265,33 +265,33 @@ Deleting content works by passing the object you want to delete to the
 
     from plone import api
     portal = api.portal.get()
-    api.content.delete(obj=portal['events']['copy_of_training'])
+    api.content.delete(obj=portal['copy_of_training'])
 
 .. invisible-code-block:: python
 
-    self.assertFalse(portal['events'].get('copy_of_training'))
+    self.assertFalse(portal.get('copy_of_training'))
 
 
-.. _content_manipulation_with_strict_option:
+.. _content_manipulation_with_safe_id_option:
 
-Content manipulation with strict option
----------------------------------------
+Content manipulation with the `safe_id` option
+----------------------------------------------
 
 When manipulating content with :meth:`api.content.create`,
-:meth:`api.content.move` and :meth:`api.content.copy` the strict option is
-enabled by default. This means the id will be enforced, if the id is taken on
+:meth:`api.content.move` and :meth:`api.content.copy` the `safe_id` flag is
+disabled by default. This means the id will be enforced, if the id is taken on
 the target container the API method will raise an error.
 
+However, if the `safe_id` option is enabled, a non-conflicting id will be created.
+
+.. invisible-code-block:: python
+
+    api.content.create(container=portal, type='Document', id='document', safe_id=True)
+
 .. code-block:: python
 
-    api.content.create(container=portal, type='Document', id='non-strict-usage')
-    portal['non-strict-usage']
-
-If the strict option is disabled a non-conflicting id will be created.
-
-.. code-block:: python
-    api.content.create(container=portal, type='Document', id='non-strict-usage', strict=False)
-    portal['non-strict-usage-1']
+    api.content.create(container=portal, type='Document', id='document', safe_id=True)
+    document = portal['document-1']
 
 
 .. _content_get_state_example:

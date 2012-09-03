@@ -23,7 +23,7 @@ def create(container=None,
            type=None,
            id=None,
            title=None,
-           strict=True,
+           safe_id=False,
            **kwargs):
     """Create a new content item.
 
@@ -40,10 +40,10 @@ def create(container=None,
     :param title: Title of the object. If no title is provided, use id as
         the title.
     :type title: string
-    :param strict: When True, the given id will be enforced. If the id is
+    :param safe_id: When False, the given id will be enforced. If the id is
         conflicting with another object in the target container, raise a
-        KeyError. When False, ``create`` creates a new, non-conflicting id.
-    :type strict: boolean
+        InvalidParameterError. When True, choose a new, non-conflicting id.
+    :type safe_id: boolean
     :returns: Content object
     :raises:
         KeyError,
@@ -62,7 +62,7 @@ def create(container=None,
                                     '``title`` parameter')
 
     # Create a temporary id if the id is not given
-    content_id = strict and id or str(random.randint(0, 99999999))
+    content_id = not safe_id and id or str(random.randint(0, 99999999))
 
     if title:
         kwargs['title'] = title
@@ -88,7 +88,7 @@ def create(container=None,
         # rename-after-creation and such
         content.processForm()
 
-    if not id or (not strict and id):
+    if not id or (safe_id and id):
         # Create a new id from title
         chooser = INameChooser(container)
         derived_id = id or title
@@ -141,7 +141,7 @@ def get(path=None, UID=None):
         return uuidToObject(UID)
 
 
-def move(source=None, target=None, id=None, strict=True):
+def move(source=None, target=None, id=None, safe_id=False):
     """Move the object to the target container.
 
     :param source: [required] Object that we want to move.
@@ -149,17 +149,17 @@ def move(source=None, target=None, id=None, strict=True):
     :param target: Target container to which the source object will
         be moved. If no target is specified, the source object's container will
         be used as a target, effectively making this operation a rename
-        (:ref:`rename_content_example`).
+        (:ref:`content_rename_example`).
     :type target: Folderish content object
     :param id: Pass this parameter if you want to change the id of the moved
         object on the target location. If the new id conflicts with another
         object in the target container, a suffix will be added to the moved
         object's id.
     :type id: string
-    :param strict: When True, the given id will be enforced. If the id is
+    :param safe_id: When False, the given id will be enforced. If the id is
         conflicting with another object in the target container, raise a
-        KeyError. When False, move creates a new, non-conflicting id.
-    :type strict: boolean
+        InvalidParameterError. When True, choose a new, non-conflicting id.
+    :type safe_id: boolean
     :raises:
         KeyError
         ValueError
@@ -180,7 +180,7 @@ def move(source=None, target=None, id=None, strict=True):
         target = source
 
     if id:
-        if strict:
+        if not safe_id:
             new_id = id
         else:
             try:
@@ -192,31 +192,29 @@ def move(source=None, target=None, id=None, strict=True):
         target.manage_renameObject(source_id, new_id)
 
 
-def rename(source=None, id=None, strict=True):
+def rename(obj=None, new_id=None, safe_id=False):
     """Rename the object.
 
-    :param source: [required] Object that we want to rename.
-    :type source: Content object
-    :param id: New id of the object. If the new id conflicts with another
-        object in the container, a suffix will be added to the renamed
-        object's id.
+    :param obj: [required] Object that we want to rename.
+    :type obj: Content object
+    :param new_id: New id of the object.
     :type id: string
-    :param strict: When True, the given id will be enforced. If the id is
+    :param safe_id: When False, the given id will be enforced. If the id is
         conflicting with another object in the container, raise a
-        KeyError. When False, rename creates a new, non-conflicting id.
-    :type strict: boolean
+        InvalidParameterError. When True, choose a new, non-conflicting id.
+    :type safe_id: boolean
     :Example: :ref:`content_rename_example`
     """
-    if not source:
-        raise MissingParameterError("Missing required parameter: source")
+    if not obj:
+        raise MissingParameterError("Missing required parameter: obj")
 
-    if not id:
-        raise MissingParameterError("Missing required parameter: id")
+    if not new_id:
+        raise MissingParameterError("Missing required parameter: new_id")
 
-    move(source=source, id=id, strict=strict)
+    move(source=obj, id=new_id, safe_id=safe_id)
 
 
-def copy(source=None, target=None, id=None, strict=True):
+def copy(source=None, target=None, id=None, safe_id=False):
     """Copy the object to the target container.
 
     :param source: [required] Object that we want to copy.
@@ -231,10 +229,10 @@ def copy(source=None, target=None, id=None, strict=True):
         target container, a suffix will be added to the new object's id.
     :type id: string
     :returns: Content object that was created in the target location
-    :param strict: When True, the given id will be enforced. If the id is
+    :param safe_id: When True, the given id will be enforced. If the id is
         conflicting with another object in the target container, raise a
-        KeyError. When False, ``copy`` creates a new, non-conflicting id.
-    :type param: boolean
+        InvalidParameterError. When True, choose a new, non-conflicting id.
+    :type safe_id: boolean
     :raises:
         KeyError,
         ValueError
@@ -250,7 +248,7 @@ def copy(source=None, target=None, id=None, strict=True):
     target.manage_pasteObjects(source.manage_copyObjects(source_id))
 
     if id:
-        if strict:
+        if not safe_id:
             new_id = id
         else:
             chooser = INameChooser(target)
