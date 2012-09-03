@@ -24,6 +24,7 @@ setup(
     install_requires=[
         'setuptools',
         'Plone',  # this is needed so we can pull docstrings into Sphinx
+        'Zope2',  # this also
         'zope.location<4.0.0',  # needed so autodoc can import
     ],
     extras_require={
