@@ -1,0 +1,13 @@
+five.localsitemanager
+plone.app.layout
+plone.app.uuid
+plone.i18n
+Products.Archetypes
+Products.PlonePAS
+Products.PluggableAuthService
+Products.ZSQLMethods
+zope.app.container
+zope.deprecation
+zope.globalrequest
+zope.location<=4.0.0
+Zope2

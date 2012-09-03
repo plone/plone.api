@@ -23,20 +23,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'Plone',  # this is needed so we can pull docstrings into Sphinx
-        'plone.app.layout',       # this also
-        'Products.PluggableAuthService',      # this also
-        'Products.PlonePAS',      # this also
-        'zope.deprecation',       # this also
-        'plone.i18n',             # this also
-        'Products.Archetypes',    # this also
-        'zope.app.container',     # this also
-        'zope.globalrequest',     # this also
-        'Zope2',                  # this also
-        'plone.app.uuid',         # this also
-        'Products.ZSQLMethods',   # this also
-        'five.localsitemanager',  # this also
-        'zope.location<4.0.0',  # needed so autodoc can import
+        'Plone',
     ],
     extras_require={
         'develop': [
