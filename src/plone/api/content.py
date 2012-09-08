@@ -198,7 +198,7 @@ def rename(obj=None, new_id=None, safe_id=False):
     :param obj: [required] Object that we want to rename.
     :type obj: Content object
     :param new_id: New id of the object.
-    :type id: string
+    :type new_id: string
     :param safe_id: When False, the given id will be enforced. If the id is
         conflicting with another object in the container, raise a
         InvalidParameterError. When True, choose a new, non-conflicting id.
