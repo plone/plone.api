@@ -107,9 +107,9 @@ def get_users(groupname=None, group=None):
     :param groupname: Groupname of the group of which to return users. If set,
         only return users that are member of this group.
     :type username: string
-    :param user: Group of which to return users. If set, only return users that
+    :param group: Group of which to return users. If set, only return users that
         are member of this group.
-    :type user: MemberData object
+    :type group: GroupData object
     :returns: All users (optionlly filtered by group)
     :rtype: List of MemberData objects
     :Example: :ref:`user_get_all_users_example`,
