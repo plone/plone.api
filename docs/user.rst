@@ -235,11 +235,12 @@ in that particular context.
 
     from plone import api
     portal = api.portal.get()
-    roles = api.user.get_roles(username='staff', obj=portal['blog'])
+    blog = api.content.create(container=portal, type='Document', id='blog', title='My blog')
+    roles = api.user.get_roles(username='jane', obj=portal['blog'])
 
 .. invisible-code-block:: python
 
-    self.assertEqual(set(roles), set(['Member','Authenticated','Owner']))
+    self.assertEqual(set(roles), set(['Member','Authenticated']))
 
 
 .. _user_get_permissions_example:
