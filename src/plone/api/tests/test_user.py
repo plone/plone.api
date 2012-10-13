@@ -89,7 +89,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEquals(user.getUserName(), 'chuck')
 
     def test_create_default_roles(self):
-        """ Test if user has the right roles set """
+        """ Test the default role is set to member """
         # if create is given no roles, member is the default
         user = api.user.create(
             username='chuck',
@@ -102,6 +102,9 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
     def test_create_specified_roles(self):
+        """
+        Test specific roles are set correctly
+        """
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -114,6 +117,9 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
     def test_create_no_roles(self):
+        """
+        Test that passing an empty list give a user with no member role
+        """
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
