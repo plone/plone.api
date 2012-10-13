@@ -185,7 +185,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEqual(api.user.is_anonymous(), True)
 
     def test_get_roles(self):
-        """ Test anonymous access """
+        """ Test get roles """
 
         ROLES = ['Reviewer', 'Editor']
         user = api.user.create(
@@ -201,5 +201,38 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertRaises(
             ValueError,
             api.user.get_roles,
+            username='chuck',
+            user=user)
+
+    def test_grant_roles(self):
+        """ Test grant roles """
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+            roles=['Reviewer']
+        )
+
+        api.user.grant_roles(username='chuck', roles=['Editor'])
+        self.assertTrue('Reviewer' in api.user.get_roles(username='chuck'))
+        self.assertTrue('Editor' in api.user.get_roles(username='chuck'))
+        self.assertTrue('Reviewer' in api.user.get_roles(user=user))
+        self.assertTrue('Editor' in api.user.get_roles(user=user))
+
+        api.user.grant_roles(username='chuck', roles=('Contributor',))
+        self.assertTrue('Reviewer' in api.user.get_roles(username='chuck'))
+        self.assertTrue('Editor' in api.user.get_roles(username='chuck'))
+        self.assertTrue('Reviewer' in api.user.get_roles(user=user))
+        self.assertTrue('Editor' in api.user.get_roles(user=user))
+
+        api.user.grant_roles(username='chuck', roles=['Reader', 'Reader'])
+        ROLES = {'Reviewer', 'Editor', 'Contributor', 'Reader', 'Authenticated'}
+        self.assertTrue(ROLES == set(api.user.get_roles(username='chuck')))
+        self.assertTrue(ROLES == set(api.user.get_roles(user=user)))
+
+        self.assertRaises(
+            ValueError,
+            api.user.grant_roles,
             username='chuck',
             user=user)
