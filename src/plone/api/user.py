@@ -180,7 +180,8 @@ def get_roles(username=None, user=None, obj=None):
     :type username: string
     :param user: User object for which to get roles.
     :type user: MemberData object
-    :param obj: If obj is set then return local roles on this context. If obj is not given, the site root local roles will be returned.
+    :param obj: If obj is set then return local roles on this context. If obj is
+        not given, the site root local roles will be returned.
     :type obj: content object
     :raises:
         ValueError
@@ -231,7 +232,8 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     :type username: string
     :param user: User object that will receive the granted roles.
     :type user: MemberData object
-    :param obj: If obj is set then grant roles on this context. If obj is not given, the site root will be used.
+    :param obj: If obj is set then grant roles on this context. If obj is not
+        given, the site root will be used.
     :type obj: content object
     :param roles: List of roles to grant
     :type roles: list of strings
@@ -274,7 +276,8 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     :type username: string
     :param user: User object that will receive the revoked roles.
     :type user: MemberData object
-    :param obj: If obj is set then revoke roles on this context. If obj is not given, the site root will be used.
+    :param obj: If obj is set then revoke roles on this context. If obj is not
+        given, the site root will be used.
     :type obj: content object
     :param roles: List of roles to revoke
     :type roles: list of strings
