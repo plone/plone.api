@@ -198,7 +198,6 @@ def get_roles(username=None, user=None, obj=None):
         user = portal_membership.getMemberById(username)
     elif not user:
         user = portal_membership.getAuthenticatedMember()
-    user = user.getUser()
 
     return user.getRolesInContext(obj)
 
@@ -258,20 +257,46 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     obj.manage_setLocalRoles(user.getId(), roles)
 
 
-def revoke_roles(username=None, user=None, roles=None):
-    """Not implemented yet. Revoke roles from a user.
+def revoke_roles(username=None, user=None, obj=None, roles=None):
+    """Revoke roles to a user.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both.
+    Arguments ``username`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``username`` and
+    ``user`` are not given, the authenticated member will be used.
 
-    :param username: Username of the user to be deleted.
+    :param username: Username of the user that will receive the revoked roles.
     :type username: string
-    :param user: User object to be deleted.
+    :param user: User object that will receive the revoked roles.
     :type user: MemberData object
-    :param roles: List of roles to grant
+    :param obj: If obj is set then revoke roles on this context. If obj is not given, the site root will be used.
+    :type obj: content object
+    :param roles: List of roles to revoke
     :type roles: list of strings
     :raises:
         ValueError
     :Example: :ref:`user_revoke_roles_example`
     """
-    raise NotImplementedError
+
+    if username and user:
+        raise ValueError
+
+    if obj is None:
+        obj = portal.get()
+
+    if user is None:
+        user = get(username=username)
+
+    if isinstance(roles, tuple):
+        roles = list(roles)
+
+    if 'Authenticated' in roles or 'Anonymous' in roles:
+        raise ValueError
+
+    actual_roles = get_roles(user=user, obj=obj)
+    if actual_roles.count('Anonymous'):
+        actual_roles.pop(actual_roles.index('Anonymous'))
+    if actual_roles.count('Authenticated'):
+        actual_roles.pop(actual_roles.index('Authenticated'))
+
+    roles = list(set(actual_roles) - set(roles))
+    obj.manage_setLocalRoles(user.getId(), roles)

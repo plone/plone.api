@@ -211,23 +211,46 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             email='chuck@norris.org',
             password='secret',
-            roles=['Reviewer']
         )
 
         api.user.grant_roles(username='chuck', roles=['Editor'])
-        self.assertTrue('Reviewer' in api.user.get_roles(username='chuck'))
         self.assertTrue('Editor' in api.user.get_roles(username='chuck'))
-        self.assertTrue('Reviewer' in api.user.get_roles(user=user))
         self.assertTrue('Editor' in api.user.get_roles(user=user))
 
         api.user.grant_roles(username='chuck', roles=('Contributor',))
-        self.assertTrue('Reviewer' in api.user.get_roles(username='chuck'))
-        self.assertTrue('Editor' in api.user.get_roles(username='chuck'))
-        self.assertTrue('Reviewer' in api.user.get_roles(user=user))
-        self.assertTrue('Editor' in api.user.get_roles(user=user))
+        self.assertTrue('Contributor' in api.user.get_roles(username='chuck'))
+        self.assertTrue('Contributor' in api.user.get_roles(user=user))
 
         api.user.grant_roles(username='chuck', roles=['Reader', 'Reader'])
-        ROLES = {'Reviewer', 'Editor', 'Contributor', 'Reader', 'Authenticated'}
+        ROLES = {'Editor', 'Contributor', 'Reader', 'Authenticated', 'Member'}
+        self.assertTrue(ROLES == set(api.user.get_roles(username='chuck')))
+        self.assertTrue(ROLES == set(api.user.get_roles(user=user)))
+
+        self.assertRaises(
+            ValueError,
+            api.user.grant_roles,
+            username='chuck',
+            user=user)
+
+    def test_revoke_roles(self):
+        """ Test revoke roles """
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'])
+
+        api.user.revoke_roles(username='chuck', roles=['Reviewer'])
+        self.assertTrue('Reviewer' not in api.user.get_roles(username='chuck'))
+        self.assertTrue('Reviewer' not in api.user.get_roles(user=user))
+        self.assertTrue('Editor' in api.user.get_roles(username='chuck'))
+        self.assertTrue('Editor' in api.user.get_roles(user=user))
+
+        api.user.revoke_roles(username='chuck', roles=['Editor'])
+        ROLES = {'Authenticated', 'Member'}
         self.assertTrue(ROLES == set(api.user.get_roles(username='chuck')))
         self.assertTrue(ROLES == set(api.user.get_roles(user=user)))
 
