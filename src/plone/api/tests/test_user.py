@@ -242,7 +242,6 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-
         api.user.grant_roles(username='chuck', roles=['Editor'])
         self.assertTrue('Editor' in api.user.get_roles(username='chuck'))
         self.assertTrue('Editor' in api.user.get_roles(user=user))
