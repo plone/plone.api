@@ -51,6 +51,6 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = ['lxml', 'zope.site.hooks']
+MOCK_MODULES = ['lxml']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()

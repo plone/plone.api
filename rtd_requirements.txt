@@ -206,9 +206,7 @@ z3c.autoinclude==0.3.4
 z3c.batching==1.1.0
 z3c.caching==2.0a1
 z3c.form==2.5.1
-z3c.formwidget.query==0.8
 z3c.objpath==1.0
-z3c.recipe.scripts==1.0.1
 z3c.relationfield==0.6.1
 z3c.zcmlhook==1.0b1
 zExceptions==2.13.0
