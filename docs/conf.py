@@ -20,8 +20,8 @@ language = 'en'
 # This enables PDF generation.
 latex_documents = [(
     'index',
-    'eestecportal.tex',
-    u'eestec.portal Documentation',
+    'ploneapi.tex',
+    u'plone.api Documentation',
     u'', 'manual'
 ), ]
 
