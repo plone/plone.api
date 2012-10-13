@@ -1,5 +1,5 @@
 *~
-*.egg-info
+/src/plone.api.egg-info/
 *.mo
 *.pyc
 /.installed.cfg
