@@ -1,24 +1,30 @@
+# convenience makefile to boostrap & run buildout
 
-version = 2.6
+version = 2.7
 python = python$(version)
 options =
 
-all: .installed.cfg docs/index.html
+all: .installed.cfg docs
 
-docs/index.html: src/plone/api/docs/*.rst src/plone/api/*.py
-	bin/sphinx-build src/plone/api/docs docs
+docs: docs/html/index.html
+
+docs/html/index.html: docs/*.rst src/plone/api/*.py bin/sphinx-build
+	bin/sphinx-build docs docs/html
+
+bin/sphinx-build: .installed.cfg
 
 .installed.cfg: bin/buildout buildout.cfg
 	bin/buildout $(options)
 
-bin/buildout: bootstrap.py
+bin/buildout: buildout.cfg bootstrap.py
 	$(python) bootstrap.py -d
+	@touch bin/buildout
 
 tests: .installed.cfg
 	@bin/test
 
 clean:
-	-rm -rf .installed.cfg bin docs parts develop-eggs
+	-rm -rf .installed.cfg bin docs/html parts develop-eggs
 
 .PHONY: all docs tests clean
 
