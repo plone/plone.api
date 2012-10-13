@@ -6,11 +6,7 @@
 /local.cfg
 /bin/
 /develop-eggs/
-/docs/doctrees
-/docs/html
-/docs/make.bat
-/docs/Makefile
-/docs/locale/.doctrees/
+/docs/html/
 /eggs/
 /include/
 /lib/
