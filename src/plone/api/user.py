@@ -59,12 +59,13 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     properties.update(username=user_id)
     properties.update(email=email)
 
-    return registration.addMember(
+    registration.addMember(
         user_id,
         password,
         roles,
         properties=properties
     )
+    return get(username=user_id)
 
 
 def get(username=None):
@@ -193,7 +194,7 @@ def get_roles(username=None, user=None, obj=None):
 
     if user is None and username is None:
         username = portal_membership.getAuthenticatedMember().getId()
-    elif username is None:
+    elif user is not None:
         username = user.getId()
 
     user = portal_membership.getMemberById(username)
@@ -251,6 +252,9 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     if isinstance(roles, tuple):
         roles = list(roles)
 
+    if 'Anonymous' in roles or 'Authenticated' in roles:
+        raise ValueError
+
     roles.extend(get_roles(user=user, obj=obj))
 
     if obj is None:
@@ -289,6 +293,9 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
 
     if isinstance(roles, tuple):
         roles = list(roles)
+
+    if 'Anonymous' in roles or 'Authenticated' in roles:
+        raise ValueError
 
     actual_roles = get_roles(user=user, obj=obj)
     if actual_roles.count('Anonymous'):

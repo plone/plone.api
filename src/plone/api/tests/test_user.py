@@ -242,6 +242,25 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
+
+        self.assertRaises(
+            ValueError,
+            api.user.grant_roles,
+            username='chuck',
+            roles=['Anonymous'])
+
+        self.assertRaises(
+            ValueError,
+            api.user.grant_roles,
+            username='chuck',
+            roles=['Authenticated'])
+
+        self.assertRaises(
+            ValueError,
+            api.user.grant_roles,
+            username='chuck',
+            user=user)
+
         api.user.grant_roles(username='chuck', roles=['Editor'])
         self.assertTrue('Editor' in api.user.get_roles(username='chuck'))
         self.assertTrue('Editor' in api.user.get_roles(user=user))
@@ -255,12 +274,6 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertTrue(ROLES == set(api.user.get_roles(username='chuck')))
         self.assertTrue(ROLES == set(api.user.get_roles(user=user)))
 
-        self.assertRaises(
-            ValueError,
-            api.user.grant_roles,
-            username='chuck',
-            user=user)
-
     def test_revoke_roles(self):
         """ Test revoke roles """
 
@@ -269,6 +282,24 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
+
+        self.assertRaises(
+            ValueError,
+            api.user.grant_roles,
+            username='chuck',
+            roles=['Anonymous'])
+
+        self.assertRaises(
+            ValueError,
+            api.user.grant_roles,
+            username='chuck',
+            roles=['Authenticated'])
+
+        self.assertRaises(
+            ValueError,
+            api.user.grant_roles,
+            username='chuck',
+            user=user)
 
         api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'])
 
@@ -283,8 +314,69 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertTrue(ROLES == set(api.user.get_roles(username='chuck')))
         self.assertTrue(ROLES == set(api.user.get_roles(user=user)))
 
-        self.assertRaises(
-            ValueError,
-            api.user.grant_roles,
+    def test_grant_roles_in_context(self):
+        """ Test grant roles """
+
+        user = api.user.create(
             username='chuck',
-            user=user)
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        portal = api.portal.get()
+        folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
+        document = api.content.create(container=folder, type='Document', id='document_one', title='Document One')
+
+        api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
+        self.assertTrue('Editor' in api.user.get_roles(username='chuck', obj=folder))
+        self.assertTrue('Editor' in api.user.get_roles(user=user, obj=folder))
+        self.assertTrue('Editor' in api.user.get_roles(username='chuck', obj=document))
+        self.assertTrue('Editor' in api.user.get_roles(user=user, obj=document))
+
+        api.user.grant_roles(username='chuck', roles=('Contributor',), obj=folder)
+        self.assertTrue('Contributor' in api.user.get_roles(username='chuck', obj=folder))
+        self.assertTrue('Contributor' in api.user.get_roles(user=user, obj=folder))
+        self.assertTrue('Contributor' in api.user.get_roles(username='chuck', obj=document))
+        self.assertTrue('Contributor' in api.user.get_roles(user=user, obj=document))
+
+        ROLES = {'Editor', 'Contributor', 'Authenticated', 'Member'}
+        self.assertTrue(ROLES == set(api.user.get_roles(username='chuck', obj=folder)))
+        self.assertTrue(ROLES == set(api.user.get_roles(user=user, obj=folder)))
+        self.assertTrue(ROLES == set(api.user.get_roles(username='chuck', obj=document)))
+        self.assertTrue(ROLES == set(api.user.get_roles(user=user, obj=document)))
+
+    def test_revoke_roles_in_context(self):
+        """ Test revoke roles """
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        portal = api.portal.get()
+        folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
+        document = api.content.create(container=folder, type='Document', id='document_one', title='Document One')
+        api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'], obj=folder)
+
+        api.user.revoke_roles(username='chuck', roles=['Reviewer'], obj=folder)
+        self.assertTrue('Editor' in api.user.get_roles(username='chuck', obj=folder))
+        self.assertTrue('Editor' in api.user.get_roles(user=user, obj=folder))
+        self.assertTrue('Editor' in api.user.get_roles(username='chuck', obj=document))
+        self.assertTrue('Editor' in api.user.get_roles(user=user, obj=document))
+        self.assertTrue('Reviewer' not in api.user.get_roles(username='chuck', obj=folder))
+        self.assertTrue('Reviewer' not in api.user.get_roles(user=user, obj=folder))
+        self.assertTrue('Reviewer' not in api.user.get_roles(username='chuck', obj=document))
+        self.assertTrue('Reviewer' not in api.user.get_roles(user=user, obj=document))
+
+        api.user.revoke_roles(username='chuck', roles=['Editor'], obj=folder)
+        self.assertTrue('Editor' not in api.user.get_roles(username='chuck', obj=folder))
+        self.assertTrue('Editor' not in api.user.get_roles(user=user, obj=folder))
+        self.assertTrue('Editor' not in api.user.get_roles(username='chuck', obj=document))
+        self.assertTrue('Editor' not in api.user.get_roles(user=user, obj=document))
+
+        ROLES = {'Authenticated', 'Member'}
+        self.assertTrue(ROLES == set(api.user.get_roles(username='chuck', obj=folder)))
+        self.assertTrue(ROLES == set(api.user.get_roles(user=user, obj=folder)))
+        self.assertTrue(ROLES == set(api.user.get_roles(username='chuck', obj=document)))
+        self.assertTrue(ROLES == set(api.user.get_roles(user=user, obj=document)))
