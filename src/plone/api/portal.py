@@ -1,11 +1,12 @@
 from email.utils import formataddr, parseaddr
 
+from Acquisition import aq_inner
 from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component.hooks import getSite
 from zope.component import getMultiAdapter
 from zope.globalrequest import getRequest
-from plone.app.layout.navigation.root import getNavigationRoot
+from plone.app.layout.navigation.root import getNavigationRootObject
 
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
@@ -29,15 +30,22 @@ def get():
         "#plone.api.exc.CannotGetPortalError")
 
 
-def get_navigation_root():
-    """Returns Plone's Navigation Root object. Useful in multi-lingual
-    installations.
+def get_navigation_root(context=None):
+    """Get the navigation root object for the context.
+    This traverses the path up and returns the nearest navigation root.
 
+    Useful for multi-lingual installations and sites with subsites.
+
+    :param context: [required] Context on which to get the navigation root.
+    :type context: context object
     :returns: Navigation Root
     :rtype: Portal object
     :Example: :ref:`portal_get_navigation_root_example`
     """
-    return getNavigationRoot(get())
+    if not context:
+        raise ValueError("Missing required object: context")
+    context = aq_inner(context)
+    return getNavigationRootObject(context, get())
 
 
 def get_tool(name=None):
