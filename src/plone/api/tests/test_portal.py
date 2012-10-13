@@ -6,10 +6,11 @@ import mock
 import unittest
 
 from DateTime import DateTime
+from plone.app.layout.navigation.interfaces import INavigationRoot
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
-
 from plone.api import portal
 from plone.api.exc import MissingParameterError
 from plone.api.exc import InvalidParameterError
@@ -267,3 +268,9 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(len(show), 2)
         self.assertEqual(show[0].message, 'One')
         self.assertEqual(show[1].message, 'Two')
+
+    def test_get_navigation_root(self):
+        """ Test to see if the navigation_root is returned """
+
+        navigation_root = portal.get_navigation_root(portal.get())
+        self.assertTrue(INavigationRoot.providedBy(navigation_root))

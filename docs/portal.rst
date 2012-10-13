@@ -36,18 +36,38 @@ Get navigation root
 -------------------
 
 In multi-lingual Plone installations you probably want to get the
-language-specific navigation root, not the top portal object. You do this with
-:meth:`api.portal.get_navigation_root`.
+language-specific navigation root object, not the top portal object. You do this with
+:meth:`api.portal.get_navigation_root()`.
+
+Assuming there is a document ``english_page`` in a folder ``en``, which is the navigation root:
+
+.. invisible-code-block:: python
+
+    from plone import api
+    from plone.app.layout.navigation.interfaces import INavigationRoot
+    from zope.interface import alsoProvides
+
+    portal = api.portal.get()
+    english_folder = api.content.create(
+        type='Folder',
+        title='en',
+        container=portal)
+    alsoProvides(english_folder, INavigationRoot)
+    english_page = api.content.create(
+        type='Document',
+        title='English Page',
+        container=english_folder)
 
 .. code-block:: python
 
     from plone import api
-    nav_root = api.portal.get_navigation_root()
+    nav_root = api.portal.get_navigation_root(english_page)
 
 .. invisible-code-block:: python
 
-    self.assertEquals(nav_root, '/plone')
+    self.assertEquals(nav_root.id, 'en')
 
+returns the folder ``en``. If the folder ``en`` is not a navigation root it would return the portal.
 
 Get portal url
 --------------
