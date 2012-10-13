@@ -274,3 +274,4 @@ class TestPloneApiPortal(unittest.TestCase):
 
         navigation_root = portal.get_navigation_root(portal.get())
         self.assertTrue(INavigationRoot.providedBy(navigation_root))
+        self.assertRaises(ValueError, portal.get_navigation_root)
