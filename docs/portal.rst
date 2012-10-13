@@ -177,23 +177,7 @@ the user.
     self.assertTrue('Blueberries!' in show[0].message)
 
 
-.. _portal_get_helpers_example:
-
-Get the @@plone_portal_state helpers
-------------------------------------
-
-Plone comes with a handy view ``@@plone_portal_state`` that contains numerous
-utility methods. The :meth:`api.portal.get_helpers` provides an easy way to
-access this view. The list of methods provided by ``@@plone_portal_state`` is
-available in `plone.app.layout's interfaces.py
-<https://github.com/plone/plone.app.layout/blob/master/plone/app/layout/globals/interfaces.py#L93>`_.
-
-.. code-block:: python
-
-    from plone import api
-    # Not implemented yet
-
-.. _portal_get_helpers_example:
+.. _portal_get_registry_record_example:
 
 Get plone.app.registry record
 -----------------------------
