@@ -15,6 +15,16 @@ master_doc = 'index'
 locale_dirs = ["translated/"]
 language = 'en'
 
+# Grouping the document tree into LaTeX files. List of tuples
+# (source start file, target name, title, author, documentclass [howto/manual])
+# This enables PDF generation.
+latex_documents = [(
+    'index',
+    'eestecportal.tex',
+    u'eestec.portal Documentation',
+    u'', 'manual'
+), ]
+
 # Use-case: we want to display a warning message that is only visible on GitHub
 # and not on ReadTheDocs. We achieve this by adding a custom CSS that hides
 # .. line-block:: in Sphinx but still makes it visible on GitHub because GitHub
