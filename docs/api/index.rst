@@ -21,7 +21,6 @@ api.portal
     api.portal.get_localized_time
     api.portal.send_email
     api.portal.show_message
-    api.portal.get_helpers
     api.portal.get_registry_record
 
 
@@ -40,8 +39,6 @@ api.content
     api.content.get_state
     api.content.transition
     api.content.get_view
-    api.content.get_helpers
-
 
 
 api.user
