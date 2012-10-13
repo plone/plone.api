@@ -221,8 +221,12 @@ By default it returns site-wide roles.
 .. code-block:: python
 
     from plone import api
-    # roles = api.user.get_roles(username='jane')
-    # Not implemented yet
+    roles = api.user.get_roles(username='jane')
+
+.. invisible-code-block:: python
+
+    self.assertEqual(set(roles), set(['Member','Authenticated']))
+
 
 If you pass in a content object, it will return local roles of the user
 in that particular context.
@@ -231,8 +235,11 @@ in that particular context.
 
     from plone import api
     portal = api.portal.get()
-    # roles = api.user.get_roles(username='staff', obj=portal['blog'])
-    # Not implemented yet
+    roles = api.user.get_roles(username='staff', obj=portal['blog'])
+
+.. invisible-code-block:: python
+
+    self.assertEqual(set(roles), set(['Member','Authenticated','Owner']))
 
 
 .. _user_get_permissions_example:
