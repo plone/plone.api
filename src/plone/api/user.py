@@ -189,18 +189,17 @@ def get_roles(username=None, user=None, obj=None):
     if username and user:
         raise ValueError
 
-    if obj is None:
-        obj = portal.get()
-
-    portal_membership = getToolByName(obj, 'portal_membership')
+    portal_membership = getToolByName(portal.get(), 'portal_membership')
 
     if username:
         user = portal_membership.getMemberById(username)
     elif not user:
         user = portal_membership.getAuthenticatedMember()
-    user = user.getUser()
 
-    return user.getRolesInContext(obj)
+    if obj is None:
+        return user.getRoles()
+    else:
+        return user.getRolesInContext(obj)
 
 
 def get_permissions(username=None, user=None, obj=None):
