@@ -37,7 +37,6 @@ grokcore.view == 1.13.5
 grokcore.viewlet == 1.3
 initgroups == 2.13.0
 kss.core == 1.6.4
-lxml == 2.3.4
 mailinglogger == 3.7.0
 manuel == 1.1.1
 Markdown == 2.0.3
