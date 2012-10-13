@@ -4,7 +4,7 @@ version = 2.7
 python = python$(version)
 options =
 
-all: .installed.cfg docs
+all: docs tests
 
 docs: docs/html/index.html
 
