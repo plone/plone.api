@@ -118,6 +118,10 @@ class TestPloneApiGroup(unittest.TestCase):
         assert 'AuthenticatedUsers' in groups
         assert 'staff' in groups
 
+        self.assertRaises(ValueError, 
+            api.group.get_groups, 
+            username='theurbanspaceman')
+
     def test_delete_contraints(self):
         """ Test the contraints for deleting a group """
 
