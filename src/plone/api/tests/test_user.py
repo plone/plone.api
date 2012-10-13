@@ -97,7 +97,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
         self.assertEquals(
-            user.getRoles(),
+            api.user.get_roles(user=user),
             ['Member', 'Authenticated', ]
         )
 
@@ -112,7 +112,7 @@ class TestPloneApiUser(unittest.TestCase):
             roles=['Reviewer', 'Editor']
         )
         self.assertEquals(
-            user.getRoles(),
+            api.user.get_roles(user=user),
             ['Reviewer', 'Authenticated', 'Editor']
         )
 
@@ -127,7 +127,7 @@ class TestPloneApiUser(unittest.TestCase):
             roles=[]
         )
         self.assertEquals(
-            user.getRoles(),
+            api.user.get_roles(user=user),
             ['Authenticated', ]
         )
 
