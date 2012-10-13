@@ -24,7 +24,7 @@ tests: .installed.cfg
 	@bin/test
 
 clean:
-	-rm -rf .installed.cfg bin docs/html parts develop-eggs
+	-rm -rf .installed.cfg bin docs/html parts develop-eggs src/plone.api.egg-info
 
 .PHONY: all docs tests clean
 
