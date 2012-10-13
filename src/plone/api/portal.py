@@ -176,21 +176,11 @@ def show_message(message=None, request=None, type='info'):
     IStatusMessage(request).add(message, type=type)
 
 
-def get_helpers():
-    """Not yet implemented. Easy access to the ``@@plone_portal_state`` view.
-
-    :returns: @@plone_portal_state view
-    :rtype: BrowserView
-    :Example: :ref:`portal_get_helpers_example`
-    """
-    raise NotImplementedError
-
-
 def get_registry_record():
     """Not yet implemented. Easy access to the ``plone.app.registry`` configuration records.
 
     :returns: Registry record
     :rtype: plone.app.registry registry record
-    :Example: :ref:`portal_get_helpers_example`
+    :Example: :ref:`portal_get_registry_record_example`
     """
     raise NotImplementedError
