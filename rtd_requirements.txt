@@ -76,7 +76,6 @@ collective.recipe.omelette==0.15
 collective.recipe.sphinxbuilder==0.7.1
 collective.z3cform.datetimewidget==1.2.0
 diazo==1.0.1
-distribute==0.6.27
 docutils==0.9
 elementtree==1.2.7-20070827-preview
 experimental.cssselect==0.3
@@ -189,6 +188,7 @@ plone.uuid==1.0.3
 plone.z3cform==0.7.8
 plonetheme.classic==1.2.3
 plonetheme.sunburst==1.2.7
+pyflakes==0.5.0
 python-dateutil==1.5
 python-gettext==1.2
 python-openid==2.2.5
@@ -314,7 +314,3 @@ zope.testbrowser==3.11.1
 zope.testing==3.9.7
 zope.traversing==3.13.2
 zope.viewlet==3.7.2
-
-#Required by:
-#setuptools-flakes 0.1
-pyflakes==0.5.0
