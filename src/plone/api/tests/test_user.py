@@ -88,8 +88,20 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertEquals(user.getUserName(), 'chuck')
 
-    def test_create_roles_set(self):
+    def test_create_default_roles(self):
         """ Test if user has the right roles set """
+        # if create is given no roles, member is the default
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+        self.assertEquals(
+            user.getRoles(),
+            ['Member', 'Authenticated', ]
+        )
+
+    def test_create_specified_roles(self):
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -99,6 +111,18 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEquals(
             user.getRoles(),
             ['Reviewer', 'Authenticated', 'Editor']
+        )
+
+    def test_create_no_roles(self):
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+            roles=[]
+        )
+        self.assertEquals(
+            user.getRoles(),
+            ['Authenticated', ]
         )
 
     def test_get_constraints(self):
