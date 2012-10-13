@@ -169,22 +169,38 @@ def is_anonymous():
 
 
 def get_roles(username=None, user=None, obj=None):
-    """Not implemented yet. Get user's site-wide or local roles.
+    """Get user's site-wide or local roles.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both.
+    Arguments ``username`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``username`` and
+    ``user`` are not given, the authenticated member will be used.
 
-    :param username: Username of the user to be deleted.
+    :param username: Username of the user for which to get roles.
     :type username: string
-    :param user: User object to be deleted.
+    :param user: User object for which to get roles.
     :type user: MemberData object
-    :param obj: If obj is set then return local roles on this context
+    :param obj: If obj is set then return local roles on this context. If obj is not given, the site root local roles will be returned.
     :type obj: content object
     :raises:
         ValueError
     :Example: :ref:`user_get_roles_example`
     """
-    raise NotImplementedError
+
+    if username and user:
+        raise ValueError
+
+    if obj is None:
+        obj = portal.get()
+
+    portal_membership = getToolByName(obj, 'portal_membership')
+
+    if username:
+        user = portal_membership.getMemberById(username)
+    elif not user:
+        user = portal_membership.getAuthenticatedMember()
+    user = user.getUser()
+
+    return user.getRolesInContext(obj)
 
 
 def get_permissions(username=None, user=None, obj=None):

@@ -60,8 +60,10 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_get_tool_tool_not_found(self):
         """Test that error msg lists available tools if a tool is not found."""
 
-        with self.assertRaises(InvalidParameterError) as cm:
-            portal.get_tool('portal_foo')
+        self.assertRaises(
+            InvalidParameterError,
+            portal.get_tool,
+            'portal_foo')
 
         self.maxDiff = None  # to see assert diff
         self.assertMultiLineEqual(

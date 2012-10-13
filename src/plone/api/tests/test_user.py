@@ -183,3 +183,23 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEqual(api.user.is_anonymous(), False)
         logout()
         self.assertEqual(api.user.is_anonymous(), True)
+
+    def test_get_roles(self):
+        """ Test anonymous access """
+
+        ROLES = ['Reviewer', 'Editor']
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+            roles=ROLES
+        )
+        ROLES = set(ROLES + ['Authenticated'])
+        self.assertTrue(ROLES == set(api.user.get_roles(username='chuck')))
+        self.assertTrue(ROLES == set(api.user.get_roles(user=user)))
+
+        self.assertRaises(
+            ValueError,
+            api.user.get_roles,
+            username='chuck',
+            user=user)
