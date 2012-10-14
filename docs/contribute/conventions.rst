@@ -105,7 +105,7 @@ handled by ReadTheDocs and the results (nice HTML pages) are visible at
 http://ploneapi.readthedocs.org/en/latest/.
 
 
-.. _travis:
+.. _travis_ci:
 
 Travis Continuous Integration
 =============================
