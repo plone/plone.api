@@ -3,7 +3,7 @@
 
 from email import message_from_string
 import mock
-import unittest
+import unittest2 as unittest
 
 from DateTime import DateTime
 from plone.app.layout.navigation.interfaces import INavigationRoot

@@ -36,6 +36,7 @@ setup(
             'plone.app.dexterity',
             'plone.app.testing',
             'mock',
+            'unittest2',
         ],
     },
     classifiers=[

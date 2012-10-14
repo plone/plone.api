@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api user manipulation."""
 
-import unittest
+import unittest2 as unittest
 import mock
 from Products.CMFCore.utils import getToolByName
 
