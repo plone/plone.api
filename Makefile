@@ -3,6 +3,7 @@
 
 version = 2.7
 python = bin/python$(version)
+pep8_ignores = E501
 options =
 
 all: docs tests
@@ -28,7 +29,9 @@ $(python):
 	@touch $@
 
 tests: .installed.cfg
-	@bin/test
+	bin/test
+	bin/pyflakes src/
+	bin/pep8 --ignore=$(pep8_ignores) src/
 
 clean:
 	@rm -rf .installed.cfg bin docs/html parts develop-eggs \
