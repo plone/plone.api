@@ -307,7 +307,7 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
 
 
 def revoke_roles(username=None, user=None, obj=None, roles=None):
-    """Revoke roles to a user.
+    """Revoke roles from a user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
     can either set one or the other, but not both. if ``username`` and
