@@ -1,14 +1,11 @@
 language: python
 python:
+  - 2.6
   - 2.7
 
 install:
-  - python bootstrap.py
-  - bin/buildout
+  - make version=$TRAVIS_PYTHON_VERSION tests
 
-script:
-  - ./pre-commit-check.sh
- 
 notifications:
   irc:
     - "irc.freenode.org#sprint"
