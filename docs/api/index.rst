@@ -7,8 +7,8 @@
 
 .. currentmodule:: plone
 
-List of all API methods
-=======================
+List of all API methods with descriptions
+=========================================
 
 api.portal
 ----------
