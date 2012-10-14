@@ -200,7 +200,7 @@ def get_registry_record(name=None):
     registry = getUtility(IRegistry)
     if isinstance(name, str):
         record = registry.get(name)
-        if not record:
+        if record is None:
             raise KeyError(u"'%s' is no existing record" % name)
         else:
             return record
