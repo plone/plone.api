@@ -1,4 +1,5 @@
 # convenience makefile to boostrap & run buildout
+# use `make options=-v` to run buildout with extra options
 
 version = 2.7
 python = bin/python$(version)
