@@ -2,6 +2,9 @@
 
 from Products.CMFPlone.utils import getToolByName
 from plone.api import portal
+from AccessControl.Permission import getPermissions
+from AccessControl.SecurityManagement import getSecurityManager, setSecurityManager, newSecurityManager
+from zope.globalrequest import getRequest
 
 import random
 import string
@@ -193,32 +196,60 @@ def get_roles(username=None, user=None, obj=None):
 
     portal_membership = getToolByName(portal.get(), 'portal_membership')
 
-    if user is None and username is None:
-        username = portal_membership.getAuthenticatedMember().getId()
-    elif user is not None:
-        username = user.getId()
+    if username is None:
+        if user is None:
+            username = portal_membership.getAuthenticatedMember().getId()
+        else:
+            username = user.getId()
 
     user = portal_membership.getMemberById(username)
     return user.getRolesInContext(obj) if obj is not None else user.getRoles()
 
 
 def get_permissions(username=None, user=None, obj=None):
-    """Not implemented yet. Get user's site-wide or local permissions.
+    """Get user's site-wide or local permissions.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
-    set one or the other, but not both.
+    Arguments ``username`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``username`` and
+    ``user`` are not given, the authenticated member will be used.
 
-    :param username: Username of the user to be deleted.
+    :param username: Username of the user for which you want to check the permissions.
     :type username: string
-    :param user: User object to be deleted.
+    :param user: User object for which you want to check the permissions.
     :type user: MemberData object
-    :param obj: If obj is set then return local permissions on this context
+    :param obj: If obj is set then check the permissions on this context. If obj is not given, the site root will be used.
     :type obj: content object
     :raises:
         ValueError
     :Example: :ref:`user_get_permissions_example`
     """
-    raise NotImplementedError
+
+    if username and user:
+        raise ValueError
+
+    # holds the initial security context
+    current_security_manager = getSecurityManager()
+
+    portal_membership = getToolByName(portal.get(), 'portal_membership')
+
+    if username is None:
+        if user is None:
+            username = portal_membership.getAuthenticatedMember().getId()
+        else:
+            username = user.getId()
+
+    user = portal_membership.getMemberById(username)
+    newSecurityManager(getRequest(), user)
+
+    permissions = (p[0] for p in getPermissions())
+    d = {}
+    for permission in permissions:
+        d[permission] = bool(user.checkPermission(permission, obj))
+
+    # restore the initial security context
+    setSecurityManager(current_security_manager)
+
+    return d
 
 
 def grant_roles(username=None, user=None, obj=None, roles=None):
