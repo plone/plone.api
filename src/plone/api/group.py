@@ -221,9 +221,16 @@ def get_roles(groupname=None, group=None, obj=None):
     group_id = groupname or group.id
 
     group = get(groupname=group_id)
+    if group is None:
+        raise ValueError
 
-    return group.getRoles() if obj is None else group.getRolesInContext(obj)
-
+    group = group.getGroup()
+    # when context obj is avaiable we bypass getRolesInContext method
+    # from PloneGroup class to use PloneUser class implementation because
+    # PloneGroup class disables all local roles support
+    # see: Products.PlonePAS.plugins.group.PloneGroup
+    return group.getRoles() if obj is None else \
+        super(group.__class__, group).getRolesInContext(obj)
 
 def grant_roles(groupname=None, group=None, roles=None, obj=None):
     """Grant roles to a group.
@@ -263,7 +270,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
     if actual_roles.count('Authenticated'):
         actual_roles.remove('Authenticated')
 
-    roles = list(set(actual_roles) + set(roles))
+    roles = list(set(actual_roles) | set(roles))
     portal_groups = getToolByName(portal.get(), 'portal_groups')
 
     if obj is None:
@@ -272,7 +279,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         obj.manage_setLocalRoles(group_id, roles)
 
 
-def revoke_roles(groupname=None, group=None, roles=None):
+def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     """Revoke roles from a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
@@ -315,5 +322,7 @@ def revoke_roles(groupname=None, group=None, roles=None):
 
     if obj is None:
         portal_groups.setRolesForGroup(group_id=group_id, roles=roles)
-    else:
+    elif roles:
         obj.manage_setLocalRoles(group_id, roles)
+    else:
+        obj.manage_delLocalRoles([group_id])
