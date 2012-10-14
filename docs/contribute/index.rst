@@ -42,3 +42,5 @@ Description of our release process and guidelines.
 
    release.rst
 
+
+.. include:: ../HISTORY.rst
