@@ -234,6 +234,35 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             user=user)
 
+    def test_get_permissions(self):
+        """ Test get permissions """
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+            roles=[]
+        )
+
+        self.assertRaises(
+            ValueError,
+            api.user.get_permissions,
+            username='chuck',
+            user=user)
+
+        PERMISSIONS = {
+            'View': True,
+            'Manage portal': False,
+            'Modify portal content': False,
+            'Access contents information': True,
+        }
+
+        portal = api.portal.get()
+
+        for k, v in PERMISSIONS.items():
+            self.assertTrue(v == api.user.get_permissions(username='chuck', obj=portal).get(k, None))
+            self.assertTrue(v == api.user.get_permissions(user=user, obj=portal).get(k, None))
+
     def test_grant_roles(self):
         """ Test grant roles """
 
