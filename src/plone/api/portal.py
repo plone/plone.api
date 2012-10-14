@@ -5,8 +5,10 @@ from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component.hooks import getSite
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.globalrequest import getRequest
 from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.registry.interfaces import IRegistry
 
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
@@ -66,7 +68,7 @@ def get_tool(name=None):
         return getToolByName(get(), name)
     except AttributeError:
 
-        # get a list of all tools so we can display their names in the error msg
+        # get a list of all tools to display their names in the error msg
         portal = get()
         tools = []
         for id in portal.objectIds():
@@ -184,11 +186,22 @@ def show_message(message=None, request=None, type='info'):
     IStatusMessage(request).add(message, type=type)
 
 
-def get_registry_record():
-    """Not yet implemented. Easy access to the ``plone.app.registry`` configuration records.
+def get_registry_record(name=None):
+    """Get a record value from a the ``plone.app.registry``
 
-    :returns: Registry record
+    :param name: [required] Name
+    :type name: string
+    :returns: Registry record value
     :rtype: plone.app.registry registry record
-    :Example: :ref:`portal_get_registry_record_example`
+    :Example: :ref:`portal_get_registry_value_example`
     """
-    raise NotImplementedError
+    if not name:
+        raise ValueError('You need to provide a record-name to look for')
+    registry = getUtility(IRegistry)
+    if isinstance(name, str):
+        record = registry.get(name)
+        if not record:
+            raise KeyError(u"The provided string does not match any record")
+        else:
+            return record
+    raise ValueError(u"The parameter has to be a string")
