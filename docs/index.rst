@@ -57,6 +57,15 @@ Complete API and advanced usage
     api/index.rst
 
 
+Contributing
+============
+
+.. toctree::
+    :maxdepth: 2
+
+    contribute/index.rst
+
+
 Indices and tables
 ==================
 
