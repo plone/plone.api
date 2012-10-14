@@ -3,12 +3,8 @@ python:
   - 2.7
 
 install:
-  - python bootstrap.py
-  - bin/buildout
+  - make tests
 
-script:
-  - ./pre-commit-check.sh
- 
 notifications:
   irc:
     - "irc.freenode.org#sprint"
