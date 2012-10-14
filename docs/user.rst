@@ -280,9 +280,31 @@ user.
 .. code-block:: python
 
     from plone import api
-    # api.user.grant_roles(username='jane',
-    #    roles=['Reviewer, SiteAdministrator'])
-    # Not implemented yet
+    api.user.grant_roles(username='jane', roles=['Reviewer', 'SiteAdministrator'])
+
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_SITE = ['Member', 'Reviewer', 'SiteAdministrator', 'Authenticated']
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+
+
+If you pass a content object or folder, the roles are granted only on that conext and not site wide.
+But all site wide roles will be also returned by :meth:`api.user.get_roles` to this user on the given context.
+
+.. code-block:: python
+
+    from plone import api
+    folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
+    api.user.grant_roles(username='jane', roles=['Editor', 'Contributor'], obj=portal['folder_one'])
+
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Editor', 'Contributor']
+    roles = api.user.get_roles(username='jane', obj=portal['folder_one'])
+    self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
 
 
 .. _user_revoke_roles_example:
