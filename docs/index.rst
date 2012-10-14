@@ -53,8 +53,14 @@ Complete API and advanced usage
 ===============================
 
 .. toctree::
+    :maxdepth: 1
 
     api/index.rst
+    api/portal.rst
+    api/content.rst
+    api/user.rst
+    api/group.rst
+    api/exceptions.rst
 
 
 Contributing

@@ -1,7 +1,7 @@
 .. _plone-api-errors:
 
-Errors and Exceptions
-=====================
+plone.api.exc
+=============
 
 .. automodule:: plone.api.exc
     :members:

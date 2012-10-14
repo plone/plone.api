@@ -1,3 +1,6 @@
+"""Module for plone.api specific Exceptions."""
+
+
 class PloneApiError(Exception):
     """Base exception class for plone.api errors."""
 

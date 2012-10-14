@@ -1,3 +1,10 @@
+.. line-block::
+
+    WARNING: If you are reading this on GitHub, DON'T! Read it on ReadTheDocs:
+    http://ploneapi.readthedocs.org/en/latest/contribute/develop.html so you
+    have working references and proper formatting.
+
+
 =======================
 Development environment
 =======================
@@ -107,4 +114,76 @@ Open ``Makefile`` in your favorite code editor to see all possible commands
 and what they do. And read http://www.gnu.org/software/make/manual/make.html
 to learn more about `make`.
 
+
+.. _working-on-an-issue:
+
+Working on an issue
+===================
+
+Our GitHub account contains a `list of open issues
+<https://github.com/plone/plone.api/issues>`_. Click on one that catches your
+attention. If the issue description says ``No one is assigned`` it means no-one
+is already working on it and you can claim it as your own. Click on the button
+next to the text and make yourself the one assigned for this issue.
+
+Based on our :ref:`git_workflow` all new features must be developed in separate
+git branches. So if you are not doing a very trivial fix, but rather adding new
+features/enhancements, you should create a *feature branch*. This way your work
+is kept in an isolated place where you can receive feedback on it, improve it,
+etc. Once we are happy with your implementation, your branch gets merged into
+*master* at which point everyone else starts using your code.
+
+.. sourcecode:: bash
+
+    [you@local plone.api]$ git checkout master  # go to master branch
+    [you@local plone.api]$ git checkout -b issue_17  # create a feature branch
+    # replace 17 with the issue number you are working on
+
+    # change code here
+
+    [you@local plone.api]$ git add -p && git commit  # commit my changes
+    [you@local plone.api]$ git push origin issue_17  # push my branch to GitHub
+    # at this point others can see your changes but they don't get effected by
+    them; in other words, others can comment on your code without your code
+    changing their development environments
+
+Read more about Git branching at http://learn.github.com/p/branching.html. Also,
+to make your git nicer, read the :ref:`setting_up_git` chapter.
+
+
+Once you are done with your work and you would like us to merge your changes
+into master, go to GitHub to do a *pull request*. Open a browser and point it to
+``https://github.com/plone/plone.api/tree/issue_<ISSUE_NUMBER>``. There you
+should see a ``Pull Request`` button. Click on it, write some text about what
+you did and anything else you would like to tell the one who will review your
+work, and finally click ``Send pull request``. Now wait that someone comes by
+and merges your branch (don't do it yourself, even if you have permissions to do
+so).
+
+An example pull request text::
+
+    Please merge my branch that resolves issue #13, where I added the
+    get_navigation_root() method.
+
+
+Commit checklist
+================
+
+Before every commit you should:
+
+* Run unit tests and syntax validation checks.
+* Add an entry to :ref:`changelog` (if applicable).
+* Add/modify :ref:`sphinx-docs` (if applicable).
+
+All syntax checks and all tests can be run with a single command. This
+command also re-generates your documentation.
+
+.. sourcecode:: bash
+
+    $ make
+
+.. note::
+    It pays off to invest a little time to make your editor run `pep8` and
+    `pyflakes` on a file every time you save that file. This saves you lots of
+    time in the long run.
 

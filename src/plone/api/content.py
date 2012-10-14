@@ -1,4 +1,4 @@
-""" Module that provides functionality for content manipulation """
+"""Module that provides functionality for content manipulation."""
 
 from App.config import getConfiguration
 from plone.app.uuid.utils import uuidToObject
