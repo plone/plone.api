@@ -196,12 +196,32 @@ def get_registry_record(name=None):
     :Example: :ref:`portal_get_registry_value_example`
     """
     if not name:
-        raise ValueError('You need to provide a record-name to look for')
+        raise MissingParameterError("Missing required parameter: name")
     registry = getUtility(IRegistry)
     if isinstance(name, str):
         record = registry.get(name)
         if not record:
-            raise KeyError(u"The provided string does not match any record")
+            raise KeyError(u"'%s' is no existing record" % name)
         else:
             return record
-    raise ValueError(u"The parameter has to be a string")
+    raise InvalidParameterError(u"The parameter has to be a string")
+
+
+def set_registry_record(name=None, value=None):
+    """Set a record value in the ``plone.app.registry``
+
+    :param name: [required] Name of the record
+    :type name: string
+    :param value: [required] Value to set
+    :type value: python primitive
+    :Example: :ref:`portal_set_registry_value_example`
+    """
+    if not name:
+        raise MissingParameterError(u"Missing required parameter: name")
+    if not value:
+        raise MissingParameterError(u"Missing required parameter: value")
+    if not isinstance(name, str):
+        raise InvalidParameterError(u"The parameter 'name' has to be a string")
+    registry = getUtility(IRegistry)
+    if isinstance(name, str):
+        registry[name] = value

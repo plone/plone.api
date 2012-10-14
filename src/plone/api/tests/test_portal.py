@@ -288,8 +288,25 @@ class TestPloneApiPortal(unittest.TestCase):
 
         self.assertRaises(KeyError, portal.get_registry_record,
                           name='nonexistent.sharepoint.power')
-        self.assertRaises(ValueError, portal.get_registry_record)
-        self.assertRaises(ValueError, portal.get_registry_record,
+        self.assertRaises(MissingParameterError, portal.get_registry_record)
+        self.assertRaises(InvalidParameterError, portal.get_registry_record,
                           name=dict({'foo': 'bar'}))
         self.assertEqual(portal.get_registry_record('plone.api.norris_power'),
                          u'infinite')
+
+    def test_set_registry_record(self):
+        registry = getUtility(IRegistry)
+        registry.records['plone.api.norris_power'] = Record(
+            field.TextLine(title=u"Chuck Norris' Power"))
+        portal.set_registry_record('plone.api.norris_power', u'infinite')
+        self.assertEqual(registry['plone.api.norris_power'],
+                         u'infinite')
+        self.assertRaises(KeyError, portal.set_registry_record,
+                          name='nonexistent.sharepoint.power',
+                          value=u'Zero')
+        self.assertRaises(MissingParameterError, portal.set_registry_record)
+        self.assertRaises(MissingParameterError, portal.set_registry_record,
+                          name='plone.api.norris_power')
+        self.assertRaises(InvalidParameterError, portal.set_registry_record,
+                          name=dict({'foo': 'bar'}),
+                          value=u"baz")
