@@ -28,6 +28,7 @@ bin/buildout: $(python) buildout.cfg bootstrap.py
 
 $(python):
 	virtualenv-$(version) --no-site-packages .
+	@chmod u+x $@
 	@touch $@
 
 tests: .installed.cfg
