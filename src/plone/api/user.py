@@ -202,6 +202,9 @@ def get_roles(username=None, user=None, obj=None):
             username = user.getId()
 
     user = portal_membership.getMemberById(username)
+    if user is None:
+        raise ValueError
+
     return user.getRolesInContext(obj) if obj is not None else user.getRoles()
 
 
@@ -238,6 +241,8 @@ def get_permissions(username=None, user=None, obj=None):
             username = user.getId()
 
     user = portal_membership.getMemberById(username)
+    if user is None:
+        raise ValueError
     newSecurityManager(getRequest(), user)
 
     permissions = (p[0] for p in getPermissions())
