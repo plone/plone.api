@@ -3,8 +3,11 @@ python:
   - 2.6
   - 2.7
 
+install:
+  - make python=$( which python ) .installed.cfg
+
 script:
-  - make python=$( which python ) tests
+  - make tests
 
 notifications:
   irc:
