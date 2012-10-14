@@ -24,4 +24,5 @@ class CannotGetPortalError(PloneApiError):
 
     The solution is to use the ``-P <portal_id>`` parameter to tell Zope to
     traverse to a portal, for example ``bin/instance -P Plone debug.``
+
     """

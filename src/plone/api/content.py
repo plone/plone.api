@@ -52,6 +52,7 @@ def create(container=None,
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_create_example`
+
     """
     if not container:
         raise MissingParameterError("Missing required parameter: container")
@@ -119,6 +120,7 @@ def get(path=None, UID=None):
     :raises:
         ValueError,
     :Example: :ref:`content_get_example`
+
     """
     if path and UID:
         raise ValueError('When getting an object combining path and UID '
@@ -166,6 +168,7 @@ def move(source=None, target=None, id=None, safe_id=False):
         KeyError
         ValueError
     :Example: :ref:`content_move_example`
+
     """
     if not source:
         raise ValueError
@@ -206,6 +209,7 @@ def rename(obj=None, new_id=None, safe_id=False):
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
     :Example: :ref:`content_rename_example`
+
     """
     if not obj:
         raise MissingParameterError("Missing required parameter: obj")
@@ -239,6 +243,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
         KeyError,
         ValueError
     :Example: :ref:`content_copy_example`
+
     """
     if not source:
         raise ValueError
@@ -267,6 +272,7 @@ def delete(obj=None):
     :raises:
         ValueError
     :Example: :ref:`content_delete_example`
+
     """
     if not obj:
         raise ValueError
@@ -284,6 +290,7 @@ def get_state(obj=None):
     :raises:
         ValueError
     :Example: :ref:`content_get_state_example`
+
     """
     if not obj:
         raise ValueError
@@ -304,6 +311,7 @@ def transition(obj=None, transition=None):
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_transition_example`
+
     """
     if not obj or not transition:
         raise MissingParameterError('You have to provide the ``obj`` and the '
@@ -334,6 +342,7 @@ def get_view(name=None, context=None, request=None):
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_get_view_example`
+
     """
     if not name:
         raise MissingParameterError("Missing required parameter: name")
@@ -376,6 +385,7 @@ def get_uuid(obj=None):
     :raises:
         ValueError
     :Example: :ref:`content_get_uuid_example`
+
     """
     if not obj:
         raise ValueError

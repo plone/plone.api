@@ -21,12 +21,12 @@ import unittest2 as unittest
 
 
 class TestPloneApiPortal(unittest.TestCase):
-    """Unit tests for getting portal info using plone.api"""
+    """Unit tests for getting portal info using plone.api."""
 
     layer = INTEGRATION_TESTING
 
     def setUp(self):
-        """  """
+        """Shared test environment set-up, ran before every test."""
         self.portal = self.layer['portal']
 
         # Mock the mail host so we can test sending the email
@@ -56,7 +56,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(CannotGetPortalError, portal.get)
 
     def test_get_tool_constraints(self):
-        """ Test the constraints for getting a tool. """
+        """Test the constraints for getting a tool."""
 
         # When no parameters are given an error is raised
         self.assertRaises(MissingParameterError, portal.get_tool)
@@ -121,7 +121,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
     def test_get_tool(self):
-        """ Test to validate the tool name """
+        """Test to validate the tool name."""
 
         self.assertEqual(
             portal.get_tool(name='portal_catalog'),
@@ -133,7 +133,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
     def test_send_email_constraints(self):
-        """ Test the constraints for sending an email. """
+        """Test the constraints for sending an email."""
 
         # When no parameters are given an error is raised
         self.assertRaises(ValueError, portal.send_email)
@@ -159,7 +159,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
     def test_send_email(self):
-        """ Test sending mail """
+        """Test sending mail."""
 
         self.mailhost.reset()
 
@@ -190,8 +190,9 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(msg['From'], 'Portal Owner <sender@example.org>')
 
     def test_send_email_without_configured_mailhost(self):
-        """ By default, the MailHost is not configured yet, so we cannot
+        """By default, the MailHost is not configured yet, so we cannot
         send email.
+
         """
         self.portal._updateProperty('email_from_address', None)
         self.assertRaises(
@@ -205,8 +206,9 @@ class TestPloneApiPortal(unittest.TestCase):
 
     @mock.patch('plone.api.portal.parseaddr')
     def test_send_email_parseaddr(self, mock_parseaddr):
-        """ Simulate faulty parsing in parseaddr, from_address should be
+        """Simulate faulty parsing in parseaddr, from_address should be
         default email_from_address.
+
         """
 
         self.mailhost.reset()
@@ -219,12 +221,13 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
     def test_get_localized_time_constraints(self):
-        """ Test the constraints for get_localized_time. """
+        """Test the constraints for get_localized_time."""
 
         # When no parameters are given an error is raised
         self.assertRaises(ValueError, portal.get_localized_time)
 
     def test_get_localized_time(self):
+        """TODO: write docstring."""
         result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
             long_format=True,
@@ -243,7 +246,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(result, 'Dec 31, 1999')
 
     def test_show_message_constraints(self):
-        """ Test the constraints for show_message. """
+        """Test the constraints for show_message."""
 
         # When no parameters are given an error is raised
         self.assertRaises(ValueError, portal.show_message)
@@ -255,7 +258,7 @@ class TestPloneApiPortal(unittest.TestCase):
                           message='Beer is brewing.')
 
     def test_show_message(self):
-        """ Test to see if message appears """
+        """Test to see if message appears."""
 
         from Products.statusmessages.interfaces import IStatusMessage
         request = self.layer['request']
@@ -273,7 +276,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(show[1].message, 'Two')
 
     def test_get_navigation_root(self):
-        """ Test to see if the navigation_root is returned """
+        """Test to see if the navigation_root is returned."""
 
         navigation_root = portal.get_navigation_root(portal.get())
         self.assertTrue(INavigationRoot.providedBy(navigation_root))

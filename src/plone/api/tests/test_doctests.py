@@ -29,6 +29,7 @@ CHECKER = renormalizing.RENormalizing([
 
 
 def setUp(self):
+    """Shared test environment set-up, ran before every test."""
     layer = self.globs['layer']
     # Update global variables within the tests.
     self.globs.update({
@@ -69,6 +70,7 @@ def DocFileSuite(testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TES
     :type layer: object
 
     :rtype: `manuel.testing.TestSuite`
+
     """
     m = manuel.doctest.Manuel(optionflags=flags, checker=CHECKER)
     m += manuel.codeblock.Manuel()
@@ -80,6 +82,7 @@ def DocFileSuite(testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TES
 
 
 def test_suite():
+    """Find .rst files and test code examples in them."""
     path = '../../../../docs'
     doctests = []
     docs_path = os.path.join(os.path.dirname(__file__), path)

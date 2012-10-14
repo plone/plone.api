@@ -27,6 +27,13 @@ example of this.
     The line length rules also applies to non-python source files, such as
     documentation .rst files.
 
+
+Docstrings style
+================
+
+Read and follow http://www.python.org/dev/peps/pep-0257/. That's it.
+
+
 About imports
 =============
 

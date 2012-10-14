@@ -29,7 +29,8 @@ class TestPloneApiContent(unittest.TestCase):
     layer = INTEGRATION_TESTING
 
     def setUp(self):
-        """  Create a portal structure which we can test against:
+        """Create a portal structure which we can test against.
+
         Plone (portal root)
         |-- blog
         |-- about
@@ -65,7 +66,7 @@ class TestPloneApiContent(unittest.TestCase):
             container=self.events, type='Event', id='sprint')
 
     def test_create_constraints(self):
-        """ Test the constraints when creating content """
+        """Test the constraints when creating content."""
 
         # This will definitely fail
         self.assertRaises(api.exc.MissingParameterError, api.content.create)
@@ -124,7 +125,7 @@ class TestPloneApiContent(unittest.TestCase):
 
     @unittest.skipUnless(HAS_DEXTERITY, "Only run when Dexterity is available.")
     def test_create_dexterity(self):
-        """ Test create content based on Dexterity """
+        """Test create content based on Dexterity."""
         container = self.portal
 
         # Create a folder
@@ -157,7 +158,7 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
     def test_create_archetypes(self):
-        """ Test creating content based on Archetypes """
+        """Test creating content based on Archetypes."""
 
         container = self.portal
 
@@ -190,7 +191,7 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
     def test_create_with_safe_id(self):
-        """" Test the content creating with safe_id mode. """
+        """Test the content creating with safe_id mode."""
         container = self.portal
 
         first_page = api.content.create(
@@ -209,7 +210,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(second_page.portal_type, 'Document')
 
     def test_get_constraints(self):
-        """ Test the constraints when content is fetched with get """
+        """Test the constraints when content is fetched with get."""
 
         # Path and UID parameter can not be given together
         self.assertRaises(ValueError, api.content.get, path='/', UID='dummy')
@@ -218,9 +219,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(ValueError, api.content.get)
 
     def test_get(self):
-        """ Test the getting of content. Create a simple structure with
-        a folder which contains a document
-        """
+        """Test the getting of content in varios ways."""
 
         # Test getting the about folder by path and UID
         about_by_path = api.content.get('/about')
@@ -244,7 +243,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertFalse(api.content.get(UID='bacon'))
 
     def test_move_constraints(self):
-        """ Test the constraints for moving content """
+        """Test the constraints for moving content."""
 
         # When no parameters are given an error is raised
         self.assertRaises(ValueError, api.content.move)
@@ -256,7 +255,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(ValueError, api.content.move, target=container)
 
     def test_move(self):
-        """ Test moving of content """
+        """Test moving of content."""
 
         container = self.portal
 
@@ -289,7 +288,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(self.conference.id, 'conference-renamed')
 
     def test_rename_constraints(self):
-        """ Test the constraints for rename content """
+        """Test the constraints for rename content."""
 
         # When no parameters are given an error is raised
         self.assertRaises(api.exc.MissingParameterError, api.content.rename)
@@ -299,7 +298,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(api.exc.MissingParameterError, api.content.rename, obj=container)
 
     def test_rename(self):
-        """ Test renaming of content """
+        """Test renaming of content."""
 
         container = self.portal
 
@@ -332,7 +331,7 @@ class TestPloneApiContent(unittest.TestCase):
         assert 'link-to-blog' not in container.keys()
 
     def test_copy_constraints(self):
-        """ Test the constraints for moving content """
+        """Test the constraints for moving content."""
 
         # When no parameters are given an error is raised
         self.assertRaises(ValueError, api.content.copy)
@@ -342,7 +341,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(ValueError, api.content.copy, source=container)
 
     def test_copy(self):
-        """ Test the copying of content """
+        """Test the copying of content."""
 
         container = self.portal
 
@@ -367,13 +366,13 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(KeyError, container['blog'])
 
     def test_delete_constraints(self):
-        """ Test the constraints for deleting content """
+        """Test the constraints for deleting content."""
 
         # When no parameters are given an error is raised
         self.assertRaises(ValueError, api.content.delete)
 
     def test_delete(self):
-        """ Test deleting a content item """
+        """Test deleting a content item."""
 
         container = self.portal
 
@@ -385,7 +384,7 @@ class TestPloneApiContent(unittest.TestCase):
         assert 'contact' not in container['about'].keys()
 
     def test_get_state(self):
-        """ Test retrieving the workflow state of a content item """
+        """Test retrieving the workflow state of a content item."""
 
         # This should fail because an content item is mandatory
         self.assertRaises(ValueError, api.content.get_state)
@@ -394,7 +393,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(review_state, 'private')
 
     def test_transition(self):
-        """ Test transitioning the workflow state on a content item"""
+        """Test transitioning the workflow state on a content item."""
 
         self.assertRaises(api.exc.MissingParameterError, api.content.transition)
         self.assertRaises(api.exc.MissingParameterError, api.content.transition, obj=mock.Mock())
@@ -420,7 +419,7 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
     def test_get_view_constraints(self):
-        """ Test the constraints for deleting content """
+        """Test the constraints for deleting content."""
         request = self.layer['request']
 
         # When no parameters are given an error is raised
@@ -451,7 +450,7 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
     def test_get_view(self):
-        """ Test the view """
+        """Test the view."""
         request = self.layer['request']
 
         view = api.content.get_view(
@@ -474,7 +473,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(aq_base(view.canonical_object()), aq_base(self.blog))
 
     def test_get_uuid(self):
-        """ Test getting a content item's UUID """
+        """Test getting a content item's UUID."""
 
         container = self.portal
 

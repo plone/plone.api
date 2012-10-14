@@ -28,6 +28,7 @@ def create(groupname=None,
     :raises:
         ValueError
     :Example: :ref:`group_create_example`
+
     """
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
@@ -50,6 +51,7 @@ def get(groupname=None):
     :raises:
         ValueError
     :Example: :ref:`group_get_example`
+
     """
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
@@ -74,6 +76,7 @@ def get_groups(username=None, user=None):
     :rtype: List of GroupData objects
     :Example: :ref:`group_get_all_groups_example`,
         :ref:`group_get_users_groups_example`
+
     """
     if username and user:
         raise ValueError
@@ -105,6 +108,7 @@ def delete(groupname=None, group=None):
     :raises:
         ValueError
     :Example: :ref:`group_delete_example`
+
     """
     if not groupname and not group:
         raise ValueError
@@ -140,6 +144,7 @@ def add_user(groupname=None, group=None, username=None, user=None):
     :raises:
         ValueError
     :Example: :ref:`group_add_user_example`
+
     """
     if not username and not user:
         raise ValueError
@@ -179,6 +184,7 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     :raises:
         ValueError
     :Example: :ref:`group_remove_user_example`
+
     """
     if not username and not user:
         raise ValueError
@@ -213,6 +219,7 @@ def get_roles(groupname=None, group=None, obj=None):
     :raises:
         ValueError
     :Example: :ref:`group_get_roles_example`
+
     """
     if not groupname and not group:
         raise ValueError
@@ -252,6 +259,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
     :raises:
         ValueError
     :Example: :ref:`group_grant_roles_example`
+
     """
     if not groupname and not group:
         raise ValueError
@@ -299,6 +307,7 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     :raises:
         ValueError
     :Example: :ref:`group_revoke_roles_example`
+
     """
     if not groupname and not group:
         raise ValueError

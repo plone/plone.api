@@ -36,6 +36,7 @@ def create(email=None, username=None, password=None, roles=('Member', ),
         MissingParameterError
         InvalidParameterError
     :Example: :ref:`user_create_example`
+
     """
     if properties is None:
         # Never use a dict as default for a keyword argument.
@@ -87,6 +88,7 @@ def get(username=None):
     :raises:
         MissingParameterError
     :Example: :ref:`user_get_example`
+
     """
     if not username:
         raise MissingParameterError
@@ -101,6 +103,7 @@ def get_current():
     :returns: Currently logged-in user
     :rtype: MemberData object
     :Example: :ref:`user_get_current_example`
+
     """
     portal_membership = getToolByName(portal.get(), 'portal_membership')
     return portal_membership.getAuthenticatedMember()
@@ -122,6 +125,7 @@ def get_users(groupname=None, group=None):
     :rtype: List of MemberData objects
     :Example: :ref:`user_get_all_users_example`,
         :ref:`user_get_groups_users_example`
+
     """
 
     if groupname and group:
@@ -156,6 +160,7 @@ def delete(username=None, user=None):
         MissingParameterError
         InvalidParameterError
     :Example: :ref:`user_delete_example`
+
     """
     if not username and not user:
         raise MissingParameterError
@@ -174,6 +179,7 @@ def is_anonymous():
     :returns: True if the current user is anonymous, False otherwise.
     :rtype: bool
     :Example: :ref:`user_is_anonymous_example`
+
     """
     return getToolByName(portal.get(), 'portal_membership').isAnonymousUser()
 
@@ -195,6 +201,7 @@ def get_roles(username=None, user=None, obj=None):
     :raises:
         MissingParameterError
     :Example: :ref:`user_get_roles_example`
+
     """
 
     if username and user:
@@ -234,6 +241,7 @@ def get_permissions(username=None, user=None, obj=None):
     :raises:
         InvalidParameterError
     :Example: :ref:`user_get_permissions_example`
+
     """
 
     if username and user:
@@ -290,6 +298,7 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
         InvalidParameterError
         MissingParameterError
     :Example: :ref:`user_grant_roles_example`
+
     """
 
     if username and user:
@@ -335,6 +344,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     :raises:
         InvalidParameterError
     :Example: :ref:`user_revoke_roles_example`
+
     """
     if username and user:
         raise InvalidParameterError

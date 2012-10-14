@@ -10,23 +10,23 @@ import unittest2 as unittest
 
 
 class TestPloneApiGroup(unittest.TestCase):
-    """Unit tests for group manipulation using plone.api"""
+    """Unit tests for group manipulation using plone.api."""
 
     layer = INTEGRATION_TESTING
 
     def setUp(self):
-        """  """
+        """Shared test environment set-up, ran before every test."""
         self.portal = self.layer['portal']
         self.group_tool = getToolByName(self.portal, 'portal_groups')
         self.portal_membership = getToolByName(
             self.portal, 'portal_membership')
 
-    def test_create_constraints(self):
-        """ Test the constraints for creating a group """
+    def test_create_contraints(self):
+        """Test the contraints for creating a group."""
         self.assertRaises(ValueError, api.group.create)
 
     def test_create(self):
-        """ Test adding of a group, groupname is mandatory """
+        """Test adding of a group, groupname is mandatory."""
 
         spam_group = api.group.create(groupname='spam')
         self.assertEqual(spam_group, self.group_tool.getGroupById('spam'))
@@ -63,11 +63,11 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn('Reviewer', ham_group.getMemberIds())
 
     def test_get_constraints(self):
-        """ Test the constraints for geting a group """
+        """Test the constraints for geting a group."""
         self.assertRaises(ValueError, api.group.get)
 
     def test_get(self):
-        """ Test getting a group """
+        """Test getting a group."""
 
         # This should fail because the groupname is mandatory
         self.assertRaises(ValueError, api.group.create)
@@ -82,13 +82,13 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
     def test_get_all_groups(self):
-        """ Test getting all groups """
+        """Test getting all groups."""
 
         groups = api.group.get_groups()
         self.assertEqual(len(groups), 4)
 
     def test_get_groups_constraints(self):
-        """ Test that exception is raised if wrong arguments are given """
+        """Test that exception is raised if wrong arguments are given."""
 
         # username and user are mutually exclusive
         user = mock.Mock()
@@ -104,7 +104,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
     def test_get_users_groups(self):
-        """ Test retrieving of groups that the user is member of. """
+        """Test retrieving of groups that the user is member of."""
         user = self.portal_membership.getAuthenticatedMember()
 
         api.group.create(groupname='staff')
@@ -123,7 +123,7 @@ class TestPloneApiGroup(unittest.TestCase):
                           username='theurbanspaceman')
 
     def test_delete_contraints(self):
-        """ Test the contraints for deleting a group """
+        """Test the contraints for deleting a group."""
 
         # Delete group needs a groupname or group object
         self.assertRaises(ValueError, api.group.delete)
@@ -138,7 +138,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
     def test_delete(self):
-        """ Test deleting a group """
+        """Test deleting a group."""
 
         # Test deleting a group by passing in a groupname
         bacon = api.group.create(groupname='bacon')
@@ -155,7 +155,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIsNone(api.group.get('bacon'))
 
     def test_add_user_contraints(self):
-        """ Test the constraints when a user is added to a group """
+        """Test the constraints when a user is added to a group."""
 
         group, user = mock.Mock(), mock.Mock()
 
@@ -182,7 +182,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
     def test_add_user(self):
-        """ Test adding a user to a group """
+        """Test adding a user to a group."""
 
         api.group.create(groupname='staff')
         api.user.create(email='jane@plone.org', username='jane')
@@ -203,7 +203,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn('jane', group.getMemberIds())
 
     def test_remove_user_contraints(self):
-        """ Test the constraints when a user is removed from a group """
+        """Test the constraints when a user is removed from a group."""
 
         group, user = mock.Mock(), mock.Mock()
 
@@ -230,7 +230,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
     def test_remove_user(self):
-        """ Test removing a user from a group """
+        """Test removing a user from a group."""
 
         api.group.create(groupname='staff')
         api.user.create(email='jane@plone.org', username='jane')

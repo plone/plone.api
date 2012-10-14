@@ -16,14 +16,14 @@ class PloneApiLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-        # Load ZCML
+        """Prepare Zope instance by loading appropriate ZCMLs."""
         import plone.app.dexterity
         self.loadZCML(package=plone.app.dexterity)
         import plone.api
         self.loadZCML(package=plone.api)
 
     def setUpPloneSite(self, portal):
-        """Set up Plone."""
+        """Prepare a Plone instance for testing."""
         # Install into Plone site using portal_setup
         self.applyProfile(portal, 'Products.CMFPlone:plone')
 
