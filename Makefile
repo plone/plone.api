@@ -2,7 +2,7 @@
 # use `make options=-v` to run buildout with extra options
 
 version = 2.7
-python = bin/python$(version)
+python = bin/python
 pep8_ignores = E501
 options =
 
@@ -23,12 +23,11 @@ bin/sphinx-build: .installed.cfg
 	bin/buildout $(options)
 
 bin/buildout: $(python) buildout.cfg bootstrap.py
-	./$(python) bootstrap.py -d
+	$(python) bootstrap.py -d
 	@touch $@
 
 $(python):
 	virtualenv-$(version) --no-site-packages .
-	@chmod u+x $@
 	@touch $@
 
 tests: .installed.cfg
