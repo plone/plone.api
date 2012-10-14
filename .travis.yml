@@ -3,7 +3,7 @@ python:
   - 2.6
   - 2.7
 
-install:
+script:
   - make version=$TRAVIS_PYTHON_VERSION tests
 
 notifications:
