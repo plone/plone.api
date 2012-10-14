@@ -234,6 +234,62 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             user=user)
 
+    def test_get_permissions_root(self):
+        """ Test get permissions on site root"""
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+            roles=[]
+        )
+
+        self.assertRaises(
+            ValueError,
+            api.user.get_permissions,
+            username='chuck',
+            user=user)
+
+        PERMISSIONS = {
+            'View': True,
+            'Manage portal': False,
+            'Modify portal content': False,
+            'Access contents information': True,
+        }
+
+        for k, v in PERMISSIONS.items():
+            self.assertTrue(v == api.user.get_permissions(username='chuck').get(k, None))
+            self.assertTrue(v == api.user.get_permissions(user=user).get(k, None))
+
+    def test_get_permissions_context(self):
+        """ Test get permissions on some context"""
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+            roles=[]
+        )
+
+        self.assertRaises(
+            ValueError,
+            api.user.get_permissions,
+            username='chuck',
+            user=user)
+
+        PERMISSIONS = {
+            'View': False,
+            'Manage portal': False,
+            'Modify portal content': False,
+            'Access contents information': False,
+        }
+
+        folder = api.content.create(container=self.portal, type='Folder', id='folder_one', title='Folder One')
+
+        for k, v in PERMISSIONS.items():
+            self.assertTrue(v == api.user.get_permissions(username='chuck', obj=folder).get(k, None))
+            self.assertTrue(v == api.user.get_permissions(user=user, obj=folder).get(k, None))
+
     def test_grant_roles(self):
         """ Test grant roles """
 

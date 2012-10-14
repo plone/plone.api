@@ -1,6 +1,7 @@
 """ Module that provides functionality for group manipulation """
 from Products.CMFCore.utils import getToolByName
 from plone.api import portal
+from plone.api.user import get as user_get
 
 
 def create(groupname=None,
@@ -76,8 +77,7 @@ def get_groups(username=None, user=None):
         raise ValueError
 
     if username:
-        membership = getToolByName(portal.get(), 'portal_membership')
-        user = membership.getMemberById(username)
+        user = user_get(username=username)
         if not user:
             raise ValueError
 
@@ -86,8 +86,8 @@ def get_groups(username=None, user=None):
     if user:
         groups = group_tool.getGroupsForPrincipal(user)
         return [get(groupname=group) for group in groups]
-    else:
-        return group_tool.listGroups()
+
+    return group_tool.listGroups()
 
 
 def delete(groupname=None, group=None):
@@ -197,76 +197,123 @@ def remove_user(groupname=None, group=None, username=None, user=None):
 
 
 def get_roles(groupname=None, group=None, obj=None):
-    """Not implemented yet. Get group's site-wide or local roles.
+    """Get group's site-wide or local roles.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
 
-    :param groupname: Name of the group to remove the user from.
+    :param groupname: Name of the group to get roles from.
     :type groupname: string
-    :param group: Group to remove the user from.
+    :param group: Group to get roles from.
     :type group: GroupData object
-    :param obj: If obj is set then return local roles on this context
+    :param obj: If obj is set then return local roles on this context.
     :type obj: content object
     :raises:
         ValueError
     :Example: :ref:`group_get_roles_example`
     """
-    raise NotImplementedError
+    if not groupname and not group:
+        raise ValueError
+
+    if groupname and group:
+        raise ValueError
+
+    group_id = groupname or group.id
+
+    group = get(groupname=group_id)
+
+    return group.getRoles() if obj is None else group.getRolesInContext(obj)
 
 
-def get_permissions(groupname=None, group=None, obj=None):
-    """Not implemented yet. Get group's site-wide or local permissions.
-
-    Arguments ``groupname`` and ``group`` are mutually exclusive. You can
-    either set one or the other, but not both.
-
-    :param groupname: Name of the group to remove the user from.
-    :type groupname: string
-    :param group: Group to remove the user from.
-    :type group: GroupData object
-    :param obj: If obj is set then return local permissions on this context
-    :type obj: content object
-    :raises:
-        ValueError
-    :Example: :ref:`group_get_permissions_example`
-    """
-    raise NotImplementedError
-
-
-def grant_roles(groupname=None, group=None, roles=None):
-    """Not implemented yet. Grant roles to a group.
+def grant_roles(groupname=None, group=None, roles=None, obj=None):
+    """Grant roles to a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
 
-    :param groupname: Name of the group to remove the user from.
+    :param groupname: Name of the group to grant roles to.
     :type groupname: string
-    :param group: Group to remove the user from.
+    :param group: Group to grant roles to.
     :type group: GroupData object
     :param roles: List of roles to grant
     :type roles: list of strings
+    :param obj: If obj is set then grant local roles on this context.
+    :type obj: content object
     :raises:
         ValueError
     :Example: :ref:`group_grant_roles_example`
     """
-    raise NotImplementedError
+    if not groupname and not group:
+        raise ValueError
+
+    if groupname and group:
+        raise ValueError
+
+    if not roles:
+        raise ValueError
+
+    if 'Anonymous' in roles or 'Authenticated' in roles:
+        raise ValueError
+
+    group_id = groupname or group.id
+
+    actual_roles = get_roles(groupname=group_id, obj=obj)
+    if actual_roles.count('Anonymous'):
+        actual_roles.remove('Anonymous')
+    if actual_roles.count('Authenticated'):
+        actual_roles.remove('Authenticated')
+
+    roles = list(set(actual_roles) + set(roles))
+    portal_groups = getToolByName(portal.get(), 'portal_groups')
+
+    if obj is None:
+        portal_groups.setRolesForGroup(group_id=group_id, roles=roles)
+    else:
+        obj.manage_setLocalRoles(group_id, roles)
 
 
 def revoke_roles(groupname=None, group=None, roles=None):
-    """Not implemented yet. Revoke roles from a group.
+    """Revoke roles from a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
 
-    :param groupname: Name of the group to remove the user from.
+    :param groupname: Name of the group to revoke roles to.
     :type groupname: string
-    :param group: Group to remove the user from.
+    :param group: Group to revoke roles to.
     :type group: GroupData object
-    :param roles: List of roles to grant
+    :param roles: List of roles to revoke
     :type roles: list of strings
+    :param obj: If obj is set then revoke local roles on this context.
+    :type obj: content object
     :raises:
         ValueError
     :Example: :ref:`group_revoke_roles_example`
     """
-    raise NotImplementedError
+    if not groupname and not group:
+        raise ValueError
+
+    if groupname and group:
+        raise ValueError
+
+    if not roles:
+        raise ValueError
+
+    if 'Anonymous' in roles or 'Authenticated' in roles:
+        raise ValueError
+
+    group_id = groupname or group.id
+
+    actual_roles = get_roles(groupname=group_id, obj=obj)
+    if actual_roles.count('Anonymous'):
+        actual_roles.remove('Anonymous')
+    if actual_roles.count('Authenticated'):
+        actual_roles.remove('Authenticated')
+
+    roles = list(set(actual_roles) - set(roles))
+    portal_groups = getToolByName(portal.get(), 'portal_groups')
+
+    if obj is None:
+        portal_groups.setRolesForGroup(group_id=group_id, roles=roles)
+    else:
+        obj.manage_setLocalRoles(group_id, roles)

@@ -21,15 +21,15 @@ class TestPloneApiGroup(unittest.TestCase):
         self.portal_membership = getToolByName(
             self.portal, 'portal_membership')
 
-    def test_create_contraints(self):
-        """ Test the contraints for creating a group """
+    def test_create_constraints(self):
+        """ Test the constraints for creating a group """
         self.assertRaises(ValueError, api.group.create)
 
     def test_create(self):
         """ Test adding of a group, groupname is mandatory """
 
-        api.group.create(groupname='spam')
-        assert self.group_tool.getGroupById('spam')
+        spam_group = api.group.create(groupname='spam')
+        self.assertEqual(spam_group, self.group_tool.getGroupById('spam'))
 
         # Group with title and description
         bacon_group = api.group.create(
@@ -59,8 +59,8 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         group = self.group_tool.getGroupById('ham')
         self.assertEqual(ham_group, group)
-        assert 'Editor' in ham_group.getRoles()
-        assert 'Reviewer' in ham_group.getMemberIds()
+        self.assertIn('Editor',  ham_group.getRoles())
+        self.assertIn('Reviewer', ham_group.getMemberIds())
 
     def test_get_constraints(self):
         """ Test the constraints for geting a group """
@@ -111,12 +111,12 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.add_user(groupname='staff', user=user)
 
         groups = [g.id for g in api.group.get_groups(user=user)]
-        assert 'AuthenticatedUsers' in groups
-        assert 'staff' in groups
+        self.assertIn('AuthenticatedUsers', groups)
+        self.assertIn('staff', groups)
 
         groups = [g.id for g in api.group.get_groups(username=user.id)]
-        assert 'AuthenticatedUsers' in groups
-        assert 'staff' in groups
+        self.assertIn('AuthenticatedUsers', groups)
+        self.assertIn('staff', groups)
 
         self.assertRaises(ValueError,
                           api.group.get_groups,
@@ -141,18 +141,18 @@ class TestPloneApiGroup(unittest.TestCase):
         """ Test deleting a group """
 
         # Test deleting a group by passing in a groupname
-        api.group.create(groupname='bacon')
-        assert api.group.get('bacon')
+        bacon = api.group.create(groupname='bacon')
+        self.assertEqual(bacon, api.group.get('bacon'))
 
         api.group.delete(groupname='bacon')
-        assert not api.group.get('bacon')
+        self.assertIsNone(api.group.get('bacon'))
 
         # Test deleting a group by passing in a group object
         group = api.group.create(groupname='bacon')
-        assert api.group.get('bacon')
+        self.assertEqual(group, api.group.get('bacon'))
 
         api.group.delete(group=group)
-        assert not api.group.get('bacon')
+        self.assertIsNone(api.group.get('bacon'))
 
     def test_add_user_contraints(self):
         """ Test the constraints when a user is added to a group """
@@ -196,11 +196,11 @@ class TestPloneApiGroup(unittest.TestCase):
         group = api.group.get(groupname='staff')
         api.group.add_user(group=group, user=user)
 
-        assert 'staff' in [g.id for g in api.group.get_groups(username='bob')]
-        assert 'staff' in [g.id for g in api.group.get_groups(username='jane')]
+        self.assertIn('staff', [g.id for g in api.group.get_groups(username='bob')])
+        self.assertIn('staff', [g.id for g in api.group.get_groups(username='jane')])
 
-        assert 'bob' in group.getMemberIds()
-        assert 'jane' in group.getMemberIds()
+        self.assertIn('bob', group.getMemberIds())
+        self.assertIn('jane', group.getMemberIds())
 
     def test_remove_user_contraints(self):
         """ Test the constraints when a user is removed from a group """
@@ -247,8 +247,17 @@ class TestPloneApiGroup(unittest.TestCase):
         # Delete user by user object from group
         api.group.remove_user(group=group, user=user)
 
-        assert 'staff' not in api.group.get_groups(username='bob')
-        assert 'staff' not in api.group.get_groups(username='jane')
+        self.assertNotIn('staff', api.group.get_groups(username='bob'))
+        self.assertNotIn('staff', api.group.get_groups(username='jane'))
 
-        assert 'bob' not in group.getMemberIds()
-        assert 'jane' not in group.getMemberIds()
+        self.assertNotIn('bob', group.getMemberIds())
+        self.assertNotIn('jane', group.getMemberIds())
+
+    def test_get_roles(self):
+        """ Test get roles from a group """
+
+        api.group.create(groupname='staff')
+        api.user.create(email='jane@plone.org', username='jane')
+        api.user.create(email='bob@plone.org', username='bob')
+        api.group.add_user(groupname='staff', username='jane')
+        api.group.add_user(groupname='staff', username='bob')

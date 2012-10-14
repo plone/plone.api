@@ -249,13 +249,27 @@ Get user permissions
 --------------------
 
 The :meth:`api.user.get_permissions` method is used to getting user's
-permissions. By default it returns site-wide permissions.
+permissions. By default it returns site root permissions.
 
 .. code-block:: python
 
     from plone import api
-    # permissions = api.user.get_permissions(username='jane')
-    # Not implemented yet
+    mike = api.user.create(email='mike@plone.org', username='mike')
+    permissions = api.user.get_permissions(username='mike')
+
+.. invisible-code-block:: python
+
+    PERMISSIONS = {
+        'View': True,
+        'Manage portal': False,
+        'Modify portal content': False,
+        'Access contents information': True,
+    }
+
+    for k, v in PERMISSIONS.items():
+        self.assertTrue(v == api.user.get_permissions(username='mike').get(k, None))
+        self.assertTrue(v == api.user.get_permissions(user=mike).get(k, None))
+
 
 If you pass in a content object, it will return local permissions of the user
 in that particular context.
@@ -264,9 +278,21 @@ in that particular context.
 
     from plone import api
     portal = api.portal.get()
-    # permissions = api.user.get_permissions(
-    #    username='jane', obj=portal['blog'])
-    # Not implemented yet
+    folder = api.content.create(container=portal, type='Folder', id='folder_two', title='Folder Two')
+    permissions = api.user.get_permissions(username='mike', obj=portal['folder_two'])
+
+.. invisible-code-block:: python
+
+    PERMISSIONS = {
+        'View': False,
+        'Manage portal': False,
+        'Modify portal content': False,
+        'Access contents information': False,
+    }
+
+    for k, v in PERMISSIONS.items():
+        self.assertTrue(v == api.user.get_permissions(username='mike', obj=portal['folder_two']).get(k, None))
+        self.assertTrue(v == api.user.get_permissions(user=mike, obj=portal['folder_two']).get(k, None))
 
 
 .. _user_grant_roles_example:
@@ -280,9 +306,36 @@ user.
 .. code-block:: python
 
     from plone import api
-    # api.user.grant_roles(username='jane',
-    #    roles=['Reviewer, SiteAdministrator'])
-    # Not implemented yet
+    api.user.grant_roles(username='jane',
+        roles=['Reviewer', 'SiteAdministrator']
+    )
+
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_SITE = ['Member', 'Reviewer', 'SiteAdministrator', 'Authenticated']
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+
+
+If you pass a content object or folder, the roles are granted only on that conext and not site wide.
+But all site wide roles will be also returned by :meth:`api.user.get_roles` to this user on the given context.
+
+.. code-block:: python
+
+    from plone import api
+    folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
+    api.user.grant_roles(username='jane',
+        roles=['Editor', 'Contributor'],
+        obj=portal['folder_one']
+    )
+
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Editor', 'Contributor']
+    roles = api.user.get_roles(username='jane', obj=portal['folder_one'])
+    self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
 
 
 .. _user_revoke_roles_example:
@@ -296,6 +349,34 @@ user.
 .. code-block:: python
 
     from plone import api
-    # api.user.revoke_roles(username='jane',
-    #    roles=['Reviewer, SiteAdministrator'])
-    # Not implemented yet
+    api.user.revoke_roles(username='jane',
+        roles=['SiteAdministrator']
+    )
+
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_SITE = ['Member', 'Authenticated', 'Reviewer']
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+
+
+If you pass a context object the local roles will be removed.
+
+.. code-block:: python
+
+    from plone import api
+    folder = api.content.create(container=portal, type='Folder', id='folder_three', title='Folder Three')
+    api.user.grant_roles(username='jane',
+        roles=['Editor', 'Contributor'],
+        obj=portal['folder_three']
+    )
+    api.user.revoke_roles(username='jane',
+        roles=['Editor'],
+        obj=portal['folder_three']
+    )
+
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
+    roles = api.user.get_roles(username='jane', obj=portal['folder_three'])
+    self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
