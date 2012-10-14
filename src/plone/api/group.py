@@ -232,6 +232,7 @@ def get_roles(groupname=None, group=None, obj=None):
     return group.getRoles() if obj is None else \
         super(group.__class__, group).getRolesInContext(obj)
 
+
 def grant_roles(groupname=None, group=None, roles=None, obj=None):
     """Grant roles to a group.
 
