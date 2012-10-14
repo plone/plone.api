@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """Boilerplate for doctest functional tests."""
 
+from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_INTEGRATION_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import applyProfile
 from plone.testing import layered
-from zope.testing import renormalizing
 from plone.testing.z2 import Browser
+from zope.testing import renormalizing
 
 import doctest
 import manuel.codeblock

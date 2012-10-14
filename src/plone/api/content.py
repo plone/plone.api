@@ -1,22 +1,23 @@
 """Module that provides functionality for content manipulation."""
 
 from App.config import getConfiguration
+from plone.api import portal
+from plone.api.exc import InvalidParameterError
+from plone.api.exc import MissingParameterError
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.Archetypes.interfaces.base import IBaseObject
-from Products.CMFPlone.utils import getToolByName
-from zope.app.container.interfaces import INameChooser
-from zope.component import getMultiAdapter, getSiteManager
-from zope.interface import Interface, providedBy
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFPlone.utils import getToolByName
+from zope.app.container.interfaces import INameChooser
+from zope.component import getMultiAdapter
+from zope.component import getSiteManager
+from zope.interface import Interface
+from zope.interface import providedBy
 
 import random
 import transaction
-
-from plone.api.exc import InvalidParameterError
-from plone.api.exc import MissingParameterError
-from plone.api import portal
 
 
 def create(container=None,

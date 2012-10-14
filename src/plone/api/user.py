@@ -1,14 +1,13 @@
 """ Module that provides functionality for user manipulation """
 
-from Products.CMFPlone.utils import getToolByName
-from plone.api import portal
-from plone.api.exc import MissingParameterError
-from plone.api.exc import InvalidParameterError
-
 from AccessControl.Permission import getPermissions
 from AccessControl.SecurityManagement import getSecurityManager
-from AccessControl.SecurityManagement import setSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import setSecurityManager
+from plone.api import portal
+from plone.api.exc import InvalidParameterError
+from plone.api.exc import MissingParameterError
+from Products.CMFPlone.utils import getToolByName
 from zope.globalrequest import getRequest
 
 import random

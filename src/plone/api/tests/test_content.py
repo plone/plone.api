@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api content."""
-import mock
-import unittest2 as unittest
-import pkg_resources
-from zExceptions import BadRequest
+
 from Acquisition import aq_base
+from OFS.CopySupport import CopyError
+from plone import api
+from plone.api.tests.base import INTEGRATION_TESTING
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
+from zExceptions import BadRequest
 from zope.component import getUtility
-from OFS.CopySupport import CopyError
+
+import mock
+import pkg_resources
+import unittest2 as unittest
 
 try:
     pkg_resources.get_distribution('plone.dexterity')
@@ -17,9 +21,6 @@ except pkg_resources.DistributionNotFound:
     pass
 else:
     HAS_DEXTERITY = True
-
-from plone import api
-from plone.api.tests.base import INTEGRATION_TESTING
 
 
 class TestPloneApiContent(unittest.TestCase):

@@ -1,18 +1,18 @@
-from email.utils import formataddr, parseaddr
 
 from Acquisition import aq_inner
-from Products.CMFPlone.utils import getToolByName
-from Products.statusmessages.interfaces import IStatusMessage
-from zope.component.hooks import getSite
-from zope.component import getMultiAdapter
-from zope.component import getUtility
-from zope.globalrequest import getRequest
-from plone.app.layout.navigation.root import getNavigationRootObject
-from plone.registry.interfaces import IRegistry
-
+from email.utils import formataddr
+from email.utils import parseaddr
+from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
-from plone.api.exc import CannotGetPortalError
+from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.component.hooks import getSite
+from zope.globalrequest import getRequest
 
 
 def get():
