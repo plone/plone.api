@@ -3,7 +3,9 @@
 from Products.CMFPlone.utils import getToolByName
 from plone.api import portal
 from AccessControl.Permission import getPermissions
-from AccessControl.SecurityManagement import getSecurityManager, setSecurityManager, newSecurityManager
+from AccessControl.SecurityManagement import getSecurityManager
+from AccessControl.SecurityManagement import setSecurityManager
+from AccessControl.SecurityManagement import newSecurityManager
 from zope.globalrequest import getRequest
 
 import random
