@@ -29,9 +29,9 @@ $(python):
 	@touch $@
 
 tests: .installed.cfg
-	bin/test
-	bin/pyflakes src/
-	bin/pep8 --ignore=$(pep8_ignores) src/
+	@bin/test
+	@bin/pyflakes src/
+	@bin/pep8 --ignore=$(pep8_ignores) src/
 
 clean:
 	@rm -rf .installed.cfg bin docs/html parts develop-eggs \
