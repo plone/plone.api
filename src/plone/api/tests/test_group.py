@@ -59,7 +59,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         group = self.group_tool.getGroupById('ham')
         self.assertEqual(ham_group, group)
-        self.assertIn('Editor',  ham_group.getRoles())
+        self.assertIn('Editor', ham_group.getRoles())
         self.assertIn('Reviewer', ham_group.getMemberIds())
 
     def test_get_constraints(self):

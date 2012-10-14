@@ -47,8 +47,8 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
     self.assertEquals(group.id, 'board_members')
     self.assertEquals(group.getProperty('title'), 'Board members')
     self.assertEquals(group.getProperty('description'), 'Just a description')
-    assert 'Readers' in group.getRoles()
-    assert 'Site Administrators' in group.getMemberIds()
+    self.assertIn('Readers', group.getRoles())
+    self.assertIn('Site Administrators', group.getMemberIds())
 
 
 .. _group_get_example:
@@ -97,8 +97,8 @@ Groups can be edited by using the ``group_tool``. In this example the ``title``,
 
     self.assertEqual(title, 'Staff')
     self.assertEqual(description, 'Just a description')
-    assert 'Editor' in roles
-    assert 'Reader' in roles
+    self.assertIn('Editor', roles)
+    self.assertIn('Reader', roles)
 
 
 .. _group_get_all_groups_example:
@@ -178,7 +178,7 @@ or the group object you want to delete.
 
 .. invisible-code-block:: python
 
-    assert not api.group.get(groupname='unwanted')
+    self.assertIsNone(api.group.get(groupname='unwanted'))
 
 .. code-block:: python
 
@@ -187,7 +187,7 @@ or the group object you want to delete.
 
 .. invisible-code-block:: python
 
-    assert not api.group.get(groupname='unwanted')
+    self.assertIsNone(api.group.get(groupname='unwanted'))
 
 
 .. _group_add_user_example:
@@ -208,7 +208,7 @@ to the group.
 
 .. invisible-code-block:: python
 
-    assert 'staff' in [g.id for g in api.group.get_groups(username='bob')]
+    self.assertIn('staff', [g.id for g in api.group.get_groups(username='bob')])
 
 
 .. _group_remove_user_example:
@@ -228,7 +228,7 @@ want to remove from the group.
 
 .. invisible-code-block:: python
 
-    assert 'staff' not in [g.id for g in api.group.get_groups(username='bob')]
+    self.assertNotIn('staff', [g.id for g in api.group.get_groups(username='bob')])
 
 
 .. _group_get_roles_example:
@@ -242,8 +242,13 @@ By default it returns site-wide roles.
 .. code-block:: python
 
     from plone import api
-    # roles = api.group.get_roles(groupname='staff')
-    # Not implemented yet
+    roles = api.group.get_roles(groupname='staff')
+
+.. invisible-code-block:: python
+
+    EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader']
+    self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
+    
 
 If you pass in a content object, it will return local roles of the group
 in that particular context.
@@ -252,50 +257,51 @@ in that particular context.
 
     from plone import api
     portal = api.portal.get()
-    # roles = api.group.get_roles(groupname='staff', obj=portal['blog'])
-    # Not implemented yet
+    folder = api.content.create(container=portal, type='Folder', id='folder_four', title='Folder Four')
+    roles = api.group.get_roles(groupname='staff', obj=portal['folder_four'])
 
+.. invisible-code-block:: python
 
-.. _group_get_permissions_example:
+    self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
 
-Get group permissions
----------------------
-
-The :meth:`api.group.get_permissions` method is used to getting group's
-permissions. By default it returns site-wide permissions.
-
-.. code-block:: python
-
-    from plone import api
-    # permissions = api.group.get_permissions(groupname='staff')
-    # Not implemented yet
-
-If you pass in a content object, it will return local permissions of the group
-in that particular context.
-
-.. code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    # permissions = api.group.get_permissions(
-    #    groupname='staff', obj=portal['blog'])
-    # Not implemented yet
-
-
+ 
 .. _group_grant_roles_example:
 
 Grant roles to group
 --------------------
 
-The :meth:`api.group.grant_roles` allows us to grant a list of roles to the
+The :meth:`api.group.grant_roles` allows us to grant a list of roles site-wide to the
 group.
 
 .. code-block:: python
 
     from plone import api
-    # api.group.grant_roles(groupname='staff',
-    #    roles=['Reviewer, SiteAdministrator'])
-    # Not implemented yet
+    api.group.grant_roles(groupname='staff',
+        roles=['Reviewer, SiteAdministrator'])
+
+.. invisible-code-block:: python
+
+    EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader', 'Reviewer, SiteAdministrator']
+    roles = api.group.get_roles(groupname='staff')
+    self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
+
+
+If you pass in a content object, it will grant these roles in that particular context.
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    folder = api.content.create(container=portal, type='Folder', id='folder_five', title='Folder Five')
+    api.group.grant_roles(groupname='staff',
+        roles=['Contributor'],
+        obj=portal['folder_five'])
+
+.. invisible-code-block:: python
+
+    EXPECTED_CONTEXT_ROLES = EXPECTED_SITE_ROLES + ['Contributor']
+    roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'])
+    self.assertEqual(set(EXPECTED_CONTEXT_ROLES), set(roles))
 
 
 .. _group_revoke_roles_example:
@@ -309,7 +315,28 @@ group.
 .. code-block:: python
 
     from plone import api
-    # api.group.revoke_roles(groupname='staff',
-    #    roles=['Reviewer, SiteAdministrator'])
-    # Not implemented yet
+    api.group.revoke_roles(groupname='staff',
+        roles=['Reviewer, SiteAdministrator'])
 
+.. invisible-code-block:: python
+
+    EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader']
+    roles = api.group.get_roles(groupname='staff')
+    self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
+
+
+If you pass in a content object, it will grant these roles in that particular context.
+
+.. code-block:: python
+
+    from plone import api
+    api.group.revoke_roles(groupname='staff',
+        roles=['Contributor'],
+        obj=portal['folder_five'])
+
+
+.. invisible-code-block:: python
+
+    EXPECTED_CONTEXT_ROLES.remove('Contributor')
+    roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'])
+    self.assertEqual(set(EXPECTED_CONTEXT_ROLES), set(roles))
