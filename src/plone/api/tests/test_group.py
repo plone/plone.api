@@ -253,11 +253,133 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertNotIn('bob', group.getMemberIds())
         self.assertNotIn('jane', group.getMemberIds())
 
-    def test_get_roles(self):
-        """ Test get roles from a group """
+    def test_grant_roles(self):
+        """ Test grant roles """
 
-        api.group.create(groupname='staff')
-        api.user.create(email='jane@plone.org', username='jane')
-        api.user.create(email='bob@plone.org', username='bob')
-        api.group.add_user(groupname='staff', username='jane')
-        api.group.add_user(groupname='staff', username='bob')
+        group = api.group.create(groupname='foo')
+
+        self.assertRaises(
+            ValueError,
+            api.group.grant_roles,
+            groupname='foo',
+            roles=['Anonymous'])
+
+        self.assertRaises(
+            ValueError,
+            api.group.grant_roles,
+            groupname='foo',
+            roles=['Authenticated'])
+
+        self.assertRaises(
+            ValueError,
+            api.group.grant_roles,
+            groupname='foo',
+            group=group)
+
+        api.group.grant_roles(groupname='foo', roles=['Editor'])
+        self.assertIn('Editor', api.group.get_roles(groupname='foo'))
+        self.assertIn('Editor', api.group.get_roles(group=group))
+
+        api.group.grant_roles(groupname='foo', roles=('Contributor',))
+        self.assertIn('Contributor', api.group.get_roles(groupname='foo'))
+        self.assertIn('Contributor', api.group.get_roles(group=group))
+
+        api.group.grant_roles(groupname='foo', roles=['Reader', 'Reader'])
+        ROLES = {'Editor', 'Contributor', 'Reader', 'Authenticated'}
+        self.assertEqual(ROLES, set(api.group.get_roles(groupname='foo')))
+        self.assertEqual(ROLES, set(api.group.get_roles(group=group)))
+
+    def test_revoke_roles(self):
+        """ Test revoke roles """
+
+        group = api.group.create(groupname='bar')
+
+        self.assertRaises(
+            ValueError,
+            api.group.grant_roles,
+            groupname='bar',
+            roles=['Anonymous'])
+
+        self.assertRaises(
+            ValueError,
+            api.group.grant_roles,
+            groupname='bar',
+            roles=['Authenticated'])
+
+        self.assertRaises(
+            ValueError,
+            api.group.grant_roles,
+            groupname='bar',
+            group=group)
+
+        api.group.grant_roles(groupname='bar', roles=['Reviewer', 'Editor'])
+
+        api.group.revoke_roles(groupname='bar', roles=['Reviewer'])
+        self.assertNotIn('Reviewer', api.group.get_roles(groupname='bar'))
+        self.assertNotIn('Reviewer', api.group.get_roles(group=group))
+        self.assertIn('Editor', api.group.get_roles(groupname='bar'))
+        self.assertIn('Editor', api.group.get_roles(group=group))
+
+        api.group.revoke_roles(groupname='bar', roles=['Editor'])
+        ROLES = {'Authenticated'}
+        self.assertEqual(ROLES, set(api.group.get_roles(groupname='bar')))
+        self.assertEqual(ROLES, set(api.group.get_roles(group=group)))
+
+    def test_grant_roles_in_context(self):
+        """ Test grant roles """
+
+        group = api.group.create(groupname='foo')
+
+        portal = api.portal.get()
+        folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
+        document = api.content.create(container=folder, type='Document', id='document_one', title='Document One')
+
+        api.group.grant_roles(groupname='foo', roles=['Editor'], obj=folder)
+        self.assertIn('Editor', api.group.get_roles(groupname='foo', obj=folder))
+        self.assertIn('Editor', api.group.get_roles(group=group, obj=folder))
+        self.assertIn('Editor', api.group.get_roles(groupname='foo', obj=document))
+        self.assertIn('Editor', api.group.get_roles(group=group, obj=document))
+
+        api.group.grant_roles(groupname='foo', roles=('Contributor',), obj=folder)
+        self.assertIn('Contributor', api.group.get_roles(groupname='foo', obj=folder))
+        self.assertIn('Contributor', api.group.get_roles(group=group, obj=folder))
+        self.assertIn('Contributor', api.group.get_roles(groupname='foo', obj=document))
+        self.assertIn('Contributor', api.group.get_roles(group=group, obj=document))
+
+        ROLES = {'Editor', 'Contributor', 'Authenticated'}
+        self.assertEqual(ROLES, set(api.group.get_roles(groupname='foo', obj=folder)))
+        self.assertEqual(ROLES, set(api.group.get_roles(group=group, obj=folder)))
+        self.assertEqual(ROLES, set(api.group.get_roles(groupname='foo', obj=document)))
+        self.assertEqual(ROLES, set(api.group.get_roles(group=group, obj=document)))
+
+    def test_revoke_roles_in_context(self):
+        """ Test revoke roles """
+
+        group = api.group.create(groupname='ploneboat')
+
+        portal = api.portal.get()
+        folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
+        document = api.content.create(container=folder, type='Document', id='document_one', title='Document One')
+        api.group.grant_roles(groupname='ploneboat', roles=['Reviewer', 'Editor'], obj=folder)
+
+        api.group.revoke_roles(groupname='ploneboat', roles=['Reviewer'], obj=folder)
+        self.assertIn('Editor', api.group.get_roles(groupname='ploneboat', obj=folder))
+        self.assertIn('Editor', api.group.get_roles(group=group, obj=folder))
+        self.assertIn('Editor', api.group.get_roles(groupname='ploneboat', obj=document))
+        self.assertIn('Editor', api.group.get_roles(group=group, obj=document))
+        self.assertNotIn('Reviewer', api.group.get_roles(groupname='ploneboat', obj=folder))
+        self.assertNotIn('Reviewer', api.group.get_roles(group=group, obj=folder))
+        self.assertNotIn('Reviewer', api.group.get_roles(groupname='ploneboat', obj=document))
+        self.assertNotIn('Reviewer', api.group.get_roles(group=group, obj=document))
+
+        api.group.revoke_roles(groupname='ploneboat', roles=['Editor'], obj=folder)
+        self.assertNotIn('Editor', api.group.get_roles(groupname='ploneboat', obj=folder))
+        self.assertNotIn('Editor', api.group.get_roles(group=group, obj=folder))
+        self.assertNotIn('Editor', api.group.get_roles(groupname='ploneboat', obj=document))
+        self.assertNotIn('Editor', api.group.get_roles(group=group, obj=document))
+
+        ROLES = {'Authenticated'}
+        self.assertEqual(ROLES, set(api.group.get_roles(groupname='ploneboat', obj=folder)))
+        self.assertEqual(ROLES, set(api.group.get_roles(group=group, obj=folder)))
+        self.assertEqual(ROLES, set(api.group.get_roles(groupname='ploneboat', obj=document)))
+        self.assertEqual(ROLES, set(api.group.get_roles(group=group, obj=document)))
