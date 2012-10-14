@@ -4,7 +4,7 @@ python:
   - 2.7
 
 script:
-  - make version=$TRAVIS_PYTHON_VERSION tests
+  - make python=$( which python ) tests
 
 notifications:
   irc:
