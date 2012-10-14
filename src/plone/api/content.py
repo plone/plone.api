@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Module that provides functionality for content manipulation."""
 
 from App.config import getConfiguration

@@ -1,4 +1,5 @@
-""" Module that provides functionality for group manipulation """
+# -*- coding: utf-8 -*-
+"""Module that provides functionality for group manipulation."""
 
 from plone.api import portal
 from plone.api.user import get as user_get

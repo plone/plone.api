@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Tests for plone.api group."""
+"""Tests for plone.api.group."""
 
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING

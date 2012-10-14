@@ -1,4 +1,5 @@
-"""Module for plone.api specific Exceptions."""
+# -*- coding: utf-8 -*-
+"""Exceptions raised by plone.api methods."""
 
 
 class PloneApiError(Exception):

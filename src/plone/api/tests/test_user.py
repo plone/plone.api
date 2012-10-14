@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Tests for plone.api user manipulation."""
+"""Tests for plone.api.user."""
 
 from plone import api
 from plone.api.exc import InvalidParameterError

@@ -1,4 +1,5 @@
-""" Module that provides functionality for user manipulation """
+# -*- coding: utf-8 -*-
+"""Module that provides functionality for user manipulation."""
 
 from AccessControl.Permission import getPermissions
 from AccessControl.SecurityManagement import getSecurityManager

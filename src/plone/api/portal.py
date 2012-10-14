@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+"""Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
 from email.utils import formataddr
