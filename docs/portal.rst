@@ -202,12 +202,56 @@ the user.
 Get plone.app.registry record
 -----------------------------
 
-Plone comes with a package ``plone.app.registry`` that provides a common way to
-store various configuration and settings. The
-:meth:`api.portal.get_registry_record` provides an easy way to access these
-records.
+Plone comes with a package ``plone.app.registry`` that provides a common way
+to store various configuration and settings.
+:meth:`api.portal.get_registry_record` provides an easy way to access these.
+
+.. invisible-code-block:: python
+
+    from plone.registry.interfaces import IRegistry
+    from plone.registry.record import Record
+    from plone.registry import field
+    from zope.component import getUtility
+    registry = getUtility(IRegistry)
+    registry.records['my.package.someoption'] = Record(field.Bool(
+            title=u"Foo"))
+    registry['my.package.someoption'] = True
 
 .. code-block:: python
 
     from plone import api
-    # Not implemented yet
+    api.portal.get_registry_record('my.package.someoption')
+
+.. invisible-code-block:: python
+
+    self.assertTrue(api.portal.get_registry_record('my.package.someoption'))
+
+
+.. _portal_set_registry_record_example:
+
+Set plone.app.registry record
+-----------------------------
+
+Plone comes with a package ``plone.app.registry`` that provides a common way
+to store various configuration and settings.
+:meth:`api.portal.set_registry_record` provides an easy way to change these.
+
+.. invisible-code-block:: python
+
+    from plone.registry.interfaces import IRegistry
+    from plone.registry.record import Record
+    from plone.registry import field
+    from zope.component import getUtility
+    registry = getUtility(IRegistry)
+    registry.records['my.package.someoption'] = Record(field.Bool(
+            title=u"Foo"))
+    registry['my.package.someoption'] = True
+
+.. code-block:: python
+
+    from plone import api
+    api.portal.set_registry_record('my.package.someoption', False)
+
+.. invisible-code-block:: python
+
+    self.assertFalse(registry['my.package.someoption'])
