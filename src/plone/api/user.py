@@ -230,6 +230,9 @@ def get_permissions(username=None, user=None, obj=None):
     if username and user:
         raise ValueError
 
+    if obj is None:
+        obj = portal.get()
+
     # holds the initial security context
     current_security_manager = getSecurityManager()
 

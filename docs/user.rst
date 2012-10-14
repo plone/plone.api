@@ -249,13 +249,27 @@ Get user permissions
 --------------------
 
 The :meth:`api.user.get_permissions` method is used to getting user's
-permissions. By default it returns site-wide permissions.
+permissions. By default it returns site root permissions.
 
 .. code-block:: python
 
     from plone import api
-    # permissions = api.user.get_permissions(username='jane')
-    # Not implemented yet
+    mike = api.user.create(email='mike@plone.org', username='mike')
+    permissions = api.user.get_permissions(username='mike')
+
+.. invisible-code-block:: python
+
+    PERMISSIONS = {
+        'View': True,
+        'Manage portal': False,
+        'Modify portal content': False,
+        'Access contents information': True,
+    }
+
+    for k, v in PERMISSIONS.items():
+        self.assertTrue(v == api.user.get_permissions(username='mike').get(k, None))
+        self.assertTrue(v == api.user.get_permissions(user=mike).get(k, None))
+
 
 If you pass in a content object, it will return local permissions of the user
 in that particular context.
@@ -264,9 +278,21 @@ in that particular context.
 
     from plone import api
     portal = api.portal.get()
-    # permissions = api.user.get_permissions(
-    #    username='jane', obj=portal['blog'])
-    # Not implemented yet
+    folder = api.content.create(container=portal, type='Folder', id='folder_two', title='Folder Two')
+    permissions = api.user.get_permissions(username='mike', obj=portal['folder_two'])
+
+.. invisible-code-block:: python
+
+    PERMISSIONS = {
+        'View': False,
+        'Manage portal': False,
+        'Modify portal content': False,
+        'Access contents information': False,
+    }
+
+    for k, v in PERMISSIONS.items():
+        self.assertTrue(v == api.user.get_permissions(username='mike', obj=portal['folder_two']).get(k, None))
+        self.assertTrue(v == api.user.get_permissions(user=mike, obj=portal['folder_two']).get(k, None))
 
 
 .. _user_grant_roles_example:
