@@ -252,3 +252,12 @@ class TestPloneApiGroup(unittest.TestCase):
 
         self.assertNotIn('bob', group.getMemberIds())
         self.assertNotIn('jane', group.getMemberIds())
+
+    def test_get_roles(self):
+        """ Test get roles from a group """
+
+        api.group.create(groupname='staff')
+        api.user.create(email='jane@plone.org', username='jane')
+        api.user.create(email='bob@plone.org', username='bob')
+        api.group.add_user(groupname='staff', username='jane')
+        api.group.add_user(groupname='staff', username='bob')
