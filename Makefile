@@ -14,7 +14,6 @@ docs/html/index.html: docs/*.rst src/plone/api/*.py bin/sphinx-build
 	bin/sphinx-build docs docs/html
 	@touch $@
 	@echo "Documentation was generated at '$@'."
-	@which open | xargs -J% % $@
 
 bin/sphinx-build: .installed.cfg
 	@touch $@
