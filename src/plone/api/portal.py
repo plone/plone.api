@@ -218,7 +218,7 @@ def set_registry_record(name=None, value=None):
     """
     if not name:
         raise MissingParameterError(u"Missing required parameter: name")
-    if not value:
+    if value is None:
         raise MissingParameterError(u"Missing required parameter: value")
     if not isinstance(name, str):
         raise InvalidParameterError(u"The parameter 'name' has to be a string")
