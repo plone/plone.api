@@ -1,7 +1,7 @@
 # convenience makefile to boostrap & run buildout
 
 version = 2.7
-python = python$(version)
+python = bin/python$(version)
 options =
 
 all: docs tests
@@ -16,15 +16,20 @@ bin/sphinx-build: .installed.cfg
 .installed.cfg: bin/buildout buildout.cfg
 	bin/buildout $(options)
 
-bin/buildout: buildout.cfg bootstrap.py
+bin/buildout: $(python) buildout.cfg bootstrap.py
 	$(python) bootstrap.py -d
-	@touch bin/buildout
+	@touch $@
+
+$(python):
+	virtualenv-$(version) --no-site-packages .
+	@touch $@
 
 tests: .installed.cfg
 	@bin/test
 
 clean:
-	-rm -rf .installed.cfg bin docs/html parts develop-eggs src/plone.api.egg-info
+	@rm -rf .installed.cfg bin docs/html parts develop-eggs \
+		src/plone.api.egg-info lib include .Python
 
 .PHONY: all docs tests clean
 
