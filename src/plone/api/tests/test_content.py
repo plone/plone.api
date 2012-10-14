@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api content."""
 import mock
-import unittest
+import unittest2 as unittest
 import pkg_resources
 from zExceptions import BadRequest
 from Acquisition import aq_base
