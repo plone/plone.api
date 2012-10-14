@@ -306,7 +306,9 @@ user.
 .. code-block:: python
 
     from plone import api
-    api.user.grant_roles(username='jane', roles=['Reviewer', 'SiteAdministrator'])
+    api.user.grant_roles(username='jane',
+        roles=['Reviewer', 'SiteAdministrator']
+    )
 
 .. invisible-code-block:: python
 
@@ -322,7 +324,10 @@ But all site wide roles will be also returned by :meth:`api.user.get_roles` to t
 
     from plone import api
     folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
-    api.user.grant_roles(username='jane', roles=['Editor', 'Contributor'], obj=portal['folder_one'])
+    api.user.grant_roles(username='jane',
+        roles=['Editor', 'Contributor'],
+        obj=portal['folder_one']
+    )
 
 .. invisible-code-block:: python
 
@@ -344,6 +349,34 @@ user.
 .. code-block:: python
 
     from plone import api
-    # api.user.revoke_roles(username='jane',
-    #    roles=['Reviewer, SiteAdministrator'])
-    # Not implemented yet
+    api.user.revoke_roles(username='jane',
+        roles=['SiteAdministrator']
+    )
+
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_SITE = ['Member', 'Authenticated', 'Reviewer']
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+
+
+If you pass a context object the local roles will be removed.
+
+.. code-block:: python
+
+    from plone import api
+    folder = api.content.create(container=portal, type='Folder', id='folder_three', title='Folder Three')
+    api.user.grant_roles(username='jane',
+        roles=['Editor', 'Contributor'],
+        obj=portal['folder_three']
+    )
+    api.user.revoke_roles(username='jane',
+        roles=['Editor'],
+        obj=portal['folder_three']
+    )
+
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
+    roles = api.user.get_roles(username='jane', obj=portal['folder_three'])
+    self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
