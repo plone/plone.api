@@ -91,16 +91,10 @@ class TestPloneApiGroup(unittest.TestCase):
         """Test that exception is raised if wrong arguments are given."""
 
         # username and user are mutually exclusive
-        user = mock.Mock()
-        # user = api.user.create(
-        #     username='chuck',
-        #     email='chuck@norris.org',
-        #     password='secret'
-        # )
         self.assertRaises(
             ValueError,
             api.group.get_groups,
-            username='chuck', user=user,
+            username='chuck', user=mock.Mock(),
         )
 
     def test_get_users_groups(self):
@@ -129,12 +123,11 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertRaises(ValueError, api.group.delete)
 
         # groupname and group are mutually exclusive
-        bacon_mock = mock.Mock()
         self.assertRaises(
             ValueError,
             api.group.delete,
             groupname='bacon',
-            group=bacon_mock
+            group=mock.Mock()
         )
 
     def test_delete(self):
@@ -157,19 +150,17 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_add_user_contraints(self):
         """Test the constraints when a user is added to a group."""
 
-        group, user = mock.Mock(), mock.Mock()
-
-        # Arguments ``groupname`` and ``group`` are also mutually exclusive.
+        # Arguments ``groupname`` and ``group`` are mutually exclusive.
         self.assertRaises(
             ValueError,
             api.group.add_user,
-            groupname='staff', group=group
+            groupname='staff', group=mock.Mock()
         )
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
             ValueError,
             api.group.add_user,
-            username='staff', user=user
+            username='staff', user=mock.Mock()
         )
         self.assertRaises(ValueError, api.group.add_user, groupname='staff')
         self.assertRaises(ValueError, api.group.add_user, username='jane')
@@ -177,8 +168,8 @@ class TestPloneApiGroup(unittest.TestCase):
             ValueError,
             api.group.add_user,
             username='jane',
-            group='group',
-            groupname='staff'
+            groupname='staff',
+            group=mock.Mock(),
         )
 
     def test_add_user(self):
@@ -205,19 +196,17 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_remove_user_contraints(self):
         """Test the constraints when a user is removed from a group."""
 
-        group, user = mock.Mock(), mock.Mock()
-
-        # Arguments ``groupname`` and ``group`` are also mutually exclusive.
+        # Arguments ``groupname`` and ``group`` are mutually exclusive.
         self.assertRaises(
             ValueError,
             api.group.remove_user,
-            groupname='staff', group=group
+            groupname='staff', group=mock.Mock()
         )
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
             ValueError,
             api.group.remove_user,
-            username='staff', user=user
+            username='staff', user=mock.Mock()
         )
         self.assertRaises(ValueError, api.group.remove_user, groupname='staff')
         self.assertRaises(ValueError, api.group.remove_user, username='jane')
@@ -254,7 +243,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertNotIn('jane', group.getMemberIds())
 
     def test_grant_roles(self):
-        """ Test grant roles """
+        """Test grant roles."""
 
         group = api.group.create(groupname='foo')
 
@@ -285,12 +274,12 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn('Contributor', api.group.get_roles(group=group))
 
         api.group.grant_roles(groupname='foo', roles=['Reader', 'Reader'])
-        ROLES = {'Editor', 'Contributor', 'Reader', 'Authenticated'}
+        ROLES = set(['Editor', 'Contributor', 'Reader', 'Authenticated'])
         self.assertEqual(ROLES, set(api.group.get_roles(groupname='foo')))
         self.assertEqual(ROLES, set(api.group.get_roles(group=group)))
 
     def test_revoke_roles(self):
-        """ Test revoke roles """
+        """Test revoke roles."""
 
         group = api.group.create(groupname='bar')
 
@@ -321,12 +310,12 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn('Editor', api.group.get_roles(group=group))
 
         api.group.revoke_roles(groupname='bar', roles=['Editor'])
-        ROLES = {'Authenticated'}
+        ROLES = set(['Authenticated'])
         self.assertEqual(ROLES, set(api.group.get_roles(groupname='bar')))
         self.assertEqual(ROLES, set(api.group.get_roles(group=group)))
 
     def test_grant_roles_in_context(self):
-        """ Test grant roles """
+        """Test grant roles."""
 
         group = api.group.create(groupname='foo')
 
@@ -346,14 +335,14 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn('Contributor', api.group.get_roles(groupname='foo', obj=document))
         self.assertIn('Contributor', api.group.get_roles(group=group, obj=document))
 
-        ROLES = {'Editor', 'Contributor', 'Authenticated'}
+        ROLES = set(['Editor', 'Contributor', 'Authenticated'])
         self.assertEqual(ROLES, set(api.group.get_roles(groupname='foo', obj=folder)))
         self.assertEqual(ROLES, set(api.group.get_roles(group=group, obj=folder)))
         self.assertEqual(ROLES, set(api.group.get_roles(groupname='foo', obj=document)))
         self.assertEqual(ROLES, set(api.group.get_roles(group=group, obj=document)))
 
     def test_revoke_roles_in_context(self):
-        """ Test revoke roles """
+        """Test revoke roles."""
 
         group = api.group.create(groupname='ploneboat')
 
@@ -378,7 +367,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertNotIn('Editor', api.group.get_roles(groupname='ploneboat', obj=document))
         self.assertNotIn('Editor', api.group.get_roles(group=group, obj=document))
 
-        ROLES = {'Authenticated'}
+        ROLES = set(['Authenticated', ])
         self.assertEqual(ROLES, set(api.group.get_roles(groupname='ploneboat', obj=folder)))
         self.assertEqual(ROLES, set(api.group.get_roles(group=group, obj=folder)))
         self.assertEqual(ROLES, set(api.group.get_roles(groupname='ploneboat', obj=document)))
