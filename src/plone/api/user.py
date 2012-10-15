@@ -2,6 +2,9 @@
 
 from Products.CMFPlone.utils import getToolByName
 from plone.api import portal
+from plone.api.exc import MissingParameterError
+from plone.api.exc import InvalidParameterError
+
 from AccessControl.Permission import getPermissions
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
@@ -30,7 +33,8 @@ def create(email=None, username=None, password=None, roles=('Member', ),
     :returns: Newly created user
     :rtype: MemberData object
     :raises:
-        ValueError
+        MissingParameterError
+        InvalidParameterError
     :Example: :ref:`user_create_example`
     """
     if properties is None:
@@ -43,15 +47,15 @@ def create(email=None, username=None, password=None, roles=('Member', ),
         email = properties.get('email')
 
     if not email:
-        raise ValueError("You need to pass the new user's email.")
+        raise MissingParameterError("You need to pass the new user's email.")
 
     site = portal.get()
     props = site.portal_properties
     use_email_as_username = props.site_properties.use_email_as_login
 
     if not use_email_as_username and not username:
-        raise ValueError("The portal is configured to use username that is \
-            not email so you need to pass a username.")
+        raise InvalidParameterError("The portal is configured to use username \
+        that is not email so you need to pass a username.")
 
     registration = getToolByName(site, 'portal_registration')
     user_id = use_email_as_username and email or username
@@ -81,11 +85,11 @@ def get(username=None):
     :returns: User
     :rtype: MemberData object
     :raises:
-        ValueError
+        MissingParameterError
     :Example: :ref:`user_get_example`
     """
     if not username:
-        raise ValueError
+        raise MissingParameterError
 
     portal_membership = getToolByName(portal.get(), 'portal_membership')
     return portal_membership.getMemberById(username)
@@ -96,8 +100,6 @@ def get_current():
 
     :returns: Currently logged-in user
     :rtype: MemberData object
-    :raises:
-        ValueError
     :Example: :ref:`user_get_current_example`
     """
     portal_membership = getToolByName(portal.get(), 'portal_membership')
@@ -107,14 +109,14 @@ def get_current():
 def get_users(groupname=None, group=None):
     """Get all users or all users filtered by group.
 
-    Arguments ``group`` and ``groupname`` are mutually exclusive. You can either
-    set one or the other, but not both.
+    Arguments ``group`` and ``groupname`` are mutually exclusive.
+    You can either set one or the other, but not both.
 
     :param groupname: Groupname of the group of which to return users. If set,
         only return users that are member of this group.
     :type username: string
-    :param group: Group of which to return users. If set, only return users that
-        are member of this group.
+    :param group: Group of which to return users.
+        If set, only return users that are member of this group.
     :type group: GroupData object
     :returns: All users (optionlly filtered by group)
     :rtype: List of MemberData objects
@@ -123,12 +125,13 @@ def get_users(groupname=None, group=None):
     """
 
     if groupname and group:
-        raise ValueError
+        raise InvalidParameterError
 
     if groupname:
         group_tool = getToolByName(portal.get(), 'portal_groups')
         group = group_tool.getGroupById(groupname)
         if not group:
+            # XXX This should raise a custom plone.api exception
             raise ValueError
 
     portal_membership = getToolByName(portal.get(), 'portal_membership')
@@ -150,14 +153,15 @@ def delete(username=None, user=None):
     :param user: User object to be deleted.
     :type user: MemberData object
     :raises:
-        ValueError
+        MissingParameterError
+        InvalidParameterError
     :Example: :ref:`user_delete_example`
     """
     if not username and not user:
-        raise ValueError
+        raise MissingParameterError
 
     if username and user:
-        raise ValueError
+        raise InvalidParameterError
 
     portal_membership = getToolByName(portal.get(), 'portal_membership')
     user_id = username or user.id
@@ -185,16 +189,16 @@ def get_roles(username=None, user=None, obj=None):
     :type username: string
     :param user: User object for which to get roles.
     :type user: MemberData object
-    :param obj: If obj is set then return local roles on this context. If obj is
-        not given, the site root local roles will be returned.
+    :param obj: If obj is set then return local roles on this context.
+        If obj is not given, the site root local roles will be returned.
     :type obj: content object
     :raises:
-        ValueError
+        MissingParameterError
     :Example: :ref:`user_get_roles_example`
     """
 
     if username and user:
-        raise ValueError
+        raise InvalidParameterError
 
     portal_membership = getToolByName(portal.get(), 'portal_membership')
 
@@ -206,6 +210,7 @@ def get_roles(username=None, user=None, obj=None):
 
     user = portal_membership.getMemberById(username)
     if user is None:
+        # XXX This needs a custom plone.api error
         raise ValueError
 
     return user.getRolesInContext(obj) if obj is not None else user.getRoles()
@@ -218,19 +223,21 @@ def get_permissions(username=None, user=None, obj=None):
     can either set one or the other, but not both. if ``username`` and
     ``user`` are not given, the authenticated member will be used.
 
-    :param username: Username of the user for which you want to check the permissions.
+    :param username: Username of the user for which you want to check
+        the permissions.
     :type username: string
     :param user: User object for which you want to check the permissions.
     :type user: MemberData object
-    :param obj: If obj is set then check the permissions on this context. If obj is not given, the site root will be used.
+    :param obj: If obj is set then check the permissions on this context.
+        If obj is not given, the site root will be used.
     :type obj: content object
     :raises:
-        ValueError
+        InvalidParameterError
     :Example: :ref:`user_get_permissions_example`
     """
 
     if username and user:
-        raise ValueError
+        raise InvalidParameterError
 
     if obj is None:
         obj = portal.get()
@@ -248,6 +255,7 @@ def get_permissions(username=None, user=None, obj=None):
 
     user = portal_membership.getMemberById(username)
     if user is None:
+        # XXX This needs a custom plone.api error
         raise ValueError
     newSecurityManager(getRequest(), user)
 
@@ -279,15 +287,16 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     :param roles: List of roles to grant
     :type roles: list of strings
     :raises:
-        ValueError
+        InvalidParameterError
+        MissingParameterError
     :Example: :ref:`user_grant_roles_example`
     """
 
     if username and user:
-        raise ValueError
+        raise InvalidParameterError
 
     if roles is None:
-        raise ValueError
+        raise MissingParameterError
 
     if user is None:
         user = get(username=username)
@@ -295,8 +304,9 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     if isinstance(roles, tuple):
         roles = list(roles)
 
+    # These roles cannot be granted
     if 'Anonymous' in roles or 'Authenticated' in roles:
-        raise ValueError
+        raise InvalidParameterError
 
     roles.extend(get_roles(user=user, obj=obj))
 
@@ -323,14 +333,14 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     :param roles: List of roles to revoke
     :type roles: list of strings
     :raises:
-        ValueError
+        InvalidParameterError
     :Example: :ref:`user_revoke_roles_example`
     """
     if username and user:
-        raise ValueError
+        raise InvalidParameterError
 
     if roles is None:
-        raise ValueError
+        raise MissingParameterError
 
     if user is None:
         user = get(username=username)
@@ -339,7 +349,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
         roles = list(roles)
 
     if 'Anonymous' in roles or 'Authenticated' in roles:
-        raise ValueError
+        raise InvalidParameterError
 
     actual_roles = get_roles(user=user, obj=obj)
     if actual_roles.count('Anonymous'):
