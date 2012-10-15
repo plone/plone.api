@@ -5,8 +5,10 @@ from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component.hooks import getSite
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.globalrequest import getRequest
 from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.registry.interfaces import IRegistry
 
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
@@ -66,7 +68,7 @@ def get_tool(name=None):
         return getToolByName(get(), name)
     except AttributeError:
 
-        # get a list of all tools so we can display their names in the error msg
+        # get a list of all tools to display their names in the error msg
         portal = get()
         tools = []
         for id in portal.objectIds():
@@ -184,11 +186,42 @@ def show_message(message=None, request=None, type='info'):
     IStatusMessage(request).add(message, type=type)
 
 
-def get_registry_record():
-    """Not yet implemented. Easy access to the ``plone.app.registry`` configuration records.
+def get_registry_record(name=None):
+    """Get a record value from a the ``plone.app.registry``
 
-    :returns: Registry record
+    :param name: [required] Name
+    :type name: string
+    :returns: Registry record value
     :rtype: plone.app.registry registry record
-    :Example: :ref:`portal_get_registry_record_example`
+    :Example: :ref:`portal_get_registry_value_example`
     """
-    raise NotImplementedError
+    if not name:
+        raise MissingParameterError("Missing required parameter: name")
+    registry = getUtility(IRegistry)
+    if isinstance(name, str):
+        record = registry.get(name)
+        if record is None:
+            raise KeyError(u"'%s' is no existing record" % name)
+        else:
+            return record
+    raise InvalidParameterError(u"The parameter has to be a string")
+
+
+def set_registry_record(name=None, value=None):
+    """Set a record value in the ``plone.app.registry``
+
+    :param name: [required] Name of the record
+    :type name: string
+    :param value: [required] Value to set
+    :type value: python primitive
+    :Example: :ref:`portal_set_registry_value_example`
+    """
+    if not name:
+        raise MissingParameterError(u"Missing required parameter: name")
+    if value is None:
+        raise MissingParameterError(u"Missing required parameter: value")
+    if not isinstance(name, str):
+        raise InvalidParameterError(u"The parameter 'name' has to be a string")
+    registry = getUtility(IRegistry)
+    if isinstance(name, str):
+        registry[name] = value
