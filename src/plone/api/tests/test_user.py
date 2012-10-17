@@ -9,6 +9,8 @@ from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout
 from plone.app.testing import TEST_USER_NAME
+from plone.api.exc import MissingParameterError
+from plone.api.exc import InvalidParameterError
 
 
 class TestPloneApiUser(unittest.TestCase):
@@ -27,7 +29,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.portal.portal_properties.site_properties.use_email_as_login = True
 
         self.assertRaises(
-            ValueError,
+            MissingParameterError,
             api.user.create,
             username='chuck', password='secret'
         )
@@ -61,7 +63,7 @@ class TestPloneApiUser(unittest.TestCase):
         properties.manage_changeProperties(use_email_as_login=False)
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.create,
             email='chuck@norris.org', password='secret'
         )
@@ -136,7 +138,7 @@ class TestPloneApiUser(unittest.TestCase):
         when getting the user
         """
         self.assertRaises(
-            ValueError,
+            MissingParameterError,
             api.user.get
         )
 
@@ -186,8 +188,8 @@ class TestPloneApiUser(unittest.TestCase):
         self.portal.portal_properties.site_properties.use_email_as_login = True
 
         # This should fail either an username or user object should be given
-        self.assertRaises(ValueError, api.user.delete)
-        self.assertRaises(ValueError, api.user.delete,
+        self.assertRaises(MissingParameterError, api.user.delete)
+        self.assertRaises(InvalidParameterError, api.user.delete,
                           username='chuck@norris.org', user=mock.Mock())
 
         api.user.create(email='chuck@norris.org', password='secret')
@@ -229,7 +231,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.get_roles,
             username='chuck',
             user=user)
@@ -245,7 +247,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.get_permissions,
             username='chuck',
             user=user)
@@ -258,8 +260,10 @@ class TestPloneApiUser(unittest.TestCase):
         }
 
         for k, v in PERMISSIONS.items():
-            self.assertEqual(v, api.user.get_permissions(username='chuck').get(k, None))
-            self.assertEqual(v, api.user.get_permissions(user=user).get(k, None))
+            self.assertEqual(v,
+                             api.user.get_permissions(username='chuck').get(k, None))
+            self.assertEqual(v,
+                             api.user.get_permissions(user=user).get(k, None))
 
     def test_get_permissions_context(self):
         """ Test get permissions on some context"""
@@ -272,7 +276,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.get_permissions,
             username='chuck',
             user=user)
@@ -284,11 +288,21 @@ class TestPloneApiUser(unittest.TestCase):
             'Access contents information': False,
         }
 
-        folder = api.content.create(container=self.portal, type='Folder', id='folder_one', title='Folder One')
+        folder = api.content.create(
+            container=self.portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One')
 
         for k, v in PERMISSIONS.items():
-            self.assertEqual(v, api.user.get_permissions(username='chuck', obj=folder).get(k, None))
-            self.assertEqual(v, api.user.get_permissions(user=user, obj=folder).get(k, None))
+            self.assertEqual(v,
+                             api.user.get_permissions(
+                                 username='chuck',
+                                 obj=folder).get(k, None))
+            self.assertEqual(v,
+                             api.user.get_permissions(
+                                 user=user,
+                                 obj=folder).get(k, None))
 
     def test_grant_roles(self):
         """ Test grant roles """
@@ -300,19 +314,19 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
             roles=['Anonymous'])
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
             roles=['Authenticated'])
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
             user=user)
@@ -340,19 +354,19 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
             roles=['Anonymous'])
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
             roles=['Authenticated'])
 
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
             user=user)
@@ -380,8 +394,16 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         portal = api.portal.get()
-        folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
-        document = api.content.create(container=folder, type='Document', id='document_one', title='Document One')
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One')
+        document = api.content.create(
+            container=folder,
+            type='Document',
+            id='document_one',
+            title='Document One')
 
         api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
         self.assertIn('Editor', api.user.get_roles(username='chuck', obj=folder))
@@ -411,9 +433,17 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         portal = api.portal.get()
-        folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
-        document = api.content.create(container=folder, type='Document', id='document_one', title='Document One')
-        api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'], obj=folder)
+        folder = api.content.create(container=portal,
+                                    type='Folder',
+                                    id='folder_one',
+                                    title='Folder One')
+        document = api.content.create(container=folder,
+                                      type='Document',
+                                      id='document_one',
+                                      title='Document One')
+        api.user.grant_roles(username='chuck',
+                             roles=['Reviewer', 'Editor'],
+                             obj=folder)
 
         api.user.revoke_roles(username='chuck', roles=['Reviewer'], obj=folder)
         self.assertIn('Editor', api.user.get_roles(username='chuck', obj=folder))
@@ -434,5 +464,7 @@ class TestPloneApiUser(unittest.TestCase):
         ROLES = {'Authenticated', 'Member'}
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck', obj=folder)))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user, obj=folder)))
-        self.assertEqual(ROLES, set(api.user.get_roles(username='chuck', obj=document)))
-        self.assertEqual(ROLES, set(api.user.get_roles(user=user, obj=document)))
+        self.assertEqual(ROLES, set(api.user.get_roles(username='chuck',
+                                                       obj=document)))
+        self.assertEqual(ROLES, set(api.user.get_roles(user=user,
+                                                       obj=document)))
