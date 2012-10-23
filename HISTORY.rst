@@ -15,7 +15,7 @@ Changelog
 
 - Implementation of ``get_permissions()``, ``get_roles()``,
   ``grant_roles()`` and ``revoke roles()`` for users and groups.
-  [rudaporto, xiro]
+  [rudaporto, xiru]
 
 - Implementation of ``get_registry_record`` and ``set_registry_record``.
   [pbauer]
