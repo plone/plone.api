@@ -18,7 +18,7 @@ docs/html/index.html: docs/*.rst docs/contribute/*.rst docs/api/*.rst src/plone/
 bin/sphinx-build: .installed.cfg
 	@touch $@
 
-.installed.cfg: bin/buildout buildout.cfg
+.installed.cfg: bin/buildout buildout.cfg setup.py
 	bin/buildout $(options)
 
 bin/buildout: $(python) buildout.cfg bootstrap.py
