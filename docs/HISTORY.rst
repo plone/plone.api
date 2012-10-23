@@ -6,7 +6,27 @@ Changelog
 0.1b1 (Unreleased)
 ------------------
 
-- Nothing done yet.
+- Contributors guide and style guide.
+  [zupo]
+
+- Enforce PEP257 for docstrings.
+  [zupo]
+
+- Fix ``get_navigation_root()`` to return object instead of path.
+  [pbauer]
+
+- Implementation of ``get_permissions()``, ``get_roles()``,
+  ``grant_roles()`` and ``revoke roles()`` for users and groups.
+  [rudaporto, xiro]
+
+- Implementation of ``get_registry_record`` and ``set_registry_record``.
+  [pbauer]
+
+- Use `Makefile` to build the project, run tests, generat documentation, etc.
+  [witsch]
+
+- Moving all ReadTheDocs dependencies into ``rtd_requirements.txt``.
+  [zupo]
 
 
 0.1a2 (2012-09-03)
