@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1b1 (Unreleased)
+0.1b1 (2012-10-23)
 ------------------
 
 - Contributors guide and style guide.
