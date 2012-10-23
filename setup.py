@@ -27,10 +27,12 @@ setup(
     ],
     extras_require={
         'develop': [
-            'Sphinx',
+            'jarn.mkrelease',
             'manuel',
             'pep8',
             'setuptools-flakes',
+            'Sphinx',
+            'zest.releaser',
         ],
         'test': [
             'plone.app.dexterity',
