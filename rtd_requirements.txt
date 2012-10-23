@@ -1,1 +1,2 @@
 zope.location<4.0
+ZConfig>=2.9.2
