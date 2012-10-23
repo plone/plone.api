@@ -30,10 +30,11 @@ The intention is to cover 20% of tasks we do 80% of the time. Keeping everything
 in one place helps keep the API introspectable and discoverable, which are
 important aspects of being Pythonic.
 
-.. warning::
+.. note::
 
-    This package is still under heavy development. Do not use it yet unless you
-    are completely sure what you are doing.
+    This package is still in development. It's currently in Beta phase, meaning
+    that most stuff should work, but some methods might still change in the
+    future, breaking backwards compatibility. Keep that in mind when using it.
 
 
 Narrative documentation
