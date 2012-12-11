@@ -88,6 +88,15 @@ Inside each group, lines should be alphabetically sorted.
 .. _changelog:
 
 
+Restructured Text versus Plain Text
+===================================
+
+User the Restructured Text (.rst file extension) format instead of plain text
+files (.txt file extension) for all documentation, including doctest files.
+This way you get nice syntax highlighting and formating in recent text editors,
+on GitHub and with Sphinx.
+
+
 Changelog
 =========
 
