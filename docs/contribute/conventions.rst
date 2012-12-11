@@ -90,9 +90,10 @@ Versioning scheme
 
 For software versions, use a sequence-based versioning scheme:
 
-MAJOR.MINOR[.MICRO][STATUS]
+.. sourcecode::
+    MAJOR.MINOR[.MICRO][STATUS]
 
-E.g.: 1.2 or 1.2.1
+For example: 1.2 or 1.2.1
 
 Development releases get a status identifier appended to it.
 
