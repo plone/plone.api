@@ -87,16 +87,36 @@ Inside each group, lines should be alphabetically sorted.
 
 .. _changelog:
 
+
 Changelog
 =========
 
-Feature-level changes to code are tracked inside ``docs/HISTORY.txt``. Examples:
+Feature-level changes to code are tracked inside ``CHANGES.rst``. Examples:
 
-- added feature X
-- removed Y
-- fixed bug Z
+.. sourcecode:: rst
 
-Add an entry every time you add/remove a feature, fix a bug, etc.
+    Changelog
+    =========
+
+    1.0dev (unreleased)
+    -------------------
+
+    - Added feature Z.
+      [github_userid1]
+
+    - Removed Y.
+      [github_userid2]
+
+
+    1.0a1 (2012-12-12)
+    ------------------
+
+    - Fixed Bug X.
+      [github_userid1]
+
+
+Add an entry every time you add/remove a feature, fix a bug, etc. on top of the
+current development changelog block.
 
 
 .. _sphinx-docs:
