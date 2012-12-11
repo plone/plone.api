@@ -90,7 +90,6 @@ Versioning scheme
 
 For software versions, use a sequence-based versioning scheme:
 
-.. sourcecode::
     MAJOR.MINOR[.MICRO][STATUS]
 
 For example: 1.2 or 1.2.1
@@ -106,7 +105,7 @@ For release canditates use rc1..rcn: 1.3rc2.
 Restructured Text versus Plain Text
 ===================================
 
-User the Restructured Text (.rst file extension) format instead of plain text
+Use the Restructured Text (.rst file extension) format instead of plain text
 files (.txt file extension) for all documentation, including doctest files.
 This way you get nice syntax highlighting and formating in recent text editors,
 on GitHub and with Sphinx.
