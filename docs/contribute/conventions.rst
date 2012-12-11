@@ -85,7 +85,21 @@ Imports should be grouped according to the
 Inside each group, lines should be alphabetically sorted.
 
 
-.. _changelog:
+Versioning scheme
+=================
+
+For software versions, use a sequence-based versioning scheme:
+
+MAJOR.MINOR[.MICRO][STATUS]
+
+E.g.: 1.2 or 1.2.1
+
+Development releases get a status identifier appended to it.
+
+For the current development branch, just append "dev": 1.3dev. If you make a
+development release, append a development status identifier to it. For alpha
+releases append a1..an to it, like: 1.3a1. For Beta releases use b1..bn: 1.3b4.
+For release canditates use rc1..rcn: 1.3rc2.
 
 
 Restructured Text versus Plain Text
@@ -96,6 +110,8 @@ files (.txt file extension) for all documentation, including doctest files.
 This way you get nice syntax highlighting and formating in recent text editors,
 on GitHub and with Sphinx.
 
+
+.. _changelog:
 
 Changelog
 =========
