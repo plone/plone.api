@@ -55,29 +55,13 @@ instead of
     from .portal import get
 
 
-Sort imports
-============
+Grouping and sorting
+--------------------
 
-As another imports stylistic guide: Imports of code from other modules should
-always be alphabetically sorted with no empty lines between imports. The only
-exception to this rule is to keep one empty line between a group of
-``from x import y`` and a group of ``import y`` imports.
+Imports should be grouped according to the PEP8 convention:
+http://www.python.org/dev/peps/pep-0008/#imports.
 
-.. sourcecode:: python
-
-    from App.config import getConfiguration
-    from plone.app.testing import login
-
-    import os
-
-instead of
-
-.. sourcecode:: python
-
-    import os
-
-    from plone.app.testing import login
-    from App.config import getConfiguration
+Inside each group, the lines should be alphabetically sorted.
 
 
 .. _changelog:
