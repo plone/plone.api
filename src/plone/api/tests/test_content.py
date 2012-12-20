@@ -412,7 +412,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.maxDiff = None  # to see assert diff
         self.assertMultiLineEqual(
             cm.exception.message,
-            "Invalid transition 'foo'. \n"
+            "Invalid transition 'foo'.\n"
             "Valid transitions are:\n"
             "reject\n"
             "retract"
@@ -515,7 +515,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.maxDiff = None  # to see assert diff
         self.assertMultiLineEqual(
             cm.exception.message,
-            "Cannot find a view with name 'foo'. \n"
+            "Cannot find a view with name 'foo'.\n"
             "Available views are:\n"
             '\n'
             'absolute_url\n'

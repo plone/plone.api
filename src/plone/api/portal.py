@@ -82,7 +82,7 @@ def get_tool(name=None):
                 tools.append(id)
 
         raise InvalidParameterError(
-            "Cannot find a tool with name '%s'. \n"
+            "Cannot find a tool with name '%s'.\n"
             "Available tools are:\n"
             "%s" % (name, '\n'.join(tools)))
 
@@ -206,14 +206,21 @@ def get_registry_record(name=None):
     """
     if not name:
         raise MissingParameterError("Missing required parameter: name")
+
+    if not isinstance(name, str):
+        raise InvalidParameterError(u"The parameter has to be a string")
+
     registry = getUtility(IRegistry)
-    if isinstance(name, str):
-        record = registry.get(name)
-        if record is None:
-            raise KeyError(u"'%s' is no existing record" % name)
-        else:
-            return record
-    raise InvalidParameterError(u"The parameter has to be a string")
+    if not name in registry:
+
+        records = [_name for _name, record in registry.records.items()]
+
+        raise InvalidParameterError(
+            "Cannot find a record with name '%s'.\n"
+            "Available records are:\n"
+            "%s" % (name, '\n'.join(records)))
+
+    return registry[name]
 
 
 def set_registry_record(name=None, value=None):

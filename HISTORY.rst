@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.1b2 (Unreleased)
+------------------
+
+- Improvements to ``get_registry_record``.
+  [zupo]
+
+
 0.1b1 (2012-10-23)
 ------------------
 
@@ -20,7 +27,7 @@ Changelog
 - Implementation of ``get_registry_record`` and ``set_registry_record``.
   [pbauer]
 
-- Use `Makefile` to build the project, run tests, generat documentation, etc.
+- Use `Makefile` to build the project, run tests, generate documentation, etc.
   [witsch]
 
 - Moving all ReadTheDocs dependencies into ``rtd_requirements.txt``.

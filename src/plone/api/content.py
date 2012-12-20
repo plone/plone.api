@@ -79,7 +79,7 @@ def create(container=None,
             types = container.getLocallyAllowedTypes()
 
         raise InvalidParameterError(
-            "Cannot add a '%s' object to the container. \n"
+            "Cannot add a '%s' object to the container.\n"
             "Allowed types are:\n"
             "%s" % (type, '\n'.join(sorted(types))))
 
@@ -324,7 +324,7 @@ def transition(obj=None, transition=None):
         transitions = [action['id'] for action in workflow.listActions(object=obj)]
 
         raise InvalidParameterError(
-            "Invalid transition '%s'. \n"
+            "Invalid transition '%s'.\n"
             "Valid transitions are:\n"
             "%s" % (transition, '\n'.join(sorted(transitions))))
 
@@ -370,7 +370,7 @@ def get_view(name=None, context=None, request=None):
         views_names = [view[0] for view in views]
 
         raise InvalidParameterError(
-            "Cannot find a view with name '%s'. \n"
+            "Cannot find a view with name '%s'.\n"
             "Available views are:\n"
             "%s" % (name, '\n'.join(sorted(views_names))))
 
