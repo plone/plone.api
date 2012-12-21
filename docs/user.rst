@@ -102,6 +102,23 @@ You can get a user with :meth:`api.user.get`.
 
     self.assertEquals(user.id, 'bob')
 
+User properties
+---------------
+
+Users have various properties set on them. This is how you get and set them,
+using the underlying APIs.
+
+.. code-block:: python
+
+    from plone import api
+    user = api.user.get(username='bob')
+    user.setMemberProperties(mapping={ 'location': 'Neverland', })
+    location = user.getProperty('location')
+
+.. invisible-code-block:: python
+
+    self.assertEquals(location, 'Neverland')
+
 
 .. _user_get_current_example:
 
