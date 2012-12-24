@@ -189,7 +189,7 @@ def get_roles(username=None, user=None, obj=None):
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
     can either set one or the other, but not both. if ``username`` and
-    ``user`` are not given, the authenticated member will be used.
+    ``user`` are not given, the currently authenticated member will be used.
 
     :param username: Username of the user for which to get roles.
     :type username: string
