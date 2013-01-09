@@ -88,7 +88,7 @@ Inside each group, lines should be alphabetically sorted.
 Declaring dependencies
 ======================
 
-All dependencies should be declared in ``install_requires`` or
+All direct dependencies should be declared in ``install_requires`` or
 ``extras_require`` sections in setup.py. Dependencies, which are not needed for
 an production environment (like "develop" or "test" dependencies) or are
 optional (like "archetypes" or "dexterity" flavors of the same package) should
@@ -96,10 +96,10 @@ go in ``extras_require``. Don't forget some documentation on how to enable
 specific features (and think of using ``zcml:condition`` statements, if you
 have such optional features).
 
-Generally all dependencies on packages imported or used in ZCML should be
-declared, even if they are pulled in by other dependencies. This explicitness
-reduces possible runtime errors and gives a good overview on the complexity of
-a package.
+Generally all direct dependencies (packages directly imported or used in ZCML)
+should be declared, even if they would already pulled in by other dependencies.
+This explicitness reduces possible runtime errors and gives a good overview on
+the complexity of a package.
 
 For example, if you depend on Products.CMFPlone and use getToolByName from
 Products.CMFCore, you should also declare the CMFCore dependency explicitly,
@@ -143,8 +143,8 @@ Feature-level changes to code are tracked inside ``CHANGES.rst``. Examples:
 
 .. sourcecode:: rst
 
-    Changelog
-    =========
+    CHANGES
+    =======
 
     1.0dev (unreleased)
     -------------------
