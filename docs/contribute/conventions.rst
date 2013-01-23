@@ -37,9 +37,14 @@ Read and follow http://www.python.org/dev/peps/pep-0257/. That's it.
 About imports
 =============
 
-1. Don't use * to import `everything` from a module.
-2. Don't use commas to import multiple stuff on a single line.
-3. Don't use relative paths.
+1. Don't use * to import `everything` from a module, because if you do,
+   pyflakes cannot detect undefined names (W404).
+2. Don't use commas to import multiple stuff on a single line. Some developers
+   use IDEs (like `Eclipse <http://pydev.org/>_) or tools (such as `mr.igor
+   <http://pypi.python.org/pypi/mr.igor>`_) that expect one import per line.
+   Let's be nice to them.
+3. Don't use relative paths, again to be nice to people using certain IDEs and
+   tools. Also `Google Python Style Guide` recommends against it.
 
 .. sourcecode:: python
 
@@ -55,29 +60,29 @@ instead of
     from .portal import get
 
 
-Sort imports
-============
+Grouping and sorting
+--------------------
 
-As another imports stylistic guide: Imports of code from other modules should
-always be alphabetically sorted with no empty lines between imports. The only
-exception to this rule is to keep one empty line between a group of
-``from x import y`` and a group of ``import y`` imports.
+Imports should be grouped according to the
+`PEP8 <http://www.python.org/dev/peps/pep-0008/#imports>`_ and `rope
+<http://rope.sourceforge.net/overview.html#sorting-imports>`_ conventions::
 
-.. sourcecode:: python
+    [__future__ imports]
+    from __future__ import division
 
-    from App.config import getConfiguration
-    from plone.app.testing import login
+    [standard imports]
+    import random
 
-    import os
+    [third-party imports]
+    from Acquisition import aq_inner
+    from Products.CMFCore.interfaces import ISiteRoot
+    from Products.CMFCore.WorkflowCore import WorkflowException
 
-instead of
+    [package imports]
+    from plone.api import portal
+    from plone.api.exc import MissingParameterError
 
-.. sourcecode:: python
-
-    import os
-
-    from plone.app.testing import login
-    from App.config import getConfiguration
+Inside each group, lines should be alphabetically sorted.
 
 
 .. _changelog:
