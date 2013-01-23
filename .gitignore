@@ -5,6 +5,8 @@
 /.installed.cfg
 /.Python
 /bin/
+/dist/
+/docs/Makefile
 /coverage
 /develop-eggs/
 /docs/html/
