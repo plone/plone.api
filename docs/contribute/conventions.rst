@@ -37,9 +37,14 @@ Read and follow http://www.python.org/dev/peps/pep-0257/. That's it.
 About imports
 =============
 
-1. Don't use * to import `everything` from a module.
-2. Don't use commas to import multiple stuff on a single line.
-3. Don't use relative paths.
+1. Don't use * to import `everything` from a module, because if you do,
+   pyflakes cannot detect undefined names (W404).
+2. Don't use commas to import multiple stuff on a single line. Some developers
+   use IDEs (like `Eclipse <http://pydev.org/>_) or tools (such as `mr.igor
+   <http://pypi.python.org/pypi/mr.igor>`_) that expect one import per line.
+   Let's be nice to them.
+3. Don't use relative paths, again to be nice to people using certain IDEs and
+   tools. Also `Google Python Style Guide` recommends against it.
 
 .. sourcecode:: python
 
@@ -58,10 +63,26 @@ instead of
 Grouping and sorting
 --------------------
 
-Imports should be grouped according to the PEP8 convention:
-http://www.python.org/dev/peps/pep-0008/#imports.
+Imports should be grouped according to the
+`PEP8 <http://www.python.org/dev/peps/pep-0008/#imports>`_ and `rope
+<http://rope.sourceforge.net/overview.html#sorting-imports>`_ conventions::
 
-Inside each group, the lines should be alphabetically sorted.
+    [__future__ imports]
+    from __future__ import division
+
+    [standard imports]
+    import random
+
+    [third-party imports]
+    from Acquisition import aq_inner
+    from Products.CMFCore.interfaces import ISiteRoot
+    from Products.CMFCore.WorkflowCore import WorkflowException
+
+    [package imports]
+    from plone.api import portal
+    from plone.api.exc import MissingParameterError
+
+Inside each group, lines should be alphabetically sorted.
 
 
 .. _changelog:
