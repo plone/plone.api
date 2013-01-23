@@ -90,11 +90,11 @@ Declaring dependencies
 
 All direct dependencies should be declared in ``install_requires`` or
 ``extras_require`` sections in setup.py. Dependencies, which are not needed for
-an production environment (like "develop" or "test" dependencies) or are
+a production environment (like "develop" or "test" dependencies) or are
 optional (like "archetypes" or "dexterity" flavors of the same package) should
-go in ``extras_require``. Don't forget some documentation on how to enable
-specific features (and think of using ``zcml:condition`` statements, if you
-have such optional features).
+go in ``extras_require``. Remember to document how to enable specific features
+(and think of using ``zcml:condition`` statements, if you have such optional
+features).
 
 Generally all direct dependencies (packages directly imported or used in ZCML)
 should be declared, even if they would already pulled in by other dependencies.
@@ -134,12 +134,12 @@ This way you get nice syntax highlighting and formating in recent text editors,
 on GitHub and with Sphinx.
 
 
-.. _changelog:
+.. _changes:
 
-Changelog
-=========
+Tracking changes
+================
 
-Feature-level changes to code are tracked inside ``CHANGES.rst``. Examples:
+Feature-level changes to code are tracked inside ``docs/CHANGES.rst``. Example:
 
 .. sourcecode:: rst
 
@@ -164,7 +164,7 @@ Feature-level changes to code are tracked inside ``CHANGES.rst``. Examples:
 
 
 Add an entry every time you add/remove a feature, fix a bug, etc. on top of the
-current development changelog block.
+current development changes block.
 
 
 .. _sphinx-docs:
