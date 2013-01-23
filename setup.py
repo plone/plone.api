@@ -35,9 +35,10 @@ setup(
             'zest.releaser',
         ],
         'test': [
+            'manuel',
+            'mock',
             'plone.app.dexterity',
             'plone.app.testing',
-            'mock',
             'unittest2',
         ],
     },
