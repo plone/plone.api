@@ -338,7 +338,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertIn('Contributor', api.user.get_roles(user=user))
 
         api.user.grant_roles(username='chuck', roles=['Reader', 'Reader'])
-        ROLES = {'Editor', 'Contributor', 'Reader', 'Authenticated', 'Member'}
+        ROLES = set(('Editor', 'Contributor', 'Reader', 'Authenticated', 'Member'))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
 
@@ -378,7 +378,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertIn('Editor', api.user.get_roles(user=user))
 
         api.user.revoke_roles(username='chuck', roles=['Editor'])
-        ROLES = {'Authenticated', 'Member'}
+        ROLES = set(('Authenticated', 'Member'))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
 
@@ -415,7 +415,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertIn('Contributor', api.user.get_roles(username='chuck', obj=document))
         self.assertIn('Contributor', api.user.get_roles(user=user, obj=document))
 
-        ROLES = {'Editor', 'Contributor', 'Authenticated', 'Member'}
+        ROLES = set(('Editor', 'Contributor', 'Authenticated', 'Member'))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck', obj=folder)))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user, obj=folder)))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck', obj=document)))
@@ -459,7 +459,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertNotIn('Editor', api.user.get_roles(username='chuck', obj=document))
         self.assertNotIn('Editor', api.user.get_roles(user=user, obj=document))
 
-        ROLES = {'Authenticated', 'Member'}
+        ROLES = set(('Authenticated', 'Member'))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck', obj=folder)))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user, obj=folder)))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck',
