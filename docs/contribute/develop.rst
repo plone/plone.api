@@ -172,7 +172,7 @@ Commit checklist
 Before every commit you should:
 
 * Run unit tests and syntax validation checks.
-* Add an entry to :ref:`changelog` (if applicable).
+* Add an entry to :ref:`changes` (if applicable).
 * Add/modify :ref:`sphinx-docs` (if applicable).
 
 All syntax checks and all tests can be run with a single command. This

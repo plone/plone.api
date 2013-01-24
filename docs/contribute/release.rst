@@ -39,7 +39,7 @@ Checklist
 
 Folow these step to create a new release of `plone.api`.
 
-#. Verify that we have documented all changes in the ``HISTORY.rst`` file. Go
+#. Verify that we have documented all changes in the ``CHANGES.rst`` file. Go
    through the list of commits since last release on GitHub and check all
    changes are documented.
 

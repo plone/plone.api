@@ -94,7 +94,7 @@ and then use the group namespace to access the method you want
 (``portal = api.portal.get()``).
 
 All example code should adhere to this style, so we encourage one and only
-one prefered way of consuming API methods.
+one preferred way of consuming API methods.
 
 
 Prefer keyword arguments
