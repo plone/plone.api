@@ -85,18 +85,86 @@ Imports should be grouped according to the
 Inside each group, lines should be alphabetically sorted.
 
 
-.. _changelog:
+Declaring dependencies
+======================
 
-Changelog
-=========
+All direct dependencies should be declared in ``install_requires`` or
+``extras_require`` sections in setup.py. Dependencies, which are not needed for
+a production environment (like "develop" or "test" dependencies) or are
+optional (like "archetypes" or "dexterity" flavors of the same package) should
+go in ``extras_require``. Remember to document how to enable specific features
+(and think of using ``zcml:condition`` statements, if you have such optional
+features).
 
-Feature-level changes to code are tracked inside ``docs/HISTORY.txt``. Examples:
+Generally all direct dependencies (packages directly imported or used in ZCML)
+should be declared, even if they would already pulled in by other dependencies.
+This explicitness reduces possible runtime errors and gives a good overview on
+the complexity of a package.
 
-- added feature X
-- removed Y
-- fixed bug Z
+For example, if you depend on Products.CMFPlone and use getToolByName from
+Products.CMFCore, you should also declare the CMFCore dependency explicitly,
+even though it's pulled in by Plone itself. If you use namespace packages from
+the Zope distribution like Products.Five you should explicitly declare Zope as
+dependency.
 
-Add an entry every time you add/remove a feature, fix a bug, etc.
+
+Versioning scheme
+=================
+
+For software versions, use a sequence-based versioning scheme:
+
+    MAJOR.MINOR[.MICRO][STATUS]
+
+For example: 1.2 or 1.2.1
+
+Development releases get a status identifier appended to it.
+
+For the current development branch, just append "dev": 1.3dev. If you make a
+development release, append a development status identifier to it. For alpha
+releases append a1..an to it, like: 1.3a1. For Beta releases use b1..bn: 1.3b4.
+For release canditates use rc1..rcn: 1.3rc2.
+
+
+Restructured Text versus Plain Text
+===================================
+
+Use the Restructured Text (.rst file extension) format instead of plain text
+files (.txt file extension) for all documentation, including doctest files.
+This way you get nice syntax highlighting and formating in recent text editors,
+on GitHub and with Sphinx.
+
+
+.. _changes:
+
+Tracking changes
+================
+
+Feature-level changes to code are tracked inside ``docs/CHANGES.rst``. Example:
+
+.. sourcecode:: rst
+
+    CHANGES
+    =======
+
+    1.0dev (unreleased)
+    -------------------
+
+    - Added feature Z.
+      [github_userid1]
+
+    - Removed Y.
+      [github_userid2]
+
+
+    1.0a1 (2012-12-12)
+    ------------------
+
+    - Fixed Bug X.
+      [github_userid1]
+
+
+Add an entry every time you add/remove a feature, fix a bug, etc. on top of the
+current development changes block.
 
 
 .. _sphinx-docs:

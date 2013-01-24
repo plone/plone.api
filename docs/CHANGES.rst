@@ -1,5 +1,5 @@
-Changelog
-=========
+Changes
+=======
 
 0.1b2 (Unreleased)
 ------------------
