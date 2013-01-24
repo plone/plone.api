@@ -12,7 +12,9 @@ matrix:
     - env: PLONE_VERSION=4.3
 
 install:
-  - sed -ie "s#test-4.2.x.cfg#test-$PLONE_VERSION.x.cfg#" buildout.cfg
+  - mkdir -p buildout-cache/eggs
+  - mkdir -p buildout-cache/downloads
+  - sed -ie "s#test-4.2.x.cfg#travis-$PLONE_VERSION.x.cfg#" buildout.cfg
   - make python=$( which python ) .installed.cfg
 
 script:
