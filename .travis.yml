@@ -21,5 +21,3 @@ script:
 notifications:
   irc:
     - "irc.freenode.org#sprint"
-  email:
-    - nejc.zupan@gmail.com
