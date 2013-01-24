@@ -105,11 +105,10 @@ class TestPloneApiPortal(unittest.TestCase):
             "portal_url",
             "portal_view_customizations",
             "portal_workflow",
-       )
+        )
 
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + '\n'), cm.exception.message)
-
 
     def test_get_tool(self):
         """Test to validate the tool name."""
@@ -318,7 +317,6 @@ class TestPloneApiPortal(unittest.TestCase):
 
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + '\n'), cm.exception.message)
-
 
     def test_set_registry_record(self):
         registry = getUtility(IRegistry)
