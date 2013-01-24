@@ -4,17 +4,24 @@
 from Acquisition import aq_inner
 from email.utils import formataddr
 from email.utils import parseaddr
+from logging import getLogger
 from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 from plone.app.layout.navigation.root import getNavigationRootObject
-from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
+
+logger = getLogger('plone.api.portal')
+
+try:
+    from plone.registry.interfaces import IRegistry
+except ImportError:
+    logger.warning('plone.registry is not installed. get_registry_record and set_registry_record will be unavailable.')
 
 
 def get():
