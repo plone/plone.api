@@ -70,7 +70,6 @@ api.group
     api.group.remove_user
     api.group.get_groups
     api.group.get_roles
-    api.group.get_permissions
     api.group.grant_roles
     api.group.revoke_roles
 

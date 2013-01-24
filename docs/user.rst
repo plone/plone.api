@@ -21,7 +21,7 @@ To create a new user, use :meth:`api.user.create`. If your portal is
 configured to use emails as usernames, you just need to pass in the email of
 the new user.
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     from plone import api
     portal = api.portal.get()
@@ -32,7 +32,7 @@ the new user.
     from plone import api
     user = api.user.create(email='alice@plone.org')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(user.id, 'alice@plone.org')
     self.assertEquals(user.getProperty('email'), 'alice@plone.org')
@@ -40,7 +40,7 @@ the new user.
 
 Otherwise, you also need to pass in the username of the new user.
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     portal.portal_properties.site_properties.use_email_as_login = False
 
@@ -48,7 +48,7 @@ Otherwise, you also need to pass in the username of the new user.
 
     user = api.user.create(email='jane@plone.org', username='jane')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(user.id, 'jane')
     self.assertEquals(user.getProperty('email'), 'jane@plone.org')
@@ -68,7 +68,7 @@ To set user properties when creating a new user, pass in a properties dict.
         properties=properties
     )
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(user.getProperty('fullname'), 'Bob')
     self.assertEquals(user.getProperty('location'), 'Munich')
@@ -98,7 +98,7 @@ You can get a user with :meth:`api.user.get`.
     from plone import api
     user = api.user.get(username='bob')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(user.id, 'bob')
 
@@ -115,7 +115,7 @@ using the underlying APIs.
     user.setMemberProperties(mapping={ 'location': 'Neverland', })
     location = user.getProperty('location')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(location, 'Neverland')
 
@@ -132,7 +132,7 @@ Getting the currently logged-in user is easy with :meth:`api.user.get_current`.
     from plone import api
     current = api.user.get_current()
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(current.id, 'test_user_1_')
 
@@ -153,7 +153,7 @@ check for it.
         trigger = False
     trigger = True
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertTrue(trigger)
 
@@ -170,7 +170,7 @@ Get all users in your portal with :meth:`api.user.get_users`.
     from plone import api
     users = api.user.get_users()
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertTrue('test_user_1_' in [user.id for user in users])
 
@@ -183,7 +183,7 @@ Get group's users
 If you set the `groupname` parameter, then :meth:`api.user.get_users` will
 return only users that are members of this group.
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     api.group.create(groupname='staff')
     api.group.add_user(username='jane', groupname='staff')
@@ -193,7 +193,7 @@ return only users that are members of this group.
     from plone import api
     users = api.user.get_users(groupname='staff')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(users[0].id, 'jane')
 
@@ -213,7 +213,7 @@ the user object you want to delete.
     api.user.delete(username='unwanted')
 
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEqual(api.user.get(username='unwanted'), None)
 
@@ -222,7 +222,7 @@ the user object you want to delete.
     unwanted = api.user.create(username='unwanted', email='unwanted@example.org')
     api.user.delete(user=unwanted)
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEqual(api.user.get(username='unwanted'), None)
 
@@ -240,7 +240,7 @@ By default it returns site-wide roles.
     from plone import api
     roles = api.user.get_roles(username='jane')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEqual(set(roles), set(['Member','Authenticated']))
 
@@ -255,7 +255,7 @@ in that particular context.
     blog = api.content.create(container=portal, type='Document', id='blog', title='My blog')
     roles = api.user.get_roles(username='jane', obj=portal['blog'])
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEqual(set(roles), set(['Member','Authenticated']))
 
@@ -274,7 +274,7 @@ permissions. By default it returns site root permissions.
     mike = api.user.create(email='mike@plone.org', username='mike')
     permissions = api.user.get_permissions(username='mike')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     PERMISSIONS = {
         'View': True,
@@ -298,7 +298,7 @@ in that particular context.
     folder = api.content.create(container=portal, type='Folder', id='folder_two', title='Folder Two')
     permissions = api.user.get_permissions(username='mike', obj=portal['folder_two'])
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     PERMISSIONS = {
         'View': False,
@@ -327,7 +327,7 @@ user.
         roles=['Reviewer', 'SiteAdministrator']
     )
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     EXPECTED_ROLES_SITE = ['Member', 'Reviewer', 'SiteAdministrator', 'Authenticated']
     roles = api.user.get_roles(username='jane')
@@ -346,7 +346,7 @@ But all site wide roles will be also returned by :meth:`api.user.get_roles` to t
         obj=portal['folder_one']
     )
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Editor', 'Contributor']
     roles = api.user.get_roles(username='jane', obj=portal['folder_one'])
@@ -370,7 +370,7 @@ user.
         roles=['SiteAdministrator']
     )
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     EXPECTED_ROLES_SITE = ['Member', 'Authenticated', 'Reviewer']
     roles = api.user.get_roles(username='jane')
@@ -392,7 +392,7 @@ If you pass a context object the local roles will be removed.
         obj=portal['folder_three']
     )
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
     roles = api.user.get_roles(username='jane', obj=portal['folder_three'])

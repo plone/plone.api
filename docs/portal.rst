@@ -24,7 +24,7 @@ Getting the Plone portal object is easy with :meth:`api.portal.get`.
     from plone import api
     portal = api.portal.get()
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(portal.getPortalTypeName(), 'Plone Site')
     self.assertEquals(portal.getId(), 'plone')
@@ -41,7 +41,7 @@ language-specific navigation root object, not the top portal object. You do this
 
 Assuming there is a document ``english_page`` in a folder ``en``, which is the navigation root:
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     from plone import api
     from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -63,7 +63,7 @@ Assuming there is a document ``english_page`` in a folder ``en``, which is the n
     from plone import api
     nav_root = api.portal.get_navigation_root(english_page)
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(nav_root.id, 'en')
 
@@ -79,7 +79,7 @@ Since we now have the portal object, it's easy to get the portal url.
     from plone import api
     url = api.portal.get().absolute_url()
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEqual(url, 'http://nohost/plone')
 
@@ -97,7 +97,7 @@ pass in the name of the tool you need.
     from plone import api
     catalog = api.portal.get_tool(name='portal_catalog')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
 
@@ -117,7 +117,7 @@ prefered language, use :meth:`api.portal.get_localized_time`.
     today = DateTime()
     api.portal.get_localized_time(datetime=today)
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     result = api.portal.get_localized_time(
         datetime=DateTime(1999, 12, 31, 23, 59))
@@ -133,7 +133,7 @@ To send an e-mail use :meth:`api.portal.send_email`:
 
 .. Todo: Add example for creating a mime-mail
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     # Mock the mail host so we can test sending the email
     from plone import api
@@ -162,7 +162,7 @@ To send an e-mail use :meth:`api.portal.send_email`:
         body="One for you Bob!",
     )
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEqual(len(mailhost.messages), 1)
 
@@ -188,7 +188,7 @@ the user.
     from plone import api
     api.portal.show_message(message='Blueberries!', request=request)
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     from Products.statusmessages.interfaces import IStatusMessage
     messages = IStatusMessage(request)
@@ -206,7 +206,7 @@ Plone comes with a package ``plone.app.registry`` that provides a common way
 to store various configuration and settings.
 :meth:`api.portal.get_registry_record` provides an easy way to access these.
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.registry.record import Record
@@ -222,7 +222,7 @@ to store various configuration and settings.
     from plone import api
     api.portal.get_registry_record('my.package.someoption')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertTrue(api.portal.get_registry_record('my.package.someoption'))
 
@@ -236,7 +236,7 @@ Plone comes with a package ``plone.app.registry`` that provides a common way
 to store various configuration and settings.
 :meth:`api.portal.set_registry_record` provides an easy way to change these.
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.registry.record import Record
@@ -252,6 +252,6 @@ to store various configuration and settings.
     from plone import api
     api.portal.set_registry_record('my.package.someoption', False)
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertFalse(registry['my.package.someoption'])

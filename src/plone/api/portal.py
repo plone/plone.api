@@ -237,7 +237,7 @@ def set_registry_record(name=None, value=None):
     :type name: string
     :param value: [required] Value to set
     :type value: python primitive
-    :Example: :ref:`portal_set_registry_value_example`
+    :Example: :ref:`portal_set_registry_record_example`
     """
     if not name:
         raise MissingParameterError(u"Missing required parameter: name")

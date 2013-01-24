@@ -69,7 +69,7 @@ API methods are grouped by their field of usage: :ref:`chapter_portal`,
 :ref:`chapter_content`, :ref:`chapter_users` and :ref:`chapter_groups`.
 Hence the importing and usage of API methods look like this:
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     from plone import api
     portal = api.portal.get()
@@ -83,7 +83,7 @@ Hence the importing and usage of API methods look like this:
     catalog = api.portal.get_tool(name="portal_catalog")
     user = api.user.create(email='alice@plone.org')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEqual(portal.__class__.__name__, 'PloneSite')
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')

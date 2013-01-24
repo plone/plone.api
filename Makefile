@@ -11,7 +11,7 @@ all: docs tests
 docs: docs/html/index.html
 
 docs/html/index.html: docs/*.rst docs/contribute/*.rst docs/api/*.rst src/plone/api/*.py bin/sphinx-build
-	bin/sphinx-build docs docs/html
+	bin/sphinx-build -W docs docs/html
 	@touch $@
 	@echo "Documentation was generated at '$@'."
 

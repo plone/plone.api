@@ -61,7 +61,7 @@ the following portal structure::
         |-- conference
         `-- sprint
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     portal = api.portal.get()
     blog = api.content.create(type='Link', id='blog', container=portal)
@@ -101,7 +101,7 @@ stucture above, including using :meth:`api.content.get`.
     conference = api.content.get(UID=uid)
 
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertTrue(portal)
     self.assertTrue(blog)
@@ -123,7 +123,7 @@ You can use the *catalog* to search for content. Here is a simple example:
     catalog = api.portal.get_tool(name='portal_catalog')
     documents = catalog(portal_type='Document')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
     self.assertEqual(len(documents), 3)
 
@@ -163,7 +163,7 @@ code gets the UUID of the ``contact`` document.
 
     uuid = api.content.get_uuid(obj=contact)
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertTrue(isinstance(uuid, str))
 
@@ -184,7 +184,7 @@ objects that it contains) out of folder ``about`` into the Plone portal root.
 
     api.content.move(source=contact, target=portal)
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertFalse(portal['about'].get('contact'))
     self.assertTrue(portal['contact'])
@@ -207,7 +207,7 @@ To rename, use the :meth:`api.content.rename` method.
     portal = api.portal.get()
     api.content.rename(obj=portal['blog'], new_id='old-blog')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertFalse(portal.get('blog'))
     self.assertTrue(portal['old-blog'])
@@ -232,7 +232,7 @@ Note that the new object will have the same id as the old object (if not
 stated otherwise). This is not a problem, since the new object is in a different
 container.
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     assert portal['events']['training'].id == 'training'
     assert portal['training'].id == 'training'
@@ -247,7 +247,7 @@ non-conflicting id.
     api.content.copy(source=portal['training'], target=portal, safe_id=True)
     new_training = portal['copy_of_training']
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertTrue(portal['training'])  # old object remains
     self.assertTrue(portal['copy_of_training'])
@@ -267,7 +267,7 @@ Deleting content works by passing the object you want to delete to the
     portal = api.portal.get()
     api.content.delete(obj=portal['copy_of_training'])
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertFalse(portal.get('copy_of_training'))
 
@@ -284,7 +284,7 @@ the target container the API method will raise an error.
 
 However, if the `safe_id` option is enabled, a non-conflicting id will be created.
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     api.content.create(container=portal, type='Document', id='document', safe_id=True)
 
@@ -308,7 +308,7 @@ To find out in which workflow state your content is, use
     portal = api.portal.get()
     state = api.content.get_state(obj=portal['about'])
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(state, 'private')
 
@@ -326,7 +326,7 @@ To transition your content into a new state, use :meth:`api.content.transition`.
     portal = api.portal.get()
     state = api.content.transition(obj=portal['about'], transition='publish')
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(
         api.content.get_state(obj=portal['about']),
@@ -351,7 +351,7 @@ To get a BrowserView for your content, use :meth:`api.content.get_view`.
         request=request,
     )
 
-.. invisible-code-block:: python
+.. invisible-code-block: python
 
     self.assertEquals(view.__name__, u'plone')
 
