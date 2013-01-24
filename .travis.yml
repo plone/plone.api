@@ -7,10 +7,6 @@ env:
   - PLONE_VERSION=4.2
   - PLONE_VERSION=4.3
 
-matrix:
-  allow_failures:
-    - env: PLONE_VERSION=4.3
-
 install:
   - mkdir -p buildout-cache/eggs
   - mkdir -p buildout-cache/downloads
