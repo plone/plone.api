@@ -133,8 +133,9 @@ def get(path=None, UID=None):
     if path:
         site = portal.get()
         site_id = site.getId()
-        if not path.startswith('/{0}'.format(site_id)):
-            path = '/{0}{1}'.format(site_id, path)
+        site_absolute_path = site.absolute_url_path()
+        if not path.startswith('{0}'.format(site_absolute_path)):
+            path = '{0}{1}'.format(site_absolute_path, path)
 
         try:
             return site.restrictedTraverse(path)
