@@ -300,7 +300,8 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertTrue(INavigationRoot.providedBy(navigation_root))
         self.assertRaises(ValueError, portal.get_navigation_root)
 
-    def test_get_registry_record(self):
+    def test_get_existing_registry_record(self):
+        """Test that existing registry records are returned correctly."""
         registry = getUtility(IRegistry)
         registry.records['plone.api.norris_power'] = Record(
             field.TextLine(title=u"Chuck Norris' Power"))
@@ -317,12 +318,20 @@ class TestPloneApiPortal(unittest.TestCase):
             None,
         )
 
+    def test_get_missing_registry_record(self):
+        """Test that getting a missing registry record raises an Exception."""
         with self.assertRaises(MissingParameterError):
             portal.get_registry_record()
 
+    def test_get_invalid_registry_record(self):
+        """Test that getting an invalid registry record raises an Exception."""
         with self.assertRaises(InvalidParameterError):
             portal.get_registry_record(name=dict({'foo': 'bar'}))
 
+    def test_get_invalid_registry_record_msg(self):
+        """Test that the error message from trying to get a
+        nonexistant registry record produces an error message which
+        lists known registry records."""
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_registry_record(name='nonexistent.sharepoint.power')
 
@@ -335,8 +344,6 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # A selection of records which should exist in all plone versions
         should_be_theres = (
-            "plone.api.norris_power",
-            "plone.api.unset",
             "plone.app.discussion.interfaces.IDiscussionSettings.captcha",
             "plone.app.querystring.field.Creator.title",
             "plone.app.querystring.operation.int.largerThan.description",
