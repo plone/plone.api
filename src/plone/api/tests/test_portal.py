@@ -85,7 +85,7 @@ class TestPloneApiPortal(unittest.TestCase):
             str(cm.exception).startswith(
                 "Cannot find a tool with name 'portal_foo'"))
 
-        # A selection of records which should exist in all plone versions
+        # A selection of portal tools which should exist in all plone versions
         should_be_theres = (
             "portal_setup",
             "portal_actionicons",
