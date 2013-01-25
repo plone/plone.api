@@ -25,7 +25,7 @@ bin/buildout: $(python) buildout.cfg bootstrap.py
 	@touch $@
 
 $(python):
-	virtualenv-$(version) --no-site-packages .
+	virtualenv -p python$(version) --no-site-packages .
 	@touch $@
 
 tests: .installed.cfg
