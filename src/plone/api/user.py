@@ -8,7 +8,6 @@ from AccessControl.SecurityManagement import setSecurityManager
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
-from Products.CMFPlone.utils import getToolByName
 from zope.globalrequest import getRequest
 
 import random
@@ -65,7 +64,7 @@ def create(
             "that is not email so you need to pass a username."
         )
 
-    registration = getToolByName(site, 'portal_registration')
+    registration = portal.get_tool('portal_registration')
     user_id = use_email_as_username and email or username
 
     # Generate a random 8-char password
@@ -100,7 +99,7 @@ def get(username=None):
     if not username:
         raise MissingParameterError
 
-    portal_membership = getToolByName(portal.get(), 'portal_membership')
+    portal_membership = portal.get_tool('portal_membership')
     return portal_membership.getMemberById(username)
 
 
@@ -112,7 +111,7 @@ def get_current():
     :Example: :ref:`user_get_current_example`
 
     """
-    portal_membership = getToolByName(portal.get(), 'portal_membership')
+    portal_membership = portal.get_tool('portal_membership')
     return portal_membership.getAuthenticatedMember()
 
 
@@ -139,13 +138,13 @@ def get_users(groupname=None, group=None):
         raise InvalidParameterError
 
     if groupname:
-        group_tool = getToolByName(portal.get(), 'portal_groups')
+        group_tool = portal.get_tool('portal_groups')
         group = group_tool.getGroupById(groupname)
         if not group:
             # XXX This should raise a custom plone.api exception
             raise ValueError
 
-    portal_membership = getToolByName(portal.get(), 'portal_membership')
+    portal_membership = portal.get_tool('portal_membership')
 
     if group:
         return group.getGroupMembers()
@@ -175,7 +174,7 @@ def delete(username=None, user=None):
     if username and user:
         raise InvalidParameterError
 
-    portal_membership = getToolByName(portal.get(), 'portal_membership')
+    portal_membership = portal.get_tool('portal_membership')
     user_id = username or user.id
     portal_membership.deleteMembers((user_id,))
 
@@ -188,7 +187,7 @@ def is_anonymous():
     :Example: :ref:`user_is_anonymous_example`
 
     """
-    return getToolByName(portal.get(), 'portal_membership').isAnonymousUser()
+    return portal.get_tool('portal_membership').isAnonymousUser()
 
 
 def get_roles(username=None, user=None, obj=None):
@@ -214,7 +213,7 @@ def get_roles(username=None, user=None, obj=None):
     if username and user:
         raise InvalidParameterError
 
-    portal_membership = getToolByName(portal.get(), 'portal_membership')
+    portal_membership = portal.get_tool('portal_membership')
 
     if username is None:
         if user is None:
@@ -260,7 +259,7 @@ def get_permissions(username=None, user=None, obj=None):
     # holds the initial security context
     current_security_manager = getSecurityManager()
 
-    portal_membership = getToolByName(portal.get(), 'portal_membership')
+    portal_membership = portal.get_tool('portal_membership')
 
     if username is None:
         if user is None:

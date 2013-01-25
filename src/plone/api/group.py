@@ -3,7 +3,6 @@
 
 from plone.api import portal
 from plone.api.user import get as user_get
-from Products.CMFCore.utils import getToolByName
 
 
 def create(
@@ -35,7 +34,7 @@ def create(
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    group_tool = getToolByName(portal.get(), 'portal_groups')
+    group_tool = portal.get_tool('portal_groups')
 
     group_tool.addGroup(
         groupname, roles, groups,
@@ -60,7 +59,7 @@ def get(groupname=None):
     if not groupname:
         raise ValueError('You have to pass the groupname parameter!')
 
-    group_tool = getToolByName(portal.get(), 'portal_groups')
+    group_tool = portal.get_tool('portal_groups')
     return group_tool.getGroupById(groupname)
 
 
@@ -90,7 +89,7 @@ def get_groups(username=None, user=None):
         if not user:
             raise ValueError
 
-    group_tool = getToolByName(portal.get(), 'portal_groups')
+    group_tool = portal.get_tool('portal_groups')
 
     if user:
         groups = group_tool.getGroupsForPrincipal(user)
@@ -120,7 +119,7 @@ def delete(groupname=None, group=None):
     if groupname and group:
         raise ValueError
 
-    group_tool = getToolByName(portal.get(), 'portal_groups')
+    group_tool = portal.get_tool('portal_groups')
 
     if group:
         groupname = group.id
@@ -164,7 +163,7 @@ def add_user(groupname=None, group=None, username=None, user=None):
 
     user_id = username or user.id
     group_id = groupname or group.id
-    portal_groups = getToolByName(portal.get(), 'portal_groups')
+    portal_groups = portal.get_tool('portal_groups')
     portal_groups.addPrincipalToGroup(user_id, group_id)
 
 
@@ -204,7 +203,7 @@ def remove_user(groupname=None, group=None, username=None, user=None):
 
     user_id = username or user.id
     group_id = groupname or group.id
-    portal_groups = getToolByName(portal.get(), 'portal_groups')
+    portal_groups = portal.get_tool('portal_groups')
     portal_groups.removePrincipalFromGroup(user_id, group_id)
 
 
@@ -238,7 +237,7 @@ def get_roles(groupname=None, group=None, obj=None):
         raise ValueError
 
     group = group.getGroup()
-    # when context obj is avaiable we bypass getRolesInContext method
+    # when context obj is available we bypass getRolesInContext method
     # from PloneGroup class to use PloneUser class implementation because
     # PloneGroup class disables all local roles support
     # see: Products.PlonePAS.plugins.group.PloneGroup
@@ -286,7 +285,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         actual_roles.remove('Authenticated')
 
     roles = list(set(actual_roles) | set(roles))
-    portal_groups = getToolByName(portal.get(), 'portal_groups')
+    portal_groups = portal.get_tool('portal_groups')
 
     if obj is None:
         portal_groups.setRolesForGroup(group_id=group_id, roles=roles)
@@ -334,7 +333,7 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
         actual_roles.remove('Authenticated')
 
     roles = list(set(actual_roles) - set(roles))
-    portal_groups = getToolByName(portal.get(), 'portal_groups')
+    portal_groups = portal.get_tool('portal_groups')
 
     if obj is None:
         portal_groups.setRolesForGroup(group_id=group_id, roles=roles)

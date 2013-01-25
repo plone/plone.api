@@ -11,7 +11,6 @@ from plone.api.exc import MissingParameterError
 from plone.app.layout.navigation.root import getNavigationRootObject
 from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
-from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
@@ -121,8 +120,12 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
         raise ValueError
 
     portal = get()
-    ctrlOverview = getMultiAdapter(
-        (portal, portal.REQUEST), name='overview-controlpanel')
+    from plone.api import content
+    ctrlOverview = content.get_view(
+        context=portal,
+        request=portal.REQUEST,
+        name='overview-controlpanel',
+    )
     if ctrlOverview.mailhost_warning():
         raise ValueError('MailHost is not configured.')
 
@@ -141,7 +144,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     if isinstance(body, unicode):
         body = body.encode(encoding)
 
-    host = getToolByName(portal, 'MailHost')
+    host = get_tool('MailHost')
     host.send(
         body,
         recipient,

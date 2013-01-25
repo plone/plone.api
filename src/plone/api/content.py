@@ -10,7 +10,6 @@ from plone.uuid.interfaces import IUUID
 from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.WorkflowCore import WorkflowException
-from Products.CMFPlone.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.container.interfaces import INameChooser
@@ -302,7 +301,7 @@ def get_state(obj=None):
     if not obj:
         raise ValueError
 
-    workflow = getToolByName(portal.get(), 'portal_workflow')
+    workflow = portal.get_tool('portal_workflow')
     return workflow.getInfoFor(obj, 'review_state')
 
 
@@ -326,7 +325,7 @@ def transition(obj=None, transition=None):
             '``transition`` parameters'
         )
 
-    workflow = getToolByName(portal.get(), 'portal_workflow')
+    workflow = portal.get_tool('portal_workflow')
     try:
         workflow.doActionFor(obj, transition)
     except WorkflowException:
