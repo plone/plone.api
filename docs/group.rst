@@ -47,8 +47,8 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
     self.assertEquals(group.id, 'board_members')
     self.assertEquals(group.getProperty('title'), 'Board members')
     self.assertEquals(group.getProperty('description'), 'Just a description')
-    self.assertIn('Readers', group.getRoles())
-    self.assertIn('Site Administrators', group.getMemberIds())
+    self.assertTrue('Readers' in group.getRoles())
+    self.assertTrue('Site Administrators' in group.getMemberIds())
 
 
 .. _group_get_example:
@@ -97,8 +97,8 @@ Groups can be edited by using the ``group_tool``. In this example the ``title``,
 
     self.assertEqual(title, 'Staff')
     self.assertEqual(description, 'Just a description')
-    self.assertIn('Editor', roles)
-    self.assertIn('Reader', roles)
+    self.assertTrue('Editor' in roles)
+    self.assertTrue('Reader' in roles)
 
 
 .. _group_get_all_groups_example:
@@ -178,7 +178,7 @@ or the group object you want to delete.
 
 .. invisible-code-block: python
 
-    self.assertIsNone(api.group.get(groupname='unwanted'))
+    self.assertEquals(api.group.get(groupname='unwanted'), None)
 
 .. code-block:: python
 
@@ -187,7 +187,7 @@ or the group object you want to delete.
 
 .. invisible-code-block: python
 
-    self.assertIsNone(api.group.get(groupname='unwanted'))
+    self.assertEquals(api.group.get(groupname='unwanted'), None)
 
 
 .. _group_add_user_example:
@@ -208,7 +208,7 @@ to the group.
 
 .. invisible-code-block: python
 
-    self.assertIn('staff', [g.id for g in api.group.get_groups(username='bob')])
+    self.assertTrue('staff' in [g.id for g in api.group.get_groups(username='bob')])
 
 
 .. _group_remove_user_example:
@@ -228,7 +228,7 @@ want to remove from the group.
 
 .. invisible-code-block: python
 
-    self.assertNotIn('staff', [g.id for g in api.group.get_groups(username='bob')])
+    self.assertFalse('staff' in [g.id for g in api.group.get_groups(username='bob')])
 
 
 .. _group_get_roles_example:
