@@ -2,6 +2,9 @@
 """Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFPlone.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
 from email.utils import formataddr
 from email.utils import parseaddr
 from logging import getLogger
@@ -9,9 +12,8 @@ from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 from plone.app.layout.navigation.root import getNavigationRootObject
-from Products.CMFPlone.utils import getToolByName
-from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility
+from zope.component import providedBy
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 
@@ -37,9 +39,13 @@ def get():
     :Example: :ref:`portal_get_example`
 
     """
-    portal = getSite()
-    if portal is not None:
-        return portal
+
+    closest_site = getSite()
+    if closest_site is not None:
+        for potential_portal in closest_site.aq_chain:
+            if ISiteRoot in providedBy(potential_portal):
+                return potential_portal
+
     raise CannotGetPortalError(
         "Unable to get the portal object. More info on "
         "https://ploneapi.readthedocs.org/en/latest/api/exceptions.html"

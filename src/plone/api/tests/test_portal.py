@@ -2,7 +2,11 @@
 """Tests for plone.api.portal."""
 
 from DateTime import DateTime
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.tests.utils import MockMailHost
+from Products.MailHost.interfaces import IMailHost
 from email import message_from_string
+from plone.api import content
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
@@ -11,10 +15,9 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.tests.utils import MockMailHost
-from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
+from zope.component.hooks import setSite
+from zope.site import LocalSiteManager
 
 import mock
 import unittest2 as unittest
@@ -46,7 +49,18 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def test_get(self):
         """Test getting the portal object."""
+
+        # Register a new site manager to ensure that portal.get() always
+        # gets the portal, even from sub sites.
+        a_site = content.create(
+            container=self.portal, type="Folder", title="A Site")
+        a_site.setSiteManager(LocalSiteManager(a_site))
+        setSite(a_site)
+
         self.assertEqual(portal.get(), self.portal)
+
+        # cleanup
+        setSite(self.portal)
 
     @mock.patch('plone.api.portal.getSite')
     def test_get_no_site(self, getSite):
