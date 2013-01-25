@@ -44,8 +44,13 @@ following two styles for breaking long lines into blocks:
 
    .. sourcecode:: python
 
-       foo = dict(
+       foo = do_something(
            very_long_argument='foo', another_very_long_argument='bar')
+
+       # For functions the ): needs to be placed on the following line
+       def some_func(
+           very_long_argument='foo', another_very_long_argument='bar'
+       ):
 
 2. If this still doesn't fit the 80-char limit, break into multiple lines.
 
@@ -56,7 +61,14 @@ following two styles for breaking long lines into blocks:
            another_very_long_argument='bar',
        )
 
- * Arguments on first line forbidden when breaking lines.
+       a_long_list = [
+           "a_fairly_long_string",
+           "quite_a_long_string_indeed",
+           "an_exceptionally_long_string_of_characters", 
+       ]
+
+ * Arguments on first line, directly after the opening parenthesis are
+   forbidden when breaking lines.
  * The last argument line needs to have a trailing comma (to be nice to the
    next developer coming in to add something as an argument and minimize VCS
    diffs in these cases).
