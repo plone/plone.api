@@ -224,6 +224,7 @@ def get_registry_record(name=None):
     :returns: Registry record value
     :rtype: plone.app.registry registry record
     :Example: :ref:`portal_get_registry_record_example`
+
     """
     if not name:
         raise MissingParameterError("Missing required parameter: name")
@@ -253,6 +254,7 @@ def set_registry_record(name=None, value=None):
     :param value: [required] Value to set
     :type value: python primitive
     :Example: :ref:`portal_set_registry_record_example`
+
     """
     if not name:
         raise MissingParameterError(u"Missing required parameter: name")

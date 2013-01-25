@@ -267,7 +267,7 @@ class TestPloneApiUser(unittest.TestCase):
             )
 
     def test_get_permissions_context(self):
-        """ Test get permissions on some context"""
+        """Test get permissions on some context."""
 
         user = api.user.create(
             username='chuck',
