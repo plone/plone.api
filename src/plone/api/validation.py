@@ -7,14 +7,20 @@ from plone.api.exc import MissingParameterError
 
 
 def required_parameters(required_params):
-    """ This makes the decorator and passes it the list of
-    required parameter names """
+    """ A decorator that tests whether all of the specified parameters
+    have been supplied
+
+    Usage:
+    @required_parameters(('a', 'b'))
+    def foo(a=None, b=None, c=None):
+        pass
+    """
 
     if isinstance(required_params, basestring):
         required_params = (required_params,)
 
     def _required_parameters(func):
-        """ The decorator """
+        """ The actual decorator """
 
         signature_params, _, _, _ = inspect.getargspec(func)
         if set(required_params) - set(signature_params):
