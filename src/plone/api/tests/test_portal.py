@@ -49,12 +49,21 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def test_get(self):
         """Test getting the portal object."""
+        self.assertEqual(portal.get(), self.portal)
 
-        # Register a new site manager to ensure that portal.get() always
-        # gets the portal, even from sub sites.
+    def test_get_with_sub_site(self):
+        """ Using getSite() alone is not enough to get the portal. It
+        will return the closest site, which may return a sub site
+        instead of the portal.
+
+        Set a different local site manager and test that portal.get()
+        still returns the portal.
+
+        """
         a_site = content.create(
             container=self.portal, type="Folder", title="A Site")
         a_site.setSiteManager(LocalSiteManager(a_site))
+
         setSite(a_site)
 
         self.assertEqual(portal.get(), self.portal)
