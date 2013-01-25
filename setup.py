@@ -27,10 +27,9 @@ setup(
     ],
     extras_require={
         'develop': [
+            'flake8',
             'jarn.mkrelease',
             'manuel',
-            'pep8',
-            'setuptools-flakes',
             'Sphinx',
             'zest.releaser',
         ],
