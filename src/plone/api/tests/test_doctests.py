@@ -65,7 +65,8 @@ def setUp(self):
 
 
 def DocFileSuite(
-    testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING):
+    testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING
+):
     """Returns a test suite configured with a test layer.
 
     :param testfile: Path to a doctest file.
