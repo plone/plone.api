@@ -10,8 +10,8 @@ from plone.api.exc import MissingParameterError
 import unittest2 as unittest
 
 
-def undecorated_func(a=None, b=None, c=None):
-    return 'bar'
+def undecorated_func(arg1=None, arg2=None, arg3=None):
+    return 'foo'
 
 
 class TestPloneAPIValidation(unittest.TestCase):
@@ -22,23 +22,23 @@ class TestPloneAPIValidation(unittest.TestCase):
     def test_single_keyword_arg_provided(self):
         """ Test for passing a single required parameter
         as a keyword argument """
-        _func = required_parameters('a')(undecorated_func)
-        self.assertEquals(_func(a='foo'), 'bar')
+        _func = required_parameters('arg1')(undecorated_func)
+        self.assertEquals(_func(arg1='hello'), 'foo')
 
     def test_single_positional_arg_provided(self):
         """ Test for passing a single required parameter
         as a positional argument """
-        _func = required_parameters('a')(undecorated_func)
-        self.assertEquals(_func('foo'), 'bar')
+        _func = required_parameters('arg1')(undecorated_func)
+        self.assertEquals(_func('hello'), 'foo')
 
     def test_single_arg_missing(self):
         """ Test that MissingParameterError is raised if the
         single required parameter is missing """
-        _func = required_parameters('a')(undecorated_func)
+        _func = required_parameters('arg1')(undecorated_func)
         self.assertRaises(MissingParameterError, _func)
 
     def test_one_missing_one_provided(self):
         """ Test that MissingParameterError is raised if one of the
         required parameters is missing """
-        _func = required_parameters(('a', 'b'))(undecorated_func)
+        _func = required_parameters('arg1', 'arg2')(undecorated_func)
         self.assertRaises(MissingParameterError, _func, 'foo')

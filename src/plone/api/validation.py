@@ -6,18 +6,15 @@ from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 
 
-def required_parameters(required_params):
+def required_parameters(*required_params):
     """ A decorator that tests whether all of the specified parameters
     have been supplied
 
     Usage:
-    @required_parameters(('a', 'b'))
+    @required_parameters('a', 'b')
     def foo(a=None, b=None, c=None):
         pass
     """
-
-    if isinstance(required_params, basestring):
-        required_params = (required_params,)
 
     def _required_parameters(func):
         """ The actual decorator """
