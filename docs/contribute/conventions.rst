@@ -117,28 +117,30 @@ instead of
 Grouping and sorting
 --------------------
 
-Imports should be grouped and ordered according to the
-`PEP8 <http://www.python.org/dev/peps/pep-0008/#imports>`__, `rope
-<http://rope.sourceforge.net/overview.html#sorting-imports>`_ and
-`Pylons <http://docs.pylonsproject.org/en/latest/community/codestyle.html#coding-style>`_
-conventions::
+Since Plone has such a huge code base, we don't want to loose developer time
+figuring out into which group some import goes (standard lib?, external
+package?, etc.). So we just sort everything alphabetically and insert one blank
+line between `from foo import bar` and `import baz` blocks. Conditional imports
+come last. Again, we *do not* distinguish between what is standard lib,
+external package or internal package in order to save time and avoid the hassle
+of explaining which is which.
 
-    [__future__ imports]
     from __future__ import division
-
-    [standard imports]
-    import random
-
-    [third-party imports]
     from Acquisition import aq_inner
+    from plone.api import portal
+    from plone.api.exc import MissingParameterError
     from Products.CMFCore.interfaces import ISiteRoot
     from Products.CMFCore.WorkflowCore import WorkflowException
 
-    [other modules from the current package]
-    from plone.api import portal
-    from plone.api.exc import MissingParameterError
+    import pkg_resources
+    import random
 
-Inside each group, lines should be sorted alphabetically.
+    try:
+        pkg_resources.get_distribution('plone.dexterity')
+    except pkg_resources.DistributionNotFound:
+        HAS_DEXTERITY = False
+    else:
+        HAS_DEXTERITY = True
 
 
 Declaring dependencies
