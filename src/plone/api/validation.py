@@ -7,7 +7,7 @@ from plone.api.exc import MissingParameterError
 
 def required_parameters(*required_params):
     """ A decorator that tests whether all of the specified parameters
-    have been supplied
+    have been supplied and are not None
 
     Usage:
     @required_parameters('a', 'b')
@@ -26,7 +26,12 @@ def required_parameters(*required_params):
 
         def wrapped(*args, **kwargs):
             """ The wrapped function """
-            assigned_params = set(signature_params[:len(args)] + kwargs.keys())
+
+            # make arg_name:value pairs for all args that have been passed in
+            assigned_params = {}
+            for i in range(len(args)):
+                assigned_params[signature_params[i]] = args[i]
+            assigned_params.update(kwargs)
 
             for param in required_params:
                 if param not in assigned_params:
