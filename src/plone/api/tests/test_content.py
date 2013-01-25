@@ -73,12 +73,20 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Check the contraints for the type container
         self.assertRaises(
-            api.exc.MissingParameterError, api.content.create, type='Document', id='test-doc')
+            api.exc.MissingParameterError,
+            api.content.create,
+            type='Document',
+            id='test-doc',
+        )
 
         # Check the contraints for the type parameter
         container = mock.Mock()
         self.assertRaises(
-            api.exc.MissingParameterError, api.content.create, container=container, id='test-doc')
+            api.exc.MissingParameterError,
+            api.content.create,
+            container=container,
+            id='test-doc',
+        )
 
         # Check the contraints for id and title parameters
         self.assertRaises(
@@ -97,7 +105,8 @@ class TestPloneApiContent(unittest.TestCase):
             id='test-foo'
         )
 
-        # Check the contraints for allowed types in the container if the container is the portal
+        # Check the contraints for allowed types in the container if
+        # the container is the portal
         container = self.portal
         self.assertRaises(
             api.exc.InvalidParameterError,
@@ -123,7 +132,10 @@ class TestPloneApiContent(unittest.TestCase):
             id='test-doc'
         )
 
-    @unittest.skipUnless(HAS_DEXTERITY, "Only run when Dexterity is available.")
+    @unittest.skipUnless(
+        HAS_DEXTERITY,
+        "Only run when Dexterity is available.",
+    )
     def test_create_dexterity(self):
         """Test create content based on Dexterity."""
         container = self.portal
@@ -295,7 +307,11 @@ class TestPloneApiContent(unittest.TestCase):
 
         container = mock.Mock()
         # Source is missing an should raise an error
-        self.assertRaises(api.exc.MissingParameterError, api.content.rename, obj=container)
+        self.assertRaises(
+            api.exc.MissingParameterError,
+            api.content.rename,
+            obj=container,
+        )
 
     def test_rename(self):
         """Test renaming of content."""
@@ -395,10 +411,20 @@ class TestPloneApiContent(unittest.TestCase):
     def test_transition(self):
         """Test transitioning the workflow state on a content item."""
 
-        self.assertRaises(api.exc.MissingParameterError, api.content.transition)
-        self.assertRaises(api.exc.MissingParameterError, api.content.transition, obj=mock.Mock())
         self.assertRaises(
-            api.exc.MissingParameterError, api.content.transition, transition='publish')
+            api.exc.MissingParameterError,
+            api.content.transition,
+        )
+        self.assertRaises(
+            api.exc.MissingParameterError,
+            api.content.transition,
+            obj=mock.Mock(),
+        )
+        self.assertRaises(
+            api.exc.MissingParameterError,
+            api.content.transition,
+            transition='publish',
+        )
 
         api.content.transition(obj=self.blog, transition='publish')
         review_state = api.content.get_state(obj=self.blog)

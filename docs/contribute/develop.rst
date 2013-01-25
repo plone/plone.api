@@ -184,6 +184,6 @@ command also re-generates your documentation.
 
 .. note::
     It pays off to invest a little time to make your editor run `pep8` and
-    `pyflakes` on a file every time you save that file. This saves you lots of
-    time in the long run.
+    `pyflakes` (of `flake8` which combines both) on a file every time you save
+    that file. This saves you lots of time in the long run.
 
