@@ -42,7 +42,7 @@ class TestPloneApiUser(unittest.TestCase):
             properties={'email': 'chuck@norris.org'}
         )
 
-        self.assertEquals(user.getProperty('email'), 'chuck@norris.org')
+        self.assertEqual(user.getProperty('email'), 'chuck@norris.org')
 
     def test_create_no_username(self):
         """Test create if no username is provided."""
@@ -56,7 +56,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret'
         )
 
-        self.assertEquals(user.getUserName(), 'chuck@norris.org')
+        self.assertEqual(user.getUserName(), 'chuck@norris.org')
 
         # But if using emails as a username is disabled, we should get
         # an error
@@ -78,7 +78,7 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-        self.assertEquals(user.getUserName(), 'chuck@norris.org')
+        self.assertEqual(user.getUserName(), 'chuck@norris.org')
 
         properties = self.portal.portal_properties.site_properties
         properties.manage_changeProperties(use_email_as_login=False)
@@ -88,7 +88,7 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-        self.assertEquals(user.getUserName(), 'chuck')
+        self.assertEqual(user.getUserName(), 'chuck')
 
     def test_create_default_roles(self):
         """Test the default role is set to member."""
@@ -98,7 +98,7 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-        self.assertEquals(
+        self.assertEqual(
             api.user.get_roles(user=user),
             ['Member', 'Authenticated', ]
         )
@@ -111,7 +111,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=['Reviewer', 'Editor']
         )
-        self.assertEquals(
+        self.assertEqual(
             api.user.get_roles(user=user),
             ['Reviewer', 'Authenticated', 'Editor']
         )
@@ -124,7 +124,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=[]
         )
-        self.assertEquals(
+        self.assertEqual(
             api.user.get_roles(user=user),
             ['Authenticated', ]
         )

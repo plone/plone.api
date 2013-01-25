@@ -26,8 +26,8 @@ Getting the Plone portal object is easy with :meth:`api.portal.get`.
 
 .. invisible-code-block: python
 
-    self.assertEquals(portal.getPortalTypeName(), 'Plone Site')
-    self.assertEquals(portal.getId(), 'plone')
+    self.assertEqual(portal.getPortalTypeName(), 'Plone Site')
+    self.assertEqual(portal.getId(), 'plone')
 
 
 .. _portal_get_navigation_root_example:
@@ -65,7 +65,7 @@ Assuming there is a document ``english_page`` in a folder ``en``, which is the n
 
 .. invisible-code-block: python
 
-    self.assertEquals(nav_root.id, 'en')
+    self.assertEqual(nav_root.id, 'en')
 
 returns the folder ``en``. If the folder ``en`` is not a navigation root it would return the portal.
 
@@ -193,7 +193,7 @@ the user.
     from Products.statusmessages.interfaces import IStatusMessage
     messages = IStatusMessage(request)
     show = messages.show()
-    self.assertEquals(len(show), 1)
+    self.assertEqual(len(show), 1)
     self.assertTrue('Blueberries!' in show[0].message)
 
 

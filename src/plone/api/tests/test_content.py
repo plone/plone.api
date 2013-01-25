@@ -542,7 +542,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         uuid2 = api.content.get_uuid(item)
         self.assertEqual(uuid1, uuid2)
-        self.assertTrue(isinstance(uuid2, str))
+        self.assertIsInstance(uuid2, str)
 
         # Archetypes
         container.invokeFactory('Document', 'test-archetype')
@@ -552,7 +552,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         uuid2 = api.content.get_uuid(document)
         self.assertEqual(uuid1, uuid2)
-        self.assertTrue(isinstance(uuid2, str))
+        self.assertIsInstance(uuid2, str)
 
     def test_get_view_view_not_found(self):
         """Test that error msg lists available views if a view is not found."""

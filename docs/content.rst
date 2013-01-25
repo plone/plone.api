@@ -310,7 +310,7 @@ To find out in which workflow state your content is, use
 
 .. invisible-code-block: python
 
-    self.assertEquals(state, 'private')
+    self.assertEqual(state, 'private')
 
 
 .. _content_transition_example:
@@ -328,7 +328,7 @@ To transition your content into a new state, use :meth:`api.content.transition`.
 
 .. invisible-code-block: python
 
-    self.assertEquals(
+    self.assertEqual(
         api.content.get_state(obj=portal['about']),
         'published'
     )
@@ -353,7 +353,7 @@ To get a BrowserView for your content, use :meth:`api.content.get_view`.
 
 .. invisible-code-block: python
 
-    self.assertEquals(view.__name__, u'plone')
+    self.assertEqual(view.__name__, u'plone')
 
 
 Further reading

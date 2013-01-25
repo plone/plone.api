@@ -34,8 +34,8 @@ the new user.
 
 .. invisible-code-block: python
 
-    self.assertEquals(user.id, 'alice@plone.org')
-    self.assertEquals(user.getProperty('email'), 'alice@plone.org')
+    self.assertEqual(user.id, 'alice@plone.org')
+    self.assertEqual(user.getProperty('email'), 'alice@plone.org')
 
 
 Otherwise, you also need to pass in the username of the new user.
@@ -50,8 +50,8 @@ Otherwise, you also need to pass in the username of the new user.
 
 .. invisible-code-block: python
 
-    self.assertEquals(user.id, 'jane')
-    self.assertEquals(user.getProperty('email'), 'jane@plone.org')
+    self.assertEqual(user.id, 'jane')
+    self.assertEqual(user.getProperty('email'), 'jane@plone.org')
 
 
 To set user properties when creating a new user, pass in a properties dict.
@@ -70,8 +70,8 @@ To set user properties when creating a new user, pass in a properties dict.
 
 .. invisible-code-block: python
 
-    self.assertEquals(user.getProperty('fullname'), 'Bob')
-    self.assertEquals(user.getProperty('location'), 'Munich')
+    self.assertEqual(user.getProperty('fullname'), 'Bob')
+    self.assertEqual(user.getProperty('location'), 'Munich')
 
 
 Besides user properties you can also specify a password for the new user.
@@ -100,7 +100,7 @@ You can get a user with :meth:`api.user.get`.
 
 .. invisible-code-block: python
 
-    self.assertEquals(user.id, 'bob')
+    self.assertEqual(user.id, 'bob')
 
 User properties
 ---------------
@@ -117,7 +117,7 @@ using the underlying APIs.
 
 .. invisible-code-block: python
 
-    self.assertEquals(location, 'Neverland')
+    self.assertEqual(location, 'Neverland')
 
 
 .. _user_get_current_example:
@@ -134,7 +134,7 @@ Getting the currently logged-in user is easy with :meth:`api.user.get_current`.
 
 .. invisible-code-block: python
 
-    self.assertEquals(current.id, 'test_user_1_')
+    self.assertEqual(current.id, 'test_user_1_')
 
 
 .. _user_is_anonymous_example:
@@ -195,7 +195,7 @@ return only users that are members of this group.
 
 .. invisible-code-block: python
 
-    self.assertEquals(users[0].id, 'jane')
+    self.assertEqual(users[0].id, 'jane')
 
 
 .. _user_delete_example:

@@ -26,7 +26,7 @@ To create a new portal group, use :meth:`api.group.create`.
 
 .. invisible-code-block: python
 
-    self.assertEquals(group.id, 'staff')
+    self.assertEqual(group.id, 'staff')
 
 When creating groups ``title``, ``description``, ``roles`` and ``groups`` are optional.
 
@@ -44,9 +44,9 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
 
 .. invisible-code-block: python
 
-    self.assertEquals(group.id, 'board_members')
-    self.assertEquals(group.getProperty('title'), 'Board members')
-    self.assertEquals(group.getProperty('description'), 'Just a description')
+    self.assertEqual(group.id, 'board_members')
+    self.assertEqual(group.getProperty('title'), 'Board members')
+    self.assertEqual(group.getProperty('description'), 'Just a description')
     self.assertTrue('Readers' in group.getRoles())
     self.assertTrue('Site Administrators' in group.getMemberIds())
 
@@ -65,7 +65,7 @@ To get a group by it's name, use :meth:`api.group.get`.
 
 .. invisible-code-block: python
 
-    self.assertEquals(group.id, 'staff')
+    self.assertEqual(group.id, 'staff')
 
 
 .. _group_edit_example:
@@ -115,7 +115,7 @@ You can also get all groups, by using :meth:`api.group.get_groups`.
 
 .. invisible-code-block: python
 
-    self.assertEquals(groups[0].id, 'Administrators')
+    self.assertEqual(groups[0].id, 'Administrators')
 
 
 .. _group_get_users_groups_example:
@@ -140,9 +140,9 @@ groups that the user is member of.
 
 .. invisible-code-block: python
 
-    self.assertEquals(groups[0].id, 'Reviewers')
-    self.assertEquals(groups[1].id, 'AuthenticatedUsers')
-    self.assertEquals(groups[2].id, 'staff')
+    self.assertEqual(groups[0].id, 'Reviewers')
+    self.assertEqual(groups[1].id, 'AuthenticatedUsers')
+    self.assertEqual(groups[2].id, 'staff')
 
 
 Get group members
@@ -159,7 +159,7 @@ members of a certain group.
 
 .. invisible-code-block: python
 
-    self.assertEquals(members[0].id, 'jane')
+    self.assertEqual(members[0].id, 'jane')
 
 
 .. _group_delete_example:
@@ -178,7 +178,7 @@ or the group object you want to delete.
 
 .. invisible-code-block: python
 
-    self.assertEquals(api.group.get(groupname='unwanted'), None)
+    self.assertEqual(api.group.get(groupname='unwanted'), None)
 
 .. code-block:: python
 
@@ -187,7 +187,7 @@ or the group object you want to delete.
 
 .. invisible-code-block: python
 
-    self.assertEquals(api.group.get(groupname='unwanted'), None)
+    self.assertEqual(api.group.get(groupname='unwanted'), None)
 
 
 .. _group_add_user_example:

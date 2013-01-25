@@ -88,6 +88,16 @@ Docstrings style
 Read and follow http://www.python.org/dev/peps/pep-0257/. That's it.
 
 
+Unit tests style
+================
+
+Read http://www.voidspace.org.uk/python/articles/unittest2.shtml to learn what
+is new in unittest2 and use it.
+
+This is not true for in-line documentation tests. Those still use old unittest
+test-cases, so you cannot use ``assertIn`` and similar.
+
+
 About imports
 =============
 

@@ -261,7 +261,7 @@ class TestPloneApiPortal(unittest.TestCase):
         messages = IStatusMessage(request)
         show = messages.show()
         self.assertEqual(len(show), 1)
-        self.assertTrue('Blueberries!' in show[0].message)
+        self.assertIn('Blueberries!', show[0].message)
         portal.show_message(message='One', request=request)
         portal.show_message(message='Two', request=request)
         messages = IStatusMessage(request)
