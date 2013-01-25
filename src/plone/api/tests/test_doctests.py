@@ -38,7 +38,7 @@ CHECKER = renormalizing.RENormalizing([
 ])
 
 
-def setUp(self):
+def setUp(self):  # pragma: no cover
     """Shared test environment set-up, ran before every test."""
     layer = self.globs['layer']
     # Update global variables within the tests.
