@@ -13,7 +13,7 @@ Conventions
 We've modeled the following rules and recommendations based on the following
 documents:
 
- * `PEP8 <http://www.python.org/dev/peps/pep-0008>`_
+ * `PEP8 <http://www.python.org/dev/peps/pep-0008>`__
  * `PEP257 <http://www.python.org/dev/peps/pep-0257>`_
  * `Rope project <http://rope.sourceforge.net/overview.html>`_
  * `Google Style Guide <http://google-styleguide.googlecode.com/svn/trunk/pyguide.html>`_
@@ -106,7 +106,7 @@ Grouping and sorting
 --------------------
 
 Imports should be grouped and ordered according to the
-`PEP8 <http://www.python.org/dev/peps/pep-0008/#imports>`_, `rope
+`PEP8 <http://www.python.org/dev/peps/pep-0008/#imports>`__, `rope
 <http://rope.sourceforge.net/overview.html#sorting-imports>`_ and
 `Pylons <http://docs.pylonsproject.org/en/latest/community/codestyle.html#coding-style>`_
 conventions::
