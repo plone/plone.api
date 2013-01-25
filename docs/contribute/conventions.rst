@@ -64,7 +64,7 @@ following two styles for breaking long lines into blocks:
        a_long_list = [
            "a_fairly_long_string",
            "quite_a_long_string_indeed",
-           "an_exceptionally_long_string_of_characters", 
+           "an_exceptionally_long_string_of_characters",
        ]
 
  * Arguments on first line, directly after the opening parenthesis are
@@ -124,6 +124,8 @@ line between `from foo import bar` and `import baz` blocks. Conditional imports
 come last. Again, we *do not* distinguish between what is standard lib,
 external package or internal package in order to save time and avoid the hassle
 of explaining which is which.
+
+.. sourcecode:: python
 
     from __future__ import division
     from Acquisition import aq_inner
