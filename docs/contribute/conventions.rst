@@ -10,22 +10,63 @@
 Conventions
 ===========
 
+We've modeled the following rules and recommendations based on the following
+documents:
+
+ * `PEP8 <http://www.python.org/dev/peps/pep-0008>`_
+ * `PEP257 <http://www.python.org/dev/peps/pep-0257>`_
+ * `Rope project <http://rope.sourceforge.net/overview.html>`_
+ * `Google Style Guide <http://google-styleguide.googlecode.com/svn/trunk/pyguide.html>`_
+ * `Pylons Coding Style <http://docs.pylonsproject.org/en/latest/community/codestyle.html>`_
+
 Line length
 ===========
 
-All Python code in this package should be PEP8 valid. However, we don't strictly
-enforce the 80-char line length rule. It is encouraged to have your code
-formatted in 80-char lines, but somewhere it's just more readable to break this
-rule for a few characters. Long and descriptive test method names are a good
-example of this.
+All Python code in this package should be PEP8 valid. This includes adhering
+to the 80-char line length. If you absolutely need to break this rule, append
+``# noPEP8`` to the offending line to skip it in syntax checks.
 
 .. note::
-    Configuring your editor to display a line at 80th column helps a lot
+    Configuring your editor to display a line at 79th column helps a lot
     here and saves time.
 
 .. note::
-    The line length rules also applies to non-python source files, such as
-    documentation .rst files.
+    The line length rule also applies to non-python source files, such as
+    documentation .rst files or .zcml files, but is a bit more relaxed there.
+
+Breaking lines
+--------------
+
+Based on code we love to look at (Pyramid, Requests, etc.), we allow the
+following two styles for breaking long lines into blocks:
+
+1. Break into next line with one additional indent block.
+
+   .. sourcecode:: python
+
+       foo = dict(
+           very_long_argument='foo', another_very_long_argument='bar')
+
+2. If this still doesn't fit the 80-char limit, break into multiple lines.
+
+   .. sourcecode:: python
+
+       foo = dict(
+           very_long_argument='foo',
+           another_very_long_argument='bar',
+       )
+
+ * Arguments on first line forbidden when breaking lines.
+ * The last argument line needs to have a trailing comma (to be nice to the
+   next developer coming in to add something as an argument and minimize VCS
+   diffs in these cases).
+ * The closing parenthesis or bracket need to have the same indentation level
+   as the first line.
+ * Each line can only contain a single argument.
+ * The same style applies to dicts, lists, return calls, etc.
+
+This package follows all rules above, check out the source to see them in
+action.
 
 
 Docstrings style
@@ -63,9 +104,11 @@ instead of
 Grouping and sorting
 --------------------
 
-Imports should be grouped according to the
-`PEP8 <http://www.python.org/dev/peps/pep-0008/#imports>`_ and `rope
-<http://rope.sourceforge.net/overview.html#sorting-imports>`_ conventions::
+Imports should be grouped and ordered according to the
+`PEP8 <http://www.python.org/dev/peps/pep-0008/#imports>`_, `rope
+<http://rope.sourceforge.net/overview.html#sorting-imports>`_ and
+`Pylons <http://docs.pylonsproject.org/en/latest/community/codestyle.html#coding-style>`_
+conventions::
 
     [__future__ imports]
     from __future__ import division
@@ -78,11 +121,11 @@ Imports should be grouped according to the
     from Products.CMFCore.interfaces import ISiteRoot
     from Products.CMFCore.WorkflowCore import WorkflowException
 
-    [package imports]
+    [other modules from the current package]
     from plone.api import portal
     from plone.api.exc import MissingParameterError
 
-Inside each group, lines should be alphabetically sorted.
+Inside each group, lines should be sorted alphabetically.
 
 
 Declaring dependencies
@@ -97,15 +140,17 @@ go in ``extras_require``. Remember to document how to enable specific features
 features).
 
 Generally all direct dependencies (packages directly imported or used in ZCML)
-should be declared, even if they would already pulled in by other dependencies.
-This explicitness reduces possible runtime errors and gives a good overview on
-the complexity of a package.
+should be declared, even if they would already be pulled in by other
+dependencies. This explicitness reduces possible runtime errors and gives a
+good overview on the complexity of a package.
 
-For example, if you depend on Products.CMFPlone and use getToolByName from
-Products.CMFCore, you should also declare the CMFCore dependency explicitly,
-even though it's pulled in by Plone itself. If you use namespace packages from
-the Zope distribution like Products.Five you should explicitly declare Zope as
-dependency.
+For example, if you depend on ``Products.CMFPlone`` and use ``getToolByName``
+from ``Products.CMFCore``, you should also declare the ``CMFCore`` dependency
+explicitly, even though it's pulled in by Plone itself. If you use namespace
+packages from the Zope distribution like ``Products.Five`` you should
+explicitly declare ``Zope`` as dependency.
+
+Inside each group of dependencies, lines should be sorted alphabetically.
 
 
 Versioning scheme
@@ -179,10 +224,10 @@ for it to ``docs/``.
 
 After adding/modifying documentation, run ``make`` to re-generate your docs.
 
-Also, documentation is automatically generated from these source files every
-time code is pushed to `master` branch on GitHub. The post-commit hook is
-handled by ReadTheDocs and the results (nice HTML pages) are visible at
-http://ploneapi.readthedocs.org/en/latest/.
+Publicly available documentation on http://api.plone.org is automatically
+generated from these source files, periodically. So when you push changes
+to master on GitHub you should soon be able to see them published on
+api.plone.org.
 
 
 .. _travis_ci:
@@ -192,7 +237,7 @@ Travis Continuous Integration
 
 On every push to GitHub, `Travis <http://travis-ci.org/plone/plone.api>`_
 runs all tests and syntax validation checks and reports build outcome to
-``TODO: which?`` mailinglist and to the ``#sprint`` IRC channel.
+the ``#sprint`` IRC channel and the person who committed the last change.
 
 Travis is configured with the ``.travis.yml`` file located in the root of this
 package.
