@@ -161,14 +161,7 @@ For software versions, use a sequence-based versioning scheme:
 
     MAJOR.MINOR[.MICRO][STATUS]
 
-For example: 1.2 or 1.2.1
-
-Development releases get a status identifier appended to it.
-
-For the current development branch, just append "dev": 1.3dev. If you make a
-development release, append a development status identifier to it. For alpha
-releases append a1..an to it, like: 1.3a1. For Beta releases use b1..bn: 1.3b4.
-For release canditates use rc1..rcn: 1.3rc2.
+For more information, read http://semver.org/.
 
 
 Restructured Text versus Plain Text
