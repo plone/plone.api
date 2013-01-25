@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.content."""
 
-import mock
-import pkg_resources
-import unittest2 as unittest
-
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
+from plone import api
+from plone.api.tests.base import INTEGRATION_TESTING
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
 from zExceptions import BadRequest
 from zope.component import getUtility
 
-from plone import api
-from plone.api.tests.base import INTEGRATION_TESTING
-
+import mock
+import pkg_resources
+import unittest2 as unittest
 
 try:
     pkg_resources.get_distribution('plone.dexterity')

@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 """Module that provides various utility methods on the portal level."""
 
+from Acquisition import aq_inner
 from email.utils import formataddr
 from email.utils import parseaddr
 from logging import getLogger
-
-from Acquisition import aq_inner
+from plone.api.exc import CannotGetPortalError
+from plone.api.exc import InvalidParameterError
+from plone.api.exc import MissingParameterError
+from plone.app.layout.navigation.root import getNavigationRootObject
 from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
-from plone.app.layout.navigation.root import getNavigationRootObject
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
-
-from plone.api.exc import CannotGetPortalError
-from plone.api.exc import InvalidParameterError
-from plone.api.exc import MissingParameterError
-
 
 logger = getLogger('plone.api.portal')
 

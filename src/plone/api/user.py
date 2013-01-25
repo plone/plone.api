@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """Module that provides functionality for user manipulation."""
 
-import random
-import string
-
 from AccessControl.Permission import getPermissions
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
-from Products.CMFPlone.utils import getToolByName
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from Products.CMFPlone.utils import getToolByName
 from zope.globalrequest import getRequest
+
+import random
+import string
 
 
 def create(email=None, username=None, password=None, roles=('Member', ),

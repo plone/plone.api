@@ -1,24 +1,23 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.portal."""
 
-from email import message_from_string
-import mock
-import unittest2 as unittest
-
 from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.tests.utils import MockMailHost
-from Products.MailHost.interfaces import IMailHost
-from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.registry import field
-from plone.registry.interfaces import IRegistry
-from plone.registry.record import Record
-from zope.component import getUtility
-
+from email import message_from_string
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.registry import field
+from plone.registry.interfaces import IRegistry
+from plone.registry.record import Record
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.tests.utils import MockMailHost
+from Products.MailHost.interfaces import IMailHost
+from zope.component import getUtility
+
+import mock
+import unittest2 as unittest
 
 
 class TestPloneApiPortal(unittest.TestCase):
