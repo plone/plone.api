@@ -68,7 +68,7 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.get_tool('portal_foo')
 
         self.assertTrue(
-            cm.exception.message.startswith(
+            str(cm.exception).startswith(
                 "Cannot find a tool with name 'portal_foo'"))
 
         # A selection of records which should exist in all plone versions
@@ -107,7 +107,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
         for should_be_there in should_be_theres:
-            self.assertIn((should_be_there + '\n'), cm.exception.message)
+            self.assertIn((should_be_there + '\n'), str(cm.exception))
 
     def test_get_tool(self):
         """Test to validate the tool name."""
@@ -304,7 +304,7 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.get_registry_record(name='nonexistent.sharepoint.power')
 
         self.assertTrue(
-            cm.exception.message.startswith(
+            str(cm.exception).startswith(
                 "Cannot find a record with name "
                 "'nonexistent.sharepoint.power'.\n"
             )
@@ -321,7 +321,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
         for should_be_there in should_be_theres:
-            self.assertIn((should_be_there + '\n'), cm.exception.message)
+            self.assertIn((should_be_there + '\n'), str(cm.exception))
 
     def test_set_registry_record(self):
         registry = getUtility(IRegistry)
