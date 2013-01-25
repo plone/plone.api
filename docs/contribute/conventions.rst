@@ -90,6 +90,7 @@ About imports
 
 .. sourcecode:: python
 
+    from plone.app.testing import something
     from zope.component import getMultiAdapter
     from zope.component import getSiteManager
 
@@ -99,7 +100,6 @@ instead of
 
     from plone.app.testing import *
     from zope.component import getMultiAdapter, getSiteManager
-    from .portal import get
 
 
 Grouping and sorting
