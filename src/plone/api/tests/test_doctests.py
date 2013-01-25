@@ -20,11 +20,19 @@ import re
 import transaction
 import unittest2 as unittest
 
-FLAGS = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS | doctest.REPORT_NDIFF | doctest.REPORT_ONLY_FIRST_FAILURE
+FLAGS = (
+    doctest.NORMALIZE_WHITESPACE |
+    doctest.ELLIPSIS |
+    doctest.REPORT_NDIFF |
+    doctest.REPORT_ONLY_FIRST_FAILURE
+)
 
 CHECKER = renormalizing.RENormalizing([
     # Normalize the generated UUID values to always compare equal.
-    (re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'), '<UUID>'),
+    (re.compile(
+        r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
+        '<UUID>',
+     ),
 ])
 
 
@@ -54,7 +62,12 @@ def setUp(self):
     transaction.commit()
 
 
-def DocFileSuite(testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING):
+def DocFileSuite(
+    testfile,
+    flags=FLAGS,
+    setUp=setUp,
+    layer=PLONE_INTEGRATION_TESTING
+):
     """Returns a test suite configured with a test layer.
 
     :param testfile: Path to a doctest file.

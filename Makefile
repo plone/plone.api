@@ -3,7 +3,6 @@
 
 version = 2.7
 python = bin/python
-pep8_ignores = E501
 options =
 
 all: docs tests
@@ -31,8 +30,7 @@ $(python):
 
 tests: .installed.cfg
 	@bin/test
-	@bin/pyflakes src/
-	@bin/pep8 --ignore=$(pep8_ignores) src/
+	@bin/flake8 src/plone/api
 
 clean:
 	@rm -rf .installed.cfg bin docs/html parts develop-eggs \
