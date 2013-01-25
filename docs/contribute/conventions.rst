@@ -230,6 +230,9 @@ generated from these source files, periodically. So when you push changes
 to master on GitHub you should soon be able to see them published on
 api.plone.org.
 
+Read the `reStructuredText Primer <http://sphinx-doc.org/rest.html>`_ to brush
+up on your `reST` skills.
+
 
 .. _travis_ci:
 
