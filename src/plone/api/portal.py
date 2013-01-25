@@ -38,7 +38,7 @@ def get():
 
     """
     portal = getSite()
-    if portal:
+    if portal is not None:
         return portal
     raise CannotGetPortalError(
         "Unable to get the portal object. More info on "
