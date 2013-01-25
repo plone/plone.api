@@ -18,7 +18,6 @@ try:
     pkg_resources.get_distribution('plone.dexterity')
 except pkg_resources.DistributionNotFound:
     HAS_DEXTERITY = False
-    pass
 else:
     HAS_DEXTERITY = True
 

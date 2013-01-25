@@ -123,6 +123,29 @@ instead of
     from plone.app.testing import *
     from zope.component import getMultiAdapter, getSiteManager
 
+4. Don't catch ImportError to detect whether a package is available or not.
+   Instead, use pkg_resources.get_distribution and catch DistributionNotFound.
+
+.. sourcecode:: python
+
+    import pkg_resources
+
+    try:
+        pkg_resources.get_distribution('plone.dexterity')
+    except pkg_resources.DistributionNotFound:
+        HAS_DEXTERITY = False
+    else:
+        HAS_DEXTERITY = True
+
+instead of
+
+.. sourcecode:: python
+
+    try:
+        import plone.dexterity
+        HAVE_DEXTERITY = True
+    except ImportError:
+        HAVE_DEXTERITY = False
 
 Grouping and sorting
 --------------------
