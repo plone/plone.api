@@ -8,7 +8,7 @@ from plone.api.exc import MissingParameterError
 def required_parameters(*required_params):
     """ A decorator that tests whether all of the specified parameters
     have been supplied and are not None
-    
+
     Todo: add an optional flag to allow None values through as valid parameters
 
     Usage:
@@ -21,10 +21,12 @@ def required_parameters(*required_params):
         """ The actual decorator """
 
         signature_params, _, _, _ = inspect.getargspec(func)
-        if set(required_params) - set(signature_params):
+        extra_params = set(required_params) - set(signature_params)
+        if extra_params:
             raise ValueError(
-                "%s requires a parameter that is not part of its signature."
-                % func.__name__)
+                "required_parameters: %s requires parameters \
+that are not part of its signature: %s"
+                % (func.__name__, ", ".join(extra_params)))
 
         def wrapped(*args, **kwargs):
             """ The wrapped function """
@@ -35,10 +37,10 @@ def required_parameters(*required_params):
                 assigned_params[signature_params[i]] = args[i]
             assigned_params.update(kwargs)
 
-            for param in required_params:
-                if param not in assigned_params:
+            for p in required_params:
+                if p not in assigned_params or assigned_params[p] is None:
                     raise MissingParameterError(
-                        "Missing required parameter: %s" % param)
+                        "Missing required parameter: %s" % p)
 
             return func(*args, **kwargs)
 
