@@ -52,7 +52,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(portal.get(), self.portal)
 
     def test_get_with_sub_site(self):
-        """ Using getSite() alone is not enough to get the portal. It
+        """Using getSite() alone is not enough to get the portal. It
         will return the closest site, which may return a sub site
         instead of the portal.
 
