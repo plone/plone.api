@@ -1,24 +1,26 @@
 # -*- coding: utf-8 -*-
 """Boilerplate for doctest functional tests."""
 
-from plone.app.testing import applyProfile
+import doctest
+import os
+import re
+import unittest2 as unittest
+
+import manuel.codeblock
+import manuel.doctest
+import manuel.testing
+import transaction
+
 from plone.app.testing import PLONE_INTEGRATION_TESTING
-from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.testing import applyProfile
+from plone.app.testing import setRoles
 from plone.testing import layered
 from plone.testing.z2 import Browser
 from zope.testing import renormalizing
 
-import doctest
-import manuel.codeblock
-import manuel.doctest
-import manuel.testing
-import os
-import re
-import transaction
-import unittest2 as unittest
 
 FLAGS = (
     doctest.NORMALIZE_WHITESPACE |
