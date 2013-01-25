@@ -21,13 +21,17 @@ logger = getLogger('plone.api.portal')
 try:
     from plone.registry.interfaces import IRegistry
 except ImportError:
-    logger.warning('plone.registry is not installed. get_registry_record and set_registry_record will be unavailable.')
+    logger.warning(
+        'plone.registry is not installed. get_registry_record and '
+        'set_registry_record will be unavailable.'
+    )
 
 
 def get():
     """Get the Plone portal object out of thin air.
 
-    Without the need to import fancy Interfaces and doing multi adapter lookups.
+    Without the need to import fancy Interfaces and doing multi adapter
+    lookups.
 
     :returns: Plone portal object
     :rtype: Portal object

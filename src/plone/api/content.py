@@ -61,8 +61,9 @@ def create(container=None,
         raise MissingParameterError("Missing required parameter: type")
 
     if not id and not title:
-        raise MissingParameterError('You have to provide either the ``id`` or the '
-                                    '``title`` parameter')
+        raise MissingParameterError(
+            'You have to provide either the ``id`` or the '
+            '``title`` parameter')
 
     # Create a temporary id if the id is not given
     content_id = not safe_id and id or str(random.randint(0, 99999999))
@@ -321,7 +322,9 @@ def transition(obj=None, transition=None):
     try:
         workflow.doActionFor(obj, transition)
     except WorkflowException:
-        transitions = [action['id'] for action in workflow.listActions(object=obj)]
+        transitions = [
+            action['id'] for action in workflow.listActions(object=obj)
+        ]
 
         raise InvalidParameterError(
             "Invalid transition '%s'.\n"
@@ -363,10 +366,13 @@ def get_view(name=None, context=None, request=None):
     try:
         return getMultiAdapter((context, request), name=name)
     except:
-        # get a list of all views so we can display their names in the error msg
+        # get a list of all views so we can display their names in the error
+        # msg
         sm = getSiteManager()
-        views = sm.adapters.lookupAll(required=(providedBy(context), providedBy(request)),
-                                      provided=Interface)
+        views = sm.adapters.lookupAll(
+            required=(providedBy(context), providedBy(request)),
+            provided=Interface,
+        )
         views_names = [view[0] for view in views]
 
         raise InvalidParameterError(
