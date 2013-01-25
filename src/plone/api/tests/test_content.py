@@ -271,13 +271,13 @@ class TestPloneApiContent(unittest.TestCase):
         """Test the constraints for moving content."""
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, api.content.move)
+        self.assertRaises(api.exc.MissingParameterError, api.content.move)
 
         container = mock.Mock()
         # Source is missing an should raise an error
         self.assertRaises(ValueError, api.content.move, source=container)
         # Target is missing an should raise an error
-        self.assertRaises(ValueError, api.content.move, target=container)
+        self.assertRaises(api.exc.MissingParameterError, api.content.move, target=container)
 
     def test_move(self):
         """Test moving of content."""
@@ -371,7 +371,7 @@ class TestPloneApiContent(unittest.TestCase):
         """Test the constraints for moving content."""
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, api.content.copy)
+        self.assertRaises(api.exc.MissingParameterError, api.content.copy)
 
         container = mock.Mock()
         # Source is missing an should raise an error
@@ -409,7 +409,7 @@ class TestPloneApiContent(unittest.TestCase):
         """Test the constraints for deleting content."""
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, api.content.delete)
+        self.assertRaises(api.exc.MissingParameterError, api.content.delete)
 
     def test_delete(self):
         """Test deleting a content item."""
@@ -417,7 +417,7 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
 
         # The content item must be given as parameter
-        self.assertRaises(ValueError, api.content.delete)
+        self.assertRaises(api.exc.MissingParameterError, api.content.delete)
 
         # Delete the contact page
         api.content.delete(self.contact)
@@ -427,7 +427,7 @@ class TestPloneApiContent(unittest.TestCase):
         """Test retrieving the workflow state of a content item."""
 
         # This should fail because an content item is mandatory
-        self.assertRaises(ValueError, api.content.get_state)
+        self.assertRaises(api.exc.MissingParameterError, api.content.get_state)
 
         review_state = api.content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'private')
@@ -528,7 +528,7 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
 
         # The content item must be given as parameter
-        self.assertRaises(ValueError, api.content.get_uuid)
+        self.assertRaises(api.exc.MissingParameterError, api.content.get_uuid)
 
         generator = getUtility(IUUIDGenerator)
 

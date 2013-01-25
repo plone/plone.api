@@ -5,6 +5,7 @@ from App.config import getConfiguration
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from plone.api.validation import required_parameters
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.Archetypes.interfaces.base import IBaseObject
@@ -20,6 +21,7 @@ import random
 import transaction
 
 
+@required_parameters('container', 'type')
 def create(
     container=None,
     type=None,
@@ -55,12 +57,6 @@ def create(
     :Example: :ref:`content_create_example`
 
     """
-    if not container:
-        raise MissingParameterError("Missing required parameter: container")
-
-    if not type:
-        raise MissingParameterError("Missing required parameter: type")
-
     if not id and not title:
         raise MissingParameterError(
             'You have to provide either the ``id`` or the '
@@ -151,6 +147,7 @@ def get(path=None, UID=None):
         return uuidToObject(UID)
 
 
+@required_parameters('source')
 def move(source=None, target=None, id=None, safe_id=False):
     """Move the object to the target container.
 
@@ -176,9 +173,6 @@ def move(source=None, target=None, id=None, safe_id=False):
     :Example: :ref:`content_move_example`
 
     """
-    if not source:
-        raise ValueError
-
     if not target and not id:
         raise ValueError
 
@@ -203,6 +197,7 @@ def move(source=None, target=None, id=None, safe_id=False):
         target.manage_renameObject(source_id, new_id)
 
 
+@required_parameters('obj', 'new_id')
 def rename(obj=None, new_id=None, safe_id=False):
     """Rename the object.
 
@@ -217,15 +212,10 @@ def rename(obj=None, new_id=None, safe_id=False):
     :Example: :ref:`content_rename_example`
 
     """
-    if not obj:
-        raise MissingParameterError("Missing required parameter: obj")
-
-    if not new_id:
-        raise MissingParameterError("Missing required parameter: new_id")
-
     move(source=obj, id=new_id, safe_id=safe_id)
 
 
+@required_parameters('source')
 def copy(source=None, target=None, id=None, safe_id=False):
     """Copy the object to the target container.
 
@@ -251,9 +241,6 @@ def copy(source=None, target=None, id=None, safe_id=False):
     :Example: :ref:`content_copy_example`
 
     """
-    if not source:
-        raise ValueError
-
     if not target and not id:
         raise ValueError
 
@@ -270,6 +257,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
         target.manage_renameObject(source_id, new_id)
 
 
+@required_parameters('obj')
 def delete(obj=None):
     """Delete the object.
 
@@ -280,12 +268,10 @@ def delete(obj=None):
     :Example: :ref:`content_delete_example`
 
     """
-    if not obj:
-        raise ValueError
-
     obj.aq_parent.manage_delObjects([obj.getId()])
 
 
+@required_parameters('obj')
 def get_state(obj=None):
     """Get the current workflow state of the object.
 
@@ -298,13 +284,11 @@ def get_state(obj=None):
     :Example: :ref:`content_get_state_example`
 
     """
-    if not obj:
-        raise ValueError
-
     workflow = portal.get_tool('portal_workflow')
     return workflow.getInfoFor(obj, 'review_state')
 
 
+@required_parameters('obj', 'transition')
 def transition(obj=None, transition=None):
     """Perform a workflow transition for the object.
 
@@ -319,12 +303,6 @@ def transition(obj=None, transition=None):
     :Example: :ref:`content_transition_example`
 
     """
-    if not obj or not transition:
-        raise MissingParameterError(
-            'You have to provide the ``obj`` and the '
-            '``transition`` parameters'
-        )
-
     workflow = portal.get_tool('portal_workflow')
     try:
         workflow.doActionFor(obj, transition)
@@ -340,6 +318,7 @@ def transition(obj=None, transition=None):
         )
 
 
+@required_parameters('name', 'context', 'request')
 def get_view(name=None, context=None, request=None):
     """Get a BrowserView object.
 
@@ -355,15 +334,6 @@ def get_view(name=None, context=None, request=None):
     :Example: :ref:`content_get_view_example`
 
     """
-    if not name:
-        raise MissingParameterError("Missing required parameter: name")
-
-    if not context:
-        raise MissingParameterError("Missing required parameter: context")
-
-    if not request:
-        raise MissingParameterError("Missing required parameter: request")
-
     # It happens sometimes that ACTUAL_URL is not set in tests. To be nice
     # and not throw strange errors, we set it to be the same as URL.
     # TODO: if/when we have api.env.test_mode() boolean in the future, use that
@@ -390,6 +360,7 @@ def get_view(name=None, context=None, request=None):
         )
 
 
+@required_parameters('obj')
 def get_uuid(obj=None):
     """Get the object's Universally Unique IDentifier (UUID).
 
@@ -402,7 +373,4 @@ def get_uuid(obj=None):
     :Example: :ref:`content_get_uuid_example`
 
     """
-    if not obj:
-        raise ValueError
-
     return IUUID(obj)

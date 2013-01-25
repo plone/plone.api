@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.validation."""
 
-from plone.api.tests.base import INTEGRATION_TESTING
-from plone import api
-from plone.api.validation import required_parameters
-from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from plone.api.tests.base import INTEGRATION_TESTING
+from plone.api.validation import required_parameters
 
 import unittest2 as unittest
 

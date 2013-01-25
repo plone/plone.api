@@ -2,7 +2,6 @@
 """ Decorators for validating parameters """
 
 import inspect
-from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 
 
@@ -22,7 +21,7 @@ def required_parameters(*required_params):
         signature_params, _, _, _ = inspect.getargspec(func)
         if set(required_params) - set(signature_params):
             raise ValueError(
-                "%s requires a parameter that is not part of its signature." \
+                "%s requires a parameter that is not part of its signature."
                 % func.__name__)
 
         def wrapped(*args, **kwargs):
