@@ -148,23 +148,23 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test the constraints for sending an email."""
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, portal.send_email)
+        self.assertRaises(MissingParameterError, portal.send_email)
 
         # recipient, subject and body are required
         self.assertRaises(
-            ValueError,
+            MissingParameterError,
             portal.send_email,
             subject='Beer',
             body="To beer or not to beer, that is the question",
         )
         self.assertRaises(
-            ValueError,
+            MissingParameterError,
             portal.send_email,
             recipient='joe@example.org',
             subject='Beer',
         )
         self.assertRaises(
-            ValueError,
+            MissingParameterError,
             portal.send_email,
             recipient='joe@example.org',
             body="To beer or not to beer, that is the question",
@@ -236,7 +236,7 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test the constraints for get_localized_time."""
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, portal.get_localized_time)
+        self.assertRaises(MissingParameterError, portal.get_localized_time)
 
     def test_get_localized_time(self):
         """Test getting the localized time."""
@@ -261,16 +261,16 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test the constraints for show_message."""
 
         # When no parameters are given an error is raised
-        self.assertRaises(ValueError, portal.show_message)
+        self.assertRaises(MissingParameterError, portal.show_message)
 
         # message and request are required
         self.assertRaises(
-            ValueError,
+            MissingParameterError,
             portal.show_message,
             request=self.layer['request'],
         )
         self.assertRaises(
-            ValueError,
+            MissingParameterError,
             portal.show_message,
             message='Beer is brewing.',
         )
@@ -298,7 +298,7 @@ class TestPloneApiPortal(unittest.TestCase):
 
         navigation_root = portal.get_navigation_root(portal.get())
         self.assertTrue(INavigationRoot.providedBy(navigation_root))
-        self.assertRaises(ValueError, portal.get_navigation_root)
+        self.assertRaises(MissingParameterError, portal.get_navigation_root)
 
     def test_get_existing_registry_record(self):
         """Test that existing registry records are returned correctly."""

@@ -10,7 +10,7 @@ from email.utils import parseaddr
 from logging import getLogger
 from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
-from plone.api.exc import MissingParameterError
+from plone.api.validation import required_parameters
 from plone.app.layout.navigation.root import getNavigationRootObject
 from zope.component import getUtility
 from zope.component import providedBy
@@ -53,6 +53,7 @@ def get():
     )
 
 
+@required_parameters('context')
 def get_navigation_root(context=None):
     """Get the navigation root object for the context.
 
@@ -66,12 +67,11 @@ def get_navigation_root(context=None):
     :Example: :ref:`portal_get_navigation_root_example`
 
     """
-    if not context:
-        raise ValueError("Missing required object: context")
     context = aq_inner(context)
     return getNavigationRootObject(context, get())
 
 
+@required_parameters('name')
 def get_tool(name=None):
     """Get a portal tool in a simple way.
 
@@ -84,9 +84,6 @@ def get_tool(name=None):
     :Example: :ref:`portal_get_tool_example`
 
     """
-    if not name:
-        raise MissingParameterError("Missing required parameter: name")
-
     try:
         return getToolByName(get(), name)
     except AttributeError:
@@ -105,6 +102,7 @@ def get_tool(name=None):
         )
 
 
+@required_parameters('recipient', 'subject', 'body')
 def send_email(sender=None, recipient=None, subject=None, body=None):
     """Send an email.
 
@@ -122,9 +120,6 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     :Example: :ref:`portal_send_email_example`
 
     """
-    if not recipient or not subject or not body:
-        raise ValueError
-
     portal = get()
     from plone.api import content
     ctrlOverview = content.get_view(
@@ -161,6 +156,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     )
 
 
+@required_parameters('datetime')
 def get_localized_time(datetime=None, long_format=False, time_only=False):
     """Display a date/time in a user-friendly way.
 
@@ -185,9 +181,6 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
     :Example: :ref:`portal_get_localized_time_example`
 
     """
-    if not datetime:
-        raise ValueError
-
     tool = get_tool(name='translation_service')
     request = getRequest()
     return tool.ulocalized_time(
@@ -199,6 +192,7 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
     )
 
 
+@required_parameters('message', 'request')
 def show_message(message=None, request=None, type='info'):
     """Display a status message.
 
@@ -213,15 +207,10 @@ def show_message(message=None, request=None, type='info'):
     :Example: :ref:`portal_show_message_example`
 
     """
-    if not message:
-        raise ValueError
-
-    if not request:
-        raise ValueError
-
     IStatusMessage(request).add(message, type=type)
 
 
+@required_parameters('name')
 def get_registry_record(name=None):
     """Get a record value from a the ``plone.app.registry``
 
@@ -232,9 +221,6 @@ def get_registry_record(name=None):
     :Example: :ref:`portal_get_registry_record_example`
 
     """
-    if not name:
-        raise MissingParameterError("Missing required parameter: name")
-
     if not isinstance(name, str):
         raise InvalidParameterError(u"The parameter has to be a string")
 
@@ -252,6 +238,7 @@ def get_registry_record(name=None):
     return registry[name]
 
 
+@required_parameters('name', 'value')
 def set_registry_record(name=None, value=None):
     """Set a record value in the ``plone.app.registry``
 
@@ -262,10 +249,6 @@ def set_registry_record(name=None, value=None):
     :Example: :ref:`portal_set_registry_record_example`
 
     """
-    if not name:
-        raise MissingParameterError(u"Missing required parameter: name")
-    if value is None:
-        raise MissingParameterError(u"Missing required parameter: value")
     if not isinstance(name, str):
         raise InvalidParameterError(u"The parameter 'name' has to be a string")
     registry = getUtility(IRegistry)
