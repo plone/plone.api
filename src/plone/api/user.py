@@ -8,6 +8,7 @@ from AccessControl.SecurityManagement import setSecurityManager
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
 
 import random
@@ -84,6 +85,7 @@ def create(
     return get(username=user_id)
 
 
+@required_parameters('username')
 def get(username=None):
     """Get a user.
 
@@ -96,9 +98,6 @@ def get(username=None):
     :Example: :ref:`user_get_example`
 
     """
-    if not username:
-        raise MissingParameterError
-
     portal_membership = portal.get_tool('portal_membership')
     return portal_membership.getMemberById(username)
 
@@ -284,6 +283,7 @@ def get_permissions(username=None, user=None, obj=None):
     return d
 
 
+@required_parameters('roles')
 def grant_roles(username=None, user=None, obj=None, roles=None):
     """Grant roles to a user.
 
@@ -310,9 +310,6 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     if username and user:
         raise InvalidParameterError
 
-    if roles is None:
-        raise MissingParameterError
-
     if user is None:
         user = get(username=username)
 
@@ -331,6 +328,7 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
         obj.manage_setLocalRoles(user.getId(), roles)
 
 
+@required_parameters('roles')
 def revoke_roles(username=None, user=None, obj=None, roles=None):
     """Revoke roles from a user.
 
@@ -354,9 +352,6 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     """
     if username and user:
         raise InvalidParameterError
-
-    if roles is None:
-        raise MissingParameterError
 
     if user is None:
         user = get(username=username)

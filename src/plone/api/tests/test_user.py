@@ -330,7 +330,13 @@ class TestPloneApiUser(unittest.TestCase):
             InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
-            user=user)
+            user=user,
+            roles=['Reviewer'])
+
+        self.assertRaises(
+            MissingParameterError,
+            api.user.grant_roles,
+            username='chuck')
 
         api.user.grant_roles(username='chuck', roles=['Editor'])
         self.assertIn('Editor', api.user.get_roles(username='chuck'))
@@ -372,7 +378,13 @@ class TestPloneApiUser(unittest.TestCase):
             InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
-            user=user)
+            user=user,
+            roles=['Reviewer'])
+
+        self.assertRaises(
+            MissingParameterError,
+            api.user.grant_roles,
+            username='chuck')
 
         api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'])
 
