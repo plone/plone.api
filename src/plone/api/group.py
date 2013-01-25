@@ -3,8 +3,10 @@
 
 from plone.api import portal
 from plone.api.user import get as user_get
+from plone.api.validation import required_parameters
 
 
+@required_parameters('groupname')
 def create(
     groupname=None,
     title=None,
@@ -31,11 +33,7 @@ def create(
     :Example: :ref:`group_create_example`
 
     """
-    if not groupname:
-        raise ValueError('You have to pass the groupname parameter!')
-
     group_tool = portal.get_tool('portal_groups')
-
     group_tool.addGroup(
         groupname, roles, groups,
         title=title,
@@ -44,6 +42,7 @@ def create(
     return group_tool.getGroupById(groupname)
 
 
+@required_parameters('groupname')
 def get(groupname=None):
     """Get a group.
 
@@ -56,9 +55,6 @@ def get(groupname=None):
     :Example: :ref:`group_get_example`
 
     """
-    if not groupname:
-        raise ValueError('You have to pass the groupname parameter!')
-
     group_tool = portal.get_tool('portal_groups')
     return group_tool.getGroupById(groupname)
 
@@ -245,6 +241,7 @@ def get_roles(groupname=None, group=None, obj=None):
         super(group.__class__, group).getRolesInContext(obj)
 
 
+@required_parameters('roles')
 def grant_roles(groupname=None, group=None, roles=None, obj=None):
     """Grant roles to a group.
 
@@ -270,9 +267,6 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
     if groupname and group:
         raise ValueError
 
-    if not roles:
-        raise ValueError
-
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise ValueError
 
@@ -293,6 +287,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         obj.manage_setLocalRoles(group_id, roles)
 
 
+@required_parameters('roles')
 def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     """Revoke roles from a group.
 
@@ -316,9 +311,6 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
         raise ValueError
 
     if groupname and group:
-        raise ValueError
-
-    if not roles:
         raise ValueError
 
     if 'Anonymous' in roles or 'Authenticated' in roles:

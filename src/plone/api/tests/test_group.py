@@ -23,7 +23,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_create_contraints(self):
         """Test the contraints for creating a group."""
-        self.assertRaises(ValueError, api.group.create)
+        self.assertRaises(api.exc.MissingParameterError, api.group.create)
 
     def test_create(self):
         """Test adding of a group, groupname is mandatory."""
@@ -64,13 +64,13 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_get_constraints(self):
         """Test the constraints for geting a group."""
-        self.assertRaises(ValueError, api.group.get)
+        self.assertRaises(api.exc.MissingParameterError, api.group.get)
 
     def test_get(self):
         """Test getting a group."""
 
         # This should fail because the groupname is mandatory
-        self.assertRaises(ValueError, api.group.create)
+        self.assertRaises(api.exc.MissingParameterError, api.group.create)
 
         # Create a group and retrieve it
         api.group.create(groupname='bacon')
@@ -272,7 +272,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
         self.assertRaises(
-            ValueError,
+            api.exc.MissingParameterError,
             api.group.grant_roles,
             groupname='foo',
             group=group,
@@ -311,7 +311,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
         self.assertRaises(
-            ValueError,
+            api.exc.MissingParameterError,
             api.group.grant_roles,
             groupname='bar',
             group=group,
