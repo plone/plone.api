@@ -6,11 +6,13 @@ from plone.api.user import get as user_get
 from Products.CMFCore.utils import getToolByName
 
 
-def create(groupname=None,
-           title=None,
-           description=None,
-           roles=[],
-           groups=[]):
+def create(
+    groupname=None,
+    title=None,
+    description=None,
+    roles=[],
+    groups=[]
+):
     """Create a group.
 
     :param groupname: [required] Name of the new group.
@@ -36,8 +38,10 @@ def create(groupname=None,
     group_tool = getToolByName(portal.get(), 'portal_groups')
 
     group_tool.addGroup(
-        groupname, roles, groups, title=title,
-        description=description)
+        groupname, roles, groups,
+        title=title,
+        description=description
+    )
     return group_tool.getGroupById(groupname)
 
 

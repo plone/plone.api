@@ -69,8 +69,7 @@ class TestPloneApiPortal(unittest.TestCase):
 
         self.assertTrue(
             cm.exception.message.startswith(
-                "Cannot find a tool with name 'portal_foo'")
-        )
+                "Cannot find a tool with name 'portal_foo'"))
 
         # A selection of records which should exist in all plone versions
         should_be_theres = (
@@ -115,11 +114,11 @@ class TestPloneApiPortal(unittest.TestCase):
 
         self.assertEqual(
             portal.get_tool(name='portal_catalog'),
-            getToolByName(self.portal, 'portal_catalog')
+            getToolByName(self.portal, 'portal_catalog'),
         )
         self.assertEqual(
             portal.get_tool(name='portal_membership'),
-            getToolByName(self.portal, 'portal_membership')
+            getToolByName(self.portal, 'portal_membership'),
         )
 
     def test_send_email_constraints(self):
@@ -133,19 +132,19 @@ class TestPloneApiPortal(unittest.TestCase):
             ValueError,
             portal.send_email,
             subject='Beer',
-            body="To beer or not to beer, that is the question"
+            body="To beer or not to beer, that is the question",
         )
         self.assertRaises(
             ValueError,
             portal.send_email,
             recipient='joe@example.org',
-            subject='Beer'
+            subject='Beer',
         )
         self.assertRaises(
             ValueError,
             portal.send_email,
             recipient='joe@example.org',
-            body="To beer or not to beer, that is the question"
+            body="To beer or not to beer, that is the question",
         )
 
     def test_send_email(self):
@@ -191,7 +190,7 @@ class TestPloneApiPortal(unittest.TestCase):
             recipient="bob@plone.org",
             sender="noreply@plone.org",
             subject="Trappist",
-            body=u"One for you Bob!"
+            body=u"One for you Bob!",
         )
 
     @mock.patch('plone.api.portal.parseaddr')
@@ -242,10 +241,16 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertRaises(ValueError, portal.show_message)
 
         # message and request are required
-        self.assertRaises(ValueError, portal.show_message,
-                          request=self.layer['request'])
-        self.assertRaises(ValueError, portal.show_message,
-                          message='Beer is brewing.')
+        self.assertRaises(
+            ValueError,
+            portal.show_message,
+            request=self.layer['request'],
+        )
+        self.assertRaises(
+            ValueError,
+            portal.show_message,
+            message='Beer is brewing.',
+        )
 
     def test_show_message(self):
         """Test to see if message appears."""
@@ -324,12 +329,19 @@ class TestPloneApiPortal(unittest.TestCase):
             field.TextLine(title=u"Plone's Power"))
         portal.set_registry_record('plone.api.plone_power', u'awesome')
         self.assertEqual(registry['plone.api.plone_power'], u'awesome')
-        self.assertRaises(KeyError, portal.set_registry_record,
-                          name='nonexistent.sharepoint.power',
-                          value=u'Zero')
+        self.assertRaises(
+            KeyError,
+            portal.set_registry_record,
+            name='nonexistent.sharepoint.power',
+            value=u'Zero',
+        )
         self.assertRaises(MissingParameterError, portal.set_registry_record)
-        self.assertRaises(MissingParameterError, portal.set_registry_record,
-                          name='plone.api.plone_power')
-        self.assertRaises(InvalidParameterError, portal.set_registry_record,
-                          name=['foo', 'bar'],
-                          value=u"baz")
+        self.assertRaises(
+            MissingParameterError, portal.set_registry_record,
+            name='plone.api.plone_power',
+        )
+        self.assertRaises(
+            InvalidParameterError, portal.set_registry_record,
+            name=['foo', 'bar'],
+            value=u"baz",
+        )

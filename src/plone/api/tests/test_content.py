@@ -156,8 +156,10 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Create an item with a title and without an id
         page = api.content.create(
-            container=folder, type='Dexterity Item',
-            title='Test id generated')
+            container=folder,
+            type='Dexterity Item',
+            title='Test id generated'
+        )
         assert page
         self.assertEqual(page.id, 'test-id-generated')
         self.assertEqual(page.Title(), 'Test id generated')
@@ -165,8 +167,11 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Try to create another item with same id, this should fail
         self.assertRaises(
-            BadRequest, api.content.create,
-            container=folder, type='Dexterity Item', id='test-item'
+            BadRequest,
+            api.content.create,
+            container=folder,
+            type='Dexterity Item',
+            id='test-item',
         )
 
     def test_create_archetypes(self):
@@ -198,8 +203,11 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Try to create another page with same id, this should fail
         self.assertRaises(
-            BadRequest, api.content.create,
-            container=folder, type='Document', id='test-document'
+            BadRequest,
+            api.content.create,
+            container=folder,
+            type='Document',
+            id='test-document',
         )
 
     def test_create_with_safe_id(self):
@@ -207,16 +215,22 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
 
         first_page = api.content.create(
-            container=container, type='Document', id='test-document',
-            safe_id=True)
+            container=container,
+            type='Document',
+            id='test-document',
+            safe_id=True,
+        )
         assert first_page
         self.assertEqual(first_page.id, 'test-document')
         self.assertEqual(first_page.portal_type, 'Document')
 
         # Second page is created with non-conflicting id
         second_page = api.content.create(
-            container=container, type='Document', id='test-document',
-            safe_id=True)
+            container=container,
+            type='Document',
+            id='test-document',
+            safe_id=True,
+        )
         assert second_page
         self.assertEqual(second_page.id, 'test-document-1')
         self.assertEqual(second_page.portal_type, 'Document')
@@ -291,8 +305,11 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.create(
             container=self.about, type='Link', id='link-to-blog')
         api.content.move(
-            source=self.blog, target=self.about, id='link-to-blog',
-            safe_id=True)
+            source=self.blog,
+            target=self.about,
+            id='link-to-blog',
+            safe_id=True,
+        )
         assert container['about']['link-to-blog-1']
         assert 'link-to-blog' not in container.keys()
 
@@ -329,20 +346,25 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.rename(
             obj=container['about']['link-to-blog'],
             new_id='link-to-blog',
-            safe_id=True)
+            safe_id=True,
+        )
         assert container['about']['link-to-blog-1']
         assert 'link-to-blog' not in container.keys()
 
         # Rename to existing id
         api.content.create(
             container=self.about, type='Link', id='link-to-blog')
-        self.assertRaises(CopyError, api.content.rename,
-                          obj=container['about']['link-to-blog'],
-                          new_id='link-to-blog-1')
+        self.assertRaises(
+            CopyError,
+            api.content.rename,
+            obj=container['about']['link-to-blog'],
+            new_id='link-to-blog-1',
+        )
         api.content.rename(
             obj=container['about']['link-to-blog'],
             new_id='link-to-blog-1',
-            safe_id=True)
+            safe_id=True,
+        )
         assert container['about']['link-to-blog-1-1']
         assert 'link-to-blog' not in container.keys()
 
@@ -376,8 +398,11 @@ class TestPloneApiContent(unittest.TestCase):
             container=self.about, type='Link', id='link-to-blog')
 
         api.content.copy(
-            source=self.blog, target=self.about, id='link-to-blog',
-            safe_id=True)
+            source=self.blog,
+            target=self.about,
+            id='link-to-blog',
+            safe_id=True,
+        )
         assert container['about']['link-to-blog-1']
         self.assertRaises(KeyError, container['blog'])
 
@@ -432,8 +457,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         # This should fail because the transition doesn't exist
         with self.assertRaises(api.exc.InvalidParameterError) as cm:
-            api.content.transition(transition='foo',
-                                   obj=self.blog)
+            api.content.transition(
+                transition='foo', obj=self.blog)
 
         self.maxDiff = None  # to see assert diff
         self.assertMultiLineEqual(
@@ -456,7 +481,7 @@ class TestPloneApiContent(unittest.TestCase):
             api.exc.MissingParameterError,
             api.content.get_view,
             context=self.blog,
-            request=request
+            request=request,
         )
 
         # context is required
@@ -464,7 +489,7 @@ class TestPloneApiContent(unittest.TestCase):
             api.exc.MissingParameterError,
             api.content.get_view,
             name='plone',
-            request=request
+            request=request,
         )
 
         # request is required
@@ -472,7 +497,7 @@ class TestPloneApiContent(unittest.TestCase):
             api.exc.MissingParameterError,
             api.content.get_view,
             name='plone',
-            context=self.blog
+            context=self.blog,
         )
 
     def test_get_view(self):
@@ -482,7 +507,7 @@ class TestPloneApiContent(unittest.TestCase):
         view = api.content.get_view(
             name='plone',
             context=self.blog,
-            request=request
+            request=request,
         )
         self.assertEqual(aq_base(view.context), aq_base(self.blog))
         self.assertEqual(view.__name__, 'plone')
@@ -493,7 +518,7 @@ class TestPloneApiContent(unittest.TestCase):
         view = api.content.get_view(
             name='plone_context_state',
             context=self.blog,
-            request=request
+            request=request,
         )
         self.assertEqual(view.__name__, 'plone_context_state')
         self.assertEqual(aq_base(view.canonical_object()), aq_base(self.blog))
@@ -534,16 +559,20 @@ class TestPloneApiContent(unittest.TestCase):
         request = self.layer['request']
 
         with self.assertRaises(api.exc.InvalidParameterError) as cm:
-            api.content.get_view(name='foo',
-                                 context=self.blog,
-                                 request=request)
+            api.content.get_view(
+                name='foo',
+                context=self.blog,
+                request=request
+            )
 
         self.maxDiff = None  # to see assert diff
         self.assertTrue(
             cm.exception.message.startswith(
                 "Cannot find a view with name 'foo'.\n"
                 "Available views are:\n"
-                '\n'))
+                '\n'
+            )
+        )
 
         # This is just a sampling of views that should be present.
         # Test against only these rather than the full list. Otherwise, this
@@ -562,7 +591,8 @@ class TestPloneApiContent(unittest.TestCase):
             "skin",
             "text-transform",
             "uuid",
-            "view")
+            "view",
+        )
 
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + '\n'), cm.exception.message)

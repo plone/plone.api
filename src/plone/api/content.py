@@ -21,12 +21,14 @@ import random
 import transaction
 
 
-def create(container=None,
-           type=None,
-           id=None,
-           title=None,
-           safe_id=False,
-           **kwargs):
+def create(
+    container=None,
+    type=None,
+    id=None,
+    title=None,
+    safe_id=False,
+    **kwargs
+):
     """Create a new content item.
 
     :param container: [required] Container object in which to create the new
@@ -63,7 +65,8 @@ def create(container=None,
     if not id and not title:
         raise MissingParameterError(
             'You have to provide either the ``id`` or the '
-            '``title`` parameter')
+            '``title`` parameter'
+        )
 
     # Create a temporary id if the id is not given
     content_id = not safe_id and id or str(random.randint(0, 99999999))
@@ -82,7 +85,8 @@ def create(container=None,
         raise InvalidParameterError(
             "Cannot add a '%s' object to the container.\n"
             "Allowed types are:\n"
-            "%s" % (type, '\n'.join(sorted(types))))
+            "%s" % (type, '\n'.join(sorted(types)))
+        )
 
     content = container[content_id]
 
@@ -124,12 +128,14 @@ def get(path=None, UID=None):
 
     """
     if path and UID:
-        raise ValueError('When getting an object combining path and UID '
-                         'attribute is not allowed')
+        raise ValueError(
+            'When getting an object combining path and UID '
+            'attribute is not allowed'
+        )
 
     if not path and not UID:
-        raise ValueError('When getting an object path or UID attribute is '
-                         'required')
+        raise ValueError(
+            'When getting an object path or UID attribute is required')
 
     if path:
         site = portal.get()
@@ -315,8 +321,10 @@ def transition(obj=None, transition=None):
 
     """
     if not obj or not transition:
-        raise MissingParameterError('You have to provide the ``obj`` and the '
-                                    '``transition`` parameters')
+        raise MissingParameterError(
+            'You have to provide the ``obj`` and the '
+            '``transition`` parameters'
+        )
 
     workflow = getToolByName(portal.get(), 'portal_workflow')
     try:
@@ -329,7 +337,8 @@ def transition(obj=None, transition=None):
         raise InvalidParameterError(
             "Invalid transition '%s'.\n"
             "Valid transitions are:\n"
-            "%s" % (transition, '\n'.join(sorted(transitions))))
+            "%s" % (transition, '\n'.join(sorted(transitions)))
+        )
 
 
 def get_view(name=None, context=None, request=None):
@@ -378,7 +387,8 @@ def get_view(name=None, context=None, request=None):
         raise InvalidParameterError(
             "Cannot find a view with name '%s'.\n"
             "Available views are:\n"
-            "%s" % (name, '\n'.join(sorted(views_names))))
+            "%s" % (name, '\n'.join(sorted(views_names)))
+        )
 
 
 def get_uuid(obj=None):

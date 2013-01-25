@@ -44,7 +44,8 @@ def get():
     raise CannotGetPortalError(
         "Unable to get the portal object. More info on "
         "https://ploneapi.readthedocs.org/en/latest/api/exceptions.html"
-        "#plone.api.exc.CannotGetPortalError")
+        "#plone.api.exc.CannotGetPortalError"
+    )
 
 
 def get_navigation_root(context=None):
@@ -95,7 +96,8 @@ def get_tool(name=None):
         raise InvalidParameterError(
             "Cannot find a tool with name '%s'.\n"
             "Available tools are:\n"
-            "%s" % (name, '\n'.join(tools)))
+            "%s" % (name, '\n'.join(tools))
+        )
 
 
 def send_email(sender=None, recipient=None, subject=None, body=None):
@@ -119,8 +121,8 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
         raise ValueError
 
     portal = get()
-    ctrlOverview = getMultiAdapter((portal, portal.REQUEST),
-                                   name='overview-controlpanel')
+    ctrlOverview = getMultiAdapter(
+        (portal, portal.REQUEST), name='overview-controlpanel')
     if ctrlOverview.mailhost_warning():
         raise ValueError('MailHost is not configured.')
 
@@ -179,8 +181,13 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
 
     tool = get_tool(name='translation_service')
     request = getRequest()
-    return tool.ulocalized_time(datetime, long_format, time_only,
-                                domain='plonelocales', request=request)
+    return tool.ulocalized_time(
+        datetime,
+        long_format,
+        time_only,
+        domain='plonelocales',
+        request=request,
+    )
 
 
 def show_message(message=None, request=None, type='info'):
@@ -229,7 +236,8 @@ def get_registry_record(name=None):
         raise InvalidParameterError(
             "Cannot find a record with name '%s'.\n"
             "Available records are:\n"
-            "%s" % (name, '\n'.join(records)))
+            "%s" % (name, '\n'.join(records))
+        )
 
     return registry[name]
 

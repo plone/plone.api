@@ -86,9 +86,14 @@ def DocFileSuite(
     m += manuel.codeblock.Manuel()
 
     return layered(
-        manuel.testing.TestSuite(m, testfile, setUp=setUp,
-                                 globs=dict(layer=layer)),
-        layer=layer)
+        manuel.testing.TestSuite(
+            m,
+            testfile,
+            setUp=setUp,
+            globs=dict(layer=layer)
+        ),
+        layer=layer,
+    )
 
 
 def test_suite():

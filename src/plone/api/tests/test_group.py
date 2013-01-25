@@ -35,27 +35,27 @@ class TestPloneApiGroup(unittest.TestCase):
         bacon_group = api.group.create(
             groupname='bacon',
             title='Bacon',
-            description='Hmm bacon good!'
+            description='Hmm bacon good!',
         )
 
         self.assertEqual(
             bacon_group,
-            self.group_tool.getGroupById('bacon')
+            self.group_tool.getGroupById('bacon'),
         )
         self.assertEqual(
             bacon_group.getGroupTitleOrName(),
-            'Bacon'
+            'Bacon',
         )
         self.assertEqual(
             bacon_group.getProperty('description'),
-            'Hmm bacon good!'
+            'Hmm bacon good!',
         )
 
         # Group with roles and groups
         ham_group = api.group.create(
             groupname='ham',
             roles=['Editor', ],
-            groups=['Reviewer', ]
+            groups=['Reviewer', ],
         )
         group = self.group_tool.getGroupById('ham')
         self.assertEqual(ham_group, group)
@@ -78,7 +78,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         self.assertEqual(
             bacon,
-            self.group_tool.getGroupById('bacon')
+            self.group_tool.getGroupById('bacon'),
         )
 
     def test_get_all_groups(self):
@@ -112,9 +112,11 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn('AuthenticatedUsers', groups)
         self.assertIn('staff', groups)
 
-        self.assertRaises(ValueError,
-                          api.group.get_groups,
-                          username='theurbanspaceman')
+        self.assertRaises(
+            ValueError,
+            api.group.get_groups,
+            username='theurbanspaceman',
+        )
 
     def test_delete_contraints(self):
         """Test the contraints for deleting a group."""
@@ -127,7 +129,7 @@ class TestPloneApiGroup(unittest.TestCase):
             ValueError,
             api.group.delete,
             groupname='bacon',
-            group=mock.Mock()
+            group=mock.Mock(),
         )
 
     def test_delete(self):
@@ -154,14 +156,16 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertRaises(
             ValueError,
             api.group.add_user,
-            groupname='staff', group=mock.Mock()
+            groupname='staff', group=mock.Mock(),
         )
+
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
             ValueError,
             api.group.add_user,
             username='staff', user=mock.Mock()
         )
+
         self.assertRaises(ValueError, api.group.add_user, groupname='staff')
         self.assertRaises(ValueError, api.group.add_user, username='jane')
         self.assertRaises(
@@ -206,13 +210,13 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertRaises(
             ValueError,
             api.group.remove_user,
-            groupname='staff', group=mock.Mock()
+            groupname='staff', group=mock.Mock(),
         )
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
             ValueError,
             api.group.remove_user,
-            username='staff', user=mock.Mock()
+            username='staff', user=mock.Mock(),
         )
         self.assertRaises(ValueError, api.group.remove_user, groupname='staff')
         self.assertRaises(ValueError, api.group.remove_user, username='jane')
@@ -221,7 +225,7 @@ class TestPloneApiGroup(unittest.TestCase):
             api.group.remove_user,
             username='jane',
             group='group',
-            groupname='staff'
+            groupname='staff',
         )
 
     def test_remove_user(self):
@@ -257,19 +261,22 @@ class TestPloneApiGroup(unittest.TestCase):
             ValueError,
             api.group.grant_roles,
             groupname='foo',
-            roles=['Anonymous'])
+            roles=['Anonymous'],
+        )
 
         self.assertRaises(
             ValueError,
             api.group.grant_roles,
             groupname='foo',
-            roles=['Authenticated'])
+            roles=['Authenticated'],
+        )
 
         self.assertRaises(
             ValueError,
             api.group.grant_roles,
             groupname='foo',
-            group=group)
+            group=group,
+        )
 
         api.group.grant_roles(groupname='foo', roles=['Editor'])
         self.assertIn('Editor', api.group.get_roles(groupname='foo'))
@@ -293,19 +300,22 @@ class TestPloneApiGroup(unittest.TestCase):
             ValueError,
             api.group.grant_roles,
             groupname='bar',
-            roles=['Anonymous'])
+            roles=['Anonymous'],
+        )
 
         self.assertRaises(
             ValueError,
             api.group.grant_roles,
             groupname='bar',
-            roles=['Authenticated'])
+            roles=['Authenticated'],
+        )
 
         self.assertRaises(
             ValueError,
             api.group.grant_roles,
             groupname='bar',
-            group=group)
+            group=group,
+        )
 
         api.group.grant_roles(groupname='bar', roles=['Reviewer', 'Editor'])
 
@@ -484,6 +494,5 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         self.assertEqual(
             ROLES,
-            set(api.group.get_roles(group=group,
-                                    obj=document)),
+            set(api.group.get_roles(group=group, obj=document)),
         )
