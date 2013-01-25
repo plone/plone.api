@@ -65,8 +65,9 @@ following two styles for breaking long lines into blocks:
  * Each line can only contain a single argument.
  * The same style applies to dicts, lists, return calls, etc.
 
-This package follows all rules above, check out the source to see them in
-action.
+This package follows all rules above, `check out the source
+<https://github.com/plone/plone.api/tree/master/src/plone/api>`_ to see them
+in action.
 
 
 Docstrings style
