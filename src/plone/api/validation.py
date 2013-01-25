@@ -8,6 +8,8 @@ from plone.api.exc import MissingParameterError
 def required_parameters(*required_params):
     """ A decorator that tests whether all of the specified parameters
     have been supplied and are not None
+    
+    Todo: add an optional flag to allow None values through as valid parameters
 
     Usage:
     @required_parameters('a', 'b')
