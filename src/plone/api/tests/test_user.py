@@ -185,6 +185,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.group.create(groupname='bacon')
         bacon = api.group.get(groupname='bacon')
 
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
             InvalidParameterError,
             api.user.get_users,
@@ -193,8 +194,10 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_users_nonexistent_group(self):
         """ test getting users for a group that does not exist """
+
+        from plone.api.exc import GroupNotFoundError
         self.assertRaises(
-            ValueError,
+            GroupNotFoundError,
             api.user.get_users,
             groupname='bacon')
 
@@ -322,6 +325,16 @@ class TestPloneApiUser(unittest.TestCase):
                 api.user.get_permissions(user=user).get(k, None)
             )
 
+    def test_get_permissions_nonexistant_user(self):
+        """Test get_permissions for a user that does not exist."""
+
+        from plone.api.exc import UserNotFoundError
+        self.assertRaises(
+            UserNotFoundError,
+            api.user.get_permissions,
+            username='ming',
+        )
+
     def test_get_permissions_context(self):
         """Test get permissions on some context."""
 
@@ -329,7 +342,7 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             email='chuck@norris.org',
             password='secret',
-            roles=[]
+            roles=[],
         )
 
         from plone.api.exc import InvalidParameterError
@@ -337,7 +350,8 @@ class TestPloneApiUser(unittest.TestCase):
             InvalidParameterError,
             api.user.get_permissions,
             username='chuck',
-            user=user)
+            user=user,
+        )
 
         PERMISSIONS = {
             'View': False,
@@ -350,7 +364,8 @@ class TestPloneApiUser(unittest.TestCase):
             container=self.portal,
             type='Folder',
             id='folder_one',
-            title='Folder One')
+            title='Folder One',
+        )
 
         for k, v in PERMISSIONS.items():
             self.assertEqual(v,
@@ -410,7 +425,8 @@ class TestPloneApiUser(unittest.TestCase):
             InvalidParameterError,
             api.user.grant_roles,
             username='chuck',
-            roles=['Anonymous'])
+            roles=['Anonymous'],
+        )
 
     def test_grant_roles_authenticated(self):
         """Test granting Authenticated role."""
@@ -465,7 +481,8 @@ class TestPloneApiUser(unittest.TestCase):
             InvalidParameterError,
             api.user.revoke_roles,
             username='chuck',
-            user=user)
+            user=user,
+        )
 
     def test_revoke_roles_anonymous(self):
         """Test revoking Anonymous role."""
@@ -475,7 +492,8 @@ class TestPloneApiUser(unittest.TestCase):
             InvalidParameterError,
             api.user.revoke_roles,
             username='chuck',
-            roles=['Anonymous'])
+            roles=['Anonymous'],
+        )
 
     def test_revoke_roles_authenticated(self):
         """Test revoking Authenticated role."""
@@ -494,7 +512,8 @@ class TestPloneApiUser(unittest.TestCase):
         from plone.api.exc import MissingParameterError
         self.assertRaises(
             MissingParameterError,
-            api.user.revoke_roles)
+            api.user.revoke_roles,
+        )
 
     def test_grant_roles_in_context(self):
         """Test grant roles."""
@@ -510,12 +529,14 @@ class TestPloneApiUser(unittest.TestCase):
             container=portal,
             type='Folder',
             id='folder_one',
-            title='Folder One')
+            title='Folder One',
+        )
         document = api.content.create(
             container=folder,
             type='Document',
             id='document_one',
-            title='Document One')
+            title='Document One',
+        )
 
         api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
         self.assertIn(
@@ -579,17 +600,23 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         portal = api.portal.get()
-        folder = api.content.create(container=portal,
-                                    type='Folder',
-                                    id='folder_one',
-                                    title='Folder One')
-        document = api.content.create(container=folder,
-                                      type='Document',
-                                      id='document_one',
-                                      title='Document One')
-        api.user.grant_roles(username='chuck',
-                             roles=['Reviewer', 'Editor'],
-                             obj=folder)
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One',
+        )
+        document = api.content.create(
+            container=folder,
+            type='Document',
+            id='document_one',
+            title='Document One',
+        )
+        api.user.grant_roles(
+            username='chuck',
+            roles=['Reviewer', 'Editor'],
+            obj=folder,
+        )
 
         api.user.revoke_roles(username='chuck', roles=['Reviewer'], obj=folder)
         self.assertIn(
@@ -633,8 +660,9 @@ class TestPloneApiUser(unittest.TestCase):
             ROLES,
             set(api.user.get_roles(username='chuck', obj=folder)),
         )
-        self.assertEqual(ROLES, set(api.user.get_roles(user=user, obj=folder)))
-        self.assertEqual(ROLES, set(api.user.get_roles(username='chuck',
-                                                       obj=document)))
-        self.assertEqual(ROLES, set(api.user.get_roles(user=user,
-                                                       obj=document)))
+        self.assertEqual(
+            ROLES, set(api.user.get_roles(user=user, obj=folder)))
+        self.assertEqual(
+            ROLES, set(api.user.get_roles(username='chuck', obj=document)))
+        self.assertEqual(
+            ROLES, set(api.user.get_roles(user=user, obj=document)))
