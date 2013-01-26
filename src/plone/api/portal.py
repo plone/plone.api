@@ -16,12 +16,14 @@ from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
+import pkg_resources
 
 logger = getLogger('plone.api.portal')
 
 try:
+    pkg_resources.get_distribution('plone.registry')
     from plone.registry.interfaces import IRegistry
-except ImportError:  # pragma: no cover
+except pkg_resources.DistributionNotFound:
     logger.warning(
         'plone.registry is not installed. get_registry_record and '
         'set_registry_record will be unavailable.'
