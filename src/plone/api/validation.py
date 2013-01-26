@@ -16,9 +16,10 @@ def _get_arg_spec(func, validator_args):
     extra_args = set(validator_args) - set(signature_args)
     if extra_args:
         raise ValueError(
-            "Validator for %s refers to parameters "
-            "that are not part of the function signature: %s" % (
-            func.__name__, ", ".join(extra_args),))
+            "Validator for {0} refers to parameters "
+            "that are not part of the function signature: {1}".format(
+                func.__name__, ", ".join(extra_args))
+        )
 
     return signature_args
 
@@ -61,7 +62,9 @@ def required_parameters(*required_params):
             missing = [p for p in required_params if p not in supplied_args]
             if len(missing):
                 raise MissingParameterError(
-                    "Missing required parameter(s): %s" % ", ".join(missing))
+                    "Missing required parameter(s): {0}".format(
+                        ", ".join(missing))
+                )
 
             return f(*args, **kwargs)
 
@@ -89,8 +92,9 @@ def mutually_exclusive_parameters(*exclusive_params):
             clashes = [s for s in supplied_args if s in exclusive_params]
             if len(clashes) > 1:
                 raise InvalidParameterError(
-                    "These parameters are mutually exclusive: %s." %
-                    ", ".join(supplied_args))
+                    "These parameters are mutually exclusive: {0}.".format(
+                        ", ".join(supplied_args))
+                )
 
             return f(*args, **kwargs)
 

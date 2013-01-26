@@ -106,6 +106,6 @@ def test_suite():
         try:
             doctests.append(DocFileSuite(os.path.join(path, filename)))
         except IOError:
-            print 'test_doctest.py skipping %s' % filename
+            print 'test_doctest.py skipping {0}'.format(filename)
 
     return unittest.TestSuite(doctests)
