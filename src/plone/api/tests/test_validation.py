@@ -134,3 +134,33 @@ class TestPloneAPIValidation(unittest.TestCase):
         self.assertRaises(InvalidParameterError, _func, 'ahoy', 'there')
         self.assertRaises(
             InvalidParameterError, _func, arg1='ahoy', arg2='there')
+
+    def test_two_decorators(self):
+        """Test that multiple decorators can be used together"""
+        @mutually_exclusive_parameters('arg2', 'arg3')
+        @required_parameters('arg1')
+        def _func1_decorated(arg1=None, arg2=None, arg3=None):
+            pass
+
+        # test that the required parameter error works (missing arg1)
+        self.assertRaises(
+            MissingParameterError, _func1_decorated, arg2='ahoy')
+
+        # test that the mutually exclusive decorator works
+        # (arg2 and arg3 should not be there)
+        self.assertRaises(
+            InvalidParameterError,
+            _func1_decorated,
+            arg1='ahoy',
+            arg2='there',
+            arg3='matey',
+        )
+
+        # test that they both work.  Making no assumptions here about the order
+        # in which they fire.
+        self.assertRaises(
+            (InvalidParameterError, MissingParameterError),
+            _func1_decorated,
+            arg2='ahoy',
+            arg3='there',
+        )

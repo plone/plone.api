@@ -24,6 +24,7 @@ setup(
     install_requires=[
         'setuptools',
         'Plone',
+        'decorator',
     ],
     extras_require={
         'develop': [

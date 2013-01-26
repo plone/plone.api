@@ -2,6 +2,7 @@
 """Decorators for validating parameters"""
 
 import inspect
+from decorator import decorator
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 
@@ -49,12 +50,11 @@ def required_parameters(*required_params):
     def foo(a=None, b=None, c=None):
         pass
     """
-
     def _required_parameters(func):
         """The actual decorator"""
         signature_params = _get_arg_spec(func, required_params)
 
-        def wrapped(*args, **kwargs):
+        def wrapped(f, *args, **kwargs):
             """The wrapped function (whose docstring will get replaced)"""
             supplied_args = _get_supplied_args(signature_params, args, kwargs)
 
@@ -63,10 +63,9 @@ def required_parameters(*required_params):
                 raise MissingParameterError(
                     "Missing required parameter(s): %s" % ", ".join(missing))
 
-            return func(*args, **kwargs)
+            return f(*args, **kwargs)
 
-        wrapped.__doc__ = func.__doc__
-        return wrapped
+        return decorator(wrapped, func)
 
     return _required_parameters
 
@@ -80,12 +79,11 @@ def mutually_exclusive_parameters(*exclusive_params):
     def foo(a=None, b=None, c=None):
         pass
     """
-
     def _mutually_exclusive_parameters(func):
         """The actual decorator"""
         signature_params = _get_arg_spec(func, exclusive_params)
 
-        def wrapped(*args, **kwargs):
+        def wrapped(f, *args, **kwargs):
             """The wrapped function (whose docstring will get replaced)"""
             supplied_args = _get_supplied_args(signature_params, args, kwargs)
             clashes = [s for s in supplied_args if s in exclusive_params]
@@ -94,9 +92,8 @@ def mutually_exclusive_parameters(*exclusive_params):
                     "These parameters are mutually exclusive: %s." %
                     ", ".join(supplied_args))
 
-            return func(*args, **kwargs)
+            return f(*args, **kwargs)
 
-        wrapped.__doc__ = func.__doc__
-        return wrapped
+        return decorator(wrapped, func)
 
     return _mutually_exclusive_parameters
