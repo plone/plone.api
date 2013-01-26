@@ -171,16 +171,17 @@ Medium- to long-term:
 
 Below is a collection of ideas we have for the long run, in no particular order:
 
-- api.env.adopt_role and api.env.adopt_user (to use with ``with``, especially
-  in tests):
+- api.env.adopt_user (to use with ``with``, especially in tests):
 
   .. code-block:: python
 
-      with api.env.adopt_role('Manager'):
-          # do something bypassing all constraints, permissions, etc.
-
-      with api.env.adopt_role('Reviewer'):
-          # do something as a reviewer to see if permission are set correctly
+      with api.env.adopt_user('admin'):
+          api.context.create(
+              type='Document',
+              title='Exhaustive list of kittens',
+              container=portal
+          )
+          # Should leave behind a Document object owned by the user 'admin'.
 
 - api.env TEST_MODE and DEBUG_MODE
 
