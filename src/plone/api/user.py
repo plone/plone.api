@@ -8,6 +8,7 @@ from AccessControl.SecurityManagement import setSecurityManager
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
 
@@ -114,6 +115,7 @@ def get_current():
     return portal_membership.getAuthenticatedMember()
 
 
+@mutually_exclusive_parameters('groupname', 'group')
 def get_users(groupname=None, group=None):
     """Get all users or all users filtered by group.
 
@@ -132,10 +134,6 @@ def get_users(groupname=None, group=None):
         :ref:`user_get_groups_users_example`
 
     """
-
-    if groupname and group:
-        raise InvalidParameterError
-
     if groupname:
         group_tool = portal.get_tool('portal_groups')
         group = group_tool.getGroupById(groupname)
@@ -151,6 +149,7 @@ def get_users(groupname=None, group=None):
         return portal_membership.listMembers()
 
 
+@mutually_exclusive_parameters('username', 'user')
 def delete(username=None, user=None):
     """Delete a user.
 
@@ -170,9 +169,6 @@ def delete(username=None, user=None):
     if not username and not user:
         raise MissingParameterError
 
-    if username and user:
-        raise InvalidParameterError
-
     portal_membership = portal.get_tool('portal_membership')
     user_id = username or user.id
     portal_membership.deleteMembers((user_id,))
@@ -189,6 +185,7 @@ def is_anonymous():
     return portal.get_tool('portal_membership').isAnonymousUser()
 
 
+@mutually_exclusive_parameters('username', 'user')
 def get_roles(username=None, user=None, obj=None):
     """Get user's site-wide or local roles.
 
@@ -208,10 +205,6 @@ def get_roles(username=None, user=None, obj=None):
     :Example: :ref:`user_get_roles_example`
 
     """
-
-    if username and user:
-        raise InvalidParameterError
-
     portal_membership = portal.get_tool('portal_membership')
 
     if username is None:
@@ -228,6 +221,7 @@ def get_roles(username=None, user=None, obj=None):
     return user.getRolesInContext(obj) if obj is not None else user.getRoles()
 
 
+@mutually_exclusive_parameters('username', 'user')
 def get_permissions(username=None, user=None, obj=None):
     """Get user's site-wide or local permissions.
 
@@ -248,10 +242,6 @@ def get_permissions(username=None, user=None, obj=None):
     :Example: :ref:`user_get_permissions_example`
 
     """
-
-    if username and user:
-        raise InvalidParameterError
-
     if obj is None:
         obj = portal.get()
 
