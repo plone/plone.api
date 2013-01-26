@@ -340,3 +340,10 @@ If you pass in a content object, it will grant these roles in that particular co
     EXPECTED_CONTEXT_ROLES.remove('Contributor')
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'])
     self.assertEqual(set(EXPECTED_CONTEXT_ROLES), set(roles))
+
+
+Further reading
+---------------
+
+For more information on possible flags and usage options please see the full
+:ref:`plone-api-group` specification.

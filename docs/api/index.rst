@@ -74,6 +74,14 @@ api.group
     api.group.revoke_roles
 
 
+api.env
+---------
+
+.. autosummary::
+
+    api.env.adopt_roles
+
+
 Exceptions and errors
 ---------------------
 

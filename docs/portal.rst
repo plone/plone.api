@@ -255,3 +255,10 @@ to store various configuration and settings.
 .. invisible-code-block: python
 
     self.assertFalse(registry['my.package.someoption'])
+
+
+Further reading
+---------------
+
+For more information on possible flags and usage options please see the full
+:ref:`plone-api-portal` specification.

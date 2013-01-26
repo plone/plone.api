@@ -397,3 +397,9 @@ If you pass a context object the local roles will be removed.
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
     roles = api.user.get_roles(username='jane', obj=portal['folder_three'])
     self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
+
+Further reading
+---------------
+
+For more information on possible flags and usage options please see the full
+:ref:`plone-api-user` specification.
