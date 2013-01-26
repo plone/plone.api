@@ -1,18 +1,16 @@
 from AccessControl.SecurityManagement import getSecurityManager
 from contextlib import contextmanager
 from plone.api.exc import InvalidParameterError
-from plone.api.exc import MissingParameterError
+from plone.api.validation import required_parameters
 
 
+@required_parameters('roles')
 def adopt_roles(roles=None):
     """Context manager for temporarily switching roles.
 
     :param roles: New roles to gain inside block. Existing roles will be lost.
     :type roles: list of strings
     """
-    if roles is None:
-        raise MissingParameterError("roles")
-
     if isinstance(roles, basestring):
         roles = [roles]
 
