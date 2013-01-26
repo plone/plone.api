@@ -96,7 +96,7 @@ stucture above, including using :meth:`api.content.get`.
     conference = portal['events']['conference']
     sprint = api.content.get(path='/events/sprint')
 
-    # moreover, you can access content by it's UID
+    # moreover, you can access content by its UID
     uid = about['team'].UID()
     conference = api.content.get(UID=uid)
 
