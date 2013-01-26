@@ -52,12 +52,10 @@ def required_parameters(*required_params):
 
     def _required_parameters(func):
         """The actual decorator"""
-
         signature_params = _get_arg_spec(func, required_params)
 
         def wrapped(*args, **kwargs):
-            """The wrapped function"""
-
+            """The wrapped function (whose docstring will get replaced)"""
             supplied_args = _get_supplied_args(signature_params, args, kwargs)
 
             missing = [p for p in required_params if p not in supplied_args]
@@ -67,6 +65,7 @@ def required_parameters(*required_params):
 
             return func(*args, **kwargs)
 
+        wrapped.__doc__ = func.__doc__
         return wrapped
 
     return _required_parameters
@@ -84,12 +83,10 @@ def mutually_exclusive_parameters(*exclusive_params):
 
     def _mutually_exclusive_parameters(func):
         """The actual decorator"""
-
         signature_params = _get_arg_spec(func, exclusive_params)
 
         def wrapped(*args, **kwargs):
-            """The wrapped function"""
-
+            """The wrapped function (whose docstring will get replaced)"""
             supplied_args = _get_supplied_args(signature_params, args, kwargs)
             clashes = [s for s in supplied_args if s in exclusive_params]
             if len(clashes) > 1:
@@ -99,6 +96,7 @@ def mutually_exclusive_parameters(*exclusive_params):
 
             return func(*args, **kwargs)
 
+        wrapped.__doc__ = func.__doc__
         return wrapped
 
     return _mutually_exclusive_parameters

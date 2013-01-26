@@ -20,6 +20,25 @@ class TestPloneAPIValidation(unittest.TestCase):
 
     layer = INTEGRATION_TESTING
 
+    def test_decorator_works_the_same_as_explicit_calling(self):
+        """Check that calling the decorator with the function as an argument
+        is equivalent to decorating the function"""
+        @required_parameters('arg1')
+        def _func1_decorated(arg1=None, arg2=None, arg3=None):
+            """This is my docstring"""
+            pass
+
+        def _func2_undecorated(arg1=None, arg2=None, arg3=None):
+            """This is my docstring"""
+            pass
+        _func2_decorated = required_parameters('arg1')(_func2_undecorated)
+
+        # Check that the decorated function gets the correct docstring
+        self.assertEquals(_func1_decorated.__doc__, 'This is my docstring')
+
+        # Check that both functions have the same docstring
+        self.assertEquals(_func1_decorated.__doc__, _func2_decorated.__doc__)
+
     def test_non_existant_required_arg(self):
         """Test that ValueError is returned if the decorator requires
         a parameter that doesn't exist in the function signature
