@@ -89,7 +89,8 @@ def mutually_exclusive_parameters(*exclusive_params):
             """ The wrapped function """
 
             supplied_args = _get_supplied_args(signature_params, args, kwargs)
-            if len(supplied_args) > 1:
+            clashes = [s for s in supplied_args if s in exclusive_params]
+            if len(clashes) > 1:
                 raise InvalidParameterError(
                     "These parameters are mutually exclusive: %s." %
                     ", ".join(supplied_args))
