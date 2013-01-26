@@ -99,6 +99,14 @@ This is not true for in-line documentation tests. Those still use old unittest
 test-cases, so you cannot use ``assertIn`` and similar.
 
 
+String formatting
+=================
+
+As per http://docs.python.org/2/library/stdtypes.html#str.format, we should
+prefer the new style string formatting (``.format()``) over the old one
+(``% ()``).
+
+
 About imports
 =============
 
