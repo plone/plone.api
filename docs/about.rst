@@ -56,7 +56,8 @@ how to use Plone directly.
 Also, we don't intend to cover all possible use-cases. Only the most common
 ones. If you need to do something that `plone.api` does not support,
 just use the underlying APIs directly. We will cover 20% of tasks that are
-being done 80% of the time, and not one more.
+being done 80% of the time, and not one more. We try to document sensible use
+cases even when we don't provide them, though.
 
 
 Design decisions
@@ -214,7 +215,3 @@ Below is a collection of ideas we have for the long run, in no particular order:
   - easier to AJAXify stuff
 
 - Flask-type url_for_view() and view_for_url()
-
-
-
-
