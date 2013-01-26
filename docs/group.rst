@@ -39,7 +39,7 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
         title='Board members',
         description='Just a description',
         roles=['Readers', ],
-        groups=['Site Administrators', ]
+        groups=['Site Administrators', ],
     )
 
 .. invisible-code-block: python
@@ -56,7 +56,7 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
 Get group
 ---------
 
-To get a group by it's name, use :meth:`api.group.get`.
+To get a group by its name, use :meth:`api.group.get`.
 
 .. code-block:: python
 
@@ -236,7 +236,7 @@ want to remove from the group.
 Get group roles
 ---------------
 
-The :meth:`api.group.get_roles` method is used to getting group's roles.
+The :meth:`api.group.get_roles` method is used for getting a group's roles.
 By default it returns site-wide roles.
 
 .. code-block:: python
@@ -257,7 +257,12 @@ in that particular context.
 
     from plone import api
     portal = api.portal.get()
-    folder = api.content.create(container=portal, type='Folder', id='folder_four', title='Folder Four')
+    folder = api.content.create(
+        container=portal,
+        type='Folder',
+        id='folder_four',
+        title='Folder Four',
+    )
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_four'])
 
 .. invisible-code-block: python
@@ -276,8 +281,10 @@ group.
 .. code-block:: python
 
     from plone import api
-    api.group.grant_roles(groupname='staff',
-        roles=['Reviewer, SiteAdministrator'])
+    api.group.grant_roles(
+        groupname='staff',
+        roles=['Reviewer, SiteAdministrator'],
+    )
 
 .. invisible-code-block: python
 
@@ -292,10 +299,10 @@ If you pass in a content object, it will grant these roles in that particular co
 
     from plone import api
     portal = api.portal.get()
-    folder = api.content.create(container=portal, type='Folder', id='folder_five', title='Folder Five')
-    api.group.grant_roles(groupname='staff',
-        roles=['Contributor'],
-        obj=portal['folder_five'])
+    folder = api.content.create(
+        container=portal, type='Folder', id='folder_five', title='Folder Five')
+    api.group.grant_roles(
+        groupname='staff', roles=['Contributor'], obj=portal['folder_five'])
 
 .. invisible-code-block: python
 
@@ -315,8 +322,8 @@ group.
 .. code-block:: python
 
     from plone import api
-    api.group.revoke_roles(groupname='staff',
-        roles=['Reviewer, SiteAdministrator'])
+    api.group.revoke_roles(
+        groupname='staff', roles=['Reviewer, SiteAdministrator'])
 
 .. invisible-code-block: python
 
@@ -330,9 +337,8 @@ If you pass in a content object, it will grant these roles in that particular co
 .. code-block:: python
 
     from plone import api
-    api.group.revoke_roles(groupname='staff',
-        roles=['Contributor'],
-        obj=portal['folder_five'])
+    api.group.revoke_roles(
+        groupname='staff', roles=['Contributor'], obj=portal['folder_five'])
 
 
 .. invisible-code-block: python
