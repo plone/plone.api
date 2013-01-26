@@ -97,3 +97,33 @@ def mutually_exclusive_parameters(*exclusive_params):
         return decorator(wrapped, func)
 
     return _mutually_exclusive_parameters
+
+
+def at_least_one_parameter(*candidate_params):
+    """A decorator that raises an exception if none of the
+    specified parameters has been supplied.  Can be used in conjunction with
+    mutually_exclusive_parameters to enforce exactly one.
+
+    Usage:
+    @at_least_one_parameter('a', 'b')
+    def foo(a=None, b=None, c=None):
+        pass
+    """
+    def _at_least_one_parameter(func):
+        """The actual decorator"""
+        signature_params = _get_arg_spec(func, candidate_params)
+
+        def wrapped(f, *args, **kwargs):
+            """The wrapped function (whose docstring will get replaced)"""
+            supplied_args = _get_supplied_args(signature_params, args, kwargs)
+            candidates = [s for s in supplied_args if s in candidate_params]
+            if len(candidates) < 1:
+                raise MissingParameterError(
+                    "At least one of these parameters must be supplied: %s." %
+                    ", ".join(supplied_args))
+
+            return f(*args, **kwargs)
+
+        return decorator(wrapped, func)
+
+    return _at_least_one_parameter

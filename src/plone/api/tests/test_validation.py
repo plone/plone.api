@@ -3,6 +3,7 @@
 
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.api.validation import _get_supplied_args as _gsa
+from plone.api.validation import at_least_one_parameter
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 
@@ -136,12 +137,32 @@ class TestPloneAPIValidation(unittest.TestCase):
         self.assertRaises(
             InvalidParameterError, _func, arg1='ahoy', arg2='there')
 
-    def test_two_decorators(self):
+    def test_require_at_least_one_but_none_provided(self):
+        """Test that MissingParameterError is raised if no argument is supplied
+        when at least one is required"""
+        from plone.api.exc import MissingParameterError
+        _func = at_least_one_parameter('arg1', 'arg2')(undecorated_func)
+        self.assertRaises(MissingParameterError, _func)
+
+    def test_require_at_least_one_and_one_provided(self):
+        """Test for passing one argument when at least one is required"""
+        _func = at_least_one_parameter('arg1', 'arg2')(undecorated_func)
+        self.assertEquals(_func('ahoy'), 'foo')
+        self.assertEquals(_func(arg2='ahoy'), 'foo')
+
+    def test_require_at_least_one_and_several_provided(self):
+        """Test for passing several arguments when at least one is required"""
+        _func = at_least_one_parameter('arg1', 'arg2')(undecorated_func)
+        self.assertEquals(_func('ahoy', 'there'), 'foo')
+        self.assertEquals(_func(arg1='ahoy', arg2='there'), 'foo')
+        self.assertEquals(_func('ahoy', arg2='there', arg3='matey'), 'foo')
+
+    def test_required_and_mutually_exclusive(self):
         """Test that multiple decorators can be used together"""
         @mutually_exclusive_parameters('arg2', 'arg3')
         @required_parameters('arg1')
         def _func1_decorated(arg1=None, arg2=None, arg3=None):
-            pass
+            return 'foo'
 
         from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
@@ -168,3 +189,29 @@ class TestPloneAPIValidation(unittest.TestCase):
             arg2='ahoy',
             arg3='there',
         )
+
+        # everything ok
+        self.assertEqual(_func1_decorated('ahoy', arg3='there'), 'foo')
+
+    def test_exactly_one_required(self):
+        """Test that combining mutually_exclusive_parameters and
+        at_least_one_parameter is equivalent to 'exactly one required'"""
+        @mutually_exclusive_parameters('arg1', 'arg2')
+        @at_least_one_parameter('arg1', 'arg2')
+        def _func1_decorated(arg1=None, arg2=None, arg3=None):
+            return 'foo'
+
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
+
+        # test it errors if you provide none
+        self.assertRaises(
+            MissingParameterError, _func1_decorated)
+
+        # test that it errors if you provide both
+        self.assertRaises(
+            InvalidParameterError, _func1_decorated, 'ahoy', 'there')
+
+        # everything ok
+        self.assertEqual(_func1_decorated('ahoy'), 'foo')
+        self.assertEqual(_func1_decorated('ahoy', arg3='there'), 'foo')
