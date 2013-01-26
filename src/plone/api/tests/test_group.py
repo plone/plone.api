@@ -2,8 +2,6 @@
 """Tests for plone.api.group."""
 
 from plone import api
-from plone.api.exc import GroupNotFoundError
-from plone.api.exc import UserNotFoundError
 from plone.api.tests.base import INTEGRATION_TESTING
 from Products.CMFCore.utils import getToolByName
 
@@ -76,7 +74,8 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_get_no_groupname(self):
         """Test getting a group without passing a groupname."""
-        self.assertRaises(ValueError, api.group.create)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(MissingParameterError, api.group.create)
 
     def test_get(self):
         """Test getting a group."""
@@ -135,6 +134,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_get_groups_nonexistant_user(self):
         """Test retrieving of groups for a user that does not exist."""
+        from plone.api.exc import UserNotFoundError
         self.assertRaises(
             UserNotFoundError,
             api.group.get_groups,
@@ -143,11 +143,11 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_delete_contraints(self):
         """Test deleting a group without passing parameters."""
-        from plone.api.exc import InvalidParameterError
-        self.assertRaises(InvalidParameterError, api.group.delete)
+        self.assertRaises(ValueError, api.group.delete)
 
     def test_delete_groupname_and_group(self):
         """Test deleting a group passing both groupname and group."""
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
             InvalidParameterError,
             api.group.delete,

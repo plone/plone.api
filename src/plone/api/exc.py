@@ -27,8 +27,10 @@ class CannotGetPortalError(PloneApiError):
 
     """
 
+
 class UserNotFoundError(PloneApiError):
-    """ Raised when a specified or implicit user can not be retrieved. """
+    """Raised when a specified or implicit user can not be retrieved."""
+
 
 class GroupNotFoundError(PloneApiError):
-    """ Raised when a specified or implicit group can not be retrieved. """
+    """Raised when a specified or implicit group can not be retrieved."""
