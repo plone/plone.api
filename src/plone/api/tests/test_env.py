@@ -115,7 +115,7 @@ class TestPloneApiRoles(unittest.TestCase):
             'private_method',
         ])
 
-    def test_adopt_manager_ropile(self):
+    def test_adopt_manager_role(self):
         """Test that we can adopt the Manager role temporarily."""
         with api.env.adopt_roles(roles=['Manager']):
             self.should_allow([
