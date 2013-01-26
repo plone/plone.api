@@ -238,7 +238,9 @@ class TestPloneApiContent(unittest.TestCase):
         """Test the constraints when content is fetched with get."""
 
         # Path and UID parameter can not be given together
-        self.assertRaises(api.exc.InvalidParameterError, api.content.get, path='/', UID='dummy')
+        from plone.api.exc import InvalidParameterError
+        self.assertRaises(
+            InvalidParameterError, api.content.get, path='/', UID='dummy')
 
         # Either a path or UID must be given
         self.assertRaises(ValueError, api.content.get)
@@ -274,10 +276,14 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(api.exc.MissingParameterError, api.content.move)
 
         container = mock.Mock()
+
         # Source is missing an should raise an error
         self.assertRaises(ValueError, api.content.move, source=container)
+
         # Target is missing an should raise an error
-        self.assertRaises(api.exc.MissingParameterError, api.content.move, target=container)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(
+            MissingParameterError, api.content.move, target=container)
 
     def test_move(self):
         """Test moving of content."""
