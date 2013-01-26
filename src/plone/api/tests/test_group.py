@@ -92,7 +92,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # username and user are mutually exclusive
         self.assertRaises(
-            ValueError,
+            api.exc.InvalidParameterError,
             api.group.get_groups,
             username='chuck', user=mock.Mock(),
         )
@@ -126,7 +126,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # groupname and group are mutually exclusive
         self.assertRaises(
-            ValueError,
+            api.exc.InvalidParameterError,
             api.group.delete,
             groupname='bacon',
             group=mock.Mock(),
@@ -161,7 +161,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
-            ValueError,
+            api.exc.InvalidParameterError,
             api.group.add_user,
             username='staff', user=mock.Mock()
         )
@@ -214,7 +214,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
-            ValueError,
+            api.exc.InvalidParameterError,
             api.group.remove_user,
             username='staff', user=mock.Mock(),
         )

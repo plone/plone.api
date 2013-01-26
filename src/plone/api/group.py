@@ -3,6 +3,7 @@
 
 from plone.api import portal
 from plone.api.user import get as user_get
+from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 
 
@@ -59,6 +60,7 @@ def get(groupname=None):
     return group_tool.getGroupById(groupname)
 
 
+@mutually_exclusive_parameters('username', 'user')
 def get_groups(username=None, user=None):
     """Get all groups or all groups filtered by user.
 
@@ -77,9 +79,6 @@ def get_groups(username=None, user=None):
         :ref:`group_get_users_groups_example`
 
     """
-    if username and user:
-        raise ValueError
-
     if username:
         user = user_get(username=username)
         if not user:
@@ -94,6 +93,7 @@ def get_groups(username=None, user=None):
     return group_tool.listGroups()
 
 
+@mutually_exclusive_parameters('groupname', 'group')
 def delete(groupname=None, group=None):
     """Delete a group.
 
@@ -112,9 +112,6 @@ def delete(groupname=None, group=None):
     if not groupname and not group:
         raise ValueError
 
-    if groupname and group:
-        raise ValueError
-
     group_tool = portal.get_tool('portal_groups')
 
     if group:
@@ -123,6 +120,7 @@ def delete(groupname=None, group=None):
     return group_tool.removeGroup(groupname)
 
 
+@mutually_exclusive_parameters('username', 'user')
 def add_user(groupname=None, group=None, username=None, user=None):
     """Add the user to a group.
 
@@ -148,9 +146,6 @@ def add_user(groupname=None, group=None, username=None, user=None):
     if not username and not user:
         raise ValueError
 
-    if username and user:
-        raise ValueError
-
     if not groupname and not group:
         raise ValueError
 
@@ -163,6 +158,7 @@ def add_user(groupname=None, group=None, username=None, user=None):
     portal_groups.addPrincipalToGroup(user_id, group_id)
 
 
+@mutually_exclusive_parameters('username', 'user')
 def remove_user(groupname=None, group=None, username=None, user=None):
     """Remove the user from a group.
 
@@ -188,9 +184,6 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     if not username and not user:
         raise ValueError
 
-    if username and user:
-        raise ValueError
-
     if not groupname and not group:
         raise ValueError
 
@@ -203,6 +196,7 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     portal_groups.removePrincipalFromGroup(user_id, group_id)
 
 
+@mutually_exclusive_parameters('groupname', 'group')
 def get_roles(groupname=None, group=None, obj=None):
     """Get group's site-wide or local roles.
 
@@ -221,9 +215,6 @@ def get_roles(groupname=None, group=None, obj=None):
 
     """
     if not groupname and not group:
-        raise ValueError
-
-    if groupname and group:
         raise ValueError
 
     group_id = groupname or group.id
