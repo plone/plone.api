@@ -79,9 +79,9 @@ def create(
             types = container.getLocallyAllowedTypes()
 
         raise InvalidParameterError(
-            "Cannot add a '%s' object to the container.\n"
+            "Cannot add a '{0}' object to the container.\n"
             "Allowed types are:\n"
-            "%s" % (type, '\n'.join(sorted(types)))
+            "{1}".format(type, '\n'.join(sorted(types)))
         )
 
     content = container[content_id]
@@ -308,9 +308,9 @@ def transition(obj=None, transition=None):
         ]
 
         raise InvalidParameterError(
-            "Invalid transition '%s'.\n"
+            "Invalid transition '{0}'.\n"
             "Valid transitions are:\n"
-            "%s" % (transition, '\n'.join(sorted(transitions)))
+            "{1}".format(transition, '\n'.join(sorted(transitions)))
         )
 
 
@@ -350,9 +350,9 @@ def get_view(name=None, context=None, request=None):
         views_names = [view[0] for view in views]
 
         raise InvalidParameterError(
-            "Cannot find a view with name '%s'.\n"
+            "Cannot find a view with name '{0}'.\n"
             "Available views are:\n"
-            "%s" % (name, '\n'.join(sorted(views_names)))
+            "{1}".format(name, '\n'.join(sorted(views_names)))
         )
 
 

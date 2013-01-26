@@ -42,8 +42,6 @@ class TestPloneApiContent(unittest.TestCase):
 
         """
         self.portal = self.layer['portal']
-        self.portal.manage_delObjects(
-            [x.id for x in self.portal.getFolderContents()])  # Clean up
 
         self.blog = api.content.create(
             type='Link', id='blog', container=self.portal)

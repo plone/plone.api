@@ -96,9 +96,9 @@ def get_tool(name=None):
                 tools.append(id)
 
         raise InvalidParameterError(
-            "Cannot find a tool with name '%s'.\n"
+            "Cannot find a tool with name '{0}'.\n"
             "Available tools are:\n"
-            "%s" % (name, '\n'.join(tools))
+            "{1}".format(name, '\n'.join(tools))
         )
 
 
@@ -230,9 +230,9 @@ def get_registry_record(name=None):
         records = [_name for _name, record in registry.records.items()]
 
         raise InvalidParameterError(
-            "Cannot find a record with name '%s'.\n"
+            "Cannot find a record with name '{0}'.\n"
             "Available records are:\n"
-            "%s" % (name, '\n'.join(records))
+            "{1}".format(name, '\n'.join(records))
         )
 
     return registry[name]
