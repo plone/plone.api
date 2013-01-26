@@ -425,24 +425,6 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
 
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            roles=['Anonymous'])
-
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            roles=['Authenticated'])
-
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            user=user)
-
         api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'])
 
         api.user.revoke_roles(username='chuck', roles=['Reviewer'])
@@ -451,10 +433,50 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertIn('Editor', api.user.get_roles(username='chuck'))
         self.assertIn('Editor', api.user.get_roles(user=user))
 
-        api.user.revoke_roles(username='chuck', roles=['Editor'])
+        api.user.revoke_roles(username='chuck', roles=('Editor',))
         ROLES = set(('Authenticated', 'Member'))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
+
+    def test_revoke_roles_username_and_user(self):
+        """Test revoke roles passing username and user."""
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.revoke_roles,
+            username='chuck',
+            user=user)
+
+    def test_revoke_roles_anonymous(self):
+        """Test revoking Anonymous role."""
+
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.revoke_roles,
+            username='chuck',
+            roles=['Anonymous'])
+
+    def test_revoke_roles_authenticated(self):
+        """Test revoking Authenticated role."""
+
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.revoke_roles,
+            username='chuck',
+            roles=['Authenticated'])
+
+    def test_revoke_roles_no_parameters(self):
+        """Test revoke roles without passing parameters."""
+
+        self.assertRaises(
+            MissingParameterError,
+            api.user.revoke_roles)
 
     def test_grant_roles_in_context(self):
         """Test grant roles."""
