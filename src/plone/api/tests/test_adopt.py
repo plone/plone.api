@@ -76,13 +76,6 @@ class TestPloneApiAdopt(unittest.TestCase):
             portal.manage_permission(permission, roles, 1)
 
         api.user.create(
-            username='ordinary',
-            email='ordinary_person@example.com',
-            password='123456',
-            roles=('Member')
-        )
-
-        api.user.create(
             username='boss',
             email='important_person@example.com',
             password='123',
