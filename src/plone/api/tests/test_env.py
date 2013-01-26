@@ -19,6 +19,7 @@ role_mapping = (
     ('rrr', ('Manager')),
 )
 
+
 class ExampleException(Exception):
     pass
 
@@ -107,59 +108,59 @@ class TestPloneApiRoles(unittest.TestCase):
     def test_test_defaults(self):
         """Test that the default set-up does what I expect it to."""
         self.should_allow([
+            'public_method',
+            'pp_method',
+            'qq_method',
+        ])
+        self.should_forbid([
+            'rr_method',
+            'private_method',
+        ])
+
+    def test_adopt_manager_ropile(self):
+        """Test that we can adopt the Manager role temporarily."""
+        with api.env.adopt_roles(roles=['Manager']):
+            self.should_allow([
                 'public_method',
                 'pp_method',
                 'qq_method',
-        ])
-        self.should_forbid([
                 'rr_method',
-                'private_method',
-        ])
-
-    def test_adopt_manager_role(self):
-        """Test that we can adopt the Manager role temporarily."""
-        with api.roles(roles=['Manager']):
-            self.should_allow([
-                    'public_method',
-                    'pp_method',
-                    'qq_method',
-                    'rr_method',
             ])
             self.should_forbid([
-                    'private_method',
+                'private_method',
             ])
         self.test_test_defaults()
 
     def test_adopt_fewers_role(self):
         """Test that we can adopt a non-Manager role temporarily."""
-        with api.roles(roles=['Member']):
+        with api.env.adopt_roles(roles=['Member']):
             self.should_allow([
-                    'public_method',
-                    'pp_method',
+                'public_method',
+                'pp_method',
             ])
             self.should_forbid([
-                    'qq_method',
-                    'rr_method',
-                    'private_method',
+                'qq_method',
+                'rr_method',
+                'private_method',
             ])
         self.test_test_defaults()
 
     def test_drop_to_anon(self):
         """Test that we can drop roles."""
-        with api.roles(roles=['Anonymous']):
+        with api.env.adopt_roles(roles=['Anonymous']):
             self.should_allow([
-                    'public_method',
+                'public_method',
             ])
             self.should_forbid([
-                    'pp_method',
-                    'rr_method',
-                    'qq_method',
-                    'private_method',
+                'pp_method',
+                'rr_method',
+                'qq_method',
+                'private_method',
             ])
 
     def test_content_owner_role(self):
         """Tests that adopting a role should not affect content ownership."""
-        with api.roles(roles=['Manager']):
+        with api.env.adopt_roles(roles=['Manager']):
             doc2 = api.content.create(
                 container=self.portal,
                 type='Document',
@@ -174,12 +175,12 @@ class TestPloneApiRoles(unittest.TestCase):
         """Tests that empty roles lists get warned about."""
         self.assertRaises(
             InvalidParameterError,
-            lambda: api.roles([])
+            lambda: api.env.adopt_roles([])
         )
 
     def test_argument_requirement(self):
         """Tests that missing arguments don't go unnoticed."""
         self.assertRaises(
             MissingParameterError,
-            lambda: api.roles()
+            lambda: api.env.adopt_roles()
         )
