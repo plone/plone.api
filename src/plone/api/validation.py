@@ -103,17 +103,17 @@ def mutually_exclusive_parameters(*exclusive_params):
     return _mutually_exclusive_parameters
 
 
-def at_least_one_parameter(*candidate_params):
+def at_least_one_of(*candidate_params):
     """A decorator that raises an exception if none of the
     specified parameters has been supplied.  Can be used in conjunction with
     mutually_exclusive_parameters to enforce exactly one.
 
     Usage:
-    @at_least_one_parameter('a', 'b')
+    @at_least_one_of('a', 'b')
     def foo(a=None, b=None, c=None):
         pass
     """
-    def _at_least_one_parameter(func):
+    def _at_least_one_of(func):
         """The actual decorator."""
         signature_params = _get_arg_spec(func, candidate_params)
 
@@ -131,4 +131,4 @@ def at_least_one_parameter(*candidate_params):
 
         return decorator(wrapped, func)
 
-    return _at_least_one_parameter
+    return _at_least_one_of

@@ -3,7 +3,7 @@
 
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.api.validation import _get_supplied_args as _gsa
-from plone.api.validation import at_least_one_parameter
+from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 
@@ -141,18 +141,18 @@ class TestPloneAPIValidation(unittest.TestCase):
         """Test that MissingParameterError is raised if no argument is supplied
         when at least one is required"""
         from plone.api.exc import MissingParameterError
-        _func = at_least_one_parameter('arg1', 'arg2')(undecorated_func)
+        _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
         self.assertRaises(MissingParameterError, _func)
 
     def test_require_at_least_one_and_one_provided(self):
         """Test for passing one argument when at least one is required"""
-        _func = at_least_one_parameter('arg1', 'arg2')(undecorated_func)
+        _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
         self.assertEquals(_func('ahoy'), 'foo')
         self.assertEquals(_func(arg2='ahoy'), 'foo')
 
     def test_require_at_least_one_and_several_provided(self):
         """Test for passing several arguments when at least one is required"""
-        _func = at_least_one_parameter('arg1', 'arg2')(undecorated_func)
+        _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
         self.assertEquals(_func('ahoy', 'there'), 'foo')
         self.assertEquals(_func(arg1='ahoy', arg2='there'), 'foo')
         self.assertEquals(_func('ahoy', arg2='there', arg3='matey'), 'foo')
@@ -195,9 +195,9 @@ class TestPloneAPIValidation(unittest.TestCase):
 
     def test_exactly_one_required(self):
         """Test that combining mutually_exclusive_parameters and
-        at_least_one_parameter is equivalent to 'exactly one required'"""
+        at_least_one_of is equivalent to 'exactly one required'"""
         @mutually_exclusive_parameters('arg1', 'arg2')
-        @at_least_one_parameter('arg1', 'arg2')
+        @at_least_one_of('arg1', 'arg2')
         def _func1_decorated(arg1=None, arg2=None, arg3=None):
             return 'foo'
 
