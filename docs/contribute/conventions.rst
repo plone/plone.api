@@ -92,6 +92,23 @@ between the last paragraph in a multi-line docstring and its closing quotes as
 it's Emacs specific and two emacs users here on the Beer & Wine Sprint both
 support our way.
 
+If you wanna be extra nice, you are encouraged to document your method's
+parameters and the return value in a `reST field list syntax
+<http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#field-lists>`_.
+
+.. sourcecode:: rest
+
+
+    :param foo: blah blah
+    :type foo: string
+    :param bar: blah blah
+    :type bar: int
+    :returns: something
+
+Check out the `plone.api source
+<https://github.com/plone/plone.api/tree/master/src/plone/api>`_ for more
+usage examples.
+
 
 Unit tests style
 ================
