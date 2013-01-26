@@ -160,7 +160,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # Arguments ``groupname`` and ``group`` are mutually exclusive.
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.group.add_user,
             groupname='staff', group=mock.Mock(),
         )
@@ -175,7 +175,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertRaises(ValueError, api.group.add_user, groupname='staff')
         self.assertRaises(ValueError, api.group.add_user, username='jane')
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.group.add_user,
             username='jane',
             groupname='staff',
@@ -215,7 +215,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # Arguments ``groupname`` and ``group`` are mutually exclusive.
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.group.remove_user,
             groupname='staff', group=mock.Mock(),
         )
@@ -228,7 +228,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertRaises(ValueError, api.group.remove_user, groupname='staff')
         self.assertRaises(ValueError, api.group.remove_user, username='jane')
         self.assertRaises(
-            ValueError,
+            InvalidParameterError,
             api.group.remove_user,
             username='jane',
             group='group',
@@ -261,9 +261,11 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_grant_roles(self):
         """Test grant roles."""
+        from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
         group = api.group.create(groupname='foo')
 
+        # You can't grant Anonymous
         self.assertRaises(
             ValueError,
             api.group.grant_roles,
@@ -271,6 +273,7 @@ class TestPloneApiGroup(unittest.TestCase):
             roles=['Anonymous'],
         )
 
+        # You can't grant Authenticated
         self.assertRaises(
             ValueError,
             api.group.grant_roles,
@@ -278,11 +281,20 @@ class TestPloneApiGroup(unittest.TestCase):
             roles=['Authenticated'],
         )
 
+        # Roles are required
         self.assertRaises(
             MissingParameterError,
             api.group.grant_roles,
             groupname='foo',
+        )
+
+        # Groupname and group are mutually exclusive
+        self.assertRaises(
+            InvalidParameterError,
+            api.group.grant_roles,
+            groupname='foo',
             group=group,
+            roles=['Reviewer'],
         )
 
         api.group.grant_roles(groupname='foo', roles=['Editor'])
@@ -300,28 +312,40 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_revoke_roles(self):
         """Test revoke roles."""
+        from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
         group = api.group.create(groupname='bar')
 
+        # You can't revoke Anonymous
         self.assertRaises(
             ValueError,
-            api.group.grant_roles,
+            api.group.revoke_roles,
             groupname='bar',
             roles=['Anonymous'],
         )
 
+        # You can't revoke Authenticated
         self.assertRaises(
             ValueError,
-            api.group.grant_roles,
+            api.group.revoke_roles,
             groupname='bar',
             roles=['Authenticated'],
         )
 
+        # Roles are required
         self.assertRaises(
             MissingParameterError,
-            api.group.grant_roles,
-            groupname='bar',
+            api.group.revoke_roles,
+            groupname='foo',
+        )
+
+        # Groupname and group are mutually exclusive
+        self.assertRaises(
+            InvalidParameterError,
+            api.group.revoke_roles,
+            groupname='foo',
             group=group,
+            roles=['Reviewer'],
         )
 
         api.group.grant_roles(groupname='bar', roles=['Reviewer', 'Editor'])

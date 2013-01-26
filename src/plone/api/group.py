@@ -120,6 +120,7 @@ def delete(groupname=None, group=None):
     return group_tool.removeGroup(groupname)
 
 
+@mutually_exclusive_parameters('groupname', 'group')
 @mutually_exclusive_parameters('username', 'user')
 def add_user(groupname=None, group=None, username=None, user=None):
     """Add the user to a group.
@@ -149,15 +150,13 @@ def add_user(groupname=None, group=None, username=None, user=None):
     if not groupname and not group:
         raise ValueError
 
-    if groupname and group:
-        raise ValueError
-
     user_id = username or user.id
     group_id = groupname or group.id
     portal_groups = portal.get_tool('portal_groups')
     portal_groups.addPrincipalToGroup(user_id, group_id)
 
 
+@mutually_exclusive_parameters('groupname', 'group')
 @mutually_exclusive_parameters('username', 'user')
 def remove_user(groupname=None, group=None, username=None, user=None):
     """Remove the user from a group.
@@ -185,9 +184,6 @@ def remove_user(groupname=None, group=None, username=None, user=None):
         raise ValueError
 
     if not groupname and not group:
-        raise ValueError
-
-    if groupname and group:
         raise ValueError
 
     user_id = username or user.id
@@ -233,6 +229,7 @@ def get_roles(groupname=None, group=None, obj=None):
 
 
 @required_parameters('roles')
+@mutually_exclusive_parameters('groupname', 'group')
 def grant_roles(groupname=None, group=None, roles=None, obj=None):
     """Grant roles to a group.
 
@@ -253,9 +250,6 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
 
     """
     if not groupname and not group:
-        raise ValueError
-
-    if groupname and group:
         raise ValueError
 
     if 'Anonymous' in roles or 'Authenticated' in roles:
@@ -279,6 +273,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
 
 
 @required_parameters('roles')
+@mutually_exclusive_parameters('groupname', 'group')
 def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     """Revoke roles from a group.
 
@@ -299,9 +294,6 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
 
     """
     if not groupname and not group:
-        raise ValueError
-
-    if groupname and group:
         raise ValueError
 
     if 'Anonymous' in roles or 'Authenticated' in roles:

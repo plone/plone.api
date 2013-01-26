@@ -274,6 +274,7 @@ def get_permissions(username=None, user=None, obj=None):
 
 
 @required_parameters('roles')
+@mutually_exclusive_parameters('username', 'user')
 def grant_roles(username=None, user=None, obj=None, roles=None):
     """Grant roles to a user.
 
@@ -296,10 +297,6 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     :Example: :ref:`user_grant_roles_example`
 
     """
-
-    if username and user:
-        raise InvalidParameterError
-
     if user is None:
         user = get(username=username)
 
@@ -319,6 +316,7 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
 
 
 @required_parameters('roles')
+@mutually_exclusive_parameters('username', 'user')
 def revoke_roles(username=None, user=None, obj=None, roles=None):
     """Revoke roles from a user.
 
@@ -340,9 +338,6 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     :Example: :ref:`user_revoke_roles_example`
 
     """
-    if username and user:
-        raise InvalidParameterError
-
     if user is None:
         user = get(username=username)
 
