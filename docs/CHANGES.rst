@@ -6,8 +6,8 @@ Changes
 0.1b2 (Unreleased)
 ------------------
 
-- Increase code coverage.
-  [cillianderoiste, reinhardt, zupo]
+- Increase test coverage.
+  [cillianderoiste, JessN, reinhardt, zupo]
 
 - Implementation of ``api.env.adopt_roles()`` context manager for
   temporarily switching roles inside a block.
@@ -16,7 +16,8 @@ Changes
 - Created ``api.env`` module for interacting with global environment.
   [RichyB]
 
-- Decorators for defining constraints on api methods.
+- Decorators for defining constraints on api methods. Depend on `decorator`
+  package.
   [JessN]
 
 - Resolved #61: Improve api.portal.get().
