@@ -313,6 +313,7 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.get_registry_record('plone.api.norris_power'),
             u'infinite',
         )
+
         self.assertEqual(
             portal.get_registry_record('plone.api.unset'),
             None,
@@ -353,23 +354,53 @@ class TestPloneApiPortal(unittest.TestCase):
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + '\n'), str(cm.exception))
 
-    def test_set_registry_record(self):
+    def test_set_valid_registry_record(self):
+        """Test that setting a valid registry record succeeds."""
         registry = getUtility(IRegistry)
         registry.records['plone.api.plone_power'] = Record(
             field.TextLine(title=u"Plone's Power"))
         portal.set_registry_record('plone.api.plone_power', u'awesome')
         self.assertEqual(registry['plone.api.plone_power'], u'awesome')
+
+    def test_set_missing_param_registry_record(self):
+        """Test that when set_registry_record is called without
+        parameters, a MissingParameterError exception is raised.
+
+        """
+        self.assertRaises(MissingParameterError, portal.set_registry_record)
+
+    def test_set_non_existing_record_value(self):
+        """Test that setting the value of a non existent record raises
+        an Exception.
+
+        """
         self.assertRaises(
             KeyError,
             portal.set_registry_record,
             name='nonexistent.sharepoint.power',
             value=u'Zero',
         )
-        self.assertRaises(MissingParameterError, portal.set_registry_record)
+
+    def test_set_no_value_param_for_existing_record(self):
+        """Test that calling portal.set_registry_record with a name
+        parameter for an existing record, but without a value, raises
+        an Exception.
+
+        """
+        registry = getUtility(IRegistry)
+        registry.records['plone.api.plone_power'] = Record(
+            field.TextLine(title=u"Plone's Power"))
+
         self.assertRaises(
             MissingParameterError, portal.set_registry_record,
             name='plone.api.plone_power',
         )
+
+    def test_set_invalid_key_type_record(self):
+        """Test that trying to set the value of a record by passing a
+        list for the record name instead of a string, raises an error.
+
+        """
         self.assertRaises(
             InvalidParameterError, portal.set_registry_record,
             name=['foo', 'bar'],
