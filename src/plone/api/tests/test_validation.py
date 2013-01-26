@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.validation."""
 
-from plone.api.exc import InvalidParameterError
-from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.api.validation import _get_supplied_args as _gsa
 from plone.api.validation import mutually_exclusive_parameters
@@ -99,6 +97,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         """Test that MissingParameterError is raised if the
         single required parameter is missing
         """
+        from plone.api.exc import MissingParameterError
         _func = required_parameters('arg1')(undecorated_func)
         self.assertRaises(MissingParameterError, _func)
 
@@ -106,6 +105,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         """Test that MissingParameterError is raised if only one of the
         required parameters is missing
         """
+        from plone.api.exc import MissingParameterError
         _func = required_parameters('arg1', 'arg2')(undecorated_func)
         self.assertRaises(MissingParameterError, _func, 'hello')
 
@@ -130,6 +130,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         """Test that InvalidParameterError is raised if more than
         one mutually exclusive argument is provided
         """
+        from plone.api.exc import InvalidParameterError
         _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
         self.assertRaises(InvalidParameterError, _func, 'ahoy', 'there')
         self.assertRaises(
@@ -141,6 +142,9 @@ class TestPloneAPIValidation(unittest.TestCase):
         @required_parameters('arg1')
         def _func1_decorated(arg1=None, arg2=None, arg3=None):
             pass
+
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
 
         # test that the required parameter error works (missing arg1)
         self.assertRaises(

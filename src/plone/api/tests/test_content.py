@@ -66,13 +66,15 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_create_constraints(self):
         """Test the constraints when creating content."""
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
 
         # This will definitely fail
-        self.assertRaises(api.exc.MissingParameterError, api.content.create)
+        self.assertRaises(MissingParameterError, api.content.create)
 
         # Check the contraints for the type container
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.create,
             type='Document',
             id='test-doc',
@@ -81,7 +83,7 @@ class TestPloneApiContent(unittest.TestCase):
         # Check the contraints for the type parameter
         container = mock.Mock()
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.create,
             container=container,
             id='test-doc',
@@ -89,7 +91,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Check the contraints for id and title parameters
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.create,
             container=container, type='Document'
         )
@@ -97,7 +99,7 @@ class TestPloneApiContent(unittest.TestCase):
         # Check the contraints for allowed types in the container
         container = self.events
         self.assertRaises(
-            api.exc.InvalidParameterError,
+            InvalidParameterError,
             api.content.create,
             container=container,
             type='foo',
@@ -108,7 +110,7 @@ class TestPloneApiContent(unittest.TestCase):
         # the container is the portal
         container = self.portal
         self.assertRaises(
-            api.exc.InvalidParameterError,
+            InvalidParameterError,
             api.content.create,
             container=container,
             type='foo',
@@ -124,7 +126,7 @@ class TestPloneApiContent(unittest.TestCase):
         folder.setConstrainTypesMode(1)
         folder.setLocallyAllowedTypes(('News Item',))
         self.assertRaises(
-            api.exc.InvalidParameterError,
+            InvalidParameterError,
             api.content.create,
             container=folder,
             type='Document',
@@ -271,9 +273,10 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_move_constraints(self):
         """Test the constraints for moving content."""
+        from plone.api.exc import MissingParameterError
 
         # When no parameters are given an error is raised
-        self.assertRaises(api.exc.MissingParameterError, api.content.move)
+        self.assertRaises(MissingParameterError, api.content.move)
 
         container = mock.Mock()
 
@@ -281,7 +284,6 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(ValueError, api.content.move, source=container)
 
         # Target is missing an should raise an error
-        from plone.api.exc import MissingParameterError
         self.assertRaises(
             MissingParameterError, api.content.move, target=container)
 
@@ -323,14 +325,15 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_rename_constraints(self):
         """Test the constraints for rename content."""
+        from plone.api.exc import MissingParameterError
 
         # When no parameters are given an error is raised
-        self.assertRaises(api.exc.MissingParameterError, api.content.rename)
+        self.assertRaises(MissingParameterError, api.content.rename)
 
         container = mock.Mock()
         # Source is missing an should raise an error
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.rename,
             obj=container,
         )
@@ -375,9 +378,10 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_copy_constraints(self):
         """Test the constraints for moving content."""
+        from plone.api.exc import MissingParameterError
 
         # When no parameters are given an error is raised
-        self.assertRaises(api.exc.MissingParameterError, api.content.copy)
+        self.assertRaises(MissingParameterError, api.content.copy)
 
         container = mock.Mock()
         # Source is missing an should raise an error
@@ -415,7 +419,8 @@ class TestPloneApiContent(unittest.TestCase):
         """Test the constraints for deleting content."""
 
         # When no parameters are given an error is raised
-        self.assertRaises(api.exc.MissingParameterError, api.content.delete)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(MissingParameterError, api.content.delete)
 
     def test_delete(self):
         """Test deleting a content item."""
@@ -423,7 +428,8 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
 
         # The content item must be given as parameter
-        self.assertRaises(api.exc.MissingParameterError, api.content.delete)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(MissingParameterError, api.content.delete)
 
         # Delete the contact page
         api.content.delete(self.contact)
@@ -433,25 +439,28 @@ class TestPloneApiContent(unittest.TestCase):
         """Test retrieving the workflow state of a content item."""
 
         # This should fail because an content item is mandatory
-        self.assertRaises(api.exc.MissingParameterError, api.content.get_state)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(MissingParameterError, api.content.get_state)
 
         review_state = api.content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'private')
 
     def test_transition(self):
         """Test transitioning the workflow state on a content item."""
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
 
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.transition,
         )
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.transition,
             obj=mock.Mock(),
         )
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.transition,
             transition='publish',
         )
@@ -461,7 +470,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(review_state, 'published')
 
         # This should fail because the transition doesn't exist
-        with self.assertRaises(api.exc.InvalidParameterError) as cm:
+        with self.assertRaises(InvalidParameterError) as cm:
             api.content.transition(
                 transition='foo', obj=self.blog)
 
@@ -476,14 +485,15 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_get_view_constraints(self):
         """Test the constraints for deleting content."""
+        from plone.api.exc import MissingParameterError
         request = self.layer['request']
 
         # When no parameters are given an error is raised
-        self.assertRaises(api.exc.MissingParameterError, api.content.get_view)
+        self.assertRaises(MissingParameterError, api.content.get_view)
 
         # name is required
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.get_view,
             context=self.blog,
             request=request,
@@ -491,7 +501,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # context is required
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.get_view,
             name='plone',
             request=request,
@@ -499,7 +509,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # request is required
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.content.get_view,
             name='plone',
             context=self.blog,
@@ -530,11 +540,12 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_get_uuid(self):
         """Test getting a content item's UUID."""
+        from plone.api.exc import MissingParameterError
 
         container = self.portal
 
         # The content item must be given as parameter
-        self.assertRaises(api.exc.MissingParameterError, api.content.get_uuid)
+        self.assertRaises(MissingParameterError, api.content.get_uuid)
 
         generator = getUtility(IUUIDGenerator)
 
@@ -562,8 +573,9 @@ class TestPloneApiContent(unittest.TestCase):
     def test_get_view_view_not_found(self):
         """Test that error msg lists available views if a view is not found."""
         request = self.layer['request']
+        from plone.api.exc import InvalidParameterError
 
-        with self.assertRaises(api.exc.InvalidParameterError) as cm:
+        with self.assertRaises(InvalidParameterError) as cm:
             api.content.get_view(
                 name='foo',
                 context=self.blog,

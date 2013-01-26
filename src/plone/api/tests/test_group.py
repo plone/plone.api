@@ -23,7 +23,8 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_create_contraints(self):
         """Test the contraints for creating a group."""
-        self.assertRaises(api.exc.MissingParameterError, api.group.create)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(MissingParameterError, api.group.create)
 
     def test_create(self):
         """Test adding of a group, groupname is mandatory."""
@@ -64,13 +65,15 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_get_constraints(self):
         """Test the constraints for geting a group."""
-        self.assertRaises(api.exc.MissingParameterError, api.group.get)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(MissingParameterError, api.group.get)
 
     def test_get(self):
         """Test getting a group."""
+        from plone.api.exc import MissingParameterError
 
         # This should fail because the groupname is mandatory
-        self.assertRaises(api.exc.MissingParameterError, api.group.create)
+        self.assertRaises(MissingParameterError, api.group.create)
 
         # Create a group and retrieve it
         api.group.create(groupname='bacon')
@@ -91,8 +94,9 @@ class TestPloneApiGroup(unittest.TestCase):
         """Test that exception is raised if wrong arguments are given."""
 
         # username and user are mutually exclusive
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
-            api.exc.InvalidParameterError,
+            InvalidParameterError,
             api.group.get_groups,
             username='chuck', user=mock.Mock(),
         )
@@ -120,13 +124,14 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_delete_contraints(self):
         """Test the contraints for deleting a group."""
+        from plone.api.exc import InvalidParameterError
 
         # Delete group needs a groupname or group object
         self.assertRaises(ValueError, api.group.delete)
 
         # groupname and group are mutually exclusive
         self.assertRaises(
-            api.exc.InvalidParameterError,
+            InvalidParameterError,
             api.group.delete,
             groupname='bacon',
             group=mock.Mock(),
@@ -151,6 +156,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_add_user_contraints(self):
         """Test the constraints when a user is added to a group."""
+        from plone.api.exc import InvalidParameterError
 
         # Arguments ``groupname`` and ``group`` are mutually exclusive.
         self.assertRaises(
@@ -161,7 +167,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
-            api.exc.InvalidParameterError,
+            InvalidParameterError,
             api.group.add_user,
             username='staff', user=mock.Mock()
         )
@@ -205,6 +211,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_remove_user_contraints(self):
         """Test the constraints when a user is removed from a group."""
+        from plone.api.exc import InvalidParameterError
 
         # Arguments ``groupname`` and ``group`` are mutually exclusive.
         self.assertRaises(
@@ -214,7 +221,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
-            api.exc.InvalidParameterError,
+            InvalidParameterError,
             api.group.remove_user,
             username='staff', user=mock.Mock(),
         )
@@ -254,7 +261,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_grant_roles(self):
         """Test grant roles."""
-
+        from plone.api.exc import MissingParameterError
         group = api.group.create(groupname='foo')
 
         self.assertRaises(
@@ -272,7 +279,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.group.grant_roles,
             groupname='foo',
             group=group,
@@ -293,7 +300,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_revoke_roles(self):
         """Test revoke roles."""
-
+        from plone.api.exc import MissingParameterError
         group = api.group.create(groupname='bar')
 
         self.assertRaises(
@@ -311,7 +318,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
         self.assertRaises(
-            api.exc.MissingParameterError,
+            MissingParameterError,
             api.group.grant_roles,
             groupname='bar',
             group=group,

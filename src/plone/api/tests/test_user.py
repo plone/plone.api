@@ -2,8 +2,6 @@
 """Tests for plone.api.user."""
 
 from plone import api
-from plone.api.exc import InvalidParameterError
-from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout, TEST_USER_NAME
 from Products.CMFCore.utils import getToolByName
@@ -28,6 +26,7 @@ class TestPloneApiUser(unittest.TestCase):
 
         self.portal.portal_properties.site_properties.use_email_as_login = True
 
+        from plone.api.exc import MissingParameterError
         self.assertRaises(
             MissingParameterError,
             api.user.create,
@@ -62,6 +61,7 @@ class TestPloneApiUser(unittest.TestCase):
         # an error
         properties.manage_changeProperties(use_email_as_login=False)
 
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
             InvalidParameterError,
             api.user.create,
@@ -132,8 +132,8 @@ class TestPloneApiUser(unittest.TestCase):
     def test_get_constraints(self):
         """Test that exception is raised if no username is given when getting
         the user.
-
         """
+        from plone.api.exc import MissingParameterError
         self.assertRaises(
             MissingParameterError,
             api.user.get
@@ -185,7 +185,10 @@ class TestPloneApiUser(unittest.TestCase):
         self.portal.portal_properties.site_properties.use_email_as_login = True
 
         # This should fail either an username or user object should be given
+        from plone.api.exc import MissingParameterError
         self.assertRaises(MissingParameterError, api.user.delete)
+
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(InvalidParameterError, api.user.delete,
                           username='chuck@norris.org', user=mock.Mock())
 
@@ -227,6 +230,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
 
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
             InvalidParameterError,
             api.user.get_roles,
@@ -243,6 +247,7 @@ class TestPloneApiUser(unittest.TestCase):
             roles=[]
         )
 
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
             InvalidParameterError,
             api.user.get_permissions,
@@ -276,6 +281,7 @@ class TestPloneApiUser(unittest.TestCase):
             roles=[]
         )
 
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
             InvalidParameterError,
             api.user.get_permissions,
@@ -307,6 +313,8 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_grant_roles(self):
         """Test grant roles."""
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
 
         user = api.user.create(
             username='chuck',
@@ -355,6 +363,8 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_revoke_roles(self):
         """Test revoke roles."""
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
 
         user = api.user.create(
             username='chuck',
