@@ -2,6 +2,7 @@
 """ Decorators for validating parameters """
 
 import inspect
+from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 
 
@@ -21,7 +22,7 @@ not part of its signature: %s" % (
 
 
 def _get_supplied_args(signature_params, args, kwargs):
-    """ return names of all args that have been passed in
+    """ Return names of all args that have been passed in
     either as positional or keyword arguments, and are not None """
     supplied_args = []
     for i in range(len(args)):
@@ -67,3 +68,34 @@ def required_parameters(*required_params):
         return wrapped
 
     return _required_parameters
+
+
+def mutually_exclusive_parameters(*exclusive_params):
+    """ A decorator that raises an exception if more than one
+    of the specified parameters has been supplied and is not None
+
+    Usage:
+    @mutually_exclusive_parameters('a', 'b')
+    def foo(a=None, b=None, c=None):
+        pass
+    """
+
+    def _mutually_exclusive_parameters(func):
+        """ The actual decorator """
+
+        signature_params = _get_arg_spec(func, exclusive_params)
+
+        def wrapped(*args, **kwargs):
+            """ The wrapped function """
+
+            supplied_args = _get_supplied_args(signature_params, args, kwargs)
+            if len(supplied_args) > 1:
+                raise InvalidParameterError(
+                    "These parameters are mutually exclusive: %s." %
+                    ", ".join(supplied_args))
+
+            return func(*args, **kwargs)
+
+        return wrapped
+
+    return _mutually_exclusive_parameters
