@@ -124,7 +124,7 @@ def at_least_one_of(*candidate_params):
             if len(candidates) < 1:
                 raise MissingParameterError(
                     "At least one of these parameters must be "
-                    "supplied: {0}.".format(", ".join(supplied_args))
+                    "supplied: {0}.".format(", ".join(candidate_params))
                 )
 
             return f(*args, **kwargs)
