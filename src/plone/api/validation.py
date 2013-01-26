@@ -21,11 +21,17 @@ not part of its signature: %s" % (
 
 
 def _get_supplied_args(signature_params, args, kwargs):
-    """ make arg_name:value pairs for all args that have been passed in """
-    supplied_args = {}
+    """ return names of all args that have been passed in
+    either as positional or keyword arguments, and are not None """
+    supplied_args = []
     for i in range(len(args)):
-        supplied_args[signature_params[i]] = args[i]
-    supplied_args.update(kwargs)
+        if args[i] is not None:
+            supplied_args.append(signature_params[i])
+
+    for k in kwargs:
+        if kwargs[k] is not None:
+            supplied_args.append(k)
+
     return supplied_args
 
 
@@ -51,10 +57,10 @@ def required_parameters(*required_params):
 
             supplied_args = _get_supplied_args(signature_params, args, kwargs)
 
-            for p in required_params:
-                if p not in supplied_args or supplied_args[p] is None:
-                    raise MissingParameterError(
-                        "Missing required parameter: %s" % p)
+            missing = [p for p in required_params if p not in supplied_args]
+            if len(missing):
+                raise MissingParameterError(
+                    "Missing required parameter(s): %s" % ", ".join(missing))
 
             return func(*args, **kwargs)
 
