@@ -235,7 +235,7 @@ class TestPloneApiUser(unittest.TestCase):
     def test_get_roles_username(self):
         """Test get roles passing a username."""
         ROLES = ['Reviewer', 'Editor']
-        user = api.user.create(
+        api.user.create(
             username='chuck',
             email='chuck@norris.org',
             password='secret',
@@ -278,7 +278,10 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_permissions_no_parameters(self):
         """ test get_permissions passing no parameters. """
-        self.assertEqual(set(p[0] for p in getPermissions()), set(api.user.get_permissions().keys()))
+        self.assertEqual(
+            set(p[0] for p in getPermissions()),
+            set(api.user.get_permissions().keys())
+        )
 
     def test_get_permissions_root(self):
         """ Test get permissions on site root"""
