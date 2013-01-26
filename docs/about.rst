@@ -66,9 +66,10 @@ Design decisions
 Import and usage style
 ----------------------
 
-API methods are grouped by their field of usage: :ref:`chapter_portal`,
-:ref:`chapter_content`, :ref:`chapter_users` and :ref:`chapter_groups`.
-Hence the importing and usage of API methods look like this:
+API methods are grouped by their field of usage. For example:
+:ref:`chapter_portal`, :ref:`chapter_content`, :ref:`chapter_users`
+and :ref:`chapter_groups`.  Hence the importing and usage of API
+methods look like this:
 
 .. invisible-code-block: python
 
