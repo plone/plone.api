@@ -2,6 +2,8 @@
 """Module that provides functionality for group manipulation."""
 
 from plone.api import portal
+from plone.api.exc import GroupNotFoundError
+from plone.api.exc import UserNotFoundError
 from plone.api.user import get as user_get
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
@@ -82,7 +84,7 @@ def get_groups(username=None, user=None):
     if username:
         user = user_get(username=username)
         if not user:
-            raise ValueError
+            raise UserNotFoundError
 
     group_tool = portal.get_tool('portal_groups')
 
@@ -217,7 +219,7 @@ def get_roles(groupname=None, group=None, obj=None):
 
     group = get(groupname=group_id)
     if group is None:
-        raise ValueError
+        raise GroupNotFoundError
 
     group = group.getGroup()
     # when context obj is available we bypass getRolesInContext method
