@@ -26,3 +26,11 @@ class CannotGetPortalError(PloneApiError):
     traverse to a portal, for example ``bin/instance -P Plone debug.``
 
     """
+
+
+class UserNotFoundError(PloneApiError):
+    """Raised when a specified or implicit user can not be retrieved."""
+
+
+class GroupNotFoundError(PloneApiError):
+    """Raised when a specified or implicit group can not be retrieved."""

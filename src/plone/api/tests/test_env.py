@@ -4,8 +4,6 @@
 from AccessControl import Unauthorized
 from OFS.SimpleItem import SimpleItem
 from plone import api
-from plone.api.exc import InvalidParameterError
-from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 import AccessControl
 import AccessControl.SecurityManagement
@@ -173,6 +171,7 @@ class TestPloneApiRoles(unittest.TestCase):
 
     def test_empty_warning(self):
         """Tests that empty roles lists get warned about."""
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
             InvalidParameterError,
             lambda: api.env.adopt_roles([])
@@ -180,6 +179,7 @@ class TestPloneApiRoles(unittest.TestCase):
 
     def test_argument_requirement(self):
         """Tests that missing arguments don't go unnoticed."""
+        from plone.api.exc import MissingParameterError
         self.assertRaises(
             MissingParameterError,
             lambda: api.env.adopt_roles()

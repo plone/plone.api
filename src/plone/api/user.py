@@ -6,8 +6,10 @@ from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from plone.api import portal
+from plone.api.exc import GroupNotFoundError
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from plone.api.exc import UserNotFoundError
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
@@ -138,8 +140,7 @@ def get_users(groupname=None, group=None):
         group_tool = portal.get_tool('portal_groups')
         group = group_tool.getGroupById(groupname)
         if not group:
-            # XXX This should raise a custom plone.api exception
-            raise ValueError
+            raise GroupNotFoundError
 
     portal_membership = portal.get_tool('portal_membership')
 
@@ -215,8 +216,7 @@ def get_roles(username=None, user=None, obj=None):
 
     user = portal_membership.getMemberById(username)
     if user is None:
-        # XXX This needs a custom plone.api error
-        raise ValueError
+        raise UserNotFoundError
 
     return user.getRolesInContext(obj) if obj is not None else user.getRoles()
 
@@ -258,8 +258,7 @@ def get_permissions(username=None, user=None, obj=None):
 
     user = portal_membership.getMemberById(username)
     if user is None:
-        # XXX This needs a custom plone.api error
-        raise ValueError
+        raise UserNotFoundError
     newSecurityManager(getRequest(), user)
 
     permissions = (p[0] for p in getPermissions())
