@@ -363,7 +363,8 @@ class TestPloneApiUser(unittest.TestCase):
                                  obj=folder).get(k, None))
 
     def test_grant_roles(self):
-        """Test grant roles."""
+        """Test granting a couple of roles."""
+
         from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
 
@@ -372,30 +373,6 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            roles=['Anonymous'])
-
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            roles=['Authenticated'])
-
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            user=user,
-            roles=['Reviewer'])
-
-        self.assertRaises(
-            MissingParameterError,
-            api.user.grant_roles,
-            username='chuck')
 
         api.user.grant_roles(username='chuck', roles=['Editor'])
         self.assertIn('Editor', api.user.get_roles(username='chuck'))
@@ -411,6 +388,48 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
+
+    def test_grant_roles_username_and_user(self):
+        """Test grant roles passing username and user."""
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.grant_roles,
+            username='chuck',
+            user=user)
+
+    def test_grant_roles_anonymous(self):
+        """Test granting Anonymous role."""
+
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.grant_roles,
+            username='chuck',
+            roles=['Anonymous'])
+
+    def test_grant_roles_authenticated(self):
+        """Test granting Authenticated role."""
+        from plone.api.exc import InvalidParameterError
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.grant_roles,
+            username='chuck',
+            roles=['Authenticated'],
+        )
+
+    def test_grant_roles_no_parameters(self):
+        """Test grant roles without passing parameters."""
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(
+            MissingParameterError,
+            api.user.grant_roles,
+        )
 
     def test_revoke_roles(self):
         """Test revoke roles."""
