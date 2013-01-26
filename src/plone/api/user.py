@@ -10,6 +10,7 @@ from plone.api.exc import GroupNotFoundError
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 from plone.api.exc import UserNotFoundError
+from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
@@ -151,6 +152,7 @@ def get_users(groupname=None, group=None):
 
 
 @mutually_exclusive_parameters('username', 'user')
+@at_least_one_of('username', 'user')
 def delete(username=None, user=None):
     """Delete a user.
 
@@ -167,9 +169,6 @@ def delete(username=None, user=None):
     :Example: :ref:`user_delete_example`
 
     """
-    if not username and not user:
-        raise MissingParameterError
-
     portal_membership = portal.get_tool('portal_membership')
     user_id = username or user.id
     portal_membership.deleteMembers((user_id,))
