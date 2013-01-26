@@ -65,7 +65,7 @@ To set user properties when creating a new user, pass in a properties dict.
     user = api.user.create(
         username='bob',
         email='bob@plone.org',
-        properties=properties
+        properties=properties,
     )
 
 .. invisible-code-block: python
@@ -82,7 +82,7 @@ Otherwise a random 8-char alphanumeric password will be generated.
     user = api.user.create(
         username='noob',
         email='noob@plone.org',
-        password='secret'
+        password='secret',
     )
 
 
@@ -232,8 +232,8 @@ the user object you want to delete.
 Get user's roles
 ----------------
 
-The :meth:`api.user.get_roles` method is used to getting user's roles.
-By default it returns site-wide roles.
+The :meth:`api.user.get_roles` method is used for getting a user's roles.  By
+default it returns site-wide roles.
 
 .. code-block:: python
 
@@ -265,7 +265,7 @@ in that particular context.
 Get user permissions
 --------------------
 
-The :meth:`api.user.get_permissions` method is used to getting user's
+The :meth:`api.user.get_permissions` method is used for getting user's
 permissions. By default it returns site root permissions.
 
 .. code-block:: python
@@ -366,9 +366,7 @@ user.
 .. code-block:: python
 
     from plone import api
-    api.user.revoke_roles(username='jane',
-        roles=['SiteAdministrator']
-    )
+    api.user.revoke_roles(username='jane', roles=['SiteAdministrator'])
 
 .. invisible-code-block: python
 
@@ -382,14 +380,17 @@ If you pass a context object the local roles will be removed.
 .. code-block:: python
 
     from plone import api
-    folder = api.content.create(container=portal, type='Folder', id='folder_three', title='Folder Three')
-    api.user.grant_roles(username='jane',
+    folder = api.content.create(
+        container=portal, type='Folder', id='folder_three', title='Folder Three')
+    api.user.grant_roles(
+        username='jane',
         roles=['Editor', 'Contributor'],
-        obj=portal['folder_three']
+        obj=portal['folder_three'],
     )
-    api.user.revoke_roles(username='jane',
+    api.user.revoke_roles(
+        username='jane',
         roles=['Editor'],
-        obj=portal['folder_three']
+        obj=portal['folder_three'],
     )
 
 .. invisible-code-block: python
