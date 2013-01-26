@@ -6,13 +6,62 @@ Changes
 0.1b2 (Unreleased)
 ------------------
 
-- Improvements to ``get_registry_record``.
-  [zupo]
-
-- Created ``api.env`` module for interacting with global environment.
+- Increase code coverage.
+  [cillianderoiste, reinhardt, zupo]
 
 - Implementation of ``api.env.adopt_roles()`` context manager for
   temporarily switching roles inside a block.
+  [RichyB]
+
+- Created ``api.env`` module for interacting with global environment.
+  [RichyB]
+
+- Decorators for defining constraints on api methods.
+  [JessN]
+
+- Resolved #61: Improve api.portal.get().
+  [cillianderoiste]
+
+- Use plone.api methods in plone.api codebase.
+  [zupo]
+
+- Switch to `flake8` instead of `pep8`+`pyflakes`.
+  [zupo]
+
+- Get the portal path with absolute_url_path.
+  [cillianderoiste]
+
+- Travis build speed-ups.
+  [zupo]
+
+- Support for Python 2.6.
+  [RichyB, zupo]
+
+- Support for Plone 4.0.
+  [adamcheasley]
+
+- Support for Plone 4.3.
+  [cillianderoiste, zupo]
+
+- Spelling fixes.
+  [adamtheturtle]
+
+- Make get_view and get_tool tests not have hardcoded list of *all* expected
+  values.
+  [RichyB, cillianderoiste]
+
+- Code Style Guide.
+  [iElectric, cillianderoiste, marciomazza, RichyB, thet, zupo]
+
+- Depend on ``manuel`` in setup.py.
+  [zupo]
+
+- Documentation how to get/set member properties.
+  [zupo]
+
+- Improvements to ``get_registry_record``.
+  [zupo]
+
 
 0.1b1 (2012-10-23)
 ------------------
