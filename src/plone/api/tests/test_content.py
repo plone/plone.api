@@ -243,7 +243,8 @@ class TestPloneApiContent(unittest.TestCase):
             InvalidParameterError, api.content.get, path='/', UID='dummy')
 
         # Either a path or UID must be given
-        self.assertRaises(ValueError, api.content.get)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(MissingParameterError, api.content.get)
 
     def test_get(self):
         """Test the getting of content in varios ways."""
@@ -279,7 +280,8 @@ class TestPloneApiContent(unittest.TestCase):
         container = mock.Mock()
 
         # Source is missing an should raise an error
-        self.assertRaises(ValueError, api.content.move, source=container)
+        self.assertRaises(
+            MissingParameterError, api.content.move, source=container)
 
         # Target is missing an should raise an error
         self.assertRaises(
@@ -383,7 +385,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         container = mock.Mock()
         # Source is missing an should raise an error
-        self.assertRaises(ValueError, api.content.copy, source=container)
+        self.assertRaises(
+            MissingParameterError, api.content.copy, source=container)
 
     def test_copy(self):
         """Test the copying of content."""

@@ -4,7 +4,7 @@
 from App.config import getConfiguration
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
-from plone.api.exc import MissingParameterError
+from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from plone.app.uuid.utils import uuidToObject
@@ -23,6 +23,7 @@ import transaction
 
 
 @required_parameters('container', 'type')
+@at_least_one_of('id', 'title')
 def create(
     container=None,
     type=None,
@@ -58,12 +59,6 @@ def create(
     :Example: :ref:`content_create_example`
 
     """
-    if not id and not title:
-        raise MissingParameterError(
-            'You have to provide either the ``id`` or the '
-            '``title`` parameter'
-        )
-
     # Create a temporary id if the id is not given
     content_id = not safe_id and id or str(random.randint(0, 99999999))
 
@@ -110,6 +105,7 @@ def create(
 
 
 @mutually_exclusive_parameters('path', 'UID')
+@at_least_one_of('path', 'UID')
 def get(path=None, UID=None):
     """Get an object.
 
@@ -124,10 +120,6 @@ def get(path=None, UID=None):
     :Example: :ref:`content_get_example`
 
     """
-    if not path and not UID:
-        raise ValueError(
-            'When getting an object path or UID attribute is required')
-
     if path:
         site = portal.get()
         site_absolute_path = site.absolute_url_path()
@@ -144,6 +136,7 @@ def get(path=None, UID=None):
 
 
 @required_parameters('source')
+@at_least_one_of('target', 'id')
 def move(source=None, target=None, id=None, safe_id=False):
     """Move the object to the target container.
 
@@ -169,9 +162,6 @@ def move(source=None, target=None, id=None, safe_id=False):
     :Example: :ref:`content_move_example`
 
     """
-    if not target and not id:
-        raise ValueError
-
     source_id = source.getId()
 
     # If no target is given the object is probably renamed
@@ -212,6 +202,7 @@ def rename(obj=None, new_id=None, safe_id=False):
 
 
 @required_parameters('source')
+@at_least_one_of('target', 'id')
 def copy(source=None, target=None, id=None, safe_id=False):
     """Copy the object to the target container.
 
@@ -237,9 +228,6 @@ def copy(source=None, target=None, id=None, safe_id=False):
     :Example: :ref:`content_copy_example`
 
     """
-    if not target and not id:
-        raise ValueError
-
     source_id = source.getId()
     target.manage_pasteObjects(source.manage_copyObjects(source_id))
 
