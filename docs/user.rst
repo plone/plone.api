@@ -232,8 +232,8 @@ the user object you want to delete.
 Get user's roles
 ----------------
 
-The :meth:`api.user.get_roles` method is used to getting user's roles.
-By default it returns site-wide roles.
+The :meth:`api.user.get_roles` method is used for getting a user's roles.  By
+default it returns site-wide roles.
 
 .. code-block:: python
 
@@ -265,7 +265,7 @@ in that particular context.
 Get user permissions
 --------------------
 
-The :meth:`api.user.get_permissions` method is used to getting user's
+The :meth:`api.user.get_permissions` method is used for getting user's
 permissions. By default it returns site root permissions.
 
 .. code-block:: python
