@@ -5,6 +5,7 @@ from App.config import getConfiguration
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
@@ -108,6 +109,7 @@ def create(
     return content
 
 
+@mutually_exclusive_parameters('path', 'UID')
 def get(path=None, UID=None):
     """Get an object.
 
@@ -122,12 +124,6 @@ def get(path=None, UID=None):
     :Example: :ref:`content_get_example`
 
     """
-    if path and UID:
-        raise ValueError(
-            'When getting an object combining path and UID '
-            'attribute is not allowed'
-        )
-
     if not path and not UID:
         raise ValueError(
             'When getting an object path or UID attribute is required')

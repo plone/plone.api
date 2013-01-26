@@ -238,7 +238,7 @@ class TestPloneApiContent(unittest.TestCase):
         """Test the constraints when content is fetched with get."""
 
         # Path and UID parameter can not be given together
-        self.assertRaises(ValueError, api.content.get, path='/', UID='dummy')
+        self.assertRaises(api.exc.InvalidParameterError, api.content.get, path='/', UID='dummy')
 
         # Either a path or UID must be given
         self.assertRaises(ValueError, api.content.get)
