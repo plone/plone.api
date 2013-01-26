@@ -33,7 +33,6 @@ class HasProtectedMethods(SimpleItem):
     security.declarePrivate('private_method')
 
     def __init__(self, id):
-        SimpleItem.__init__(self, id, id)
         self.id = id
 
     def public_method(self):
