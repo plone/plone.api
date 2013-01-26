@@ -5,6 +5,8 @@ from AccessControl.Permission import getPermissions
 from plone import api
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from plone.api.exc import GroupNotFoundError
+from plone.api.exc import UserNotFoundError
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout, TEST_USER_NAME
 from Products.CMFCore.utils import getToolByName
@@ -194,7 +196,7 @@ class TestPloneApiUser(unittest.TestCase):
     def test_get_users_nonexistent_group(self):
         """ test getting users for a group that does not exist """
         self.assertRaises(
-            ValueError,
+            GroupNotFoundError,
             api.user.get_users,
             groupname='bacon')
 
@@ -315,6 +317,13 @@ class TestPloneApiUser(unittest.TestCase):
                 v,
                 api.user.get_permissions(user=user).get(k, None)
             )
+
+    def test_get_permissions_nonexistant_user(self):
+        """ test get_permissions for a user that does not exist. """
+        self.assertRaises(
+            UserNotFoundError,
+            api.user.get_permissions,
+            username='ming')
 
     def test_get_permissions_context(self):
         """Test get permissions on some context."""
