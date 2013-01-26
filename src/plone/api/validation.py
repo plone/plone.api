@@ -15,8 +15,8 @@ def _get_arg_spec(func, validator_args):
     extra_args = set(validator_args) - set(signature_args)
     if extra_args:
         raise ValueError(
-            "Validator for %s refers to parameters \
-that are not part of the function signature: %s" % (
+            "Validator for %s refers to parameters "
+            "that are not part of the function signature: %s" % (
             func.__name__, ", ".join(extra_args),))
 
     return signature_args
