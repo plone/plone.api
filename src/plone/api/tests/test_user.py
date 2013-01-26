@@ -234,7 +234,7 @@ class TestPloneApiUser(unittest.TestCase):
             user=user)
 
     def test_get_permissions_root(self):
-        """ Test get permissions on site root"""
+        """Test get permissions on site root"""
 
         user = api.user.create(
             username='chuck',
