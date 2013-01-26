@@ -73,7 +73,7 @@ following two styles for breaking long lines into blocks:
  * The last argument line needs to have a trailing comma (to be nice to the
    next developer coming in to add something as an argument and minimize VCS
    diffs in these cases).
- * The closing parenthesis or bracket need to have the same indentation level
+ * The closing parenthesis or bracket needs to have the same indentation level
    as the first line.
  * Each line can only contain a single argument.
  * The same style applies to dicts, lists, return calls, etc.
@@ -93,7 +93,7 @@ it's Emacs specific and two emacs users here on the Beer & Wine Sprint both
 support our way.
 
 If you wanna be extra nice, you are encouraged to document your method's
-parameters and the return value in a `reST field list syntax
+parameters and their return values in a `reST field list syntax
 <http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#field-lists>`_.
 
 .. sourcecode:: rest
@@ -327,7 +327,7 @@ Git workflow & branching model
 Our repository on GitHub has the following layout:
 
 * **feature branches**: all development for new features must be done in
-  dedicated branches, normaly one branch per feature,
+  dedicated branches, normally one branch per feature,
 * **master branch**: when features get completed they are merged into the maste
   branch; bugfixes are commited directly on the master branch,
 * **tags**: whenever we create a new release we tag the repository so we can
