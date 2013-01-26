@@ -229,7 +229,7 @@ the user object you want to delete.
 
 .. _user_get_roles_example:
 
-Get user's roles
+Get user roles
 ----------------
 
 The :meth:`api.user.get_roles` method is used for getting a user's roles.  By
