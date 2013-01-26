@@ -39,7 +39,6 @@ class TestPloneApiContent(unittest.TestCase):
             |-- training
             |-- conference
             `-- sprint
-
         """
         self.portal = self.layer['portal']
 

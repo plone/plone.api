@@ -86,7 +86,28 @@ in action.
 Docstrings style
 ================
 
-Read and follow http://www.python.org/dev/peps/pep-0257/. That's it.
+Read and follow http://www.python.org/dev/peps/pep-0257/. There is one
+exception though: We reject BDFL's recommendation about inserting a blank line
+between the last paragraph in a multi-line docstring and its closing quotes as
+it's Emacs specific and two emacs users here on the Beer & Wine Sprint both
+support our way.
+
+If you wanna be extra nice, you are encouraged to document your method's
+parameters and the return value in a `reST field list syntax
+<http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#field-lists>`_.
+
+.. sourcecode:: rest
+
+
+    :param foo: blah blah
+    :type foo: string
+    :param bar: blah blah
+    :type bar: int
+    :returns: something
+
+Check out the `plone.api source
+<https://github.com/plone/plone.api/tree/master/src/plone/api>`_ for more
+usage examples.
 
 
 Unit tests style
@@ -345,20 +366,20 @@ Git Commit Message Style
 ::
 
     Capitalized, short (50 chars or less) summary
-     
+
     More detailed explanatory text, if necessary.  Wrap it to about 72
     characters or so.  In some contexts, the first line is treated as the
     subject of an email and the rest of the text as the body.  The blank
     line separating the summary from the body is critical (unless you omit
     the body entirely); tools like rebase can get confused if you run the
     two together.
-     
+
     Write your commit message in the imperative: "Fix bug" and not "Fixed bug"
     or "Fixes bug."  This convention matches up with commit messages generated
     by commands like git merge and git revert.
-     
+
     Further paragraphs come after blank lines.
-     
+
     - Bullet points are okay, too
     - Typically a hyphen or asterisk is used for the bullet, preceded by a
     single space, with blank lines in between, but conventions vary here

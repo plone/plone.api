@@ -57,7 +57,6 @@ def create(
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_create_example`
-
     """
     # Create a temporary id if the id is not given
     content_id = not safe_id and id or str(random.randint(0, 99999999))
@@ -118,7 +117,6 @@ def get(path=None, UID=None):
     :raises:
         ValueError,
     :Example: :ref:`content_get_example`
-
     """
     if path:
         site = portal.get()
@@ -160,7 +158,6 @@ def move(source=None, target=None, id=None, safe_id=False):
         KeyError
         ValueError
     :Example: :ref:`content_move_example`
-
     """
     source_id = source.getId()
 
@@ -196,7 +193,6 @@ def rename(obj=None, new_id=None, safe_id=False):
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
     :Example: :ref:`content_rename_example`
-
     """
     move(source=obj, id=new_id, safe_id=safe_id)
 
@@ -226,7 +222,6 @@ def copy(source=None, target=None, id=None, safe_id=False):
         KeyError,
         ValueError
     :Example: :ref:`content_copy_example`
-
     """
     source_id = source.getId()
     target.manage_pasteObjects(source.manage_copyObjects(source_id))
@@ -250,7 +245,6 @@ def delete(obj=None):
     :raises:
         ValueError
     :Example: :ref:`content_delete_example`
-
     """
     obj.aq_parent.manage_delObjects([obj.getId()])
 
@@ -266,7 +260,6 @@ def get_state(obj=None):
     :raises:
         ValueError
     :Example: :ref:`content_get_state_example`
-
     """
     workflow = portal.get_tool('portal_workflow')
     return workflow.getInfoFor(obj, 'review_state')
@@ -285,7 +278,6 @@ def transition(obj=None, transition=None):
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_transition_example`
-
     """
     workflow = portal.get_tool('portal_workflow')
     try:
@@ -316,7 +308,6 @@ def get_view(name=None, context=None, request=None):
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_get_view_example`
-
     """
     # It happens sometimes that ACTUAL_URL is not set in tests. To be nice
     # and not throw strange errors, we set it to be the same as URL.
@@ -355,6 +346,5 @@ def get_uuid(obj=None):
     :raises:
         ValueError
     :Example: :ref:`content_get_uuid_example`
-
     """
     return IUUID(obj)

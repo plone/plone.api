@@ -35,7 +35,6 @@ def create(
     :raises:
         ValueError
     :Example: :ref:`group_create_example`
-
     """
     group_tool = portal.get_tool('portal_groups')
     group_tool.addGroup(
@@ -57,7 +56,6 @@ def get(groupname=None):
     :raises:
         ValueError
     :Example: :ref:`group_get_example`
-
     """
     group_tool = portal.get_tool('portal_groups')
     return group_tool.getGroupById(groupname)
@@ -80,7 +78,6 @@ def get_groups(username=None, user=None):
     :rtype: List of GroupData objects
     :Example: :ref:`group_get_all_groups_example`,
         :ref:`group_get_users_groups_example`
-
     """
     if username:
         user = user_get(username=username)
@@ -111,7 +108,6 @@ def delete(groupname=None, group=None):
     :raises:
         ValueError
     :Example: :ref:`group_delete_example`
-
     """
     group_tool = portal.get_tool('portal_groups')
 
@@ -177,7 +173,6 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     :raises:
         ValueError
     :Example: :ref:`group_remove_user_example`
-
     """
     user_id = username or user.id
     group_id = groupname or group.id
@@ -202,7 +197,6 @@ def get_roles(groupname=None, group=None, obj=None):
     :raises:
         ValueError
     :Example: :ref:`group_get_roles_example`
-
     """
     group_id = groupname or group.id
 
@@ -239,7 +233,6 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
     :raises:
         ValueError
     :Example: :ref:`group_grant_roles_example`
-
     """
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise ValueError
@@ -281,7 +274,6 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     :raises:
         ValueError
     :Example: :ref:`group_revoke_roles_example`
-
     """
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise ValueError

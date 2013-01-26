@@ -33,7 +33,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertEqual(spam_group, self.group_tool.getGroupById('spam'))
 
     def test_create_with_title_and_desc(self):
-        """Test adding of a group with title and description """
+        """Test adding of a group with title and description."""
 
         bacon_group = api.group.create(
             groupname='bacon',
@@ -55,7 +55,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
     def test_create_with_roles_and_groups(self):
-        """Test adding of a group with roles and groups """
+        """Test adding of a group with roles and groups."""
 
         ham_group = api.group.create(
             groupname='ham',

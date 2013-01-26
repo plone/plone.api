@@ -56,7 +56,6 @@ class TestPloneApiPortal(unittest.TestCase):
 
         Set a different local site manager and test that portal.get()
         still returns the portal.
-
         """
         a_site = content.create(
             container=self.portal, type="Folder", title="A Site")
@@ -204,7 +203,6 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_send_email_without_configured_mailhost(self):
         """By default, the MailHost is not configured yet, so we cannot
         send email.
-
         """
         self.portal._updateProperty('email_from_address', None)
         self.assertRaises(
@@ -220,7 +218,6 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_send_email_parseaddr(self, mock_parseaddr):
         """Simulate faulty parsing in parseaddr, from_address should be
         default email_from_address.
-
         """
 
         self.mailhost.reset()
@@ -338,7 +335,8 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_get_invalid_registry_record_msg(self):
         """Test that the error message from trying to get a
         nonexistant registry record produces an error message which
-        lists known registry records."""
+        lists known registry records.
+        """
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_registry_record(name='nonexistent.sharepoint.power')
@@ -372,7 +370,6 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_set_missing_param_registry_record(self):
         """Test that when set_registry_record is called without
         parameters, a MissingParameterError exception is raised.
-
         """
         from plone.api.exc import MissingParameterError
         self.assertRaises(MissingParameterError, portal.set_registry_record)
@@ -380,7 +377,6 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_set_non_existing_record_value(self):
         """Test that setting the value of a non existent record raises
         an Exception.
-
         """
         self.assertRaises(
             KeyError,
@@ -393,7 +389,6 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test that calling portal.set_registry_record with a name
         parameter for an existing record, but without a value, raises
         an Exception.
-
         """
         registry = getUtility(IRegistry)
         registry.records['plone.api.plone_power'] = Record(
@@ -408,7 +403,6 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_set_invalid_key_type_record(self):
         """Test that trying to set the value of a record by passing a
         list for the record name instead of a string, raises an error.
-
         """
         from plone.api.exc import InvalidParameterError
         self.assertRaises(
