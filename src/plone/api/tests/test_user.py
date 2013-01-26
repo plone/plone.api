@@ -433,8 +433,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_revoke_roles(self):
         """Test revoke roles."""
-        from plone.api.exc import InvalidParameterError
-        from plone.api.exc import MissingParameterError
 
         user = api.user.create(
             username='chuck',
@@ -442,42 +440,62 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
 
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            roles=['Anonymous'])
-
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            roles=['Authenticated'])
-
-        self.assertRaises(
-            InvalidParameterError,
-            api.user.grant_roles,
-            username='chuck',
-            user=user,
-            roles=['Reviewer'])
-
-        self.assertRaises(
-            MissingParameterError,
-            api.user.grant_roles,
-            username='chuck')
-
         api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'])
-
         api.user.revoke_roles(username='chuck', roles=['Reviewer'])
         self.assertNotIn('Reviewer', api.user.get_roles(username='chuck'))
         self.assertNotIn('Reviewer', api.user.get_roles(user=user))
         self.assertIn('Editor', api.user.get_roles(username='chuck'))
         self.assertIn('Editor', api.user.get_roles(user=user))
 
-        api.user.revoke_roles(username='chuck', roles=['Editor'])
+        api.user.revoke_roles(username='chuck', roles=('Editor',))
         ROLES = set(('Authenticated', 'Member'))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
+
+    def test_revoke_roles_username_and_user(self):
+        """Test revoke roles passing username and user."""
+
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        from plone.api.exc import InvalidParameterError
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.revoke_roles,
+            username='chuck',
+            user=user)
+
+    def test_revoke_roles_anonymous(self):
+        """Test revoking Anonymous role."""
+
+        from plone.api.exc import InvalidParameterError
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.revoke_roles,
+            username='chuck',
+            roles=['Anonymous'])
+
+    def test_revoke_roles_authenticated(self):
+        """Test revoking Authenticated role."""
+
+        from plone.api.exc import InvalidParameterError
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.revoke_roles,
+            username='chuck',
+            roles=['Authenticated'],
+        )
+
+    def test_revoke_roles_no_parameters(self):
+        """Test revoke roles without passing parameters."""
+
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(
+            MissingParameterError,
+            api.user.revoke_roles)
 
     def test_grant_roles_in_context(self):
         """Test grant roles."""
