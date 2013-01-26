@@ -5,6 +5,7 @@ from plone.api import portal
 from plone.api.exc import GroupNotFoundError
 from plone.api.exc import UserNotFoundError
 from plone.api.user import get as user_get
+from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 
@@ -96,6 +97,7 @@ def get_groups(username=None, user=None):
 
 
 @mutually_exclusive_parameters('groupname', 'group')
+@at_least_one_of('groupname', 'group')
 def delete(groupname=None, group=None):
     """Delete a group.
 
@@ -111,9 +113,6 @@ def delete(groupname=None, group=None):
     :Example: :ref:`group_delete_example`
 
     """
-    if not groupname and not group:
-        raise ValueError
-
     group_tool = portal.get_tool('portal_groups')
 
     if group:
@@ -123,7 +122,9 @@ def delete(groupname=None, group=None):
 
 
 @mutually_exclusive_parameters('groupname', 'group')
+@at_least_one_of('groupname', 'group')
 @mutually_exclusive_parameters('username', 'user')
+@at_least_one_of('username', 'user')
 def add_user(groupname=None, group=None, username=None, user=None):
     """Add the user to a group.
 
@@ -146,12 +147,6 @@ def add_user(groupname=None, group=None, username=None, user=None):
     :Example: :ref:`group_add_user_example`
 
     """
-    if not username and not user:
-        raise ValueError
-
-    if not groupname and not group:
-        raise ValueError
-
     user_id = username or user.id
     group_id = groupname or group.id
     portal_groups = portal.get_tool('portal_groups')
@@ -159,7 +154,9 @@ def add_user(groupname=None, group=None, username=None, user=None):
 
 
 @mutually_exclusive_parameters('groupname', 'group')
+@at_least_one_of('groupname', 'group')
 @mutually_exclusive_parameters('username', 'user')
+@at_least_one_of('username', 'user')
 def remove_user(groupname=None, group=None, username=None, user=None):
     """Remove the user from a group.
 
@@ -182,12 +179,6 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     :Example: :ref:`group_remove_user_example`
 
     """
-    if not username and not user:
-        raise ValueError
-
-    if not groupname and not group:
-        raise ValueError
-
     user_id = username or user.id
     group_id = groupname or group.id
     portal_groups = portal.get_tool('portal_groups')
@@ -195,6 +186,7 @@ def remove_user(groupname=None, group=None, username=None, user=None):
 
 
 @mutually_exclusive_parameters('groupname', 'group')
+@at_least_one_of('groupname', 'group')
 def get_roles(groupname=None, group=None, obj=None):
     """Get group's site-wide or local roles.
 
@@ -212,9 +204,6 @@ def get_roles(groupname=None, group=None, obj=None):
     :Example: :ref:`group_get_roles_example`
 
     """
-    if not groupname and not group:
-        raise ValueError
-
     group_id = groupname or group.id
 
     group = get(groupname=group_id)
@@ -232,6 +221,7 @@ def get_roles(groupname=None, group=None, obj=None):
 
 @required_parameters('roles')
 @mutually_exclusive_parameters('groupname', 'group')
+@at_least_one_of('groupname', 'group')
 def grant_roles(groupname=None, group=None, roles=None, obj=None):
     """Grant roles to a group.
 
@@ -251,9 +241,6 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
     :Example: :ref:`group_grant_roles_example`
 
     """
-    if not groupname and not group:
-        raise ValueError
-
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise ValueError
 
@@ -276,6 +263,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
 
 @required_parameters('roles')
 @mutually_exclusive_parameters('groupname', 'group')
+@at_least_one_of('groupname', 'group')
 def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     """Revoke roles from a group.
 
@@ -295,9 +283,6 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     :Example: :ref:`group_revoke_roles_example`
 
     """
-    if not groupname and not group:
-        raise ValueError
-
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise ValueError
 

@@ -143,7 +143,8 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_delete_contraints(self):
         """Test deleting a group without passing parameters."""
-        self.assertRaises(ValueError, api.group.delete)
+        from plone.api.exc import MissingParameterError
+        self.assertRaises(MissingParameterError, api.group.delete)
 
     def test_delete_groupname_and_group(self):
         """Test deleting a group passing both groupname and group."""
@@ -188,12 +189,19 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertRaises(
             InvalidParameterError,
             api.group.add_user,
-            username='staff', user=mock.Mock()
+            groupname='staff',
+            username='staff',
+            user=mock.Mock()
         )
 
     def test_add_user_with_nonexistant_group(self):
         """Test adding a user to a group that does not exist."""
-        self.assertRaises(ValueError, api.group.add_user, groupname='staff')
+        self.assertRaises(
+            KeyError,
+            api.group.add_user,
+            username='staff',
+            groupname='staff',
+        )
 
     def test_add_user_with_nonexistant_user(self):
         """Test adding a user that does not exist to a group."""
@@ -239,27 +247,35 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_remove_user_contraints(self):
         """Test the constraints when a user is removed from a group."""
         from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
 
         # Arguments ``groupname`` and ``group`` are mutually exclusive.
         self.assertRaises(
             InvalidParameterError,
             api.group.remove_user,
-            groupname='staff', group=mock.Mock(),
+            username='jane',
+            groupname='staff',
+            group=mock.Mock(),
         )
         # Arguments ``username`` and ``user`` are mutually exclusive.
         self.assertRaises(
             InvalidParameterError,
             api.group.remove_user,
-            username='staff', user=mock.Mock(),
+            groupname='staff',
+            username='jane',
+            user=mock.Mock(),
         )
-        self.assertRaises(ValueError, api.group.remove_user, groupname='staff')
-        self.assertRaises(ValueError, api.group.remove_user, username='jane')
+        # At least one of ``username`` and ``user`` must be provided
         self.assertRaises(
-            InvalidParameterError,
+            MissingParameterError,
+            api.group.remove_user,
+            groupname='staff',
+        )
+        # At least one of ``groupname`` and ``group`` must be provided
+        self.assertRaises(
+            MissingParameterError,
             api.group.remove_user,
             username='jane',
-            group='group',
-            groupname='staff',
         )
 
     def test_remove_user(self):
