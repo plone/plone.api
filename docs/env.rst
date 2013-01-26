@@ -18,7 +18,7 @@ Switch roles inside a block
 ---------------------------
 
 To temporarily override the list of roles that are available, use
-:meth`api.env.adopt_roles`. This is especially useful in unit tests.
+:meth:`api.env.adopt_roles`. This is especially useful in unit tests.
 
 .. code-block:: python
 
