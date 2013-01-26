@@ -51,12 +51,14 @@ Assuming there is a document ``english_page`` in a folder ``en``, which is the n
     english_folder = api.content.create(
         type='Folder',
         title='en',
-        container=portal)
+        container=portal,
+    )
     alsoProvides(english_folder, INavigationRoot)
     english_page = api.content.create(
         type='Document',
         title='English Page',
-        container=english_folder)
+        container=english_folder,
+    )
 
 .. code-block:: python
 
