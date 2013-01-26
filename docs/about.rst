@@ -164,58 +164,38 @@ Why ``delete`` instead of ``remove``?
 Roadmap
 =======
 
-Short term
-----------
-
-In the short-term, we are planning to add more api methods to `plone.api`. An
-up-to-date list of them (and ideas for them) can be found `on GitHub
-<https://github.com/plone/plone.api/issues>`_.
-
-
 Medium- to long-term:
 ---------------------
 
 Below is a collection of ideas we have for the long run, in no particular order:
 
-- api.role context manager (to use with ``with``)
+- api.env.adopt_role and api.env.adopt_user (to use with ``with``, especially
+  in tests):
 
   .. code-block:: python
 
-      with api.role('Manager'):
+      with api.env.adopt_role('Manager'):
           # do something bypassing all constraints, permissions, etc.
 
-      with api.role('Reviewer'):
+      with api.env.adopt_role('Reviewer'):
           # do something as a reviewer to see if permission are set correctly
 
-- api.env
+- api.env TEST_MODE and DEBUG_MODE
 
-  - debug_mode, test_mode booleans (to check if you are in debug/test)
-  - zope/plone version info
+  .. code-block:: python
 
-- api.system
+      if api.env.TEST_MODE:
+          # you are now in test environment
 
-  - for sysadmin tasks
-  - run upgrades, stay up-to-date
-  - cleanup broken objects, interfaces, utilities, etc.
-  - mounting things
+      if api.env.DEBUG_MODE:
+          # you are now in development environment
+
+- api.env.versions: don't do a wrapper, just explain how to use pkg_resources
+  to query for installed versions
 
 - unify permissions
 
   - have all different types of permission in one place and one way to use them
-
-- style guide
-
-  - have a style guide for how Plone files should be formatted -- this needs to
-    be finalized before we start fixing underlying APIs so new code can use the
-    style guide
-  - define guidelines for:
-
-    - python
-    - javascript
-    - rst
-    - zpt
-    - xml
-    - zcml
 
 - rewrite sub-optimal underlying APIs and deprecate plone.api methods, but leave
   the (updated) documentation:
