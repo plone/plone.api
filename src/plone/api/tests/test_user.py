@@ -179,6 +179,17 @@ class TestPloneApiUser(unittest.TestCase):
 
         self.assertEqual(usernames, ['chuck'])
 
+    def test_get_users_groupname_and_group(self):
+        """ Test getting users passing both groupname and group """
+        api.group.create(groupname='bacon')
+        bacon = api.group.get(groupname='bacon')
+
+        self.assertRaises(
+            InvalidParameterError,
+            api.user.get_users,
+            groupname='bacon',
+            group=bacon)
+
     def test_delete_no_username(self):
         """Test deleting of a member with email login."""
 
