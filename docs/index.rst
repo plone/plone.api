@@ -34,9 +34,10 @@ which are important aspects of being Pythonic.
 
 .. note::
 
-    This package is still in development. It's currently in Beta phase, meaning
-    that most stuff should work, but some methods might still change in the
-    future, breaking backwards compatibility. Keep that in mind when using it.
+    This package is still under development, but should be fairly stable and is
+    already being used in production. It's currently a release candidate,
+    meaning that we don't intend to change method signatures, but it may still
+    happen.
 
 
 Narrative documentation
