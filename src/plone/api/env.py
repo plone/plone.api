@@ -51,7 +51,7 @@ class _GlobalRoleOverridingContext(object):
     def __init__(self, roles):
         self._proxy_roles = roles
 
-    # ZopeSecurityPolicy decides when a security context is relevant as follows:
+    # ZopeSecurityPolicy decides if a security context is relevant as follows:
 
     # permission = name of the relevant permission, e.g. "View".
     # object = object on which the permission is checked, e.g. the portal.
@@ -87,7 +87,7 @@ class _GlobalRoleOverridingContext(object):
     # bool(obj._proxy_roles) is True, then:
     # obj will always be considered relevant, and obj._proxy_roles gets used
     # in place of whatever would normally be the roles-in-context here.
-    
+
     # Yay!
 
     def getOwner(self):
