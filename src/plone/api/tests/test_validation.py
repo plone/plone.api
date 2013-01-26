@@ -21,7 +21,8 @@ class TestPloneAPIValidation(unittest.TestCase):
 
     def test_decorator_works_the_same_as_explicit_calling(self):
         """Check that calling the decorator with the function as an argument
-        is equivalent to decorating the function."""
+        is equivalent to decorating the function.
+        """
         @required_parameters('arg1')
         def _func1_decorated(arg1=None, arg2=None, arg3=None):
             """This is my docstring"""
