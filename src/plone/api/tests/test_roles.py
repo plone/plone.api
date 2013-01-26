@@ -56,7 +56,7 @@ class HasProtectedMethods(SimpleItem):
 Globals.InitializeClass(HasProtectedMethods)
 
 
-class TestPloneApiAdopt(unittest.TestCase):
+class TestPloneApiRoles(unittest.TestCase):
     """Test plone.api.roles."""
 
     layer = INTEGRATION_TESTING
