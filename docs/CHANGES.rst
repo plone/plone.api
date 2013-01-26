@@ -3,8 +3,8 @@
 Changes
 =======
 
-0.1b2 (Unreleased)
-------------------
+1.0.0-rc.1 (2013-01-27)
+-----------------------
 
 - Increase test coverage.
   [cillianderoiste, JessN, reinhardt, zupo]
