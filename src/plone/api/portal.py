@@ -21,7 +21,7 @@ logger = getLogger('plone.api.portal')
 
 try:
     from plone.registry.interfaces import IRegistry
-except ImportError:
+except ImportError:  # pragma: no cover
     logger.warning(
         'plone.registry is not installed. get_registry_record and '
         'set_registry_record will be unavailable.'
