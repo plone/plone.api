@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.user."""
 
+from AccessControl.Permission import getPermissions
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout, TEST_USER_NAME
@@ -190,6 +191,13 @@ class TestPloneApiUser(unittest.TestCase):
             groupname='bacon',
             group=bacon)
 
+    def test_get_users_nonexistent_group(self):
+        """ test getting users for a group that does not exist """
+        self.assertRaises(
+            ValueError,
+            api.user.get_users,
+            groupname='bacon')
+
     def test_delete_no_username(self):
         """Test deleting of a member with email login."""
 
@@ -227,9 +235,8 @@ class TestPloneApiUser(unittest.TestCase):
         logout()
         self.assertEqual(api.user.is_anonymous(), True)
 
-    def test_get_roles(self):
-        """Test get roles."""
-
+    def test_get_roles_username(self):
+        """Test get roles passing a username."""
         ROLES = ['Reviewer', 'Editor']
         user = api.user.create(
             username='chuck',
@@ -239,7 +246,28 @@ class TestPloneApiUser(unittest.TestCase):
         )
         ROLES = set(ROLES + ['Authenticated'])
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
+
+    def test_get_roles_user(self):
+        """Test get roles passing a user."""
+        ROLES = ['Reviewer', 'Editor']
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+            roles=ROLES
+        )
+        ROLES = set(ROLES + ['Authenticated'])
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
+
+    def test_get_roles_username_and_user(self):
+        """Test get roles passing username and user."""
+        ROLES = ['Reviewer', 'Editor']
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+            roles=ROLES
+        )
 
         from plone.api.exc import InvalidParameterError
         self.assertRaises(
@@ -247,6 +275,18 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.get_roles,
             username='chuck',
             user=user)
+
+    def test_get_roles_no_parameters(self):
+        """ Test get roles without any parameters. """
+        ROLES = set(['Manager', 'Authenticated'])
+        self.assertEqual(ROLES, set(api.user.get_roles()))
+
+    def test_get_permissions_no_parameters(self):
+        """ test get_permissions passing no parameters. """
+        self.assertEqual(  # TODO: maybe assertItemsEqual?
+            set(p[0] for p in getPermissions()),
+            set(api.user.get_permissions().keys()),
+        )
 
     def test_get_permissions_root(self):
         """Test get permissions on site root"""
