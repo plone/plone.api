@@ -80,7 +80,6 @@ def DocFileSuite(
     :type layer: object
 
     :rtype: `manuel.testing.TestSuite`
-
     """
     m = manuel.doctest.Manuel(optionflags=flags, checker=CHECKER)
     m += manuel.codeblock.Manuel()
