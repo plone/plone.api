@@ -9,6 +9,10 @@ Changes
 - Improvements to ``get_registry_record``.
   [zupo]
 
+- Created ``api.env`` module for interacting with global environment.
+
+- Implementation of ``api.env.adopt_roles()`` context manager for
+  temporarily switching roles inside a block.
 
 0.1b1 (2012-10-23)
 ------------------
