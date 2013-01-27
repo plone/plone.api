@@ -521,6 +521,13 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.revoke_roles,
         )
 
+    @unittest.skip("Getting the Anonymous user does not work like this.")
+    def test_revoke_roles_from_anonymous(self):
+        """Test revoking roles from an Anonymous user."""
+        api.user.revoke_roles(username='Anonymous User', roles=['Reviewer'])
+        ROLES = set(['Anonymous',])
+        self.assertEqual(ROLES, set(api.user.get_roles(username='Anonymous User')))
+
     def test_grant_roles_in_context(self):
         """Test grant roles."""
 
