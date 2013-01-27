@@ -289,6 +289,15 @@ class TestPloneApiUser(unittest.TestCase):
             set(api.user.get_permissions().keys())
         )
 
+    def test_get_roles_nonexistant_user(self):
+        """Test get roles for a user that does not exist."""
+        from plone.api.exc import UserNotFoundError
+        self.assertRaises(
+            UserNotFoundError,
+            api.user.get_roles,
+            username='theurbanspaceman',
+        )
+
     def test_get_permissions_root(self):
         """Test get permissions on site root."""
 
@@ -510,6 +519,16 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertRaises(
             MissingParameterError,
             api.user.revoke_roles,
+        )
+
+    @unittest.skip("Getting the Anonymous user does not work like this.")
+    def test_revoke_roles_from_anonymous(self):
+        """Test revoking roles from an Anonymous user."""
+        api.user.revoke_roles(username='Anonymous User', roles=['Reviewer'])
+        ROLES = set(['Anonymous', ])
+        self.assertEqual(
+            ROLES,
+            set(api.user.get_roles(username='Anonymous User'))
         )
 
     def test_grant_roles_in_context(self):
