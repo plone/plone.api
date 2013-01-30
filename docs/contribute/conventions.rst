@@ -153,8 +153,9 @@ instead of
     from plone.app.testing import *
     from zope.component import getMultiAdapter, getSiteManager
 
-4. Don't catch ImportError to detect whether a package is available or not.
-   Instead, use pkg_resources.get_distribution and catch DistributionNotFound.
+4. Don't catch `ImportError` to detect whether a package is available or not.
+   Instead, use ``pkg_resources.get_distribution`` and catch
+   `DistributionNotFound`.
 
 .. sourcecode:: python
 
@@ -180,7 +181,7 @@ instead of
 Grouping and sorting
 --------------------
 
-Since Plone has such a huge code base, we don't want to lose developer time
+Since Plone has such a huge code base, we don't want to loose developer time
 figuring out into which group some import goes (standard lib?, external
 package?, etc.). So we just sort everything alphabetically and insert one blank
 line between `from foo import bar` and `import baz` blocks. Conditional imports
