@@ -265,8 +265,8 @@ Feature-level changes to code are tracked inside ``docs/CHANGES.rst``. Example:
     CHANGES
     =======
 
-    1.0dev (unreleased)
-    -------------------
+    1.0.0-dev (Unreleased)
+    ----------------------
 
     - Added feature Z.
       [github_userid1]
@@ -275,8 +275,8 @@ Feature-level changes to code are tracked inside ``docs/CHANGES.rst``. Example:
       [github_userid2]
 
 
-    1.0a1 (2012-12-12)
-    ------------------
+    1.0.0-alpha.1 (2012-12-12)
+    --------------------------
 
     - Fixed Bug X.
       [github_userid1]
