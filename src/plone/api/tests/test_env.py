@@ -11,15 +11,15 @@ import Globals
 import unittest2 as unittest
 
 
+class ExampleException(Exception):
+    pass
+
+
 role_mapping = (
     ('ppp', ('Manager', 'VIP', 'Member')),
     ('qqq', ('Manager', 'VIP')),
     ('rrr', ('Manager')),
 )
-
-
-class ExampleException(Exception):
-    pass
 
 
 class HasProtectedMethods(SimpleItem):
@@ -54,8 +54,8 @@ class HasProtectedMethods(SimpleItem):
 Globals.InitializeClass(HasProtectedMethods)
 
 
-class TestPloneApiRoles(unittest.TestCase):
-    """Test plone.api.roles."""
+class TestPloneApiEnv(unittest.TestCase):
+    """Test plone.api.env"""
 
     layer = INTEGRATION_TESTING
 
@@ -64,9 +64,13 @@ class TestPloneApiRoles(unittest.TestCase):
         portal = self.portal = self.layer['portal']
         portal._setObject('hpm', HasProtectedMethods('hpm'))
 
+        # This isn't necessary to the unit tests, it makes debugging them
+        # easier when they go wrong. Like "verbose-security on" in zope.conf
         sm = AccessControl.getSecurityManager()
         sm._policy._verbose = 1
 
+        # Roles need to be created by name before we can assign permissions
+        # to them or grant them to users.
         for role in ('Member', 'VIP', 'Manager'):
             portal._addRole(role)
 
@@ -74,10 +78,24 @@ class TestPloneApiRoles(unittest.TestCase):
             portal.manage_permission(permission, roles, 1)
 
         api.user.create(
+            username='worker',
+            email='ordinary_person@example.com',
+            password='password1',
+            roles=('Member',),
+        )
+
+        api.user.create(
             username='boss',
             email='important_person@example.com',
             password='123',
-            roles=('Member', 'VIP')
+            roles=('Member', 'VIP'),
+        )
+
+        api.user.create(
+            username='superhuman',
+            email='xavier@example.com',
+            password='think_carefully',
+            roles=('Member', 'Manager'),
         )
 
         self._old_sm = AccessControl.SecurityManagement.getSecurityManager()
@@ -97,10 +115,8 @@ class TestPloneApiRoles(unittest.TestCase):
 
     def should_forbid(self, names):
         for name in names:
-            self.assertRaises(
-                Unauthorized,
-                lambda: self.portal.hpm.restrictedTraverse(name)
-            )
+            with self.assertRaises(Unauthorized):
+                self.portal.hpm.restrictedTraverse(name)
 
     def test_test_defaults(self):
         """Test that the default set-up does what I expect it to."""
@@ -168,18 +184,196 @@ class TestPloneApiRoles(unittest.TestCase):
         actual = doc2.getOwner()
         self.assertEqual(actual.getPhysicalPath(), intended.getPhysicalPath())
 
+    def test_become_manager_by_name(self):
+        """Tests that becoming a manager user works."""
+        with api.env.adopt_user(username='superhuman'):
+            self.should_allow([
+                'public_method',
+                'pp_method',
+                'qq_method',
+                'rr_method',
+            ])
+            self.should_forbid([
+                'private_method',
+            ])
+        self.test_test_defaults()
+
+    def test_become_manager_by_obj(self):
+        """Tests that becoming a manager with user from api.user works."""
+        with api.env.adopt_user(user=api.user.get(username='superhuman')):
+            self.should_allow([
+                'public_method',
+                'pp_method',
+                'qq_method',
+                'rr_method',
+            ])
+            self.should_forbid([
+                'private_method',
+            ])
+        self.test_test_defaults()
+
+    def test_become_manager_by_acl_user(self):
+        """Tests that becoming a user with user from acl_users works."""
+        acl_users = api.portal.get().acl_users
+
+        au_ordinary = acl_users.getUser('worker')
+        with api.env.adopt_user(user=au_ordinary):
+            self.should_allow([
+                'public_method',
+                'pp_method',
+            ])
+            self.should_forbid([
+                'private_method',
+                'qq_method',
+                'rr_method',
+            ])
+
+        au_manager = acl_users.getUser('superhuman')
+        with api.env.adopt_user(user=au_manager):
+            self.should_allow([
+                'public_method',
+                'pp_method',
+                'qq_method',
+                'rr_method',
+            ])
+            self.should_forbid([
+                'private_method',
+            ])
+
+    def test_become_ordinary(self):
+        """Tests that becoming a user with fewer permissions works."""
+        with api.env.adopt_user(username='worker'):
+            self.should_allow([
+                'public_method',
+                'pp_method',
+            ])
+            self.should_forbid([
+                'private_method',
+                'qq_method',
+                'rr_method',
+            ])
+        self.test_test_defaults()
+
+    def test_adopted_content_ownership(self):
+        """Tests that content created while user-switched is owned."""
+        with api.env.adopt_user(username='superhuman'):
+            doc3 = api.content.create(
+                container=self.portal,
+                type='Document',
+                id='doc_3',
+            )
+        intended = self.portal.acl_users.getUser('superhuman')
+        actual = doc3.getOwner()
+        self.assertEqual(actual.getPhysicalPath(), intended.getPhysicalPath())
+
+    def test_adopted_nested_ownership(self):
+        """Test deep nesting of adopt_user and adopt_roles blocks."""
+        with api.env.adopt_user(username='worker'):
+            self.should_allow([
+                'public_method',
+                'pp_method',
+            ])
+            self.should_forbid([
+                'private_method',
+                'qq_method',
+                'rr_method',
+            ])
+            with api.env.adopt_roles(['Anonymous']):
+                self.should_allow([
+                    'public_method',
+                ])
+                self.should_forbid([
+                    'private_method',
+                    'pp_method',
+                    'qq_method',
+                    'rr_method',
+                ])
+                with api.env.adopt_user(username='boss'):
+                    self.should_allow([
+                        'public_method',
+                        'pp_method',
+                        'qq_method',
+                    ])
+                    self.should_forbid([
+                        'private_method',
+                        'rr_method',
+                    ])
+                    with api.env.adopt_roles(['Manager']):
+                        self.should_allow([
+                            'public_method',
+                            'pp_method',
+                            'qq_method',
+                            'rr_method',
+                        ])
+                        self.should_forbid([
+                            'private_method',
+                        ])
+
+                        with api.env.adopt_roles(['Anonymous']):
+                            self.should_allow([
+                                'public_method',
+                            ])
+                            self.should_forbid([
+                                'private_method',
+                                'pp_method',
+                                'qq_method',
+                                'rr_method',
+                            ])
+                        # /roles Anonymous
+
+                        doc4 = api.content.create(
+                            container=self.portal,
+                            type='Document',
+                            id='doc_ock',
+                        )
+                        intended = self.portal.acl_users.getUser('boss')
+                        intended_pp = intended.getPhysicalPath()
+                        actual = doc4.getOwner()
+                        actual_pp = actual.getPhysicalPath()
+                        self.assertEqual(actual_pp, intended_pp)
+                    # /roles Manager
+
+                    self.should_allow([
+                        'public_method',
+                        'pp_method',
+                        'qq_method',
+                    ])
+                    self.should_forbid([
+                        'private_method',
+                        'rr_method',
+                    ])
+                # /user boss
+
+                self.should_allow([
+                    'public_method',
+                ])
+                self.should_forbid([
+                    'private_method',
+                    'pp_method',
+                    'qq_method',
+                    'rr_method',
+                ])
+            # /roles Anonymous
+
+            self.should_allow([
+                'public_method',
+                'pp_method',
+            ])
+            self.should_forbid([
+                'private_method',
+                'qq_method',
+                'rr_method',
+            ])
+        # /user worker
+
     def test_empty_warning(self):
         """Tests that empty roles lists get warned about."""
         from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError,
-            lambda: api.env.adopt_roles([])
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.env.adopt_roles([])
 
     def test_argument_requirement(self):
         """Tests that missing arguments don't go unnoticed."""
         from plone.api.exc import MissingParameterError
-        self.assertRaises(
-            MissingParameterError,
-            lambda: api.env.adopt_roles()
-        )
+        with self.assertRaises(MissingParameterError):
+            api.env.adopt_roles()
