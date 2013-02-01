@@ -127,6 +127,23 @@ As per http://docs.python.org/2/library/stdtypes.html#str.format, we should
 prefer the new style string formatting (``.format()``) over the old one
 (``% ()``).
 
+Also use numbering, like so:
+
+.. sourcecode:: python
+
+    print "{0} is not {1}".format(1, 2)
+
+
+and *not* like this:
+
+.. sourcecode:: python
+
+    print "{} is not {}".format(1, 2)
+
+
+because it is more readable and
+Python 2.6 supports only explicitly numbered placeholders.
+
 
 About imports
 =============
