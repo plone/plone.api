@@ -142,7 +142,7 @@ and *not* like this:
 
 
 because it is more readable and
-Python 2.6 supports only numbering method of formatting.
+Python 2.6 supports only explicitly numbered placeholders.
 
 
 About imports
