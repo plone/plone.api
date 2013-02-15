@@ -48,7 +48,7 @@ def create(
         the title.
     :type title: string
     :param safe_id: When False, the given id will be enforced. If the id is
-        conflicting with another object in the target container, raise a
+        conflicting with another object in the target container, raise an
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
     :returns: Content object
