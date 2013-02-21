@@ -1,7 +1,65 @@
 from AccessControl.SecurityManagement import getSecurityManager
+from AccessControl.SecurityManagement import setSecurityManager
+from AccessControl.SecurityManagement import newSecurityManager
 from contextlib import contextmanager
+from plone.api import portal
 from plone.api.exc import InvalidParameterError
+from plone.api.exc import UserNotFoundError
 from plone.api.validation import required_parameters
+from plone.api.validation import at_least_one_of
+from plone.api.validation import mutually_exclusive_parameters
+from zope.globalrequest import getRequest
+
+
+@at_least_one_of('username', 'user')
+@mutually_exclusive_parameters('username', 'user')
+def adopt_user(username=None, user=None):
+    """Context manager for temporarily switching user inside a block.
+
+    :param user: User object to switch to inside block.
+    :type user: user object from acl_users.getUser() or api.user.get().
+
+    :param username: username of user to switch to inside block.
+    :type username: string
+    """
+
+    if username is None:
+        username = user.getId()
+
+    # Grab the user object out of acl_users because this function
+    # accepts 'user' objects that are actually things like MemberData
+    # objects, which AccessControl isn't so keen on.
+    acl_users = portal.get().acl_users
+    unwrapped = acl_users.getUser(username)
+    if unwrapped is None:
+        raise UserNotFoundError
+
+    # ZopeSecurityPolicy appears to strongly expect the user object to
+    # be Acquisition-wrapped in the acl_users from which it was taken.
+    user = unwrapped.__of__(acl_users)
+
+    return _adopt_user(user)
+
+
+@contextmanager
+def _adopt_user(user):
+    # Fortunately, AccessControl makes this fairly easy.
+
+    # One reference to the current user is held by the security
+    # manager's pet SecurityContext object (defined for both the C and
+    # Python implementations in AccessControl/SecurityManagement.py).
+
+    # Use getSecurityManager() to take a reference to the existing
+    # security manager object. Use newSecurityManager() to replace it
+    # with a new one whose context refers to the new user object.
+    # Run the block, then put the original security manager back.
+
+    old_security_manager = getSecurityManager()
+    newSecurityManager(getRequest(), user)
+
+    yield
+
+    setSecurityManager(old_security_manager)
 
 
 @required_parameters('roles')

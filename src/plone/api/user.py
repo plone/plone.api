@@ -2,9 +2,8 @@
 """Module that provides functionality for user manipulation."""
 
 from AccessControl.Permission import getPermissions
-from AccessControl.SecurityManagement import getSecurityManager
-from AccessControl.SecurityManagement import newSecurityManager
-from AccessControl.SecurityManagement import setSecurityManager
+from contextlib import contextmanager
+from plone.api import env
 from plone.api import portal
 from plone.api.exc import GroupNotFoundError
 from plone.api.exc import InvalidParameterError
@@ -13,7 +12,6 @@ from plone.api.exc import UserNotFoundError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
-from zope.globalrequest import getRequest
 
 import random
 import string
@@ -213,6 +211,12 @@ def get_roles(username=None, user=None, obj=None):
     return user.getRolesInContext(obj) if obj is not None else user.getRoles()
 
 
+@contextmanager
+def _nop_context_manager():
+    """A trivial context maanger that does nothing."""
+    yield
+
+
 @mutually_exclusive_parameters('username', 'user')
 def get_permissions(username=None, user=None, obj=None):
     """Get user's site-wide or local permissions.
@@ -236,29 +240,17 @@ def get_permissions(username=None, user=None, obj=None):
     if obj is None:
         obj = portal.get()
 
-    # holds the initial security context
-    current_security_manager = getSecurityManager()
+    if username is None and user is None:
+        context = _nop_context_manager()
+    else:
+        context = env.adopt_user(username, user)
 
-    portal_membership = portal.get_tool('portal_membership')
-
-    if username is None:
-        if user is None:
-            username = portal_membership.getAuthenticatedMember().getId()
-        else:
-            username = user.getId()
-
-    user = portal_membership.getMemberById(username)
-    if user is None:
-        raise UserNotFoundError
-    newSecurityManager(getRequest(), user)
-
-    permissions = (p[0] for p in getPermissions())
-    d = {}
-    for permission in permissions:
-        d[permission] = bool(user.checkPermission(permission, obj))
-
-    # restore the initial security context
-    setSecurityManager(current_security_manager)
+    with context:
+        adopted_user = get_current()
+        permissions = (p[0] for p in getPermissions())
+        d = {}
+        for permission in permissions:
+            d[permission] = bool(adopted_user.checkPermission(permission, obj))
 
     return d
 

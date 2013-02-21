@@ -35,6 +35,38 @@ To temporarily override the list of roles that are available, use
     with api.env.adopt_roles(['Manager', 'Member']):
         portal.restrictedTraverse("manage_propertiesForm")
 
+Switch user inside a block
+--------------------------
+
+To temporarily override the user which is currently active, use
+:meth:`api.env.adopt_user`.
+
+.. code-block:: python
+
+    from plone import api
+
+    portal = api.portal.get()
+
+    # Create a new user.
+    api.user.create(
+        username="doc_owner",
+        roles=('Member', 'Manager',),
+        email="new_owner@example.com",
+    )
+
+    # Become that user and create a document.
+    with api.env.adopt_user(username="doc_owner"):
+        api.content.create(
+            container=portal,
+            type='Document',
+            id='new_owned_doc',
+        )
+
+    self.assertEqual(
+        portal.new_owned_doc.getOwner().getId(),
+        "doc_owner",
+    )
+
 Further reading
 ---------------
 
