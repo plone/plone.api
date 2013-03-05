@@ -322,6 +322,10 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.move(source=self.conference, id='conference-renamed')
         self.assertEqual(self.conference.id, 'conference-renamed')
 
+        # Move folderish object
+        api.content.move(source=container.about, target=container.events)
+        assert container['events']['about']
+
     def test_rename_constraints(self):
         """Test the constraints for rename content."""
         from plone.api.exc import MissingParameterError
@@ -414,6 +418,10 @@ class TestPloneApiContent(unittest.TestCase):
         )
         assert container['about']['link-to-blog-1']
         self.assertRaises(KeyError, container['blog'])
+
+        # Copy folderish content under target
+        api.content.copy(source=container.about, target=container.events)
+        assert container['events']['about']
 
     def test_delete_constraints(self):
         """Test the constraints for deleting content."""
