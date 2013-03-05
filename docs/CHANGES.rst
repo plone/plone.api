@@ -3,6 +3,14 @@
 Changes
 =======
 
+1.0.0-rc.2 (unreleased)
+-----------------------
+
+- Fixed copying folderish objects.
+  [pingviini]
+- Fixed moving folderish objects.
+  [pingviini]
+
 1.0.0-rc.1 (2013-01-27)
 -----------------------
 
