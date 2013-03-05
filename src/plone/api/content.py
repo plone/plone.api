@@ -164,7 +164,8 @@ def move(source=None, target=None, id=None, safe_id=False):
 
     # If no target is given the object is probably renamed
     if target:
-        target.manage_pasteObjects(source.manage_cutObjects(source_id))
+        target.manage_pasteObjects(
+            source.aq_parent.manage_cutObjects(source_id))
     else:
         target = source
 
@@ -225,7 +226,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
     :Example: :ref:`content_copy_example`
     """
     source_id = source.getId()
-    target.manage_pasteObjects(source.manage_copyObjects(source_id))
+    target.manage_pasteObjects(source.aq_parent.manage_copyObjects(source_id))
 
     if id:
         if not safe_id:
