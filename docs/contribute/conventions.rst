@@ -107,7 +107,9 @@ parameters and their return values in a `reST field list syntax
 
 Check out the `plone.api source
 <https://github.com/plone/plone.api/tree/master/src/plone/api>`_ for more
-usage examples.
+usage examples. Also, see the following for examples on how to write
+good *Sphinxy* docstrings: http://stackoverflow.com/questions/4547849/good-examples-of-python-docstrings-for-sphinx.
+
 
 
 Unit tests style
