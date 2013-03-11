@@ -387,7 +387,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertRaises(MissingParameterError, api.content.copy)
 
         container = mock.Mock()
-        # Source is missing an should raise an error
+        # Source is missing and should raise an error
         self.assertRaises(
             MissingParameterError, api.content.copy, source=container)
 
@@ -398,13 +398,12 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Copy team page to portal root
         api.content.copy(source=self.team, target=container)
-        assert container['team']  # Content has moved to portal root
-        self.assertRaises(KeyError, container['about']['team'])
+        assert container['team']
+        assert container['about']['team']  # old content still available
 
-        # When moving objects we can change the id
+        # When copying objects we can change the id
         api.content.copy(source=self.team, target=self.about, id='our-team')
         assert container['about']['our-team']
-        self.assertRaises(KeyError, container['team'])
 
         # Test the safe_id option when moving content
         api.content.create(
@@ -417,7 +416,6 @@ class TestPloneApiContent(unittest.TestCase):
             safe_id=True,
         )
         assert container['about']['link-to-blog-1']
-        self.assertRaises(KeyError, container['blog'])
 
         # Copy folderish content under target
         api.content.copy(source=container.about, target=container.events)
