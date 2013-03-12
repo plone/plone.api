@@ -170,16 +170,7 @@ def move(source=None, target=None, id=None, safe_id=False):
         target = source
 
     if id:
-        if not safe_id:
-            new_id = id
-        else:
-            try:
-                chooser = INameChooser(target)
-            except TypeError:
-                chooser = INameChooser(target.aq_parent)
-            new_id = chooser.chooseName(id, source)
-
-        target.manage_renameObject(source_id, new_id)
+        rename(obj=target[source_id], new_id=id, safe_id=safe_id)
 
 
 @required_parameters('obj', 'new_id')
@@ -196,7 +187,16 @@ def rename(obj=None, new_id=None, safe_id=False):
     :type safe_id: boolean
     :Example: :ref:`content_rename_example`
     """
-    move(source=obj, id=new_id, safe_id=safe_id)
+    obj_id = obj.getId()
+
+    if safe_id:
+        try:
+            chooser = INameChooser(obj)
+        except TypeError:
+            chooser = INameChooser(obj.aq_parent)
+        new_id = chooser.chooseName(new_id, obj)
+
+    obj.aq_parent.manage_renameObject(obj_id, new_id)
 
 
 @required_parameters('source')
@@ -229,13 +229,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
     target.manage_pasteObjects(source.aq_parent.manage_copyObjects(source_id))
 
     if id:
-        if not safe_id:
-            new_id = id
-        else:
-            chooser = INameChooser(target)
-            new_id = chooser.chooseName(id, source)
-
-        target.manage_renameObject(source_id, new_id)
+        rename(obj=target[source_id], new_id=id, safe_id=safe_id)
 
 
 @required_parameters('obj')
