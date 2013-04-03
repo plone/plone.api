@@ -121,8 +121,8 @@ prefered language, use :meth:`api.portal.get_localized_time`.
 
 .. invisible-code-block: python
 
-    # assert that the result is in fact a date
-    self.assertIsInstance(DateTime(localized), DateTime)
+    # assert that the result is in fact a datetime
+    self.assertEqual(DateTime(localized).__class__, DateTime)
 
 
 .. _portal_send_email_example:
