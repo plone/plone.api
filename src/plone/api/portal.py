@@ -247,4 +247,8 @@ def set_registry_record(name=None, value=None):
         raise InvalidParameterError(u"The parameter 'name' has to be a string")
     registry = getUtility(IRegistry)
     if isinstance(name, str):
+
+        # confirm that the record exists before setting the value
+        get_registry_record(name)
+
         registry[name] = value

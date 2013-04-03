@@ -378,8 +378,9 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test that setting the value of a non existent record raises
         an Exception.
         """
+        from plone.api.exc import InvalidParameterError
         self.assertRaises(
-            KeyError,
+            InvalidParameterError,
             portal.set_registry_record,
             name='nonexistent.sharepoint.power',
             value=u'Zero',
