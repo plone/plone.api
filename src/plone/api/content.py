@@ -311,12 +311,6 @@ def get_view(name=None, context=None, request=None):
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_get_view_example`
     """
-    # It happens sometimes that ACTUAL_URL is not set in tests. To be nice
-    # and not throw strange errors, we set it to be the same as URL.
-    # TODO: if/when we have api.env.test_mode() boolean in the future, use that
-    config = getConfiguration()
-    if config.dbtab.__module__ == 'plone.testing.z2':
-        request['ACTUAL_URL'] = request['URL']
 
     try:
         return getMultiAdapter((context, request), name=name)
