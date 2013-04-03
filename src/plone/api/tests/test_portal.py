@@ -238,25 +238,33 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def test_get_localized_time(self):
         """Test getting the localized time."""
+        from plone.api.exc import InvalidParameterError
 
         # set the expected localized date format
         name_root = 'Products.CMFPlone.i18nl10n.override_dateformat.'
-        portal.set_registry_record(
-            name=name_root + 'Enabled',
-            value=True,
-        )
-        portal.set_registry_record(
-            name=name_root + 'date_format_long',
-            value='%b %d, %Y %I:%M %p',
-        )
-        portal.set_registry_record(
-            name=name_root + 'time_format',
-            value='%I:%M %p',
-        )
-        portal.set_registry_record(
-            name=name_root + 'date_format_short',
-            value='%b %d, %Y',
-        )
+        try:
+            portal.set_registry_record(
+                name=name_root + 'Enabled',
+                value=True,
+            )
+            portal.set_registry_record(
+                name=name_root + 'date_format_long',
+                value='%b %d, %Y %I:%M %p',
+            )
+            portal.set_registry_record(
+                name=name_root + 'time_format',
+                value='%I:%M %p',
+            )
+            portal.set_registry_record(
+                name=name_root + 'date_format_short',
+                value='%b %d, %Y',
+            )
+        except InvalidParameterError:
+            # before Plone 4.3, date formats were stored in portal_properties
+            properties = portal.get_tool('portal_properties')
+            properties.localLongTimeFormat = '%b %d, %Y %I:%M %p'
+            properties.localTimeOnlyFormat = '%I:%M %p'
+            properties.localTimeFormat = '%b %d, %Y'
 
         # tests
         result = portal.get_localized_time(
