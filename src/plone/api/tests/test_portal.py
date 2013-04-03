@@ -238,6 +238,27 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def test_get_localized_time(self):
         """Test getting the localized time."""
+
+        # set the expected localized date format
+        name_root = 'Products.CMFPlone.i18nl10n.override_dateformat.'
+        portal.set_registry_record(
+            name=name_root + 'Enabled',
+            value=True,
+        )
+        portal.set_registry_record(
+            name=name_root + 'date_format_long',
+            value='%b %d, %Y %I:%M %p',
+        )
+        portal.set_registry_record(
+            name=name_root + 'time_format',
+            value='%I:%M %p',
+        )
+        portal.set_registry_record(
+            name=name_root + 'date_format_short',
+            value='%b %d, %Y',
+        )
+
+        # tests
         result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
             long_format=True,

@@ -121,6 +121,18 @@ prefered language, use :meth:`api.portal.get_localized_time`.
 
 .. invisible-code-block: python
 
+    # set the expected localized date format
+    name_root = 'Products.CMFPlone.i18nl10n.override_dateformat.'
+    api.portal.set_registry_record(
+        name=name_root + 'Enabled',
+        value=True,
+    )
+    api.portal.set_registry_record(
+        name=name_root + 'date_format_short',
+        value='%b %d, %Y',
+    )
+
+    # assert
     result = api.portal.get_localized_time(
         datetime=DateTime(1999, 12, 31, 23, 59))
     self.assertEqual(result, 'Dec 31, 1999')
