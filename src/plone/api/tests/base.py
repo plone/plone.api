@@ -17,10 +17,15 @@ class PloneApiLayer(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         """Prepare Zope instance by loading appropriate ZCMLs."""
+
+        # Bypass missing zcml-dependency on zope.security in zope.container
+        import zope.security
+        self.loadZCML(package=zope.security, context=configurationContext)
+
         import plone.app.dexterity
-        self.loadZCML(package=plone.app.dexterity)
+        self.loadZCML(package=plone.app.dexterity, context=configurationContext)
         import plone.api
-        self.loadZCML(package=plone.api)
+        self.loadZCML(package=plone.api, context=configurationContext)
 
     def setUpPloneSite(self, portal):
         """Prepare a Plone instance for testing."""
