@@ -6,10 +6,15 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Declare all dependencies.
+  [thet]
+
 - Fixed copying folderish objects.
   [pingviini]
+
 - Fixed moving folderish objects.
   [pingviini]
+
 
 1.0.0-rc.1 (2013-01-27)
 -----------------------
