@@ -10,6 +10,11 @@
 Conventions
 ===========
 
+.. contents:: :local:
+
+Introduction
+==============
+
 We've modeled the following rules and recommendations based on the following
 documents:
 
@@ -19,8 +24,6 @@ documents:
  * `Google Style Guide <http://google-styleguide.googlecode.com/svn/trunk/pyguide.html>`_
  * `Pylons Coding Style <http://docs.pylonsproject.org/en/latest/community/codestyle.html>`_
  * `Tim Pope on Git commit messages <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`__
-
-.. contents:: :local:
 
 Line length
 ===========
