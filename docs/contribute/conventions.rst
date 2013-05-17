@@ -356,6 +356,39 @@ Our repository on GitHub has the following layout:
 
 .. _setting_up_git:
 
+Release process for Plone packages
+====================================
+
+To make Plone software stack maintainanble, Plone package Python egg release process must be automatized
+to high degree. This happens by enforcing Python packaging best practices and 
+then making releases using automated `zest.releaser tool <https://github.com/zestsoftware/zest.releaser/>´_
+
+* Anyone, with necessary PyPi permissions, must be able to make a new release by running ``fullrelease`` command
+
+... which includes ...
+
+* All releases must be hosted on PyPi
+
+* All versions must be tagged at version control
+
+* Each package must have README.rst with links to the version control repository and issue tracker
+
+* CHANGES.txt (docs/HISTORY.txt in some packages) 
+  must be always up-to-date and must contain list of functional changes which may affect package users.
+
+* CHANGES.txt must contain release dates
+
+* README.rst and CHANGES.txt must be visible on PyPi
+
+* Released eggs must contain generated gettext .mo files, but these files must not be committed to the 
+  repository (files can be created with *zest.pocompile* addon)
+ 
+* ``.gitignore`` and ``MANIFEST.in`` must reflect the files going to egg (must include page template, po files) 
+
+More information
+
+* `High quality automated package releases for Python with zest.releaser <http://opensourcehacker.com/2012/08/14/high-quality-automated-package-releases-for-python-with-zest-releaser/>`_
+
 Setting up Git
 ==============
 
