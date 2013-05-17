@@ -366,7 +366,7 @@ Release process for Plone packages
 
 To make Plone software stack maintainanble, Plone package Python egg release process must be automatized
 to high degree. This happens by enforcing Python packaging best practices and 
-then making releases using automated `zest.releaser tool <https://github.com/zestsoftware/zest.releaser/>´_
+then making releases using automated `zest.releaser tool <https://github.com/zestsoftware/zest.releaser/>`_
 
 * Anyone, with necessary PyPi permissions, must be able to make a new release by running ``fullrelease`` command
 
