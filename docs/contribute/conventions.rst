@@ -20,6 +20,8 @@ documents:
  * `Pylons Coding Style <http://docs.pylonsproject.org/en/latest/community/codestyle.html>`_
  * `Tim Pope on Git commit messages <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`__
 
+.. contents:: :local:
+
 Line length
 ===========
 
