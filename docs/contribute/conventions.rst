@@ -172,9 +172,10 @@ instead of
     from plone.app.testing import *
     from zope.component import getMultiAdapter, getSiteManager
 
-4. Don't catch `ImportError` to detect whether a package is available or not.
-   Instead, use ``pkg_resources.get_distribution`` and catch
-   `DistributionNotFound`.
+4. Don't catch `ImportError` to detect whether a package is available or not,
+   as it might hide circular import errors. Instead, use
+   ``pkg_resources.get_distribution`` and catch `DistributionNotFound`. More
+   background at http://do3.cc/blog/2010/08/20/do-not-catch-import-errors,-use-pkg_resources/.
 
 .. sourcecode:: python
 
