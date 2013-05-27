@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """Decorators for validating parameters"""
 
-import inspect
 from decorator import decorator
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+
+import inspect
 
 
 def _get_arg_spec(func, validator_args):

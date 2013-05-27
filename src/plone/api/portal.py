@@ -16,6 +16,7 @@ from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
+
 import pkg_resources
 
 logger = getLogger('plone.api.portal')

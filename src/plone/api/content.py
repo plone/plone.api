@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """Module that provides functionality for content manipulation."""
 
+from Products.Archetypes.interfaces.base import IBaseObject
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.WorkflowCore import WorkflowException
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
@@ -8,9 +11,6 @@ from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
-from Products.Archetypes.interfaces.base import IBaseObject
-from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.WorkflowCore import WorkflowException
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.container.interfaces import INameChooser

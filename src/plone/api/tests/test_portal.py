@@ -2,6 +2,9 @@
 """Tests for plone.api.portal."""
 
 from DateTime import DateTime
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.tests.utils import MockMailHost
+from Products.MailHost.interfaces import IMailHost
 from email import message_from_string
 from plone.api import content
 from plone.api import portal
@@ -10,9 +13,6 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.tests.utils import MockMailHost
-from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
 from zope.component.hooks import setSite
 from zope.site import LocalSiteManager
