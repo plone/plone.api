@@ -209,14 +209,18 @@ come last. Again, we *do not* distinguish between what is standard lib,
 external package or internal package in order to save time and avoid the hassle
 of explaining which is which.
 
+As for sorting, it is recommended to use case-sensitive sorting.
+This means uppercase characters come first, 
+so "Products.*" goes before "plone.*".
+
 .. sourcecode:: python
 
     from __future__ import division
     from Acquisition import aq_inner
-    from plone.api import portal
-    from plone.api.exc import MissingParameterError
     from Products.CMFCore.interfaces import ISiteRoot
     from Products.CMFCore.WorkflowCore import WorkflowException
+    from plone.api import portal
+    from plone.api.exc import MissingParameterError
 
     import pkg_resources
     import random
