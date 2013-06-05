@@ -70,7 +70,12 @@ def create(
             allowed_types = container.allowedContentTypes()
             types = [allowed_type.id for allowed_type in allowed_types]
         else:
-            types = container.getLocallyAllowedTypes()
+            try:
+                types = container.getLocallyAllowedTypes()
+            except AttributeError:
+                raise InvalidParameterError(
+                    "Cannot add a '%s' object to the container." % type
+                )
 
         raise InvalidParameterError(
             "Cannot add a '{0}' object to the container.\n"
