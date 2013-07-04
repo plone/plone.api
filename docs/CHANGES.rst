@@ -6,6 +6,10 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Package now includes a copy of the GPLv2 license as stated in the GNU
+  General Public License documentation.
+  [hvelarde]
+
 - Fixed copying folderish objects.
   [pingviini]
 - Fixed moving folderish objects.

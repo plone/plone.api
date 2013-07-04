@@ -46,7 +46,7 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Plone',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
