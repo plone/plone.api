@@ -160,6 +160,7 @@ def move(source=None, target=None, id=None, safe_id=False):
         conflicting with another object in the target container, raise a
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
+    :returns: Content object that was moved to the target location
     :raises:
         KeyError
         ValueError
@@ -175,7 +176,9 @@ def move(source=None, target=None, id=None, safe_id=False):
         target = source
 
     if id:
-        rename(obj=target[source_id], new_id=id, safe_id=safe_id)
+        return rename(obj=target[source_id], new_id=id, safe_id=safe_id)
+    else:
+        return target[source_id]
 
 
 @required_parameters('obj', 'new_id')
@@ -190,6 +193,7 @@ def rename(obj=None, new_id=None, safe_id=False):
         conflicting with another object in the container, raise a
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
+    :returns: Content object that was renamed
     :Example: :ref:`content_rename_example`
     """
     obj_id = obj.getId()
@@ -202,6 +206,7 @@ def rename(obj=None, new_id=None, safe_id=False):
         new_id = chooser.chooseName(new_id, obj)
 
     obj.aq_parent.manage_renameObject(obj_id, new_id)
+    return obj.aq_parent[new_id]
 
 
 @required_parameters('source')
@@ -220,11 +225,11 @@ def copy(source=None, target=None, id=None, safe_id=False):
         - however, if the new object's id conflicts with another object in the
         target container, a suffix will be added to the new object's id.
     :type id: string
-    :returns: Content object that was created in the target location
     :param safe_id: When True, the given id will be enforced. If the id is
         conflicting with another object in the target container, raise a
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
+    :returns: Content object that was created in the target location
     :raises:
         KeyError,
         ValueError
@@ -238,7 +243,9 @@ def copy(source=None, target=None, id=None, safe_id=False):
     target.manage_pasteObjects(source.aq_parent.manage_copyObjects(source_id))
 
     if id:
-        rename(obj=target[source_id], new_id=id, safe_id=safe_id)
+        return rename(obj=target[source_id], new_id=id, safe_id=safe_id)
+    else:
+        return target[source_id]
 
 
 @required_parameters('obj')
