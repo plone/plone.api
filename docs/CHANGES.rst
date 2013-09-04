@@ -6,6 +6,8 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Fix api.content.copy without target parameter. [rodfersou]
+
 - Package now includes a copy of the GPLv2 license as stated in the GNU
   General Public License documentation.
   [hvelarde]

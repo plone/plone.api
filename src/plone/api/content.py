@@ -230,6 +230,10 @@ def copy(source=None, target=None, id=None, safe_id=False):
     :Example: :ref:`content_copy_example`
     """
     source_id = source.getId()
+
+    if target is None:
+        target = source.aq_parent
+
     target.manage_pasteObjects(source.aq_parent.manage_copyObjects(source_id))
 
     if id:
