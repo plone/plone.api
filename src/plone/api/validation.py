@@ -10,7 +10,7 @@ import inspect
 
 def _get_arg_spec(func, validator_args):
     """Get the arguments specified in the function spec
-    and check that the decorator doesn't refer to non-existant args
+    and check that the decorator doesn't refer to non-existant args.
     """
     signature_args, _, _, _ = inspect.getargspec(func)
 
@@ -27,7 +27,7 @@ def _get_arg_spec(func, validator_args):
 
 def _get_supplied_args(signature_params, args, kwargs):
     """Return names of all args that have been passed in
-    either as positional or keyword arguments, and are not None
+    either as positional or keyword arguments, and are not None.
     """
     supplied_args = []
     for i in range(len(args)):

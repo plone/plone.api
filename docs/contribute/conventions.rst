@@ -150,8 +150,7 @@ and *not* like this:
     print "{} is not {}".format(1, 2)
 
 
-because it is more readable and
-Python 2.6 supports only explicitly numbered placeholders.
+because Python 2.6 supports only explicitly numbered placeholders.
 
 
 About imports
@@ -166,48 +165,49 @@ About imports
 3. Don't use relative paths, again to be nice to people using certain IDEs and
    tools. Also `Google Python Style Guide` recommends against it.
 
-.. sourcecode:: python
+   .. sourcecode:: python
 
-    # GOOD
-    from plone.app.testing import something
-    from zope.component import getMultiAdapter
-    from zope.component import getSiteManager
+       # GOOD
+       from plone.app.testing import something
+       from zope.component import getMultiAdapter
+       from zope.component import getSiteManager
 
-instead of
+   instead of
 
-.. sourcecode:: python
+   .. sourcecode:: python
 
-    # BAD
-    from plone.app.testing import *
-    from zope.component import getMultiAdapter, getSiteManager
+       # BAD
+       from plone.app.testing import *
+       from zope.component import getMultiAdapter, getSiteManager
 
 4. Don't catch `ImportError` to detect whether a package is available or not,
    as it might hide circular import errors. Instead, use
    ``pkg_resources.get_distribution`` and catch `DistributionNotFound`. More
    background at http://do3.cc/blog/2010/08/20/do-not-catch-import-errors,-use-pkg_resources/.
 
-.. sourcecode:: python
+   .. sourcecode:: python
 
-    # GOOD
-    import pkg_resources
+       # GOOD
+       import pkg_resources
 
-    try:
-        pkg_resources.get_distribution('plone.dexterity')
-    except pkg_resources.DistributionNotFound:
-        HAS_DEXTERITY = False
-    else:
-        HAS_DEXTERITY = True
+       try:
+           pkg_resources.get_distribution('plone.dexterity')
+       except pkg_resources.DistributionNotFound:
+           HAS_DEXTERITY = False
+       else:
+           HAS_DEXTERITY = True
 
-instead of
+   instead of
 
-.. sourcecode:: python
+   .. sourcecode:: python
 
-    # BAD
-    try:
-        import plone.dexterity
-        HAVE_DEXTERITY = True
-    except ImportError:
-        HAVE_DEXTERITY = False
+       # BAD
+       try:
+           import plone.dexterity
+           HAVE_DEXTERITY = True
+       except ImportError:
+           HAVE_DEXTERITY = False
+
 
 Grouping and sorting
 --------------------
@@ -220,9 +220,8 @@ come last. Again, we *do not* distinguish between what is standard lib,
 external package or internal package in order to save time and avoid the hassle
 of explaining which is which.
 
-As for sorting, it is recommended to use case-sensitive sorting.
-This means uppercase characters come first, 
-so "Products.*" goes before "plone.*".
+As for sorting, it is recommended to use case-sensitive sorting. This means
+uppercase characters come first, so "Products.*" goes before "plone.*".
 
 .. sourcecode:: python
 
@@ -365,8 +364,8 @@ Our repository on GitHub has the following layout:
 
 * **feature branches**: all development for new features must be done in
   dedicated branches, normally one branch per feature,
-* **master branch**: when features get completed they are merged into the master
-  branch; bugfixes are commited directly on the master branch,
+* **master branch**: when features get completed they are merged into the
+  master branch; bugfixes are commited directly on the master branch,
 * **tags**: whenever we create a new release we tag the repository so we can
   later re-trace our steps, re-release versions, etc.
 
@@ -376,11 +375,14 @@ Our repository on GitHub has the following layout:
 Release process for Plone packages
 ====================================
 
-To make Plone software stack maintainanble, Plone package Python egg release process must be automatized
-to high degree. This happens by enforcing Python packaging best practices and 
-then making releases using automated `zest.releaser tool <https://github.com/zestsoftware/zest.releaser/>`_
+To make Plone software stack maintainanble, Plone package Python egg release
+process must be automatized
+to high degree. This happens by enforcing Python packaging best practices and
+then making releases using automated `zest.releaser tool
+<https://github.com/zestsoftware/zest.releaser/>`_.
 
-* Anyone, with necessary PyPi permissions, must be able to make a new release by running ``fullrelease`` command
+* Anyone, with necessary PyPi permissions, must be able to make a new release
+  by running ``fullrelease`` command
 
 ... which includes ...
 
@@ -388,23 +390,28 @@ then making releases using automated `zest.releaser tool <https://github.com/zes
 
 * All versions must be tagged at version control
 
-* Each package must have README.rst with links to the version control repository and issue tracker
+* Each package must have README.rst with links to the version control
+  repository and issue tracker
 
-* CHANGES.txt (docs/HISTORY.txt in some packages) 
-  must be always up-to-date and must contain list of functional changes which may affect package users.
+* CHANGES.txt (docs/HISTORY.txt in some packages) must be always up-to-date and
+  must contain list of functional changes which may affect package users.
 
 * CHANGES.txt must contain release dates
 
 * README.rst and CHANGES.txt must be visible on PyPi
 
-* Released eggs must contain generated gettext .mo files, but these files must not be committed to the 
-  repository (files can be created with *zest.pocompile* addon)
- 
-* ``.gitignore`` and ``MANIFEST.in`` must reflect the files going to egg (must include page template, po files) 
+* Released eggs must contain generated gettext .mo files, but these files must
+  not be committed to the repository (files can be created with
+  *zest.pocompile* addon)
+
+* ``.gitignore`` and ``MANIFEST.in`` must reflect the files going to egg (must
+  include page template, po files)
 
 More information
 
-* `High quality automated package releases for Python with zest.releaser <http://opensourcehacker.com/2012/08/14/high-quality-automated-package-releases-for-python-with-zest-releaser/>`_
+* `High quality automated package releases for Python with zest.releaser
+  <http://opensourcehacker.com/2012/08/14/high-quality-automated-package-releases-for-python-with-zest-releaser/>`_.
+
 
 Setting up Git
 ==============
