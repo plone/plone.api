@@ -97,12 +97,26 @@ between the last paragraph in a multi-line docstring and its closing quotes as
 it's Emacs specific and two emacs users here on the Beer & Wine Sprint both
 support our way.
 
+The content of the docstring must be written in the active first-person form,
+e.g. "Calculate X from Y" or "Determine the exact foo of bar".
+
+.. sourcecode:: python
+
+    def foo():
+        """Single line docstring."""
+
+    def bar():
+        """Multi-line docstring.
+
+        With the additional lines indented with the beginning quote and a
+        newline preceding the ending quote.
+        """
+
 If you wanna be extra nice, you are encouraged to document your method's
 parameters and their return values in a `reST field list syntax
 <http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#field-lists>`_.
 
 .. sourcecode:: rest
-
 
     :param foo: blah blah
     :type foo: string
@@ -340,6 +354,41 @@ api.plone.org.
 
 Read the `reStructuredText Primer <http://sphinx-doc.org/rest.html>`_ to brush
 up on your `reST` skills.
+
+Example:
+
+.. sourcecode:: python
+
+    def add(a, b):
+        """Calculate the sum of the two parameters.
+
+        Also see the :func:`mod.path.my_func`, :meth:`mod.path.MyClass.method`
+        and :attr:`mod.path.MY_CONSTANT` for more details.
+
+        :param a: The first operand.
+        :type a: :class:`mod.path.A`
+
+        :param b: The second operand.
+        :type b: :class:`mod.path.B`
+
+        :rtype: int
+        :return: The sum of the operands.
+        :raise: `KeyError`, if the operands are not the correct type.
+        """
+
+Attributes are documented using the `#:` marker above the attribute. The
+documentation may span multiple lines.
+
+.. sourcecode:: python
+
+    #: Description of the constant value
+    MY_CONSTANT = 0xc0ffee
+
+    class Foobar(object):
+
+        #: Description of the class variable which spans over
+        #: multiple lines
+        FOO = 1
 
 
 .. _travis_ci:
