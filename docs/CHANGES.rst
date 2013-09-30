@@ -19,6 +19,7 @@ Changes
 - Fixed moving folderish objects.
   [pingviini]
 
+
 1.0.0-rc.1 (2013-01-27)
 -----------------------
 
