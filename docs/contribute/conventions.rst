@@ -138,6 +138,7 @@ Also use numbering, like so:
 
 .. sourcecode:: python
 
+    # GOOD
     print "{0} is not {1}".format(1, 2)
 
 
@@ -145,6 +146,7 @@ and *not* like this:
 
 .. sourcecode:: python
 
+    # BAD
     print "{} is not {}".format(1, 2)
 
 
@@ -166,6 +168,7 @@ About imports
 
 .. sourcecode:: python
 
+    # GOOD
     from plone.app.testing import something
     from zope.component import getMultiAdapter
     from zope.component import getSiteManager
@@ -174,6 +177,7 @@ instead of
 
 .. sourcecode:: python
 
+    # BAD
     from plone.app.testing import *
     from zope.component import getMultiAdapter, getSiteManager
 
@@ -184,6 +188,7 @@ instead of
 
 .. sourcecode:: python
 
+    # GOOD
     import pkg_resources
 
     try:
@@ -197,6 +202,7 @@ instead of
 
 .. sourcecode:: python
 
+    # BAD
     try:
         import plone.dexterity
         HAVE_DEXTERITY = True
@@ -220,6 +226,7 @@ so "Products.*" goes before "plone.*".
 
 .. sourcecode:: python
 
+    # GOOD
     from __future__ import division
     from Acquisition import aq_inner
     from Products.CMFCore.interfaces import ISiteRoot
