@@ -6,6 +6,9 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Prefer single quotes over double quotes in code style.
+  [zupo]
+
 - New bootstrap.py to stay in the land of zc.buildout 1.x.
   [zupo]
 
