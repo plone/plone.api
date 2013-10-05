@@ -20,11 +20,11 @@ A Plone API
 
 The intention of this package is to be transitional. It points out the parts of
 Plone which are particularly nasty -- we hope they will get fixed so that we
-can deprecate the *plone.api* methods that cover them up, but the documentation
+can deprecate the :mod:`plone.api` methods that cover them up, but the documentation
 can still be useful.
 
 Some parts of the documentation already are this way: they don't use
-*plone.api* methods directly, but simply provide guidance on achiving a task
+:mod:`plone.api` methods directly, but simply provide guidance on achieving a task
 using Plone's internals. Example: usage of the catalog in
 :ref:`content_find_example`.
 

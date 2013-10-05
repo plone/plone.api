@@ -8,14 +8,22 @@ Changes
 
 - Fix api.content.copy without target parameter. [rodfersou]
 
+- Prefer single quotes over double quotes in code style.
+  [zupo]
+
+- New bootstrap.py to stay in the land of zc.buildout 1.x.
+  [zupo]
+
 - Package now includes a copy of the GPLv2 license as stated in the GNU
   General Public License documentation.
   [hvelarde]
 
 - Fixed copying folderish objects.
   [pingviini]
+
 - Fixed moving folderish objects.
   [pingviini]
+
 
 1.0.0-rc.1 (2013-01-27)
 -----------------------
