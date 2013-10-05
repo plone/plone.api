@@ -22,7 +22,7 @@ We want `plone.api` to be developed with `PEP 20
   |   If the implementation is hard to explain, it's a bad idea.
   |   If the implementation is easy to explain, it may be a good idea.
 
-All contributions to :mod:`plone.api` should keep these important rules in mind.
+All contributions to `plone.api` should keep these rules in mind.
 
 Two libraries are especially inspiring:
 
@@ -32,11 +32,12 @@ Two libraries are especially inspiring:
   designed, is consistent, explicit, and easy to learn.
 
 `Requests <http://docs.python-requests.org>`_
-  As of this writing, this is still a very new library, but just looking at
-  `a comparison between the urllib2 way and the requests way
-  <https://gist.github.com/973705>`_, as well as the rest of its documentation,
-  one cannot but see a parallel between the way we *have been* and the way we
-  *should be* writing code for Plone (or at least have that option).
+
+  I you look at the documentation for this library, or make `a comparison
+  between the urllib2 way and the requests way
+  <https://gist.github.com/973705>`_, you cannot but see a parallel between
+  the way we *have been* and the way we *should be* writing code for Plone. At
+  the least, we should have the option to write such clean code.
 
 The API provides grouped functional access to otherwise dispersed logic
 in Plone. Plone's original distribution of logic is a result of two things:
