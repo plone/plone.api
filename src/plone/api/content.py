@@ -65,7 +65,7 @@ def create(
 
     try:
         container.invokeFactory(type, content_id, **kwargs)
-    except ValueError:
+    except ValueError, e:
         if ISiteRoot.providedBy(container):
             allowed_types = container.allowedContentTypes()
             types = [allowed_type.id for allowed_type in allowed_types]
@@ -80,7 +80,8 @@ def create(
         raise InvalidParameterError(
             "Cannot add a '{0}' object to the container.\n"
             "Allowed types are:\n"
-            "{1}".format(type, '\n'.join(sorted(types)))
+            "{1}\n"
+            "{2}".format(type, '\n'.join(sorted(types)), e.message)
         )
 
     content = container[content_id]
