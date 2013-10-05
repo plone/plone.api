@@ -89,6 +89,36 @@ This package follows all rules above, `check out the source
 in action.
 
 
+Quoting
+=======
+
+For strings and such prefer using single quotes over double quotes. The reason
+is that sometimes you do need to write a bit of HTML in your python code, and
+HTML feels more natural with double quotes so you wrap HTML string into single
+quotes. And if you are using single quotes for this reason, then be consistent
+and use them everywhere.
+
+There are two exceptions to this rule:
+
+* docstrings should always use double quotes (as per PEP-257).
+* if you want to use single quotes in your string, double quotes might make
+  more sense so you don't have to escape those single quotes.
+
+.. sourcecode:: python
+
+    # GOOD
+    print 'short'
+    print 'A longer string, but still using single quotes.'
+
+    # BAD
+    print "short"
+    print "A long string."
+
+    # EXCEPTIONS
+    print "I want to use a 'single quote' in my string."
+    """This is a docstring."""
+
+
 Docstrings style
 ================
 
