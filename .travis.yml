@@ -22,6 +22,7 @@ after_success:
 
 notifications:
   irc:
-    - "irc.freenode.org#sprint"
-  template:
+    channels:
+      - "irc.freenode.org#sprint"
+    template:
       - "%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}"
