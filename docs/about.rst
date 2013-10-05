@@ -17,12 +17,12 @@ We want `plone.api` to be developed with `PEP 20
 
   |   Explicit is better than implicit.
   |   Readability counts.
-  |   There should be one-- and preferably only one --obvious way to do it.
+  |   There should be one -- and preferably only one -- obvious way to do it.
   |   Now is better than never.
   |   If the implementation is hard to explain, it's a bad idea.
   |   If the implementation is easy to explain, it may be a good idea.
 
-All contributions to `plone.api` should keep these important rules in mind.
+All contributions to :mod:`plone.api` should keep these important rules in mind.
 
 Two libraries are especially inspiring:
 
@@ -38,23 +38,24 @@ Two libraries are especially inspiring:
   one cannot but see a parallel between the way we *have been* and the way we
   *should be* writing code for Plone (or at least have that option).
 
-The API provides grouped functional access to otherwise distributed logic
+The API provides grouped functional access to otherwise dispersed logic
 in Plone. Plone's original distribution of logic is a result of two things:
-The historic re-use of CMF- and Zope-methods and reasonable, but
-at first hard to understand splits like acl_users.* and portal_memberdata.
+the historic re-use of CMF- and Zope-methods and reasonable, but
+at first hard to understand splits like ``acl_users.*`` and
+``portal_memberdata``.
 
 That's why we've created a set of useful methods that implement best-practice
-access to the original distributed APIs. In this way we also document in code
+access to the original dispersed APIs. In this way we also document in code
 how to use Plone directly.
 
-.. note ::
+.. note::
    If you doubt those last sentences: We had five different ways to get the
    portal root with different edge-cases. We had three different ways to move
    an object. With this in mind, it's obvious that even the most simple
    tasks can't be documented in Plone in a sane way.
 
 Also, we don't intend to cover all possible use-cases. Only the most common
-ones. If you need to do something that `plone.api` does not support,
+ones. If you need to do something that :mod:`plone.api` does not support,
 just use the underlying APIs directly. We will cover 20% of tasks that are
 being done 80% of the time, and not one more. We try to document sensible use
 cases even when we don't provide them, though.
