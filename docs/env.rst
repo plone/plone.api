@@ -79,7 +79,7 @@ To know if your zope instance is running in debug mode, use
 
     in_debug_mode = api.env.debug_mode()
     if in_debug_mode:
-        # Zope is in debug mode
+        print 'Zope is in debug mode'
 
 Further reading
 ---------------
