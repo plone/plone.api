@@ -67,7 +67,8 @@ class TestPloneApiContent(unittest.TestCase):
         from plone.api.exc import MissingParameterError
 
         # This will definitely fail
-        self.assertRaises(MissingParameterError, api.content.create)
+        with self.assertRaises(MissingParameterError):
+            api.content.create()
 
         # Check the contraints for the type container
         self.assertRaises(
@@ -95,23 +96,28 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Check the contraints for allowed types in the container
         container = self.events
-        self.assertRaises(
-            InvalidParameterError,
-            api.content.create,
-            container=container,
-            type='foo',
-            id='test-foo'
-        )
-
+        with self.assertRaises(InvalidParameterError):
+            api.content.create(
+                container=container,
+                type='foo',
+                id='test-foo',
+            )
+            
         # Check the contraints for allowed types in the container if
         # the container is the portal
         container = self.portal
-        self.assertRaises(
-            InvalidParameterError,
-            api.content.create,
-            container=container,
-            type='foo',
-            id='test-foo'
+        with self.assertRaises(InvalidParameterError) as cm:
+            api.content.create(
+                container=container,
+                type='foo',
+                id='test-foo'
+            )
+
+        # Check if the underlying error message is included
+        # in the InvalidParameterError message
+        self.assertIn(
+            "No such content type: foo",
+            cm.exception.message
         )
 
         # Check the contraints for allowed types in the container
