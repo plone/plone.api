@@ -71,28 +71,25 @@ class TestPloneApiContent(unittest.TestCase):
             api.content.create()
 
         # Check the contraints for the type container
-        self.assertRaises(
-            MissingParameterError,
-            api.content.create,
-            type='Document',
-            id='test-doc',
-        )
+        with self.assertRaises(MissingParameterError):
+            api.content.create(
+                type='Document',
+                id='test-doc',
+            )
 
         # Check the contraints for the type parameter
         container = mock.Mock()
-        self.assertRaises(
-            MissingParameterError,
-            api.content.create,
-            container=container,
-            id='test-doc',
-        )
+        with self.assertRaises(MissingParameterError):
+            api.content.creat(,
+                container=container,
+                id='test-doc',
+            )
 
         # Check the contraints for id and title parameters
-        self.assertRaises(
-            MissingParameterError,
-            api.content.create,
-            container=container, type='Document'
-        )
+        with self.assertRaises(MissingParameterError):
+            api.content.create(
+                container=container, type='Document'
+            )
 
         # Check the contraints for allowed types in the container
         container = self.events
