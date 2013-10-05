@@ -80,7 +80,7 @@ class TestPloneApiContent(unittest.TestCase):
         # Check the contraints for the type parameter
         container = mock.Mock()
         with self.assertRaises(MissingParameterError):
-            api.content.creat(,
+            api.content.create(
                 container=container,
                 id='test-doc',
             )
