@@ -148,6 +148,7 @@ and *not* like this:
 
     # BAD
     print "{} is not {}".format(1, 2)
+    print "%s is not %s" % (1, 2)
 
 
 because Python 2.6 supports only explicitly numbered placeholders.
