@@ -19,3 +19,5 @@ script:
 notifications:
   irc:
     - "irc.freenode.org#sprint"
+  template:
+      - "%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}"
