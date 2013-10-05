@@ -75,7 +75,7 @@ To set user properties when creating a new user, pass in a properties dict.
 
 
 Besides user properties you can also specify a password for the new user.
-Otherwise a random 8-char alphanumeric password will be generated.
+Otherwise a random 8-character alphanumeric password will be generated.
 
 .. code-block:: python
 
@@ -106,7 +106,7 @@ User properties
 ---------------
 
 Users have various properties set on them. This is how you get and set them,
-using the underlying APIs.
+using the underlying APIs:
 
 .. code-block:: python
 
@@ -334,8 +334,10 @@ user.
     self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
 
 
-If you pass a content object or folder, the roles are granted only on that conext and not site wide.
-But all site wide roles will be also returned by :meth:`api.user.get_roles` to this user on the given context.
+If you pass a content object or folder, 
+the roles are granted only on that context and not site-wide.
+But all site-wide roles will also be returned by 
+:meth:`api.user.get_roles` for this user on the given context.
 
 .. code-block:: python
 
@@ -375,13 +377,17 @@ user.
     self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
 
 
-If you pass a context object the local roles will be removed.
+If you pass a context object the local roles for that context will be removed.
 
 .. code-block:: python
 
     from plone import api
     folder = api.content.create(
-        container=portal, type='Folder', id='folder_three', title='Folder Three')
+        container=portal,
+        type='Folder',
+        id='folder_three',
+        title='Folder Three'
+    )
     api.user.grant_roles(
         username='jane',
         roles=['Editor', 'Contributor'],

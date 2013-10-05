@@ -123,7 +123,8 @@ You can also get all groups, by using :meth:`api.group.get_groups`.
 Get user's groups
 -----------------
 
-If you set the `user` parameter, then :meth:`api.group.get_groups` will return
+If you set the ``user`` parameter,
+then :meth:`api.group.get_groups` will return
 groups that the user is member of.
 
 .. invisible-code-block: python
