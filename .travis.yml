@@ -16,6 +16,10 @@ install:
 script:
   - make tests
 
+after_success:
+ - pip install python-coveralls==2.4.0
+ - coveralls
+
 notifications:
   irc:
     - "irc.freenode.org#sprint"
