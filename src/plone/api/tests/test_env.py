@@ -380,6 +380,7 @@ class TestPloneApiEnv(unittest.TestCase):
             api.env.adopt_roles()
 
     def test_debug_mode(self):
+        """Tests that returned value is the same as Globals.DevelopmentMode."""
         from plone.api.env import debug_mode
         import Globals
         Globals.DevelopmentMode = True
