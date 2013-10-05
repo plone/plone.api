@@ -10,6 +10,8 @@ from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from zope.globalrequest import getRequest
 
+import Globals
+
 
 @at_least_one_of('username', 'user')
 @mutually_exclusive_parameters('username', 'user')
@@ -153,3 +155,7 @@ class _GlobalRoleOverridingContext(object):
 
     def getWrappedOwner(self):
         return None
+
+
+def debug_mode():
+    return Globals.DevelopmentMode
