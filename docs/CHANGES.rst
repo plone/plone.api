@@ -6,6 +6,8 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Fix api.content.copy without target parameter. [rodfersou]
+
 - Prefer single quotes over double quotes in code style.
   [zupo]
 
