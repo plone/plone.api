@@ -160,7 +160,7 @@ About imports
 1. Don't use ``*`` to import *everything* from a module, because if you do,
    pyflakes cannot detect undefined names (W404).
 2. Don't use commas to import multiple things on a single line.
-   Some developers use IDEs (like `Eclipse <http://pydev.org/>`_) or tools 
+   Some developers use IDEs (like `Eclipse <http://pydev.org/>`_) or tools
    (such as `mr.igor <http://pypi.python.org/pypi/mr.igor>`_)
    that expect one import per line.
    Let's be nice to them.
@@ -372,15 +372,12 @@ Our repository on GitHub has the following layout:
   later re-trace our steps, re-release versions, etc.
 
 
-.. _setting_up_git:
-
 Release process for Plone packages
 ====================================
 
-To keep the Plone software stack maintainable, the Plone package Python egg
-release process must be automated
-to high degree. This happens by enforcing Python packaging best practices and
-then making releases using the 
+To keep the Plone software stack maintainable, the Python egg release process
+must be automated to high degree. This happens by enforcing Python packaging
+best practices and then making automated releases using the
 `zest.releaser <https://github.com/zestsoftware/zest.releaser/>`_  tool.
 
 * Anyone with necessary PyPi permissions must be able to make a new release
@@ -415,6 +412,8 @@ More information
   <http://opensourcehacker.com/2012/08/14/high-quality-automated-package-releases-for-python-with-zest-releaser/>`_.
 
 
+.. _setting_up_git:
+
 Setting up Git
 ==============
 
@@ -441,7 +440,7 @@ Git Commit Message Style
 ------------------------
 
 `Tim Pope's post on Git commit message style
-<http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`__ 
+<http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`__
 is widely considered the gold standard:
 
 ::
