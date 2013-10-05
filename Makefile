@@ -31,6 +31,7 @@ $(python):
 tests: .installed.cfg
 	@bin/test
 	@bin/flake8 src/plone/api
+	@bin/code-analysis
 
 clean:
 	@rm -rf .installed.cfg bin docs/html parts develop-eggs \

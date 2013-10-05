@@ -4,7 +4,8 @@
 from AccessControl.Permission import getPermissions
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
-from plone.app.testing import logout, TEST_USER_NAME
+from plone.app.testing import logout
+from plone.app.testing import TEST_USER_NAME
 
 import mock
 import unittest2 as unittest
