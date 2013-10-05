@@ -102,7 +102,7 @@ class TestPloneApiContent(unittest.TestCase):
                 type='foo',
                 id='test-foo',
             )
-            
+
         # Check the contraints for allowed types in the container if
         # the container is the portal
         container = self.portal
