@@ -101,15 +101,21 @@ There are two exceptions to this rule:
 
 * docstrings should always use double quotes (as per PEP-257).
 * if you want to use single quotes in your string, double quotes might make
-  more sense so you don't have to escape those single quotes. Example:
+  more sense so you don't have to escape those single quotes.
 
-  .. sourcecode:: python
+.. sourcecode:: python
 
-      # GOOD
-      print "Cannot add a '{0}' object to the container.".format(portal_type)
+    # GOOD
+    print 'short'
+    print 'A longer string, but still using single quotes.'
 
-      # BAD
-      print 'Cannot add a \'{0}\' object to the container.'.format(portal_type)
+    # BAD
+    print "short"
+    print "A long string."
+
+    # EXCEPTIONS
+    print "I want to use a 'single quote' in my string."
+    """This is a docstring."""
 
 
 Docstrings style
