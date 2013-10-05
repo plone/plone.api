@@ -18,9 +18,9 @@ def adopt_user(username=None, user=None):
 
     :param user: User object to switch to inside block.
     :type user: user object from acl_users.getUser() or api.user.get().
-
     :param username: username of user to switch to inside block.
     :type username: string
+    :Example: :ref:`env_adopt_user_example`
     """
 
     if username is None:
@@ -68,6 +68,7 @@ def adopt_roles(roles=None):
 
     :param roles: New roles to gain inside block. Existing roles will be lost.
     :type roles: list of strings
+    :Example: :ref:`env_adopt_roles_example`
     """
     if isinstance(roles, basestring):
         roles = [roles]

@@ -35,6 +35,9 @@ To temporarily override the list of roles that are available, use
     with api.env.adopt_roles(['Manager', 'Member']):
         portal.restrictedTraverse("manage_propertiesForm")
 
+
+.. _env_adopt_user_example:
+
 Switch user inside a block
 --------------------------
 
