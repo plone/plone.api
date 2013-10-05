@@ -67,6 +67,20 @@ To temporarily override the user which is currently active, use
         "doc_owner",
     )
 
+Debug mode
+----------
+
+To know if your zope instance is running in debug mode, use
+:meth:`api.env.debug_mode`.
+
+.. code-block:: python
+
+    from plone import api
+
+    in_debug_mode = api.env.debug_mode()
+    if in_debug_mode:
+        # Zope is in debug mode
+
 Further reading
 ---------------
 

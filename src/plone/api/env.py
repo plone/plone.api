@@ -158,4 +158,6 @@ class _GlobalRoleOverridingContext(object):
 
 
 def debug_mode():
+    """ Know if your zope instance runs in debug mode
+    """
     return Globals.DevelopmentMode
