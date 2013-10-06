@@ -96,7 +96,7 @@ def get(userid=None, username=None):
     userid) and a username, which is the value a user types into the login
     form. In many cases, the values for each will be the same, but under some
     circumstances they will differ. Known instances of this behavior include:
- 
+
      * using content-based members via membrane
      * users changing their email address when using email as login is enabled
 

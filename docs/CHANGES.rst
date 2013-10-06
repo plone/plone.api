@@ -13,7 +13,7 @@ Changes
 - Fix api.content.copy without target parameter.
   [rodfersou]
 
-- Ammed user.get method to accept a userid parameter.
+- Amend user.get method to accept a userid parameter.
   
   NOTE: this change fixes a bug in the earlier implementation that could cause
   errors in some situations. This situation will only arise if the userid and
