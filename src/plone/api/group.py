@@ -61,8 +61,8 @@ def get(groupname=None):
     return group_tool.getGroupById(groupname)
 
 
-@mutually_exclusive_parameters('username', 'user')
-def get_groups(username=None, user=None):
+@mutually_exclusive_parameters('username', 'user', 'userid')
+def get_groups(username=None, user=None, userid=None):
     """Get all groups or all groups filtered by user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
@@ -74,13 +74,16 @@ def get_groups(username=None, user=None):
     :param user: User for which to return groups. If set, only return groups
         that this user is member of.
     :type user: MemberData object
+    :param userid: Userid of the user for which to return groups. If set, only
+        return groups to which this user belongs
+    :type userid: string
     :returns: All groups (optionlly filtered by user)
     :rtype: List of GroupData objects
     :Example: :ref:`group_get_all_groups_example`,
         :ref:`group_get_users_groups_example`
     """
     if username:
-        user = user_get(username=username)
+        user = user_get(username=username, userid=userid)
         if not user:
             raise UserNotFoundError
 
