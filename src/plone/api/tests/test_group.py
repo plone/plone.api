@@ -124,11 +124,12 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_get_groups_username(self):
         """Test retrieving of groups that the user is member of."""
         user = self.portal_membership.getAuthenticatedMember()
+        username = user.getUserName()
 
         api.group.create(groupname='staff')
         api.group.add_user(groupname='staff', user=user)
 
-        groups = [g.id for g in api.group.get_groups(username=user.id)]
+        groups = [g.id for g in api.group.get_groups(username=username)]
         self.assertIn('AuthenticatedUsers', groups)
         self.assertIn('staff', groups)
 
