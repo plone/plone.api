@@ -1,53 +1,30 @@
-.. line-block::
+.. meta::
+   :http-equiv=refresh: 2; url=http://api.plone.org/
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on ReadTheDocs:
-    http://ploneapi.readthedocs.org/en/latest/index.html so you have working
-    references and proper formatting.
+*******************************
+A Plone API
+*******************************
 
-.. include:: ../README.rst
+.. topic:: Overview
 
+    The :mod:`plone.api` is an elegant and simple API, built for humans wishing
+    to develop with Plone®.
 
-Narrative documentation
-=======================
+    It comes with *cookbook*-like documentation and step-by-step instructions
+    for doing common development tasks in Plone. Recipes try to assume the user
+    does not have extensive knowledge about Plone internals.
 
-.. toctree::
-    :maxdepth: 2
+.. topic:: Official Documentation
 
-    about.rst
-    portal.rst
-    content.rst
-    user.rst
-    group.rst
-    env.rst
+    .. warning::
 
+        Read the latest documentation for :mod:`plone.api` at `http://api.plone.org <http://api.plone.org>`_
 
-Complete API and advanced usage
-===============================
+    .. toctree::
 
-.. toctree::
-    :maxdepth: 1
+        Plone.api official documentation <http://api.plone.org>
 
-    api/index.rst
-    api/portal.rst
-    api/content.rst
-    api/user.rst
-    api/group.rst
-    api/env.rst
-    api/exceptions.rst
+.. topic:: About Plone
 
+    This is documentation for Plone®. `Plone is a popular, open source, content management system written in Python programming language. <http://plone.org>`_
 
-Contribute
-==========
-
-.. toctree::
-    :maxdepth: 2
-
-    contribute/index.rst
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

@@ -1,15 +1,23 @@
 # sphinx configuration
+     
+html_domain_indices = False
+html_output_encoding = 'utf-8' # hardcoded special char &reg; (®) added to Plone®
+html_show_sourcelink = False
+html_use_index = False
+html_logo = "plone-logo-48.png"
+html_sidebars = { '**': [ 'globaltoc.html' ]  }
 
 project = u'plone.api'
-copyright = u'2012, Plone Foundation'
-
-extensions = [
-    'sphinx.ext.doctest',
-    'sphinx.ext.coverage',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.autosummary',
-]
+copyright = u'2013, Plone Foundation'
+source_encoding = 'utf-8' # index.rst has special Plone&right; character
+extensions = []
+#extensions = [
+#    'sphinx.ext.doctest',
+#    'sphinx.ext.coverage',
+#    'sphinx.ext.autodoc',
+#    'sphinx.ext.viewcode',
+#    'sphinx.ext.autosummary',
+#]
 master_doc = 'index'
 
 locale_dirs = ["translated/"]
@@ -32,13 +40,16 @@ latex_documents = [(
 # and shouldn't be used anymore anyhow
 html_static_path = ['static']
 
+exclude_patterns = ['_build']
+
+
 
 def setup(app):
     app.add_stylesheet('lineblock.css')
 
 
-from pkg_resources import get_distribution
-version = release = get_distribution(project).version
+# version = release = get_distribution(project).version
+version = release = ''
 
 import sys
 
