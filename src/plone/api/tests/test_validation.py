@@ -43,15 +43,17 @@ class TestPloneAPIValidation(unittest.TestCase):
         """Test that ValueError is returned if the decorator requires
         a parameter that doesn't exist in the function signature.
         """
-        self.assertRaises(
-            ValueError,
-            required_parameters('arg1', 'wibble', 'wobble'),
-            undecorated_func)
+        with self.assertRaises(ValueError):
+            _func = required_parameters('arg1', 'wibble', 'wobble')
+            _func(undecorated_func)
 
-        self.assertRaises(
-            ValueError,
-            mutually_exclusive_parameters('arg1', 'wibble', 'wobble'),
-            undecorated_func)
+        with self.assertRaises(ValueError):
+            _func = mutually_exclusive_parameters(
+                'arg1',
+                'wibble',
+                'wobble'
+            )
+            _func(undecorated_func)
 
     def test_get_supplied_args(self):
         """Test that positional and keyword args are recognised correctly."""
@@ -101,7 +103,8 @@ class TestPloneAPIValidation(unittest.TestCase):
         """
         from plone.api.exc import MissingParameterError
         _func = required_parameters('arg1')(undecorated_func)
-        self.assertRaises(MissingParameterError, _func)
+        with self.assertRaises(MissingParameterError):
+            _func()
 
     def test_one_missing_one_provided(self):
         """Test that MissingParameterError is raised if only one of the
@@ -109,7 +112,8 @@ class TestPloneAPIValidation(unittest.TestCase):
         """
         from plone.api.exc import MissingParameterError
         _func = required_parameters('arg1', 'arg2')(undecorated_func)
-        self.assertRaises(MissingParameterError, _func, 'hello')
+        with self.assertRaises(MissingParameterError):
+            _func('hello')
 
     def test_no_mutually_exclusive_args_provided(self):
         """Test for passing no args (valid) to a function that specifies
@@ -134,9 +138,11 @@ class TestPloneAPIValidation(unittest.TestCase):
         """
         from plone.api.exc import InvalidParameterError
         _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
-        self.assertRaises(InvalidParameterError, _func, 'ahoy', 'there')
-        self.assertRaises(
-            InvalidParameterError, _func, arg1='ahoy', arg2='there')
+        with self.assertRaises(InvalidParameterError):
+            _func('ahoy', 'there')
+            
+        with self.assertRaises(InvalidParameterError):
+            _func(arg1='ahoy', arg2='there')
 
     def test_require_at_least_one_but_none_provided(self):
         """Test that MissingParameterError is raised if no argument is supplied
@@ -144,7 +150,8 @@ class TestPloneAPIValidation(unittest.TestCase):
         """
         from plone.api.exc import MissingParameterError
         _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
-        self.assertRaises(MissingParameterError, _func)
+        with self.assertRaises(MissingParameterError):
+            _func()
 
     def test_require_at_least_one_and_one_provided(self):
         """Test for passing one argument when at least one is required."""
@@ -170,27 +177,25 @@ class TestPloneAPIValidation(unittest.TestCase):
         from plone.api.exc import MissingParameterError
 
         # test that the required parameter error works (missing arg1)
-        self.assertRaises(
-            MissingParameterError, _func1_decorated, arg2='ahoy')
+        with self.assertRaises(MissingParameterError):
+            _func1_decorated(arg2='ahoy')
 
         # test that the mutually exclusive decorator works
         # (arg2 and arg3 should not be there)
-        self.assertRaises(
-            InvalidParameterError,
-            _func1_decorated,
-            arg1='ahoy',
-            arg2='there',
-            arg3='matey',
-        )
+        with self.assertRaises(InvalidParameterError):
+            _func1_decorated(
+                arg1='ahoy',
+                arg2='there',
+                arg3='matey',
+            )
 
         # test that they both work.  Making no assumptions here about the order
         # in which they fire.
-        self.assertRaises(
-            (InvalidParameterError, MissingParameterError),
-            _func1_decorated,
-            arg2='ahoy',
-            arg3='there',
-        )
+        with self.assertRaises((InvalidParameterError, MissingParameterError)):
+            _func1_decorated(
+                arg2='ahoy',
+                arg3='there',
+            )
 
         # everything ok
         self.assertEqual(_func1_decorated('ahoy', arg3='there'), 'foo')
@@ -209,12 +214,12 @@ class TestPloneAPIValidation(unittest.TestCase):
         from plone.api.exc import MissingParameterError
 
         # test it errors if you provide none
-        self.assertRaises(
-            MissingParameterError, _func1_decorated)
+        with self.assertRaises(MissingParameterError):
+            _func1_decorated()
 
         # test that it errors if you provide both
-        self.assertRaises(
-            InvalidParameterError, _func1_decorated, 'ahoy', 'there')
+        with self.assertRaises(InvalidParameterError):
+            _func1_decorated('ahoy','there')
 
         # everything ok
         self.assertEqual(_func1_decorated('ahoy'), 'foo')

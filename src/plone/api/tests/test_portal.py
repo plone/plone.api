@@ -73,14 +73,16 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test error msg when getSite() returns None."""
         getSite.return_value = None
         from plone.api.exc import CannotGetPortalError
-        self.assertRaises(CannotGetPortalError, portal.get)
+        with self.assertRaises(CannotGetPortalError):
+            portal.get()
 
     def test_get_tool_constraints(self):
         """Test the constraints for getting a tool."""
 
         # When no parameters are given an error is raised
         from plone.api.exc import MissingParameterError
-        self.assertRaises(MissingParameterError, portal.get_tool)
+        with self.assertRaises(MissingParameterError):
+            portal.get_tool()
 
     def test_get_tool_tool_not_found(self):
         """Test that error msg lists available tools if a tool is not found."""
@@ -147,27 +149,25 @@ class TestPloneApiPortal(unittest.TestCase):
         from plone.api.exc import MissingParameterError
 
         # When no parameters are given an error is raised
-        self.assertRaises(MissingParameterError, portal.send_email)
+        with self.assertRaises(MissingParameterError):
+            portal.send_email()
 
         # recipient, subject and body are required
-        self.assertRaises(
-            MissingParameterError,
-            portal.send_email,
-            subject='Beer',
-            body="To beer or not to beer, that is the question",
-        )
-        self.assertRaises(
-            MissingParameterError,
-            portal.send_email,
-            recipient='joe@example.org',
-            subject='Beer',
-        )
-        self.assertRaises(
-            MissingParameterError,
-            portal.send_email,
-            recipient='joe@example.org',
-            body="To beer or not to beer, that is the question",
-        )
+        with self.assertRaises(MissingParameterError):
+            portal.send_email(
+                subject='Beer',
+                body="To beer or not to beer, that is the question",
+            )
+        with self.assertRaises(MissingParameterError):
+            portal.send_email(
+                recipient='joe@example.org',
+                subject='Beer',
+            )
+        with self.assertRaises(MissingParameterError):
+            portal.send_email(
+                recipient='joe@example.org',
+                body="To beer or not to beer, that is the question",
+            )
 
     def test_send_email(self):
         """Test sending mail."""
@@ -205,14 +205,13 @@ class TestPloneApiPortal(unittest.TestCase):
         send email.
         """
         self.portal._updateProperty('email_from_address', None)
-        self.assertRaises(
-            ValueError,
-            portal.send_email,
-            recipient="bob@plone.org",
-            sender="noreply@plone.org",
-            subject="Trappist",
-            body=u"One for you Bob!",
-        )
+        with self.assertRaises(ValueError):
+            portal.send_email(
+                recipient="bob@plone.org",
+                sender="noreply@plone.org",
+                subject="Trappist",
+                body=u"One for you Bob!",
+            )
 
     @mock.patch('plone.api.portal.parseaddr')
     def test_send_email_parseaddr(self, mock_parseaddr):
@@ -234,7 +233,8 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # When no parameters are given an error is raised
         from plone.api.exc import MissingParameterError
-        self.assertRaises(MissingParameterError, portal.get_localized_time)
+        with self.assertRaises(MissingParameterError):
+            portal.get_localized_time()
 
     def test_get_localized_time(self):
         """Test getting the localized time."""
@@ -289,19 +289,15 @@ class TestPloneApiPortal(unittest.TestCase):
         from plone.api.exc import MissingParameterError
 
         # When no parameters are given an error is raised
-        self.assertRaises(MissingParameterError, portal.show_message)
+        with self.assertRaises(MissingParameterError):
+            portal.show_message()
 
         # message and request are required
-        self.assertRaises(
-            MissingParameterError,
-            portal.show_message,
-            request=self.layer['request'],
-        )
-        self.assertRaises(
-            MissingParameterError,
-            portal.show_message,
-            message='Beer is brewing.',
-        )
+        with self.assertRaises(MissingParameterError):
+            portal.show_message(request=self.layer['request'])
+
+        with self.assertRaises(MissingParameterError):
+            portal.show_message(message='Beer is brewing.')
 
     def test_show_message(self):
         """Test to see if message appears."""
@@ -328,7 +324,8 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertTrue(INavigationRoot.providedBy(navigation_root))
 
         from plone.api.exc import MissingParameterError
-        self.assertRaises(MissingParameterError, portal.get_navigation_root)
+        with self.assertRaises(MissingParameterError):
+            portal.get_navigation_root()
 
     def test_get_existing_registry_record(self):
         """Test that existing registry records are returned correctly."""
@@ -401,19 +398,19 @@ class TestPloneApiPortal(unittest.TestCase):
         parameters, a MissingParameterError exception is raised.
         """
         from plone.api.exc import MissingParameterError
-        self.assertRaises(MissingParameterError, portal.set_registry_record)
+        with self.assertRaises(MissingParameterError):
+            portal.set_registry_record()
 
     def test_set_non_existing_record_value(self):
         """Test that setting the value of a non existent record raises
         an Exception.
         """
         from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError,
-            portal.set_registry_record,
-            name='nonexistent.sharepoint.power',
-            value=u'Zero',
-        )
+        with self.assertRaises(InvalidParameterError):
+            portal.set_registry_record(
+                name='nonexistent.sharepoint.power',
+                value=u'Zero',
+            )
 
     def test_set_no_value_param_for_existing_record(self):
         """Test that calling portal.set_registry_record with a name
@@ -425,18 +422,16 @@ class TestPloneApiPortal(unittest.TestCase):
             field.TextLine(title=u"Plone's Power"))
 
         from plone.api.exc import MissingParameterError
-        self.assertRaises(
-            MissingParameterError, portal.set_registry_record,
-            name='plone.api.plone_power',
-        )
+        with self.assertRaises(MissingParameterError):
+            portal.set_registry_record(name='plone.api.plone_power')
 
     def test_set_invalid_key_type_record(self):
         """Test that trying to set the value of a record by passing a
         list for the record name instead of a string, raises an error.
         """
         from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError, portal.set_registry_record,
-            name=['foo', 'bar'],
-            value=u"baz",
-        )
+        with self.assertRaises(InvalidParameterError):
+            portal.set_registry_record(
+                name=['foo', 'bar'],
+                value=u"baz",
+            )

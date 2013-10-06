@@ -27,10 +27,9 @@ To temporarily override the list of roles that are available, use
 
     portal = api.portal.get()
     with api.env.adopt_roles(['Anonymous']):
-        self.assertRaises(
-           Unauthorized,
-           lambda: portal.restrictedTraverse("manage_propertiesForm")
-        )
+        with self.assertRaises(Unauthorized):
+           portal.restrictedTraverse("manage_propertiesForm")
+        
 
     with api.env.adopt_roles(['Manager', 'Member']):
         portal.restrictedTraverse("manage_propertiesForm")
