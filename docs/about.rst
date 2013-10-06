@@ -15,12 +15,12 @@ Inspiration
 We want `plone.api` to be developed with `PEP 20
 <http://www.python.org/dev/peps/pep-0020/>`_ idioms in mind, in particular:
 
-  |   Explicit is better than implicit.
-  |   Readability counts.
-  |   There should be one -- and preferably only one -- obvious way to do it.
-  |   Now is better than never.
-  |   If the implementation is hard to explain, it's a bad idea.
-  |   If the implementation is easy to explain, it may be a good idea.
+  | Explicit is better than implicit.
+  | Readability counts.
+  | There should be one-- and preferably only one --obvious way to do it.
+  | Now is better than never.
+  | If the implementation is hard to explain, it's a bad idea.
+  | If the implementation is easy to explain, it may be a good idea.
 
 All contributions to `plone.api` should keep these rules in mind.
 
@@ -32,7 +32,6 @@ Two libraries are especially inspiring:
   designed, is consistent, explicit, and easy to learn.
 
 `Requests <http://docs.python-requests.org>`_
-
   I you look at the documentation for this library, or make `a comparison
   between the urllib2 way and the requests way
   <https://gist.github.com/973705>`_, you cannot but see a parallel between
