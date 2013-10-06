@@ -22,6 +22,20 @@ class TestPloneApiUser(unittest.TestCase):
         self.portal = self.layer['portal']
         self.portal_membership = api.portal.get_tool('portal_membership')
 
+    def _check_userid_and_username_different(self):
+        """Ensure that the userid and username are not equal
+
+        This is important for tests which rely on differentiation between the
+        two. These tests should rely on the Test User created by
+        plone.app.testing, which has these conditions. If that implementation
+        detail should change, any test containing a call to this method will
+        be invalidated, and should fail.
+        """
+        user = api.user.get_current()
+        userid = user.id
+        username = user.getUserName()
+        self.assertNotEqual(userid, username)
+
     def test_create_no_email(self):
         """Test that exception is raised if no email is given."""
 
@@ -34,18 +48,9 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck', password='secret'
         )
 
-    def test_userid_username_not_equal(self):
-        """Inspect the default user created by plone.app.testing and
-        make sure the default userid is not equal to the username."""
-        user = api.user.get_current()
-        userid = user.id
-        username = user.getUserName()
-        self.assertEqual(userid, TEST_USER_ID)
-        self.assertEqual(username, TEST_USER_NAME)
-        self.assertNotEqual(userid, username)
-
     def test_get_user_userid_username(self):
         """Enforce user.get works with username and userid."""
+        self._check_userid_and_username_different()
         self.assertEqual(
             api.user.get(userid=TEST_USER_ID),
             api.user.get_current()
