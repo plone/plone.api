@@ -1,6 +1,5 @@
-***********
-A Plone API
-***********
+plone.api
+=========
 
 .. topic:: Overview
 

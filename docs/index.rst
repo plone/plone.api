@@ -4,6 +4,10 @@
     http://developer.plone.org/reference_manuals/external/plone.api/index.html so you have working
     references and proper formatting.
 
+===========
+A Plone API
+===========
+
 .. include:: ../README.rst
 
 
