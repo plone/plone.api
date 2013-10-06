@@ -140,7 +140,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
         with self.assertRaises(InvalidParameterError):
             _func('ahoy', 'there')
-            
+
         with self.assertRaises(InvalidParameterError):
             _func(arg1='ahoy', arg2='there')
 
@@ -219,7 +219,7 @@ class TestPloneAPIValidation(unittest.TestCase):
 
         # test that it errors if you provide both
         with self.assertRaises(InvalidParameterError):
-            _func1_decorated('ahoy','there')
+            _func1_decorated('ahoy', 'there')
 
         # everything ok
         self.assertEqual(_func1_decorated('ahoy'), 'foo')
