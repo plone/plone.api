@@ -76,6 +76,7 @@ def get_groups(username=None, user=None):
     :type user: MemberData object
     :returns: All groups (optionlly filtered by user)
     :rtype: List of GroupData objects
+    :raises: UserNotFoundError
     :Example: :ref:`group_get_all_groups_example`,
         :ref:`group_get_users_groups_example`
     """
@@ -140,10 +141,16 @@ def add_user(groupname=None, group=None, username=None, user=None):
     :type user: MemberData object
     :raises:
         ValueError
+        UserNotFoundError
     :Example: :ref:`group_add_user_example`
 
     """
-    user_id = username or user.id
+    if username:
+        user = user_get(username=username)
+        if not user:
+            raise UserNotFoundError
+
+    user_id = user.id
     group_id = groupname or group.id
     portal_groups = portal.get_tool('portal_groups')
     portal_groups.addPrincipalToGroup(user_id, group_id)
@@ -172,9 +179,14 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     :type user: MemberData object
     :raises:
         ValueError
+        UserNotFoundError
     :Example: :ref:`group_remove_user_example`
     """
-    user_id = username or user.id
+    if username:
+        user = user_get(username=username)
+        if not user:
+            raise UserNotFoundError
+    user_id = user.id
     group_id = groupname or group.id
     portal_groups = portal.get_tool('portal_groups')
     portal_groups.removePrincipalFromGroup(user_id, group_id)

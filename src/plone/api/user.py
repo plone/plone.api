@@ -2,6 +2,7 @@
 """Module that provides functionality for user manipulation."""
 
 from AccessControl.Permission import getPermissions
+from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from contextlib import contextmanager
 from plone.api import env
 from plone.api import portal
@@ -86,11 +87,24 @@ def create(
     return get(username=user_id)
 
 
-@required_parameters('username')
-def get(username=None):
+@mutually_exclusive_parameters('userid', 'username')
+@at_least_one_of('userid', 'username')
+def get(userid=None, username=None):
     """Get a user.
 
-    :param username: [required] Username of the user we want to get.
+    Plone provides both a unique, unchanging identifier for a user (the
+    userid) and a username, which is the value a user types into the login
+    form. In many cases, the values for each will be the same, but under some
+    circumstances they will differ. Known instances of this behavior include:
+
+     * using content-based members via membrane
+     * users changing their email address when using email as login is enabled
+
+    We provide the ability to look up users by either.
+
+    :param userid: Userid of the user we want to get.
+    :type userid: string
+    :param username: Username of the user we want to get.
     :type username: string
     :returns: User
     :rtype: MemberData object
@@ -98,8 +112,15 @@ def get(username=None):
         MissingParameterError
     :Example: :ref:`user_get_example`
     """
-    portal_membership = portal.get_tool('portal_membership')
-    return portal_membership.getMemberById(username)
+    if userid is not None:
+        portal_membership = portal.get_tool('portal_membership')
+        return portal_membership.getMemberById(userid)
+
+    return get_member_by_login_name(
+        portal.get(),
+        username,
+        raise_exceptions=False
+    )
 
 
 def get_current():
