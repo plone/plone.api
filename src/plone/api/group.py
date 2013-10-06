@@ -180,9 +180,14 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     :type user: MemberData object
     :raises:
         ValueError
+        UserNotFoundError
     :Example: :ref:`group_remove_user_example`
     """
-    user_id = username or user.id
+    if username:
+        user = user_get(username=username)
+        if not user:
+            raise UserNotFoundError
+    user_id = user.id
     group_id = groupname or group.id
     portal_groups = portal.get_tool('portal_groups')
     portal_groups.removePrincipalFromGroup(user_id, group_id)
