@@ -124,11 +124,12 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_get_groups_username(self):
         """Test retrieving of groups that the user is member of."""
         user = self.portal_membership.getAuthenticatedMember()
+        username = user.getUserName()
 
         api.group.create(groupname='staff')
         api.group.add_user(groupname='staff', user=user)
 
-        groups = [g.id for g in api.group.get_groups(username=user.id)]
+        groups = [g.id for g in api.group.get_groups(username=username)]
         self.assertIn('AuthenticatedUsers', groups)
         self.assertIn('staff', groups)
 
@@ -199,24 +200,18 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertRaises(
             KeyError,
             api.group.add_user,
-            username='staff',
+            user=mock.Mock(),
             groupname='staff',
         )
 
     def test_add_user_with_nonexistant_user(self):
         """Test adding a user that does not exist to a group."""
-        from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.add_user,
-            username='jane',
-            groupname='staff',
-            group=mock.Mock(),
-        )
+        from plone.api.exc import UserNotFoundError
+        with self.assertRaises(UserNotFoundError):
+            api.group.add_user(username='jane', groupname='staff')
 
     def test_add_user_username(self):
         """Test adding a user to a group by username."""
-
         group = api.group.create(groupname='staff')
         api.user.create(email='bob@plone.org', username='bob')
 
@@ -301,6 +296,14 @@ class TestPloneApiGroup(unittest.TestCase):
 
         self.assertNotIn('bob', group.getMemberIds())
         self.assertNotIn('jane', group.getMemberIds())
+
+    def test_remove_user_with_nonexistant_user(self):
+        """Test removing a user from a group when the user does not exist"""
+        from plone.api.exc import UserNotFoundError
+        api.group.create(groupname='staff')
+        group = api.group.get(groupname='staff')
+        with self.assertRaises(UserNotFoundError):
+            api.group.remove_user(group=group, username='iamnothere')
 
     def test_grant_roles(self):
         """Test grant roles."""
