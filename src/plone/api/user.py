@@ -2,6 +2,7 @@
 """Module that provides functionality for user manipulation."""
 
 from AccessControl.Permission import getPermissions
+from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from contextlib import contextmanager
 from plone.api import env
 from plone.api import portal
@@ -12,7 +13,6 @@ from plone.api.exc import UserNotFoundError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
-from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 
 import random
 import string
