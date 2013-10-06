@@ -92,8 +92,18 @@ def create(
 def get(userid=None, username=None):
     """Get a user.
 
+    Plone provides both a unique, unchanging identifier for a user (the
+    userid) and a username, which is the value a user types into the login
+    form. In many cases, the values for each will be the same, but under some
+    circumstances they will differ. Known instances of this behavior include:
+ 
+     * using content-based members via membrane
+     * users changing their email address when using email as login is enabled
+
+    We provide the ability to look up users by either.
+
     :param userid: Userid of the user we want to get.
-    :type username: string
+    :type userid: string
     :param username: Username of the user we want to get.
     :type username: string
     :returns: User
