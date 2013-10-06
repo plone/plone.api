@@ -76,6 +76,8 @@ def get_groups(username=None, user=None):
     :type user: MemberData object
     :returns: All groups (optionlly filtered by user)
     :rtype: List of GroupData objects
+    :raises:
+        UserNotFoundError
     :Example: :ref:`group_get_all_groups_example`,
         :ref:`group_get_users_groups_example`
     """
