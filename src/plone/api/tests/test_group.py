@@ -199,7 +199,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertRaises(
             KeyError,
             api.group.add_user,
-            username='staff',
+            user=mock.Mock(),
             groupname='staff',
         )
 
