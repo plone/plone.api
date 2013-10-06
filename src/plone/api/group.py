@@ -123,9 +123,11 @@ def delete(groupname=None, group=None):
 
 @mutually_exclusive_parameters('groupname', 'group')
 @at_least_one_of('groupname', 'group')
-@mutually_exclusive_parameters('username', 'user')
-@at_least_one_of('username', 'user')
-def add_user(groupname=None, group=None, username=None, user=None):
+@mutually_exclusive_parameters('username', 'user', 'userid')
+@at_least_one_of('username', 'user', 'userid')
+def add_user(
+    groupname=None, group=None, username=None, user=None, userid=None
+):
     """Add the user to a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
@@ -142,6 +144,8 @@ def add_user(groupname=None, group=None, username=None, user=None):
     :type username: string
     :param user: User to add to the group.
     :type user: MemberData object
+    :param userid: Userid of the user to add to the group.
+    :type userid: string
     :raises:
         ValueError
         UserNotFoundError
@@ -155,8 +159,14 @@ def add_user(groupname=None, group=None, username=None, user=None):
 
     user_id = user.id
     group_id = groupname or group.id
+
+    if not userid:
+        userid = user.id
+
+    groupid = groupname or group.id
+
     portal_groups = portal.get_tool('portal_groups')
-    portal_groups.addPrincipalToGroup(user_id, group_id)
+    portal_groups.addPrincipalToGroup(userid, groupid)
 
 
 @mutually_exclusive_parameters('groupname', 'group')
