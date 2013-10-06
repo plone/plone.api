@@ -17,7 +17,7 @@ install:
   - make version=$TRAVIS_PYTHON_VERSION .installed.cfg
 
 script:
-  - make tests
+  - make coverage
 
 after_success:
  - pip install python-coveralls==2.4.0

@@ -6,7 +6,12 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
-- Fix api.content.copy without target parameter. [rodfersou]
+- Add a new `make coverage` command and add support for posting coverage to
+  Coveralls.io.
+  [zupo]
+
+- Fix api.content.copy without target parameter.
+  [rodfersou]
 
 - Prefer single quotes over double quotes in code style.
   [zupo]
