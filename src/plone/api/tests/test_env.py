@@ -387,3 +387,8 @@ class TestPloneApiEnv(unittest.TestCase):
         self.assertEqual(debug_mode(), True)
         Globals.DevelopmentMode = False
         self.assertEqual(debug_mode(), False)
+
+    def test_test_mode(self):
+        """Tests that test_mode() returns True as we are in a test runner."""
+        from plone.api.env import test_mode
+        self.assertEqual(test_mode(), True)
