@@ -28,6 +28,7 @@ setup(
     ],
     extras_require={
         'develop': [
+            'coverage',
             'flake8',
             'jarn.mkrelease',
             'manuel',

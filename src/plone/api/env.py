@@ -10,6 +10,8 @@ from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from zope.globalrequest import getRequest
 
+import Globals
+
 
 @at_least_one_of('username', 'user')
 @mutually_exclusive_parameters('username', 'user')
@@ -18,9 +20,9 @@ def adopt_user(username=None, user=None):
 
     :param user: User object to switch to inside block.
     :type user: user object from acl_users.getUser() or api.user.get().
-
     :param username: username of user to switch to inside block.
     :type username: string
+    :Example: :ref:`env_adopt_user_example`
     """
 
     if username is None:
@@ -68,6 +70,7 @@ def adopt_roles(roles=None):
 
     :param roles: New roles to gain inside block. Existing roles will be lost.
     :type roles: list of strings
+    :Example: :ref:`env_adopt_roles_example`
     """
     if isinstance(roles, basestring):
         roles = [roles]
@@ -153,3 +156,8 @@ class _GlobalRoleOverridingContext(object):
 
     def getWrappedOwner(self):
         return None
+
+
+def debug_mode():
+    """Returns True if your zope instance is running in debug mode."""
+    return Globals.DevelopmentMode

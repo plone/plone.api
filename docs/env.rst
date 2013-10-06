@@ -1,7 +1,7 @@
-.. line-block::
+.. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on ReadTheDocs:
-    http://ploneapi.readthedocs.org/en/latest/env.html so you have working
+    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
+    http://developer.plone.org/reference_manuals/external/plone.api/env.html so you have working
     references and proper formatting.
 
 
@@ -34,6 +34,9 @@ To temporarily override the list of roles that are available, use
     with api.env.adopt_roles(['Manager', 'Member']):
         portal.restrictedTraverse("manage_propertiesForm")
 
+
+.. _env_adopt_user_example:
+
 Switch user inside a block
 --------------------------
 
@@ -65,6 +68,20 @@ To temporarily override the user which is currently active, use
         portal.new_owned_doc.getOwner().getId(),
         "doc_owner",
     )
+
+Debug mode
+----------
+
+To know if your zope instance is running in debug mode, use
+:meth:`api.env.debug_mode`.
+
+.. code-block:: python
+
+    from plone import api
+
+    in_debug_mode = api.env.debug_mode()
+    if in_debug_mode:
+        print 'Zope is in debug mode'
 
 Further reading
 ---------------

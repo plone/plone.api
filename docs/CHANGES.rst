@@ -6,6 +6,33 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Deprecate plone.api on ReadTheDocs and redirect to api.plone.org.
+  [wormj, zupo]
+
+- Add a new `make coverage` command and add support for posting coverage to
+  Coveralls.io.
+  [zupo]
+
+- Fix api.content.copy without target parameter.
+  [rodfersou]
+
+- Amend user.get method to accept a userid parameter.
+  
+  NOTE: this change fixes a bug in the earlier implementation that could cause
+  errors in some situations. This situation will only arise if the userid and
+  username for a user are not the same. If membrane is being used for content-
+  based user objects, or if email-as-login is enabled *and* a user has changed
+  their email address this will be the case. In the previous implementation 
+  the username parameter was implicitly being treated as userid. The new 
+  implementation does not do so. If consumer code is relying on this bug and 
+  passing userid, and if that code uses the username parameter as a keyword 
+  parameter, then lookup will fail. In all other cases, there should be no
+  difference.
+  [cewing, xiru, winstonf88]
+
+- Prefer single quotes over double quotes in code style.
+  [zupo]
+
 - New bootstrap.py to stay in the land of zc.buildout 1.x.
   [zupo]
 

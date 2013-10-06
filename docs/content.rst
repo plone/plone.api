@@ -1,7 +1,7 @@
-.. line-block::
+.. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on ReadTheDocs:
-    http://ploneapi.readthedocs.org/en/latest/content.html so you have working
+    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
+    http://developer.plone.org/reference_manuals/external/plone.api/content.html so you have working
     references and proper formatting.
 
 
@@ -339,7 +339,7 @@ To transition your content into a new state, use :meth:`api.content.transition`.
 Get view
 --------
 
-To get a BrowserView for your content, use :meth:`api.content.get_view`.
+To get a :class:`BrowserView` for your content, use :meth:`api.content.get_view`.
 
 .. code-block:: python
 

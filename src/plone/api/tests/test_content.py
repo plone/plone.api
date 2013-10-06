@@ -408,6 +408,10 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.copy(source=self.team, target=self.about, id='our-team')
         assert container['about']['our-team']
 
+        # When copying whithout target parameter should take source parent
+        api.content.copy(source=self.team, id='our-team-no-target')
+        assert container['about']['our-team-no-target']
+
         # Test the safe_id option when moving content
         api.content.create(
             container=self.about, type='Link', id='link-to-blog')

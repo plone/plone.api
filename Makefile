@@ -7,9 +7,17 @@ options =
 
 all: docs tests
 
+coverage: htmlcov/index.html
+
+htmlcov/index.html: src/plone/api/*.py bin/coverage
+	@bin/coverage run --source=./src/plone/api/ --branch bin/test
+	@bin/coverage html -i
+	@touch $@
+	@echo "Coverage report was generated at '$@'."
+
 docs: docs/html/index.html
 
-docs/html/index.html: docs/*.rst docs/contribute/*.rst docs/api/*.rst src/plone/api/*.py bin/sphinx-build
+docs/html/index.html: README.rst docs/*.rst docs/contribute/*.rst docs/api/*.rst src/plone/api/*.py bin/sphinx-build
 	bin/sphinx-build -W docs docs/html
 	@touch $@
 	@echo "Documentation was generated at '$@'."
@@ -21,7 +29,7 @@ bin/sphinx-build: .installed.cfg
 	bin/buildout $(options)
 
 bin/buildout: $(python) buildout.cfg bootstrap.py
-	$(python) bootstrap.py -d
+	$(python) bootstrap.py
 	@touch $@
 
 $(python):
@@ -33,8 +41,8 @@ tests: .installed.cfg
 	@bin/flake8 src/plone/api
 
 clean:
-	@rm -rf .installed.cfg bin docs/html parts develop-eggs \
-		src/plone.api.egg-info lib include .Python
+	@rm -rf .coverage .installed.cfg .mr.developer.cfg bin docs/html htmlcov \
+		parts develop-eggs src/plone.api.egg-info lib include .Python
 
-.PHONY: all docs tests clean
+.PHONY: all coverage docs tests clean
 

@@ -1,7 +1,7 @@
-.. line-block::
+.. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on ReadTheDocs:
-    http://ploneapi.readthedocs.org/en/latest/group.html so you have working
+    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
+    http://developer.plone.org/reference_manuals/external/plone.api/group.html so you have working
     references and proper formatting.
 
 
@@ -123,7 +123,8 @@ You can also get all groups, by using :meth:`api.group.get_groups`.
 Get user's groups
 -----------------
 
-If you set the `user` parameter, then :meth:`api.group.get_groups` will return
+If you set the ``user`` parameter,
+then :meth:`api.group.get_groups` will return
 groups that the user is member of.
 
 .. invisible-code-block: python
