@@ -6,6 +6,9 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Deprecate plone.api on ReadTheDocs and redirect to api.plone.org.
+  [wormj, zupo]
+
 - Add a new `make coverage` command and add support for posting coverage to
   Coveralls.io.
   [zupo]

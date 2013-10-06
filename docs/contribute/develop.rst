@@ -1,7 +1,7 @@
-.. line-block::
+.. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on ReadTheDocs:
-    http://ploneapi.readthedocs.org/en/latest/contribute/develop.html so you
+    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
+    http://developer.plone.org/reference_manuals/external/plone.api/contribute/develop.html so you
     have working references and proper formatting.
 
 

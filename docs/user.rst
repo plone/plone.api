@@ -1,7 +1,7 @@
-.. line-block::
+.. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on ReadTheDocs:
-    http://ploneapi.readthedocs.org/en/latest/user.html so you have working
+    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
+    http://developer.plone.org/reference_manuals/external/plone.api/user.html so you have working
     references and proper formatting.
 
 
@@ -334,9 +334,9 @@ user.
     self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
 
 
-If you pass a content object or folder, 
+If you pass a content object or folder,
 the roles are granted only on that context and not site-wide.
-But all site-wide roles will also be returned by 
+But all site-wide roles will also be returned by
 :meth:`api.user.get_roles` for this user on the given context.
 
 .. code-block:: python
