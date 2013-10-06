@@ -378,3 +378,12 @@ class TestPloneApiEnv(unittest.TestCase):
         from plone.api.exc import MissingParameterError
         with self.assertRaises(MissingParameterError):
             api.env.adopt_roles()
+
+    def test_debug_mode(self):
+        """Tests that returned value is the same as Globals.DevelopmentMode."""
+        from plone.api.env import debug_mode
+        import Globals
+        Globals.DevelopmentMode = True
+        self.assertEqual(debug_mode(), True)
+        Globals.DevelopmentMode = False
+        self.assertEqual(debug_mode(), False)
