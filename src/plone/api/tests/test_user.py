@@ -53,11 +53,11 @@ class TestPloneApiUser(unittest.TestCase):
         self._check_userid_and_username_different()
         self.assertEqual(
             api.user.get(userid=TEST_USER_ID),
-            api.user.get_current()
+            api.user.get_current(),
         )
         self.assertEqual(
             api.user.get(username=TEST_USER_NAME),
-            api.user.get_current()
+            api.user.get_current(),
         )
 
     def test_create_email_in_properties(self):
