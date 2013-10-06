@@ -4,7 +4,9 @@
 from AccessControl.Permission import getPermissions
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
-from plone.app.testing import logout, TEST_USER_NAME, TEST_USER_ID
+from plone.app.testing import logout
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_ID
 
 import mock
 import unittest2 as unittest
@@ -43,7 +45,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertNotEqual(userid, username)
 
     def test_get_user_userid_username(self):
-        """Enforce user.get works with username and userid"""
+        """Enforce user.get works with username and userid."""
         self.assertEqual(
             api.user.get(userid=TEST_USER_ID),
             api.user.get_current()
