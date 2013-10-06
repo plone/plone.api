@@ -297,6 +297,14 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertNotIn('bob', group.getMemberIds())
         self.assertNotIn('jane', group.getMemberIds())
 
+    def test_remove_user_with_nonexistant_user(self):
+        """Test removing a user from a group when the user does not exist"""
+        from plone.api.exc import UserNotFoundError
+        api.group.create(groupname='staff')
+        group = api.group.get(groupname='staff')
+        with self.assertRaises(UserNotFoundError):
+            api.group.remove_user(group=group, username='iamnothere')
+
     def test_grant_roles(self):
         """Test grant roles."""
         from plone.api.exc import InvalidParameterError
