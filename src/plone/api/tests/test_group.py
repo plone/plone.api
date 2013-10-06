@@ -106,13 +106,19 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_get_groups_constraints(self):
         """Test that exception is raised if wrong arguments are given."""
 
-        # username and user are mutually exclusive
+        # username, user and userid are mutually exclusive
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError):
             api.group.get_groups(
                 username='chuck',
                 user=mock.Mock(),
             )
+            api.group.get_groups(username='chuck', user=mock.Mock())
+        with self.assertRaises(InvalidParameterError):
+            api.group.get_groups(userid='chuck', user=mock.Mock())
+        with self.assertRaises(InvalidParameterError):
+            api.group.get_groups(userid='chuck', username="chucksname")
+
 
     def test_get_groups_user(self):
         """Test retrieving of groups that the user is member of."""
@@ -134,6 +140,20 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.add_user(groupname='staff', user=user)
 
         groups = [g.id for g in api.group.get_groups(username=username)]
+
+        self.assertIn('AuthenticatedUsers', groups)
+        self.assertIn('staff', groups)
+
+    def test_get_groups_userid(self):
+        """Test retrieving of groups that the user is member of."""
+        user = self.portal_membership.getAuthenticatedMember()
+        userid = user.id
+
+        api.group.create(groupname='staff')
+        api.group.add_user(groupname='staff', user=user)
+
+        groups = [g.id for g in api.group.get_groups(userid=userid)]
+
         self.assertIn('AuthenticatedUsers', groups)
         self.assertIn('staff', groups)
 
@@ -187,12 +207,32 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_add_user_username_and_user(self):
         """Test adding a user to a group passing both username and user."""
+        # group and groupname are mutually exclusive
+        with self.assertRaises(InvalidParameterError):
+            api.group.add_user(
+                groupname='staff', group=mock.Mock(), username='chuck',
+            )
+
+    def test_add_user_user_constraints(self):
+        """Test mutual exlusivity of user-related parameters"""
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError):
             api.group.add_user(
                 groupname='staff',
                 username='staff',
-                user=mock.Mock()
+                user=mock.Mock(),
+            )
+        with self.assertRaises(InvalidParameterError):
+            api.group.add_user(
+                groupname='staff',
+                userid='staffid',
+                user=mock.Mock(),
+            )
+        with self.assertRaises(InvalidParameterError):
+            api.group.add_user(
+                groupname='staff',
+                username='staff',
+                userid='staffid',
             )
 
     def test_add_user_with_nonexistant_group(self):
@@ -205,6 +245,10 @@ class TestPloneApiGroup(unittest.TestCase):
             groupname='staff',
         )
 
+        user = api.user.get_current()
+        with self.assertRaises(KeyError):
+            api.group.add_user(groupname='staff', user=user)
+
     def test_add_user_with_nonexistant_user(self):
         """Test adding a user that does not exist to a group."""
         from plone.api.exc import UserNotFoundError
@@ -214,31 +258,48 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_add_user_username(self):
         """Test adding a user to a group by username."""
         group = api.group.create(groupname='staff')
-        api.user.create(email='bob@plone.org', username='bob')
+        user = self.portal_membership.getAuthenticatedMember()
+        username = user.getUserName()
 
-        api.group.add_user(groupname='staff', username='bob')
+        api.group.add_user(groupname='staff', username=username)
 
         self.assertIn(
             'staff',
-            [g.id for g in api.group.get_groups(username='bob')],
+            [g.id for g in api.group.get_groups(username=username)],
         )
 
-        self.assertIn('bob', group.getMemberIds())
+        self.assertIn(user.id, group.getMemberIds())
 
     def test_add_user_user(self):
         """Test adding a user to a group by user object."""
 
         group = api.group.create(groupname='staff')
-        user = api.user.create(email='jane@plone.org', username='jane')
+        user = self.portal_membership.getAuthenticatedMember()
 
         api.group.add_user(group=group, user=user)
 
         self.assertIn(
             'staff',
-            [g.id for g in api.group.get_groups(username='jane')],
+            [g.id for g in api.group.get_groups(user=user)],
         )
 
-        self.assertIn('jane', group.getMemberIds())
+        self.assertIn(user.id, group.getMemberIds())
+
+    def test_add_user_userid(self):
+        """Test adding a user to a group by userid"""
+
+        group = api.group.create(groupname='staff')
+        user = self.portal_membership.getAuthenticatedMember()
+        userid = user.id
+
+        api.group.add_user(group=group, userid=userid)
+
+        self.assertIn(
+            'staff',
+            [g.id for g in api.group.get_groups(user=user)]
+        )
+
+        self.assertIn(user.id, group.getMemberIds())
 
     def test_remove_user_contraints(self):
         """Test the constraints when a user is removed from a group."""
@@ -252,43 +313,85 @@ class TestPloneApiGroup(unittest.TestCase):
                 groupname='staff',
                 group=mock.Mock(),
             )
-        # Arguments ``username`` and ``user`` are mutually exclusive.
+        # Arguments ``username`` and ``user`` and ``userid`` are mutually
+        # exclusive.
         with self.assertRaises(InvalidParameterError):
             api.group.remove_user(
                 groupname='staff',
                 username='jane',
                 user=mock.Mock(),
             )
-        # At least one of ``username`` and ``user`` must be provided
+
+        # At least one of ``username``, ``user`` or ``userid`` must be
+        # provided
+        with self.assertRaises(InvalidParameterError):
+            api.group.remove_user(
+                groupname='staff',
+                username='jane',
+                userid='janeid',
+            )
+        with self.assertRaises(InvalidParameterError):
+            api.group.remove_user(
+                groupname='staff',
+                user=mock.Mock(),
+                userid='janeid',
+            )
+
         with self.assertRaises(MissingParameterError):
             api.group.remove_user(groupname='staff')
         # At least one of ``groupname`` and ``group`` must be provided
         with self.assertRaises(MissingParameterError):
             api.group.remove_user(username='jane')
 
-    def test_remove_user(self):
+    def test_remove_user_user(self):
         """Test removing a user from a group."""
 
         api.group.create(groupname='staff')
-        api.user.create(email='jane@plone.org', username='jane')
-        api.user.create(email='bob@plone.org', username='bob')
-        api.group.add_user(groupname='staff', username='jane')
-        api.group.add_user(groupname='staff', username='bob')
+        user = self.portal_membership.getAuthenticatedMember()
+        api.group.add_user(groupname='staff', user=user)
 
-        # Delete user by username from group
-        api.group.remove_user(groupname='staff', username='bob')
+        # Delete user from group by user object
+        api.group.remove_user(groupname='staff', user=user)
 
         group = api.group.get(groupname='staff')
-        user = api.user.get(username='jane')
 
-        # Delete user by user object from group
-        api.group.remove_user(group=group, user=user)
+        self.assertNotIn('staff', api.group.get_groups(user=user))
 
-        self.assertNotIn('staff', api.group.get_groups(username='bob'))
-        self.assertNotIn('staff', api.group.get_groups(username='jane'))
+        self.assertNotIn(user.id, group.getMemberIds())
 
-        self.assertNotIn('bob', group.getMemberIds())
-        self.assertNotIn('jane', group.getMemberIds())
+    def test_remove_user_username(self):
+        """Test removing a user from a group."""
+
+        api.group.create(groupname='staff')
+        user = self.portal_membership.getAuthenticatedMember()
+        username = user.getUserName()
+        api.group.add_user(groupname='staff', user=user)
+
+        # Delete user from group by user object
+        api.group.remove_user(groupname='staff', username=username)
+
+        group = api.group.get(groupname='staff')
+
+        self.assertNotIn('staff', api.group.get_groups(user=user))
+
+        self.assertNotIn(user.id, group.getMemberIds())
+
+    def test_remove_user_userid(self):
+        """Test removing a user from a group."""
+
+        api.group.create(groupname='staff')
+        user = self.portal_membership.getAuthenticatedMember()
+        userid = user.id
+        api.group.add_user(groupname='staff', user=user)
+
+        # Delete user from group by user object
+        api.group.remove_user(groupname='staff', userid=userid)
+
+        group = api.group.get(groupname='staff')
+
+        self.assertNotIn('staff', api.group.get_groups(user=user))
+
+        self.assertNotIn(userid, group.getMemberIds())
 
     def test_remove_user_with_nonexistant_user(self):
         """Test removing a user from a group when the user does not exist"""
