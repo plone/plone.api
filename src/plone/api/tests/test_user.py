@@ -4,7 +4,7 @@
 from AccessControl.Permission import getPermissions
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
-from plone.app.testing import logout, TEST_USER_NAME
+from plone.app.testing import logout, TEST_USER_NAME, TEST_USER_ID
 
 import mock
 import unittest2 as unittest
@@ -30,6 +30,27 @@ class TestPloneApiUser(unittest.TestCase):
             MissingParameterError,
             api.user.create,
             username='chuck', password='secret'
+        )
+
+    def test_userid_username_not_equal(self):
+        """Inspect the default user created by plone.app.testing and
+        make sure the default userid is not equal to the username."""
+        user = api.user.get_current()
+        userid = user.id
+        username = user.getUserName()
+        self.assertEqual(userid, TEST_USER_ID)
+        self.assertEqual(username, TEST_USER_NAME)
+        self.assertNotEqual(userid, username)
+
+    def test_get_user_userid_username(self):
+        """Enforce user.get works with username and userid"""
+        self.assertEqual(
+            api.user.get(userid=TEST_USER_ID),
+            api.user.get_current()
+        )
+        self.assertEqual(
+            api.user.get(username=TEST_USER_NAME),
+            api.user.get_current()
         )
 
     def test_create_email_in_properties(self):

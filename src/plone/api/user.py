@@ -12,6 +12,7 @@ from plone.api.exc import UserNotFoundError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
+from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 
 import random
 import string
@@ -86,11 +87,14 @@ def create(
     return get(username=user_id)
 
 
-@required_parameters('username')
-def get(username=None):
+@mutually_exclusive_parameters('userid', 'username')
+@at_least_one_of('userid', 'username')
+def get(userid=None, username=None):
     """Get a user.
 
-    :param username: [required] Username of the user we want to get.
+    :param userid: Userid of the user we want to get.
+    :type username: string
+    :param username: Username of the user we want to get.
     :type username: string
     :returns: User
     :rtype: MemberData object
@@ -98,8 +102,15 @@ def get(username=None):
         MissingParameterError
     :Example: :ref:`user_get_example`
     """
-    portal_membership = portal.get_tool('portal_membership')
-    return portal_membership.getMemberById(username)
+    if userid is not None:
+        portal_membership = portal.get_tool('portal_membership')
+        return portal_membership.getMemberById(userid)
+
+    return get_member_by_login_name(
+        portal.get(),
+        username,
+        raise_exceptions=False
+    )
 
 
 def get_current():
