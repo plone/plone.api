@@ -212,7 +212,6 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_add_user_username(self):
         """Test adding a user to a group by username."""
-
         group = api.group.create(groupname='staff')
         api.user.create(email='bob@plone.org', username='bob')
 
