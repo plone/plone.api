@@ -205,14 +205,9 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_add_user_with_nonexistant_user(self):
         """Test adding a user that does not exist to a group."""
-        from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.add_user,
-            username='jane',
-            groupname='staff',
-            group=mock.Mock(),
-        )
+        from plone.api.exc import UserNotFoundError
+        with self.assertRaises(UserNotFoundError):
+            api.group.add_user(username='jane', groupname='staff')
 
     def test_add_user_username(self):
         """Test adding a user to a group by username."""
