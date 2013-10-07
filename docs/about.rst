@@ -32,7 +32,7 @@ Two libraries are especially inspiring:
   designed, is consistent, explicit, and easy to learn.
 
 `Requests <http://docs.python-requests.org>`_
-  I you look at the documentation for this library, or make `a comparison
+  If you look at the documentation for this library, or make `a comparison
   between the urllib2 way and the requests way
   <https://gist.github.com/973705>`_, you cannot but see a parallel between
   the way we *have been* and the way we *should be* writing code for Plone. At
