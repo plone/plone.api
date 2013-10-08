@@ -38,7 +38,6 @@ $(python):
 
 tests: .installed.cfg
 	@bin/test
-	@bin/flake8 src/plone/api
 	@bin/code-analysis
 
 clean:
