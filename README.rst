@@ -3,7 +3,7 @@ plone.api
 
 .. topic:: Overview
 
-    The :mod:`plone.api` is an elegant and simple API, built for humans wishing
+    The ``plone.api`` is an elegant and simple API, built for humans wishing
     to develop with Plone.
 
     It comes with *cookbook*-like documentation and step-by-step instructions
