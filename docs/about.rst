@@ -64,9 +64,9 @@ Import and usage style
 ----------------------
 
 API methods are grouped according to what they affect. For example:
-:ref:`chapter_portal`, :ref:`chapter_content`, :ref:`chapter_users` and
-:ref:`chapter_groups`. In general, importing and using an API looks something
-like this:
+:ref:`chapter_portal`, :ref:`chapter_content`, :ref:`chapter_users`,
+:ref:`chapter_env` and :ref:`chapter_groups`. In general, importing and using
+an API looks something like this:
 
 .. invisible-code-block: python
 
