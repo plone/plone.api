@@ -84,6 +84,21 @@ To know if your zope instance is running in debug mode, use
     if in_debug_mode:
         print 'Zope is in debug mode'
 
+Test mode
+---------
+
+To know if your plone instance is running in a test runner, use
+:meth:`api.env.test_mode`.
+
+.. code-block:: python
+
+    from plone import api
+
+    in_test_mode = api.env.test_mode()
+    if in_test_mode:
+        print 'You are in a test runner'
+
+
 Further reading
 ---------------
 
