@@ -8,6 +8,7 @@ env:
   - PLONE_VERSION=4.3
 
 install:
+  - easy_install -U setuptools
   - deactivate
   - mkdir -p buildout-cache/eggs
   - mkdir -p buildout-cache/downloads
