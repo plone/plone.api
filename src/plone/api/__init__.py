@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from plone.api import content  # noQA
-from plone.api import user  # noQA
-from plone.api import group  # noQA
-from plone.api import portal  # noQA
-from plone.api import env  # noQA
+# flake8: noqa
+from plone.api import content
+from plone.api import user
+from plone.api import group
+from plone.api import portal
+from plone.api import env
