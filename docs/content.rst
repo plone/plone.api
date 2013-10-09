@@ -26,8 +26,8 @@ portal object, it will serve nicely:
     portal = api.portal.get()
 
 Create your new content item using the :meth:`api.content.create` method. The
-type argument will decide which content type will be created. Both dexterity
-and archetype content types are supported.
+type argument will decide which content type will be created. Both Dexterity
+and Archetypes content types are supported.
 
 .. code-block:: python
 
