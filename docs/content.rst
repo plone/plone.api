@@ -288,7 +288,7 @@ another object with the same ID is already present in the target container
 these API methods will raise an error.
 
 However, if the `safe_id` option is enabled, a non-conflicting id will be
-created.
+generated.
 
 .. invisible-code-block: python
 
