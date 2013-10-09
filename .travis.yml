@@ -8,8 +8,8 @@ env:
   - PLONE_VERSION=4.3
 
 install:
-  - pip uninstall distribute --yes
   - pip install --upgrade setuptools
+  - pip uninstall distribute --yes
   - mkdir -p buildout-cache/eggs
   - mkdir -p buildout-cache/downloads
   - sed -ie "s#test-4.2.x.cfg#travis-$PLONE_VERSION.x.cfg#" buildout.cfg
