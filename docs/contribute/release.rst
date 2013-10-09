@@ -1,8 +1,8 @@
 .. admonition:: GitHub-only
 
     WARNING: If you are reading this on GitHub, DON'T! Read the documentation
-    at `api.plone.org <http://api.plone.org>`_ so you have working references
-    and proper formatting.
+    at `api.plone.org <http://developer.plone.org/reference_manuals/external/plone.api/contribute/release.html>`_
+    so you have working references and proper formatting.
 
 .. _releasing_a_new_version:
 
