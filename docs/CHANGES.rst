@@ -6,6 +6,9 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Add plone.recipe.codeanalysis to our buildout.
+  [flohcim]
+
 - Amend user.get method to accept a userid parameter, refs #112.
   [cewing, xiru, winstonf88]
 

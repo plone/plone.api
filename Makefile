@@ -38,7 +38,7 @@ $(python):
 
 tests: .installed.cfg
 	@bin/test
-	@bin/flake8 src/plone/api
+	@bin/code-analysis
 
 clean:
 	@rm -rf .coverage .installed.cfg .mr.developer.cfg bin docs/html htmlcov \
