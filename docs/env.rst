@@ -96,7 +96,7 @@ To know if your plone instance is running in a test runner, use
 
     in_test_mode = api.env.test_mode()
     if in_test_mode:
-        print 'You are in a test runner'
+        pass  # do something
 
 
 Further reading
