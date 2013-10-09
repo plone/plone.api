@@ -8,7 +8,7 @@ env:
   - PLONE_VERSION=4.3
 
 install:
-  - pip remove distribute
+  - pip uninstall distribute
   - pip install --upgrade setuptools
   - mkdir -p buildout-cache/eggs
   - mkdir -p buildout-cache/downloads
