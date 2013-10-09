@@ -27,7 +27,7 @@ Changes
     parameter, then lookup will fail. In all other cases, there should be no
     difference.
 
-- Add api.env.debug_mode(), refs #125.
+- Add api.env.debug_mode() and api.env.test_mode(), refs #125.
   [sdelcourt]
 
 - Move most of text from docs/index.rst to README.rst so its also visible on

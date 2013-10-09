@@ -12,6 +12,9 @@ from plone.api.validation import mutually_exclusive_parameters
 from zope.globalrequest import getRequest
 
 import Globals
+import traceback
+
+IS_TEST = None
 
 
 @at_least_one_of('username', 'user')
@@ -162,3 +165,17 @@ class _GlobalRoleOverridingContext(object):
 def debug_mode():
     """Returns True if your zope instance is running in debug mode."""
     return Globals.DevelopmentMode
+
+
+def test_mode():
+    """Returns True if you are running the zope test runner."""
+    from plone.api import env
+
+    if env.IS_TEST is None:
+        env.IS_TEST = False
+        for frame in traceback.extract_stack():
+            if 'zope/testing/testrunner' in frame[0]:
+                env.IS_TEST = True
+                break
+
+    return env.IS_TEST
