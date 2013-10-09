@@ -24,7 +24,8 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_create_contraints(self):
         """Test the contraints for creating a group."""
         from plone.api.exc import MissingParameterError
-        self.assertRaises(MissingParameterError, api.group.create)
+        with self.assertRaises(MissingParameterError):
+            api.group.create()
 
     def test_create(self):
         """Test adding of a group, groupname is mandatory."""
@@ -70,19 +71,22 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_get_constraints(self):
         """Test the constraints for geting a group."""
         from plone.api.exc import MissingParameterError
-        self.assertRaises(MissingParameterError, api.group.get)
+        with self.assertRaises(MissingParameterError):
+            api.group.get()
 
     def test_get_no_groupname(self):
         """Test getting a group without passing a groupname."""
         from plone.api.exc import MissingParameterError
-        self.assertRaises(MissingParameterError, api.group.create)
+        with self.assertRaises(MissingParameterError):
+            api.group.create()
 
     def test_get(self):
         """Test getting a group."""
         from plone.api.exc import MissingParameterError
 
         # This should fail because the groupname is mandatory
-        self.assertRaises(MissingParameterError, api.group.create)
+        with self.assertRaises(MissingParameterError):
+            api.group.create()
 
         # Create a group and retrieve it
         api.group.create(groupname='bacon')
@@ -104,11 +108,11 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # username and user are mutually exclusive
         from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.get_groups,
-            username='chuck', user=mock.Mock(),
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.group.get_groups(
+                username='chuck',
+                user=mock.Mock(),
+            )
 
     def test_get_groups_user(self):
         """Test retrieving of groups that the user is member of."""
@@ -136,26 +140,23 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_get_groups_nonexistant_user(self):
         """Test retrieving of groups for a user that does not exist."""
         from plone.api.exc import UserNotFoundError
-        self.assertRaises(
-            UserNotFoundError,
-            api.group.get_groups,
-            username='theurbanspaceman',
-        )
+        with self.assertRaises(UserNotFoundError):
+            api.group.get_groups(username='theurbanspaceman')
 
     def test_delete_contraints(self):
         """Test deleting a group without passing parameters."""
         from plone.api.exc import MissingParameterError
-        self.assertRaises(MissingParameterError, api.group.delete)
+        with self.assertRaises(MissingParameterError):
+            api.group.delete()
 
     def test_delete_groupname_and_group(self):
         """Test deleting a group passing both groupname and group."""
         from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.delete,
-            groupname='bacon',
-            group=mock.Mock(),
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.group.delete(
+                groupname='bacon',
+                group=mock.Mock(),
+            )
 
     def test_delete_group_groupname(self):
         """Test deleting a group by groupname."""
@@ -178,25 +179,25 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_add_user_contraints(self):
         """Test the constraints when a user is added to a group."""
         from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.add_user,
-            groupname='staff', group=mock.Mock(),
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.group.add_user(
+                groupname='staff',
+                group=mock.Mock(),
+            )
 
     def test_add_user_username_and_user(self):
         """Test adding a user to a group passing both username and user."""
         from plone.api.exc import InvalidParameterError
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.add_user,
-            groupname='staff',
-            username='staff',
-            user=mock.Mock()
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.group.add_user(
+                groupname='staff',
+                username='staff',
+                user=mock.Mock()
+            )
 
     def test_add_user_with_nonexistant_group(self):
         """Test adding a user to a group that does not exist."""
+
         self.assertRaises(
             KeyError,
             api.group.add_user,
@@ -245,33 +246,25 @@ class TestPloneApiGroup(unittest.TestCase):
         from plone.api.exc import MissingParameterError
 
         # Arguments ``groupname`` and ``group`` are mutually exclusive.
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.remove_user,
-            username='jane',
-            groupname='staff',
-            group=mock.Mock(),
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.group.remove_user(
+                username='jane',
+                groupname='staff',
+                group=mock.Mock(),
+            )
         # Arguments ``username`` and ``user`` are mutually exclusive.
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.remove_user,
-            groupname='staff',
-            username='jane',
-            user=mock.Mock(),
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.group.remove_user(
+                groupname='staff',
+                username='jane',
+                user=mock.Mock(),
+            )
         # At least one of ``username`` and ``user`` must be provided
-        self.assertRaises(
-            MissingParameterError,
-            api.group.remove_user,
-            groupname='staff',
-        )
+        with self.assertRaises(MissingParameterError):
+            api.group.remove_user(groupname='staff')
         # At least one of ``groupname`` and ``group`` must be provided
-        self.assertRaises(
-            MissingParameterError,
-            api.group.remove_user,
-            username='jane',
-        )
+        with self.assertRaises(MissingParameterError):
+            api.group.remove_user(username='jane')
 
     def test_remove_user(self):
         """Test removing a user from a group."""
@@ -312,36 +305,30 @@ class TestPloneApiGroup(unittest.TestCase):
         group = api.group.create(groupname='foo')
 
         # You can't grant Anonymous
-        self.assertRaises(
-            ValueError,
-            api.group.grant_roles,
-            groupname='foo',
-            roles=['Anonymous'],
-        )
+        with self.assertRaises(ValueError):
+            api.group.grant_roles(
+                groupname='foo',
+                roles=['Anonymous'],
+            )
 
         # You can't grant Authenticated
-        self.assertRaises(
-            ValueError,
-            api.group.grant_roles,
-            groupname='foo',
-            roles=['Authenticated'],
-        )
+        with self.assertRaises(ValueError):
+            api.group.grant_roles(
+                groupname='foo',
+                roles=['Authenticated'],
+            )
 
         # Roles are required
-        self.assertRaises(
-            MissingParameterError,
-            api.group.grant_roles,
-            groupname='foo',
-        )
+        with self.assertRaises(MissingParameterError):
+            api.group.grant_roles(groupname='foo')
 
         # Groupname and group are mutually exclusive
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.grant_roles,
-            groupname='foo',
-            group=group,
-            roles=['Reviewer'],
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.group.grant_roles(
+                groupname='foo',
+                group=group,
+                roles=['Reviewer'],
+            )
 
         api.group.grant_roles(groupname='foo', roles=['Editor'])
         self.assertIn('Editor', api.group.get_roles(groupname='foo'))
@@ -363,36 +350,30 @@ class TestPloneApiGroup(unittest.TestCase):
         group = api.group.create(groupname='bar')
 
         # You can't revoke Anonymous
-        self.assertRaises(
-            ValueError,
-            api.group.revoke_roles,
-            groupname='bar',
-            roles=['Anonymous'],
-        )
+        with self.assertRaises(ValueError):
+            api.group.revoke_roles(
+                groupname='bar',
+                roles=['Anonymous'],
+            )
 
         # You can't revoke Authenticated
-        self.assertRaises(
-            ValueError,
-            api.group.revoke_roles,
-            groupname='bar',
-            roles=['Authenticated'],
-        )
+        with self.assertRaises(ValueError):
+            api.group.revoke_roles(
+                groupname='bar',
+                roles=['Authenticated'],
+            )
 
         # Roles are required
-        self.assertRaises(
-            MissingParameterError,
-            api.group.revoke_roles,
-            groupname='foo',
-        )
+        with self.assertRaises(MissingParameterError):
+            api.group.revoke_roles(groupname='foo')
 
         # Groupname and group are mutually exclusive
-        self.assertRaises(
-            InvalidParameterError,
-            api.group.revoke_roles,
-            groupname='foo',
-            group=group,
-            roles=['Reviewer'],
-        )
+        with self.assertRaises(InvalidParameterError):
+            api.group.revoke_roles(
+                groupname='foo',
+                group=group,
+                roles=['Reviewer'],
+            )
 
         api.group.grant_roles(groupname='bar', roles=['Reviewer', 'Editor'])
 

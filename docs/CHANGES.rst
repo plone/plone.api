@@ -9,6 +9,9 @@ Changes
 - Add plone.recipe.codeanalysis to our buildout.
   [flohcim]
 
+- Make all assertRaise() calls use the `with` keyword.
+  [winstonf88]
+
 - Amend user.get method to accept a userid parameter, refs #112.
   [cewing, xiru, winstonf88]
 
