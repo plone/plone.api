@@ -44,7 +44,8 @@ Changes
 - Make api.content.create() also print out the underlying error, refs #118.
   [winston88]
 
-- Fix api.content.copy() without target parameter, refs #115.
+- Fix api.content copy/move/rename functions to return the object after they
+  change content, refs #115.
   [rodfersou]
 
 - Make Travis IRC notification message to be one-line instead of three-lines.
