@@ -11,7 +11,7 @@ long_description = \
     read('CHANGES.rst') + \
     read('docs', 'LICENSE.txt')
 
-version = '1.0.0-rc.3'
+version = '1.1.0-rc.1'
 
 setup(
     name='plone.api',

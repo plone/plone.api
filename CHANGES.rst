@@ -1,10 +1,14 @@
 Changelog
 =========
 
-1.0.0-rc.3 (unreleased)
+1.1.0-rc.1 (unreleased)
 -----------------------
 
-- No changes yet.
+- Use api.plone.org/foo redirects.
+  [zupo]
+
+- Add MANIFEST.in file.
+  [hvelarde]
 
 
 1.0.0-rc.3 (2013-10-09)
