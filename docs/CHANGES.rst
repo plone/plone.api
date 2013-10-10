@@ -3,7 +3,14 @@
 Changes
 =======
 
-1.0.0-rc.2 (unreleased)
+1.0.0-rc.3 (2013-10-09)
+-----------------------
+
+- Packaging issues.
+  [zupo]
+
+
+1.0.0-rc.2 (2013-10-09)
 -----------------------
 
 - Proof-read the docs, improved grammar and wording.
