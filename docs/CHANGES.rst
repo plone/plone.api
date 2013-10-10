@@ -189,4 +189,3 @@ Changes
   [davisagli, fulv, iElectric, jcerjak, jonstahl, kcleong, mauritsvanrees,
   wamdam, witsch, zupo]
 
-
