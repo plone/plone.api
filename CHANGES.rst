@@ -1,8 +1,11 @@
 Changelog
 =========
 
-1.1.0-rc.1 (unreleased)
+1.1.0-rc.1 (2013-10-10)
 -----------------------
+
+- Fix README.rst so it renders correctly on PyPI.
+  [zupo]
 
 - Use api.plone.org/foo redirects.
   [zupo]
