@@ -6,6 +6,9 @@ Changes
 1.0.0-rc.2 (unreleased)
 -----------------------
 
+- Proof-read the docs, improved grammar and wording.
+  [cewing]
+
 - Add plone.recipe.codeanalysis to our buildout.
   [flohcim]
 
