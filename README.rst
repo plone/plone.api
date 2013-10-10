@@ -1,6 +1,12 @@
 plone.api
 =========
 
+* `Documentation @ api.plone.org <http://api.plone.org>`_
+* `Source code @ GitHub <http://github.com/plone/plone.api>`_
+* `Issues @ GitHub <http://github.com/plone/plone.api/issues>`_
+* `Continuous Integration @ Travis CI <http://travis-ci.org/plone/plone.api>`_
+* `Code Coverage @ Coveralls.io <http://coveralls.io/r/plone/plone.api>`_
+
 .. topic:: Overview
 
     The ``plone.api`` is an elegant and simple API, built for humans wishing
@@ -9,17 +15,6 @@ plone.api
     It comes with *cookbook*-like documentation and step-by-step instructions
     for doing common development tasks in Plone. Recipes try to assume the user
     does not have extensive knowledge about Plone internals.
-
-.. raw:: html
-
-    <img src="http://travis-ci.org/plone/plone.api.png?&branch=master">
-    <img src="http://coveralls.io/repos/plone/plone.api/badge.png">
-
-* `Documentation @ api.plone.org <http://api.plone.org>`_
-* `Source code @ GitHub <http://github.com/plone/plone.api>`_
-* `Issues @ GitHub <http://github.com/plone/plone.api/issues>`_
-* `Continuous Integration @ Travis CI <http://travis-ci.org/plone/plone.api>`_
-* `Code Coverage @ Coveralls.io <http://coveralls.io/r/plone/plone.api>`_
 
 The intention of this package is to provide clear API methods for Plone
 functionality which may be confusing or difficult to access. As the underlying

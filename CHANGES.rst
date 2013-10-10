@@ -34,7 +34,7 @@ Changelog
   [cewing, xiru, winstonf88]
 
   .. note::
-    this change fixes a bug in the earlier implementation that could cause
+    This change fixes a bug in the earlier implementation that could cause
     errors in some situations. This situation will only arise if the userid and
     username for a user are not the same. If membrane is being used for content-
     based user objects, or if email-as-login is enabled *and* a user has changed
