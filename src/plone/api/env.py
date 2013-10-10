@@ -163,12 +163,18 @@ class _GlobalRoleOverridingContext(object):
 
 
 def debug_mode():
-    """Returns True if your zope instance is running in debug mode."""
+    """Returns True if your zope instance is running in debug mode.
+
+    :Example: :ref:`env_debug_mode_example`
+    """
     return Globals.DevelopmentMode
 
 
 def test_mode():
-    """Returns True if you are running the zope test runner."""
+    """Returns True if you are running the zope test runner.
+
+    :Example: :ref:`env_test_mode_example`
+    """
     from plone.api import env
 
     if env.IS_TEST is None:

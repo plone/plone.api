@@ -1,8 +1,8 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
-    http://developer.plone.org/reference_manuals/external/plone.api/content.html so you have working
-    references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
+    at `api.plone.org <http://developer.plone.org/reference_manuals/external/plone.api/content.html>`_
+    so you have working references and proper formatting.
 
 
 .. module:: plone
@@ -17,16 +17,17 @@ Content
 Create content
 --------------
 
-First get the portal object that we will use as a container for new content:
+To add an object, you must first have a container in which to put it. Get the
+portal object, it will serve nicely:
 
 .. code-block:: python
 
     from plone import api
     portal = api.portal.get()
 
-If you want to create a new content item, use the :meth:`api.content.create`
-method. The type attribute will automatically decide which content type
-(dexterity, archetype, ...) should be created.
+Create your new content item using the :meth:`api.content.create` method. The
+type argument will decide which content type will be created. Both Dexterity
+and Archetypes content types are supported.
 
 .. code-block:: python
 
@@ -36,7 +37,8 @@ method. The type attribute will automatically decide which content type
         title='My Content',
         container=portal)
 
-The ``id`` of the object gets generated (in a safe way) from its ``title``.
+The ``id`` of the new object is automatically and safely generated from its
+``title``.
 
 .. code-block:: python
 
@@ -48,8 +50,8 @@ The ``id`` of the object gets generated (in a safe way) from its ``title``.
 Get content object
 ------------------
 
-There are several approaches of getting to your content object. Consider
-the following portal structure::
+There are several approaches to getting your content object. Consider the
+following portal structure::
 
     plone (portal root)
     |-- blog
@@ -76,8 +78,8 @@ the following portal structure::
     api.content.create(container=events, type='Event', id='sprint')
 
 
-You can do the following operations to get to various content objects in the
-stucture above, including using :meth:`api.content.get`.
+The following operations will get objects from the stucture above, including
+using :meth:`api.content.get`.
 
 .. code-block:: python
 
@@ -98,7 +100,7 @@ stucture above, including using :meth:`api.content.get`.
 
     # moreover, you can access content by its UID
     uid = about['team'].UID()
-    conference = api.content.get(UID=uid)
+    team = api.content.get(UID=uid)
 
 
 .. invisible-code-block: python
@@ -108,12 +110,13 @@ stucture above, including using :meth:`api.content.get`.
     self.assertTrue(about)
     self.assertTrue(conference)
     self.assertTrue(sprint)
+    self.assertTrue(team)
 
 
 .. _content_find_example:
 
-Find content object
--------------------
+Find content objects
+--------------------
 
 You can use the *catalog* to search for content. Here is a simple example:
 
@@ -127,8 +130,8 @@ You can use the *catalog* to search for content. Here is a simple example:
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
     self.assertEqual(len(documents), 3)
 
-More about how to use the catalog and what parameters it supports is written
-in the `Collective Developer Documentation
+More information about how to use the catalog may be found in the `Collective
+Developer Documentation
 <http://collective-docs.readthedocs.org/en/latest/searching_and_indexing/query.html>`_.
 Note that the catalog returns *brains* (metadata stored in indexes) and not
 objects. However, calling ``getObject()`` on brains does in fact give you the
@@ -145,15 +148,15 @@ object.
 Get content object UUID
 -----------------------
 
-An Universally Unique IDentifier (UUID) is a unique, non-human-readable
+A Universally Unique IDentifier (UUID) is a unique, non-human-readable
 identifier for a content object which stays on the object even if the object
 is moved.
 
-Plone uses UUIDs for storing content-to-content references and for linking by
+Plone uses UUIDs for storing references between content and for linking by
 UIDs, enabling persistent links.
 
-To get a content object UUID use :meth:`api.content.get_uuid`. The following
-code gets the UUID of the ``contact`` document.
+To get the UUID of any content object use :meth:`api.content.get_uuid`. The
+following code gets the UUID of the ``contact`` document.
 
 .. code-block:: python
 
@@ -172,9 +175,10 @@ code gets the UUID of the ``contact`` document.
 Move content
 ------------
 
-To move content around the portal structure defined above use
-:meth:`api.content.move` The code below moves the ``contact`` item (with all
-objects that it contains) out of folder ``about`` into the Plone portal root.
+To move content around the portal structure defined above use the
+:meth:`api.content.move` method. The code below moves the ``contact`` item
+(with all it contains) out of the folder ``about`` and into the Plone portal
+root.
 
 .. code-block:: python
 
@@ -190,16 +194,16 @@ objects that it contains) out of folder ``about`` into the Plone portal root.
     self.assertTrue(portal['contact'])
 
 Actually, ``move`` behaves like a filesystem move. If you pass it an ``id``
-argument, you can define to what target ID the object will be moved to.
-Otherwise it will be moved with the same ID that it had.
-
+argument the object will have that new ID in it's new home. By default it will
+retain its original ID.
 
 .. _content_rename_example:
 
 Rename content
 --------------
 
-To rename, use the :meth:`api.content.rename` method.
+To rename a content object (change its ID), use the :meth:`api.content.rename`
+method.
 
 .. code-block:: python
 
@@ -218,7 +222,7 @@ To rename, use the :meth:`api.content.rename` method.
 Copy content
 ------------
 
-To copy a content object, use the :meth:`api.content.copy`.
+To copy a content object, use the :meth:`api.content.copy` method.
 
 .. code-block:: python
 
@@ -228,9 +232,9 @@ To copy a content object, use the :meth:`api.content.copy`.
 
     api.content.copy(source=training, target=portal)
 
-Note that the new object will have the same id as the old object (if not
-stated otherwise). This is not a problem, since the new object is in a different
-container.
+Note that the new object will have the same ID as the old object (unless
+otherwise stated). This is not a problem, since the new object is in a
+different container.
 
 .. invisible-code-block: python
 
@@ -240,7 +244,7 @@ container.
 
 You can also set ``target`` to source's container and set ``safe_id=True`` which
 will duplicate your content object in the same container and assign it a
-non-conflicting id.
+new, non-conflicting ID.
 
 .. code-block:: python
 
@@ -258,8 +262,8 @@ non-conflicting id.
 Delete content
 --------------
 
-Deleting content works by passing the object you want to delete to the
-:meth:`api.content.delete` method:
+To delete a content object, pass the object to the :meth:`api.content.delete`
+method:
 
 .. code-block:: python
 
@@ -278,11 +282,13 @@ Content manipulation with the `safe_id` option
 ----------------------------------------------
 
 When manipulating content with :meth:`api.content.create`,
-:meth:`api.content.move` and :meth:`api.content.copy` the `safe_id` flag is
-disabled by default. This means the id will be enforced, if the id is taken on
-the target container the API method will raise an error.
+:meth:`api.content.move` or :meth:`api.content.copy` the `safe_id` flag is
+disabled by default. This means the uniqueness of IDs will be enforced. If
+another object with the same ID is already present in the target container
+these API methods will raise an error.
 
-However, if the `safe_id` option is enabled, a non-conflicting id will be created.
+However, if the `safe_id` option is enabled, a non-conflicting id will be
+generated.
 
 .. invisible-code-block: python
 
@@ -299,8 +305,8 @@ However, if the `safe_id` option is enabled, a non-conflicting id will be create
 Get workflow state
 ------------------
 
-To find out in which workflow state your content is, use
-:meth:`api.content.get_state`.
+To find out the current workflow state of your content, use the
+:meth:`api.content.get_state` method.
 
 .. code-block:: python
 
@@ -318,7 +324,8 @@ To find out in which workflow state your content is, use
 Transition
 ----------
 
-To transition your content into a new state, use :meth:`api.content.transition`.
+To transition your content to a new workflow state, use the
+:meth:`api.content.transition` method.
 
 .. code-block:: python
 
