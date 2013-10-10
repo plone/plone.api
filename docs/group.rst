@@ -1,8 +1,8 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
-    http://developer.plone.org/reference_manuals/external/plone.api/group.html so you have working
-    references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
+    at `api.plone.org <http://developer.plone.org/reference_manuals/external/plone.api/group.html>`_
+    so you have working references and proper formatting.
 
 
 .. module:: plone
@@ -28,7 +28,8 @@ To create a new portal group, use :meth:`api.group.create`.
 
     self.assertEqual(group.id, 'staff')
 
-When creating groups ``title``, ``description``, ``roles`` and ``groups`` are optional.
+When creating groups ``title``, ``description``, ``roles`` and ``groups`` are
+optional.
 
 .. code-block:: python
 
@@ -123,9 +124,9 @@ You can also get all groups, by using :meth:`api.group.get_groups`.
 Get user's groups
 -----------------
 
-If you set the ``user`` parameter,
-then :meth:`api.group.get_groups` will return
-groups that the user is member of.
+The groups returned may be filtered by member. By passing the ``username``
+parameter, :meth:`api.group.get_groups` will return only those groups to which
+the user belongs.
 
 .. invisible-code-block: python
 
@@ -145,12 +146,23 @@ groups that the user is member of.
     self.assertEqual(groups[1].id, 'AuthenticatedUsers')
     self.assertEqual(groups[2].id, 'staff')
 
+You may also pass the user directly to :meth:`api.group.get_groups`:
+
+    from plone import api
+    user = api.user.get(username='jane')
+    groups = api.group.get_groups(user=user)
+
+.. invisible-code-block: python
+
+    self.assertEqual(groups[0].id, 'Reviewers')
+    self.assertEqual(groups[1].id, 'AuthenticatedUsers')
+    self.assertEqual(groups[2].id, 'staff')
 
 Get group members
 -----------------
 
-Remember to use the :meth:`api.user.get_users` method to get all users that are
-members of a certain group.
+Use the :meth:`api.user.get_users` method to get all the users that are
+members of a group.
 
 
 .. code-block:: python
@@ -168,8 +180,8 @@ members of a certain group.
 Delete group
 ------------
 
-To delete a group, use :meth:`api.group.delete` and pass in either the groupname
-or the group object you want to delete.
+To delete a group, use :meth:`api.group.delete` and pass in either the
+groupname or the group object you want to delete.
 
 .. code-block:: python
 
@@ -196,9 +208,9 @@ or the group object you want to delete.
 Adding user to group
 --------------------
 
-The :meth:`api.group.add_user` method accepts either the groupname or the group
-object of the target group and the username or the user object you want to add
-to the group.
+To add a user to a group, use the :meth:`api.group.add_user` method. This
+method accepts either the groupname or the group object for the target group
+and the username or the user object you want to add to the group.
 
 .. code-block:: python
 
@@ -209,7 +221,9 @@ to the group.
 
 .. invisible-code-block: python
 
-    self.assertTrue('staff' in [g.id for g in api.group.get_groups(username='bob')])
+    self.assertTrue(
+        'staff' in [g.id for g in api.group.get_groups(username='bob')]
+    )
 
 
 .. _group_remove_user_example:
@@ -217,9 +231,9 @@ to the group.
 Removing user from group
 ------------------------
 
-The :meth:`api.group.remove_user` method accepts either the groupname or the
-group object of the target group and either the username or the user object you
-want to remove from the group.
+To remove a user from a group, use the :meth:`api.group.remove_user` method.
+This also accepts either the groupname or the group object for the target group
+and either the username or the user object you want to remove from the group.
 
 .. code-block:: python
 
@@ -237,8 +251,8 @@ want to remove from the group.
 Get group roles
 ---------------
 
-The :meth:`api.group.get_roles` method is used for getting a group's roles.
-By default it returns site-wide roles.
+To find the roles assigned to a group, use the :meth:`api.group.get_roles`
+method. By default it returns site-wide roles.
 
 .. code-block:: python
 
@@ -251,7 +265,7 @@ By default it returns site-wide roles.
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
 
 
-If you pass in a content object, it will return local roles of the group
+If you pass in a content object, it will return the local roles of the group
 in that particular context.
 
 .. code-block:: python
@@ -276,8 +290,8 @@ in that particular context.
 Grant roles to group
 --------------------
 
-The :meth:`api.group.grant_roles` allows us to grant a list of roles site-wide to the
-group.
+To grant roles to a group, use the :meth:`api.group.grant_roles` method. By
+default, roles are granted site-wide.
 
 .. code-block:: python
 
@@ -294,7 +308,8 @@ group.
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
 
 
-If you pass in a content object, it will grant these roles in that particular context.
+If you pass in a content object, roles will be assigned in that particular
+context.
 
 .. code-block:: python
 
@@ -317,8 +332,8 @@ If you pass in a content object, it will grant these roles in that particular co
 Revoke roles from group
 -----------------------
 
-The :meth:`api.group.revoke_roles` allows us to revoke a list of roles from the
-group.
+To revoke roles already granted to a group, use the
+:meth:`api.group.revoke_roles` method.
 
 .. code-block:: python
 
@@ -333,7 +348,8 @@ group.
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
 
 
-If you pass in a content object, it will grant these roles in that particular context.
+If you pass in a content object, it will revoke roles granted in that
+particular context.
 
 .. code-block:: python
 
@@ -352,5 +368,5 @@ If you pass in a content object, it will grant these roles in that particular co
 Further reading
 ---------------
 
-For more information on possible flags and usage options please see the full
-:ref:`plone-api-group` specification.
+For more information on possible flags and complete options please see the
+full :ref:`plone-api-group` specification.

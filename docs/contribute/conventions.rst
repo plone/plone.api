@@ -1,8 +1,8 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
-    http://developer.plone.org/reference_manuals/external/plone.api/contribute/conventions.html so you
-    have working references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
+    at `api.plone.org <http://developer.plone.org/reference_manuals/external/plone.api/contribute/conventions.html>`_
+    so you have working references and proper formatting.
 
 .. _conventions:
 
@@ -297,7 +297,7 @@ Declaring dependencies
 All direct dependencies should be declared in ``install_requires`` or
 ``extras_require`` sections in ``setup.py``. Dependencies, which are not needed for
 a production environment (like "develop" or "test" dependencies) or are
-optional (like "archetypes" or "dexterity" flavors of the same package) should
+optional (like "Archetypes" or "Dexterity" flavors of the same package) should
 go in ``extras_require``. Remember to document how to enable specific features
 (and think of using ``zcml:condition`` statements, if you have such optional
 features).

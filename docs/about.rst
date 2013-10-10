@@ -1,8 +1,8 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
-    http://developer.plone.org/reference_manuals/external/plone.api/about.html so you have working
-    references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
+    at `api.plone.org <http://developer.plone.org/reference_manuals/external/plone.api/about.html>`_
+    so you have working references and proper formatting.
 
 
 =====
@@ -15,14 +15,14 @@ Inspiration
 We want `plone.api` to be developed with `PEP 20
 <http://www.python.org/dev/peps/pep-0020/>`_ idioms in mind, in particular:
 
-  |   Explicit is better than implicit.
-  |   Readability counts.
-  |   There should be one -- and preferably only one -- obvious way to do it.
-  |   Now is better than never.
-  |   If the implementation is hard to explain, it's a bad idea.
-  |   If the implementation is easy to explain, it may be a good idea.
+  | Explicit is better than implicit.
+  | Readability counts.
+  | There should be one-- and preferably only one --obvious way to do it.
+  | Now is better than never.
+  | If the implementation is hard to explain, it's a bad idea.
+  | If the implementation is easy to explain, it may be a good idea.
 
-All contributions to :mod:`plone.api` should keep these important rules in mind.
+All contributions to `plone.api` should keep these rules in mind.
 
 Two libraries are especially inspiring:
 
@@ -32,21 +32,18 @@ Two libraries are especially inspiring:
   designed, is consistent, explicit, and easy to learn.
 
 `Requests <http://docs.python-requests.org>`_
-  As of this writing, this is still a very new library, but just looking at
-  `a comparison between the urllib2 way and the requests way
-  <https://gist.github.com/973705>`_, as well as the rest of its documentation,
-  one cannot but see a parallel between the way we *have been* and the way we
-  *should be* writing code for Plone (or at least have that option).
+  If you look at the documentation for this library, or make `a comparison
+  between the urllib2 way and the requests way
+  <https://gist.github.com/973705>`_, you cannot but see a parallel between
+  the way we *have been* and the way we *should be* writing code for Plone. At
+  the least, we should have the option to write such clean code.
 
-The API provides grouped functional access to otherwise dispersed logic
-in Plone. Plone's original distribution of logic is a result of two things:
-the historic re-use of CMF- and Zope-methods and reasonable, but
-at first hard to understand splits like ``acl_users.*`` and
-``portal_memberdata``.
-
-That's why we've created a set of useful methods that implement best-practice
-access to the original dispersed APIs. In this way we also document in code
-how to use Plone directly.
+The API provides grouped functional access to otherwise distributed logic in
+Plone. This distribution is a result of two historical factors: re-use of CMF-
+and Zope-methods and reasonable but hard to remember splits like `acl_users`
+and `portal_memberdata`. Methods defined in `plone.api` implement
+best-practice access to the original distributed APIs. These methods also
+provide clear documentation of how best to access Plone APIs directly.
 
 .. note::
    If you doubt those last sentences: We had five different ways to get the
@@ -54,12 +51,11 @@ how to use Plone directly.
    an object. With this in mind, it's obvious that even the most simple
    tasks can't be documented in Plone in a sane way.
 
-Also, we don't intend to cover all possible use-cases. Only the most common
-ones. If you need to do something that :mod:`plone.api` does not support,
-just use the underlying APIs directly. We will cover 20% of tasks that are
-being done 80% of the time, and not one more. We try to document sensible use
-cases even when we don't provide them, though.
-
+We do not intend to cover all possible use-cases, only the most common. We
+will cover the 20% of possible tasks on which we spend 80% of our time. If you
+need to do something that `plone.api` does not support, use the underlying
+APIs directly. We try to document sensible use cases even when we don't
+provide APIs for them, though.
 
 Design decisions
 ================
@@ -67,10 +63,10 @@ Design decisions
 Import and usage style
 ----------------------
 
-API methods are grouped by their field of usage. For example:
-:ref:`chapter_portal`, :ref:`chapter_content`, :ref:`chapter_users`
-and :ref:`chapter_groups`.  Hence the importing and usage of API
-methods look like this:
+API methods are grouped according to what they affect. For example:
+:ref:`chapter_portal`, :ref:`chapter_content`, :ref:`chapter_users`,
+:ref:`chapter_env` and :ref:`chapter_groups`. In general, importing and using
+an API looks something like this:
 
 .. invisible-code-block: python
 
@@ -92,31 +88,31 @@ methods look like this:
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
     self.assertEqual(user.__class__.__name__, 'MemberData')
 
-In other words, always import the top-level package (``from plone import api``)
+Always import the top-level package (``from plone import api``)
 and then use the group namespace to access the method you want
 (``portal = api.portal.get()``).
 
-All example code should adhere to this style, so we encourage one and only
-one preferred way of consuming API methods.
+All example code should adhere to this style, to encourage one and only one
+preferred way of consuming API methods.
 
 
 Prefer keyword arguments
 ------------------------
 
-For the following reasons the example code in the API (and hence the
-recommendation to people on how to use it) shall always prefer using keyword
-instead of positional arguments:
+We prefer using keyword arguments to positional arguments. Example code in
+`plone.api` will use this style, and we recommend users to follow this
+convention. For the curious, here are the reasons:
 
 #. There will never be a doubt when writing a method on whether an argument
    should be positional or not.  Decision already made.
 #. There will never be a doubt when using the API on which argument comes
    first, or which ones are named/positional.  All arguments are named.
 #. When using positional arguments, the method signature is dictated by the
-   underlying implementation.  Think required vs. optional arguments.  Named
-   arguments are always optional in Python.  This allows us to change
-   implementation details and leave the signature unchanged. In other words,
-   the underlying API code can change substantially and the code using it will
-   remain valid.
+   underlying implementation (think required vs. optional arguments). Named
+   arguments are always optional in Python. Using keywords allows
+   implementation details to change while the signature is preserved. In other
+   words, the underlying API code can change substantially but code using it
+   will remain valid.
 #. The arguments can all be passed as a dictionary.
 
 
@@ -124,13 +120,11 @@ instead of positional arguments:
 
     # GOOD
     from plone import api
-    portal = api.portal.get()
     alice = api.user.get(username='alice@plone.org')
 
     # BAD
-    from plone.api import portal, user
-    portal = portal.get()
-    alie = user.get('alice@plone.org')
+    from plone.api import user
+    alice = user.get('alice@plone.org')
 
 
 FAQ
@@ -142,15 +136,14 @@ Why aren't we using wrappers?
 We could wrap an object (like a user) with an API to make it more usable
 right now. That would be an alternative to the convenience methods.
 
-But telling developers that they will get yet another object from the API which
-isn't the requested object, but an API-wrapped one instead, would be very hard.
-Also, making this wrap transparent in order to make the returned object
-directly usable would be nearly impossible, because we'd have to proxy all the
-:mod:`zope.interface` stuff, annotations and more.
+Unfortunately a wrapper is not the same as the object it wraps, and answering
+the inevitable questions about this difference would be confusing. Moreover,
+functionality provided by :mod:`zope.interface` such as annotations would need
+to be proxied. This would be extremely difficult, if not impossible.
 
-Furthermore, we want to avoid people writing code like this in tests or their
-internal utility code and failing miserably in the future if wrappers would
-no longer be needed and would therefore be removed::
+It is also important that developers be able to ensure that their tests
+continue to work even if wrappers were to be deprecated. Consider the failure
+lurking behind test code such as this::
 
     if users['bob'].__class__.__name__ == 'WrappedMemberDataObject':
         # do something
@@ -160,5 +153,5 @@ Why ``delete`` instead of ``remove``?
 -------------------------------------
 
 * The underlying code uses methods that are named more similarly to *delete*
-  rather than to *remove*
-* ``CRUD`` has *delete*, not *remove*.
+  rather than to *remove*.
+* The ``CRUD`` verb is *delete*, not *remove*.

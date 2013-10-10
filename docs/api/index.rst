@@ -1,8 +1,8 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
-    http://developer.plone.org/reference_manuals/external/plone.api/api.html so you have working
-    references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
+    at `api.plone.org <http://developer.plone.org/reference_manuals/external/plone.api/api/index.html>`_
+    so you have working references and proper formatting.
 
 
 .. currentmodule:: plone
@@ -80,6 +80,9 @@ api.env
 .. autosummary::
 
     api.env.adopt_roles
+    api.env.adopt_user
+    api.env.debug_mode
+    api.env.test_mode
 
 
 Exceptions and errors

@@ -1,8 +1,8 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read it on api.plone.org:
-    http://developer.plone.org/reference_manuals/external/plone.api/env.html so you have working
-    references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
+    at `api.plone.org <http://developer.plone.org/reference_manuals/external/plone.api/env.html>`_
+    so you have working references and proper formatting.
 
 
 .. module:: plone
@@ -70,6 +70,8 @@ To temporarily override the user which is currently active, use
         "doc_owner",
     )
 
+.. _env_debug_mode_example:
+
 Debug mode
 ----------
 
@@ -83,6 +85,9 @@ To know if your zope instance is running in debug mode, use
     in_debug_mode = api.env.debug_mode()
     if in_debug_mode:
         print 'Zope is in debug mode'
+
+
+.. _env_test_mode_example:
 
 Test mode
 ---------
