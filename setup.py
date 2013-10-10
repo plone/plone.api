@@ -6,7 +6,7 @@ import os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.0.0-rc.1'
+version = '1.0.0-rc.2'
 
 setup(
     name='plone.api',
