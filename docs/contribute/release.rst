@@ -61,9 +61,6 @@ Folow these step to create a new release of `plone.api`.
 #. Create a release, tag it in git and upload it to GitHub by running
    ``bin/mkrelease -d pypi -pq .`` (see example below).
 
-#. Go to ``https://readthedocs.org/dashboard/ploneapi/versions/`` and choose
-   the latest version to be displayed as the default version.
-
 
 Example
 =======

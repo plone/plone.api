@@ -6,13 +6,18 @@ import os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
+long_description = \
+    read('README.rst') + \
+    read('docs', 'CHANGES.rst') + \
+    read('docs', 'LICENSE.txt')
+
 version = '1.0.0-rc.2'
 
 setup(
     name='plone.api',
     version=version,
     description='A Plone API.',
-    long_description=read('README.rst'),
+    long_description=long_description,
     author='Plone Foundation',
     author_email='plone-developers@lists.sourceforge.net',
     license='GPL version 2',
