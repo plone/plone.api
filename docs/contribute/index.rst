@@ -43,5 +43,4 @@ Description of our release process and guidelines.
    release.rst
 
 
-.. include:: ../CHANGES.rst
-    :start-after: :orphan:
+.. include:: ../../CHANGES.rst

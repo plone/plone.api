@@ -340,12 +340,13 @@ on GitHub and with Sphinx.
 Tracking changes
 ================
 
-Feature-level changes to code are tracked inside ``docs/CHANGES.rst``. Example:
+Feature-level changes to code are tracked inside ``CHANGES.rst``. The title
+of the ``CHANGES.rst`` file should be ``Changelog``. Example:
 
 .. sourcecode:: rst
 
-    CHANGES
-    =======
+    Changelog
+    =========
 
     1.0.0-dev (Unreleased)
     ----------------------

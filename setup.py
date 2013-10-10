@@ -8,7 +8,7 @@ def read(*rnames):
 
 long_description = \
     read('README.rst') + \
-    read('docs', 'CHANGES.rst') + \
+    read('CHANGES.rst') + \
     read('docs', 'LICENSE.txt')
 
 version = '1.0.0-rc.3'
