@@ -80,6 +80,9 @@ api.env
 .. autosummary::
 
     api.env.adopt_roles
+    api.env.adopt_user
+    api.env.debug_mode
+    api.env.test_mode
 
 
 Exceptions and errors

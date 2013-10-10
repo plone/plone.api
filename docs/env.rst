@@ -70,6 +70,8 @@ To temporarily override the user which is currently active, use
         "doc_owner",
     )
 
+.. _env_debug_mode_example:
+
 Debug mode
 ----------
 
@@ -83,6 +85,9 @@ To know if your zope instance is running in debug mode, use
     in_debug_mode = api.env.debug_mode()
     if in_debug_mode:
         print 'Zope is in debug mode'
+
+
+.. _env_test_mode_example:
 
 Test mode
 ---------
