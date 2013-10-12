@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.0 (unreleased)
+1.1.0 (2013-10-12)
 ------------------
 
 - List supported Plone versions in setup.py.
