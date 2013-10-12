@@ -1,6 +1,31 @@
 Changelog
 =========
 
+1.1.0 (unreleased)
+------------------
+
+- List supported Plone versions in setup.py.
+  [zupo]
+
+- Add Plone 4.0 and 4.1 under Python 2.6 to the testing matrix.
+  [hvelarde]
+
+- Do not run Plone 4.3 with Python 2.6 and Plone 4.2 with Python 2.7 -- this
+  reduces the number of builds but keeps basically the same coverage.
+  [hvelarde]
+
+- Only upload coverage info to Coveralls.io on one job per build, not on all
+  jobs.
+  [hvelarde]
+
+- Upgrade zc.buildout to 1.7.1 (was 1.6.3)
+  [hvelarde]
+
+- Use Plone 4.3 by default (was 4.2)
+  [hvelarde]
+
+
+
 1.1.0-rc.1 (2013-10-10)
 -----------------------
 
