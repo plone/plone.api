@@ -323,6 +323,58 @@ class TestPloneApiUser(unittest.TestCase):
         with self.assertRaises(UserNotFoundError):
             api.user.get_roles(username='theurbanspaceman')
 
+    def test_get_roles_in_context(self):
+        """Test get local and inherited roles for a user on an object"""
+        api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        portal = api.portal.get()
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One',
+        )
+        document = api.content.create(
+            container=folder,
+            type='Document',
+            id='document_one',
+            title='Document One',
+        )
+        api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
+        self.assertIn(
+            'Editor', api.user.get_roles(username='chuck', obj=document))
+
+    def test_get_roles_local_only(self):
+        """Test get local roles for a user on an object"""
+        api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        portal = api.portal.get()
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One',
+        )
+        document = api.content.create(
+            container=folder,
+            type='Document',
+            id='document_one',
+            title='Document One',
+        )
+        api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
+        self.assertNotIn(
+            'Editor',
+            api.user.get_roles(username='chuck', obj=document, inherit=False),
+        )
+
     def test_get_permissions_root(self):
         """Test get permissions on site root."""
 
@@ -565,6 +617,10 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertIn(
             'Editor',
             api.user.get_roles(username='chuck', obj=folder),
+        )
+        self.assertEqual(
+            ('Editor',),
+            api.user.get_roles(username='chuck', obj=folder, inherit=False),
         )
         self.assertIn(
             'Editor',
