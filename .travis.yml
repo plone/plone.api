@@ -2,7 +2,7 @@ language: python
 python: 2.7
 
 env:
-  - PLONE_VERSION=4.3
+  - PLONE_VERSION=4.3 QA=true
 global:
   - secure: "nTXMNU2aYbCtvKD74PndF8Xm2h6IvsxPjr6vj45AxjXmaB7Wf5oGi/4b6ObV\nexBtUQkFnc+M0ThGyUznOCPi3YxcbTzsyhQYhHUtmtw/6QRyYgo4E0GLDItU\n37Ff6wpxl3NMMJTvpi6SOVUvIJUl3+cs+4bkMkS48RSFGg2rGmo="  # Coveralls.io token
 matrix:
@@ -12,7 +12,7 @@ matrix:
     - python: 2.6
       env: PLONE_VERSION=4.1
     - python: 2.6
-      env: PLONE_VERSION=4.2 QA=true
+      env: PLONE_VERSION=4.2
 
 install:
   - mkdir -p buildout-cache/eggs
