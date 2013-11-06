@@ -320,7 +320,7 @@ Versioning scheme
 =================
 
 For software versions, use a sequence-based versioning scheme, which is
-`compatible with setuptools <http://pythonhosted.org/setuptools/setuptools.html#specifying-your-project-s-version>`::
+`compatible with setuptools <http://pythonhosted.org/setuptools/setuptools.html#specifying-your-project-s-version>`_::
 
     MAJOR.MINOR[.MICRO].[STATUS]
 
@@ -329,7 +329,7 @@ The way, setuptools interprets versions is intuitive::
     1.0 < 1.1.a1 < 1.1.a2 < 1.1.b < 1.1.dev < 1.1.rc1 < 1.1.rcdev < 1.1 < 1.1.1
 
 Setuptools recommends to seperate parts with a dot. The website about `semantic
-versioning <http://semver.org/>` is also worth a read.
+versioning <http://semver.org/>`_ is also worth a read.
 
 
 Restructured Text versus Plain Text
