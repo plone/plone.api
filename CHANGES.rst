@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2.0 (unreleased)
+------------------
+
+- Add ``api.env.plone_version()`` and ``api.env.zope_version()`` refs. #126.
+  [hvelarde]
+
+
 1.1.0 (2013-10-12)
 ------------------
 

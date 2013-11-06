@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from AccessControl.SecurityManagement import getSecurityManager
-from AccessControl.SecurityManagement import setSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import setSecurityManager
 from contextlib import contextmanager
+from pkg_resources import get_distribution
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import UserNotFoundError
-from plone.api.validation import required_parameters
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
+from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
 
 import Globals
@@ -185,3 +186,21 @@ def test_mode():
                 break
 
     return env.IS_TEST
+
+
+def plone_version():
+    """Return Plone version number.
+
+    :returns: string denoting what release of Plone this distribution contains
+    :Example: :ref:`env_plone_version_example`
+    """
+    return get_distribution('Plone').version
+
+
+def zope_version():
+    """Return Zope 2 version number.
+
+    :returns: string denoting what release of Zope2 this distribution contains
+    :Example: :ref:`env_zope_version_example`
+    """
+    return get_distribution('Zope2').version

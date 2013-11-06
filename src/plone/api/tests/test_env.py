@@ -392,3 +392,25 @@ class TestPloneApiEnv(unittest.TestCase):
         """Tests that test_mode() returns True as we are in a test runner."""
         from plone.api.env import test_mode
         self.assertEqual(test_mode(), True)
+
+    def test_plone_version(self):
+        """Tests that plone_version() returns Plone version."""
+        from plone.api.env import plone_version
+        self.assertTrue(isinstance(plone_version(), str))
+        # version should be something like 'X.Y' or 'X.Y.Z'
+        # it could also include a package status id (Alpha, Beta or RC)
+        self.assertRegexpMatches(
+            plone_version(),
+            '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?$'
+        )
+
+    def test_zope_version(self):
+        """Tests that zope_version() returns Zope version."""
+        from plone.api.env import zope_version
+        self.assertTrue(isinstance(zope_version(), str))
+        # version should be something like 'X.Y' or 'X.Y.Z'
+        # it could also include a package status id (Alpha, Beta or RC)
+        self.assertRegexpMatches(
+            zope_version(),
+            '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?$'
+        )

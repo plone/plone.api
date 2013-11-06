@@ -104,6 +104,38 @@ To know if your plone instance is running in a test runner, use
         pass  # do something
 
 
+.. _env_plone_version_example:
+
+Plone version
+-------------
+
+To know what version of Plone you are using, use :meth:`api.env.plone_version`.
+
+.. code-block:: python
+
+    from plone import api
+
+    plone_version = api.env.plone_version()
+    if plone_version < '4.1':
+        pass  # do something
+
+
+.. _env_zope_version_example:
+
+Zope version
+------------
+
+To know what version of Zope 2 you are using, use :meth:`api.env.zope_version`.
+
+.. code-block:: python
+
+    from plone import api
+
+    zope_version = api.env.zope_version()
+    if zope_version >= '2.13':
+        pass  # do something
+
+
 Further reading
 ---------------
 
