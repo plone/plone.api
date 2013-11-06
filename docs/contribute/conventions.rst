@@ -256,11 +256,17 @@ Inside each group of dependencies, lines should be sorted alphabetically.
 Versioning scheme
 =================
 
-For software versions, use a sequence-based versioning scheme:
+For software versions, use a sequence-based versioning scheme, which is
+`compatible with setuptools <http://pythonhosted.org/setuptools/setuptools.html#specifying-your-project-s-version>`::
 
-    MAJOR.MINOR[.MICRO][STATUS]
+    MAJOR.MINOR[.MICRO].[STATUS]
 
-For more information, read http://semver.org/.
+The way, setuptools interprets versions is intuitive::
+
+    1.0 < 1.1.a1 < 1.1.a2 < 1.1.b < 1.1.dev < 1.1.rc1 < 1.1.rcdev < 1.1 < 1.1.1
+
+Setuptools recommends to seperate parts with a dot. The website about `semantic
+versioning <http://semver.org/>` is also worth a read.
 
 
 Restructured Text versus Plain Text
