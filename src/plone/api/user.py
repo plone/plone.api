@@ -199,7 +199,7 @@ def is_anonymous():
 
 
 @mutually_exclusive_parameters('username', 'user')
-def get_roles(username=None, user=None, obj=None):
+def get_roles(username=None, user=None, obj=None, inherit=True):
     """Get user's site-wide or local roles.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
@@ -213,6 +213,9 @@ def get_roles(username=None, user=None, obj=None):
     :param obj: If obj is set then return local roles on this context.
         If obj is not given, the site root local roles will be returned.
     :type obj: content object
+    :param inherit: if obj is set and inherit is False, only return
+        local roles
+    :type inherit: bool
     :raises:
         MissingParameterError
     :Example: :ref:`user_get_roles_example`
@@ -229,7 +232,13 @@ def get_roles(username=None, user=None, obj=None):
     if user is None:
         raise UserNotFoundError
 
-    return user.getRolesInContext(obj) if obj is not None else user.getRoles()
+    if obj is not None:
+        if inherit:
+            return user.getRolesInContext(obj)
+        else:
+            return obj.get_local_roles_for_userid(username)
+    else:
+        return user.getRoles()
 
 
 @contextmanager
@@ -309,7 +318,7 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise InvalidParameterError
 
-    roles.extend(get_roles(user=user, obj=obj))
+    roles.extend(get_roles(user=user, obj=obj, inherit=False))
 
     if obj is None:
         user.setSecurityProfile(roles=roles)
