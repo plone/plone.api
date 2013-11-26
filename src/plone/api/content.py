@@ -65,7 +65,11 @@ def create(
 
     try:
         container.invokeFactory(type, content_id, **kwargs)
-    except ValueError, e:
+    except UnicodeDecodeError:
+        # UnicodeDecodeError is a subclass of ValueError,
+        # so will be swallowed below unless we re-raise it here
+        raise
+    except ValueError as e:
         if ISiteRoot.providedBy(container):
             allowed_types = container.allowedContentTypes()
             types = [allowed_type.id for allowed_type in allowed_types]
