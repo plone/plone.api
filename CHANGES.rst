@@ -6,6 +6,8 @@ Changelog
 
 - Add ``api.env.plone_version()`` and ``api.env.zope_version()`` refs. #126.
   [hvelarde]
+- Stop UnicodeDecodeErrors being swallowed in ``api.content.create``
+  [mattss]
 
 
 1.1.0 (2013-10-12)

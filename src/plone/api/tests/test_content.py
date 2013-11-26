@@ -3,12 +3,16 @@
 
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
+from Products.CMFCore.interfaces import IContentish
+from Products.ZCatalog.interfaces import IZCatalog
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
 from zExceptions import BadRequest
 from zope.component import getUtility
+from zope.component import getGlobalSiteManager
 
 import mock
 import pkg_resources
@@ -232,6 +236,34 @@ class TestPloneApiContent(unittest.TestCase):
         assert second_page
         self.assertEqual(second_page.id, 'test-document-1')
         self.assertEqual(second_page.portal_type, 'Document')
+
+    def test_create_raises_unicodedecodeerror(self):
+        """Test that the create method raises UnicodeDecodeErrors correctly."""
+        site = getGlobalSiteManager()
+        unicode_exception_message = "This is a fake unicode error"
+
+        # register a title indexer that will force a UnicodeDecodeError
+        # during content reindexing
+        @indexer(IContentish, IZCatalog)
+        def force_unicode_error(object):
+            raise UnicodeDecodeError('ascii', 'x', 1, 5,
+                                     unicode_exception_message)
+
+        site.registerAdapter(factory=force_unicode_error, name='Title')
+
+        def unregister_indexer():
+            site.unregisterAdapter(factory=force_unicode_error, name='Title')
+
+        self.addCleanup(unregister_indexer)
+
+        with self.assertRaises(UnicodeDecodeError) as ude:
+            api.content.create(
+                type='Folder', id='test-unicode-folder',
+                container=self.portal,
+            )
+
+        # check that the exception is the one we raised
+        self.assertEqual(ude.exception.reason, unicode_exception_message)
 
     def test_get_constraints(self):
         """Test the constraints when content is fetched with get."""
