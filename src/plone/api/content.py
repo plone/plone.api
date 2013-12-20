@@ -136,7 +136,7 @@ def get(path=None, UID=None):
 
         try:
             return site.restrictedTraverse(path)
-        except KeyError:
+        except (KeyError, AttributeError):
             return None  # When no object is found don't raise an error
 
     elif UID:
