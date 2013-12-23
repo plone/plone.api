@@ -305,6 +305,9 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertFalse(api.content.get('/spam/ham'))
         self.assertFalse(api.content.get(UID='bacon'))
 
+        # Test getting a non-existing subfolder by path
+        self.assertFalse(api.content.get('/about/spam'))
+
     def test_move_constraints(self):
         """Test the constraints for moving content."""
         from plone.api.exc import MissingParameterError
