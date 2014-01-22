@@ -195,7 +195,7 @@ def is_anonymous():
     :rtype: bool
     :Example: :ref:`user_is_anonymous_example`
     """
-    return portal.get_tool('portal_membership').isAnonymousUser()
+    return bool(portal.get_tool('portal_membership').isAnonymousUser())
 
 
 @mutually_exclusive_parameters('username', 'user')
