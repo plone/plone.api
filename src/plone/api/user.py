@@ -206,6 +206,18 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
     can either set one or the other, but not both. if ``username`` and
     ``user`` are not given, the currently authenticated member will be used.
 
+    The underlying Plone code supports setting ``__ignore_direct_roles__``/
+    ``__ignore_group_roles__`` request flags to filter returned roles based on
+    whether they are directly assigned to the user or rather to one of the
+    groups that the user is member of. Example:
+
+    .. code-block:: python
+
+        # get roles assigned directly to user
+        self.request.set('__ignore_group_roles__', True)
+        self.request.set('__ignore_direct_roles__', False)
+        assigned_roles = api.user.get_roles(user=user)
+
     :param username: Username of the user for which to get roles.
     :type username: string
     :param user: User object for which to get roles.
