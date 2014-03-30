@@ -43,4 +43,4 @@ Description of our release process and guidelines.
    release.rst
 
 
-.. include:: ../../CHANGES.rst
+.. include:: ../CHANGES.rst
