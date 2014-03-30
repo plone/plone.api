@@ -8,7 +8,7 @@
 A Plone API
 ===========
 
-.. include:: ../README.rst
+.. include:: README.rst
 
 
 Narrative documentation
