@@ -14,6 +14,12 @@ Changelog
   traversal path exists)
   [mattss]
 
+- Enhance ``api.content.transition`` with the ability to transition from the
+  current state to a given state without knowing the transition 'path'
+  refs. #162
+  [adamcheasley]
+
+
 1.1.0 (2013-10-12)
 ------------------
 
@@ -219,4 +225,3 @@ Changelog
 - Initial release.
   [davisagli, fulv, iElectric, jcerjak, jonstahl, kcleong, mauritsvanrees,
   wamdam, witsch, zupo]
-

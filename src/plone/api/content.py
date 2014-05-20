@@ -4,6 +4,7 @@
 from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.WorkflowCore import WorkflowException
+from copy import copy as _copy
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
@@ -281,33 +282,132 @@ def get_state(obj=None):
     return workflow.getInfoFor(obj, 'review_state')
 
 
-@required_parameters('obj', 'transition')
-def transition(obj=None, transition=None):
-    """Perform a workflow transition for the object.
+def _wf_transitions_for(workflow, from_state, to_state):
+    """ Given a workflow object, returns a list of transition IDs that
+    will take an instance in workflow state from_state to workflow
+    state to_state.
+
+    If it is not possible to reach to_state from from_state,
+    returns None.
+
+    e.g. Given the workflow:
+      draft   --(submit)-->  pending
+      pending --(publish)--> published
+
+      from 'draft' to 'published' would return
+      ['submit', 'publish']
+    """
+    exit_state_maps = {}
+    for state in workflow.states.objectValues():
+        for t in state.getTransitions():
+            exit_state_maps.setdefault(t, [])
+            exit_state_maps[t].append(state.getId())
+
+    transition_maps = {}
+    for transition in workflow.transitions.objectValues():
+        value = (transition.getId(), exit_state_maps.get(
+            transition.getId(), []))
+        if transition.new_state_id not in transition_maps:
+            transition_maps[transition.new_state_id] = [value]
+        else:
+            transition_maps[transition.new_state_id].append(value)
+
+    if to_state not in transition_maps:
+        # impossible to reach via this workflow
+        return None
+
+    # work backwards from our end state
+    def find_path(maps, path, current_state, start_state):
+        paths = []
+        for new_transition, from_states in maps[current_state]:
+            next_path = _copy(path)
+            if new_transition in path:
+                # Don't go in a circle
+                continue
+
+            next_path.insert(0, new_transition)
+            if start_state in from_states:
+                paths.append(next_path)
+                continue
+
+            for state in from_states:
+                recursive_paths = find_path(
+                    maps,
+                    next_path,
+                    state,
+                    start_state,
+                )
+                if recursive_paths:
+                    paths.append(recursive_paths)
+
+        return len(paths) and min(paths, key=len) or None
+
+    return find_path(transition_maps, [], to_state, from_state)
+
+
+@required_parameters('obj')
+@at_least_one_of('transition', 'to_state')
+def transition(obj=None, transition=None, to_state=None):
+    """Perform a workflow transition for the object or attempt to perform
+    workflow transitions on the object to reach the given state.
+    The later will not guarantee that transition guards conditions can be met.
 
     :param obj: [required] Object for which we want to perform the workflow
         transition.
     :type obj: Content object
-    :param transition: [required] Name of the workflow transition.
+    :param transition: Name of the workflow transition.
     :type transition: string
+    :param to_state: Name of the workflow state.
+    :type to_state: string
     :raises:
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_transition_example`
     """
     workflow = portal.get_tool('portal_workflow')
-    try:
-        workflow.doActionFor(obj, transition)
-    except WorkflowException:
-        transitions = [
-            action['id'] for action in workflow.listActions(object=obj)
-        ]
+    if transition is not None:
+        try:
+            workflow.doActionFor(obj, transition)
+        except WorkflowException:
+            transitions = [
+                action['id'] for action in workflow.listActions(object=obj)
+            ]
 
-        raise InvalidParameterError(
-            "Invalid transition '{0}'.\n"
-            "Valid transitions are:\n"
-            "{1}".format(transition, '\n'.join(sorted(transitions)))
-        )
+            raise InvalidParameterError(
+                "Invalid transition '{0}'.\n"
+                "Valid transitions are:\n"
+                "{1}".format(transition, '\n'.join(sorted(transitions)))
+            )
+    else:
+        # move from the current state to the given state
+        # via any route we can find
+        for wf in workflow.getWorkflowsFor(obj):
+            status = workflow.getStatusOf(wf.getId(), obj)
+            if not status or not status.get('review_state'):
+                continue
+            if status['review_state'] == to_state:
+                return
+
+            transitions = _wf_transitions_for(
+                wf,
+                status['review_state'],
+                to_state,
+            )
+            if not transitions:
+                continue
+
+            for transition in transitions:
+                workflow.doActionFor(obj, transition)
+
+            break
+
+        if workflow.getInfoFor(obj, 'review_state') != to_state:
+            raise InvalidParameterError(
+                "Could not find workflow to set state to {0} on {1}".format(
+                    to_state,
+                    obj,
+                )
+            )
 
 
 @required_parameters('name', 'context', 'request')

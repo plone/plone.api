@@ -548,6 +548,36 @@ class TestPloneApiContent(unittest.TestCase):
             "retract"
         )
 
+        # change the workflow of a document so that there is no transition
+        # that goes directly from one state to another
+        portal_workflow = api.portal.get_tool('portal_workflow')
+        portal_workflow._chains_by_type['File'] = tuple(
+            ['intranet_workflow']
+        )
+        test_file = api.content.create(
+            container=api.portal.get(),
+            type='File',
+            id='test-file',
+        )
+        self.assertEqual(
+            api.content.get_state(test_file),
+            'internal',
+        )
+        api.content.transition(
+            obj=test_file,
+            transition='hide',
+        )
+
+        # the following transition must move through the internal state
+        api.content.transition(
+            obj=test_file,
+            to_state='internally_published',
+        )
+        self.assertEqual(
+            api.content.get_state(test_file),
+            'internally_published',
+        )
+
     def test_get_view_constraints(self):
         """Test the constraints for deleting content."""
         from plone.api.exc import MissingParameterError
