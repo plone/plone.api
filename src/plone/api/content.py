@@ -347,6 +347,7 @@ def _wf_transitions_for(workflow, from_state, to_state):
 
 @required_parameters('obj')
 @at_least_one_of('transition', 'to_state')
+@mutually_exclusive_parameters('transition', 'to_state')
 def transition(obj=None, transition=None, to_state=None):
     """Perform a workflow transition for the object or attempt to perform
     workflow transitions on the object to reach the given state.

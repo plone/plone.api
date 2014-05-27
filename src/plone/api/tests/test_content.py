@@ -530,6 +530,13 @@ class TestPloneApiContent(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             api.content.transition(transition='publish')
 
+        with self.assertRaises(InvalidParameterError):
+            api.content.transition(
+                obj=mock.Mock(),
+                transition='publish',
+                to_state='published',
+            )
+
         api.content.transition(obj=self.blog, transition='publish')
         review_state = api.content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'published')
