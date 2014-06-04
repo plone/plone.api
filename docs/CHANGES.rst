@@ -4,6 +4,11 @@ Changelog
 1.2.0 (unreleased)
 ------------------
 
+- Enhance ``api.content.transition`` with the ability to transition from the
+  current state to a given state without knowing the transition 'path'
+  refs. #162
+  [adamcheasley]
+
 - Add ``api.env.plone_version()`` and ``api.env.zope_version()`` refs. #126.
   [hvelarde]
 
@@ -13,11 +18,6 @@ Changelog
 - Catch AttributeError in ``api.content.get`` (raised if only part of the
   traversal path exists)
   [mattss]
-
-- Enhance ``api.content.transition`` with the ability to transition from the
-  current state to a given state without knowing the transition 'path'
-  refs. #162
-  [adamcheasley]
 
 
 1.1.0 (2013-10-12)
