@@ -283,19 +283,17 @@ def get_state(obj=None):
 
 
 def _wf_transitions_for(workflow, from_state, to_state):
-    """ Given a workflow object, returns a list of transition IDs that
-    will take an instance in workflow state from_state to workflow
-    state to_state.
+    """Get a list of transition IDs required to transition
+    from ``from_state`` to ``to_state``.
 
-    If it is not possible to reach to_state from from_state,
-    returns None.
-
-    e.g. Given the workflow:
-      draft   --(submit)-->  pending
-      pending --(publish)--> published
-
-      from 'draft' to 'published' would return
-      ['submit', 'publish']
+    :param workflow: Workflow object which contains states and transitions
+    :type workflow: Workflow object
+    :param from_state: Current workflow state
+    :type from_state: string
+    :param to_state: Desired workflow state
+    :type to_state: string
+    :returns: A list of transitions
+    :rtype: list
     """
     exit_state_maps = {}
     for state in workflow.states.objectValues():
