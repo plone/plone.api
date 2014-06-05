@@ -530,6 +530,13 @@ class TestPloneApiContent(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             api.content.transition(transition='publish')
 
+        with self.assertRaises(InvalidParameterError):
+            api.content.transition(
+                obj=mock.Mock(),
+                transition='publish',
+                to_state='published',
+            )
+
         api.content.transition(obj=self.blog, transition='publish')
         review_state = api.content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'published')
@@ -546,6 +553,36 @@ class TestPloneApiContent(unittest.TestCase):
             "Valid transitions are:\n"
             "reject\n"
             "retract"
+        )
+
+        # change the workflow of a document so that there is no transition
+        # that goes directly from one state to another
+        portal_workflow = api.portal.get_tool('portal_workflow')
+        portal_workflow._chains_by_type['File'] = tuple(
+            ['intranet_workflow']
+        )
+        test_file = api.content.create(
+            container=api.portal.get(),
+            type='File',
+            id='test-file',
+        )
+        self.assertEqual(
+            api.content.get_state(test_file),
+            'internal',
+        )
+        api.content.transition(
+            obj=test_file,
+            transition='hide',
+        )
+
+        # the following transition must move through the internal state
+        api.content.transition(
+            obj=test_file,
+            to_state='internally_published',
+        )
+        self.assertEqual(
+            api.content.get_state(test_file),
+            'internally_published',
         )
 
     def test_get_view_constraints(self):

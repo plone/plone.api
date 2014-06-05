@@ -221,7 +221,7 @@ def get_registry_record(name=None):
         raise InvalidParameterError(u"The parameter has to be a string")
 
     registry = getUtility(IRegistry)
-    if not name in registry:
+    if name not in registry:
 
         records = [_name for _name, record in registry.records.items()]
 
