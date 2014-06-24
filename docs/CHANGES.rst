@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.0 (unreleased)
+1.2.0 (2014-06-24)
 ------------------
 
 - Enhance ``api.content.transition`` with the ability to transition from the
