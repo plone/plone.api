@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.2.1 (2014-06-24)
+------------------
+- Resolve issues with CHANGES.rst symlink that prevented 1.2.0 from
+  being installed in some circumstances.
+  [mattss]
+
 1.2.0 (2014-06-24)
 ------------------
 

@@ -1,1 +1,1 @@
-docs/CHANGES.rst
+see docs/CHANGES.rst
