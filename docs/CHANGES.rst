@@ -4,6 +4,9 @@ Changelog
 1.2.2dev (unreleased)
 ---------------------
 
+- Use getUserById to find the user when given a User object in adopt_user.
+  [tschanzt]
+
 - Made ``api.portal.get_localized_time`` also work with datetime.date
   [nightmarebadger]
 
