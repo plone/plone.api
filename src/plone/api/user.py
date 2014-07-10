@@ -243,7 +243,7 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
 
 @contextmanager
 def _nop_context_manager():
-    """A trivial context maanger that does nothing."""
+    """A trivial context manager that does nothing."""
     yield
 
 
