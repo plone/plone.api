@@ -17,6 +17,19 @@ from plone.api.validation import required_parameters
 import random
 import string
 
+__all__ = [
+    'create',
+    'delete',
+    'get',
+    'get_current',
+    'get_permissions',
+    'get_roles',
+    'get_users',
+    'grant_roles',
+    'is_anonymous',
+    'revoke_roles',
+]
+
 
 def create(
     email=None,

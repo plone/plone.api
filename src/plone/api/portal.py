@@ -30,6 +30,17 @@ except pkg_resources.DistributionNotFound:
         'set_registry_record will be unavailable.'
     )
 
+__all__ = [
+    'get',
+    'get_localized_time',
+    'get_navigation_root',
+    'get_registry_record',
+    'get_tool',
+    'send_email',
+    'set_registry_record',
+    'show_message',
+]
+
 
 def get():
     """Get the Plone portal object out of thin air.

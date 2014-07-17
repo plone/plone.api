@@ -9,6 +9,17 @@ from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 
+__all__ = [
+    'add_user',
+    'create',
+    'delete',
+    'get',
+    'get_groups',
+    'get_roles',
+    'grant_roles',
+    'remove_user',
+    'revoke_roles',
+]
 
 @required_parameters('groupname')
 def create(

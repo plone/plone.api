@@ -15,6 +15,15 @@ from zope.globalrequest import getRequest
 import Globals
 import traceback
 
+__all__ = [
+    'adopt_roles',
+    'adopt_user',
+    'debug_mode',
+    'plone_version',
+    'test_mode',
+    'zope_version',
+]
+
 IS_TEST = None
 
 
