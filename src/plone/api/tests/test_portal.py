@@ -5,6 +5,8 @@ from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
+from datetime import date
+from datetime import datetime
 from email import message_from_string
 from plone.api import content
 from plone.api import portal
@@ -44,6 +46,35 @@ class TestPloneApiPortal(unittest.TestCase):
 
         self.portal._updateProperty('email_from_name', 'Portal Owner')
         self.portal._updateProperty('email_from_address', 'sender@example.org')
+
+    def _set_localization_date_format(self):
+        """Set the expected localized date format."""
+        from plone.api.exc import InvalidParameterError
+
+        name_root = 'Products.CMFPlone.i18nl10n.override_dateformat.'
+        try:
+            portal.set_registry_record(
+                name=name_root + 'Enabled',
+                value=True,
+            )
+            portal.set_registry_record(
+                name=name_root + 'date_format_long',
+                value='%b %d, %Y %I:%M %p',
+            )
+            portal.set_registry_record(
+                name=name_root + 'time_format',
+                value='%I:%M %p',
+            )
+            portal.set_registry_record(
+                name=name_root + 'date_format_short',
+                value='%b %d, %Y',
+            )
+        except InvalidParameterError:
+            # before Plone 4.3, date formats were stored in portal_properties
+            properties = portal.get_tool('portal_properties')
+            properties.localLongTimeFormat = '%b %d, %Y %I:%M %p'
+            properties.localTimeOnlyFormat = '%I:%M %p'
+            properties.localTimeFormat = '%b %d, %Y'
 
     def test_get(self):
         """Test getting the portal object."""
@@ -238,33 +269,9 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def test_get_localized_time(self):
         """Test getting the localized time."""
-        from plone.api.exc import InvalidParameterError
 
         # set the expected localized date format
-        name_root = 'Products.CMFPlone.i18nl10n.override_dateformat.'
-        try:
-            portal.set_registry_record(
-                name=name_root + 'Enabled',
-                value=True,
-            )
-            portal.set_registry_record(
-                name=name_root + 'date_format_long',
-                value='%b %d, %Y %I:%M %p',
-            )
-            portal.set_registry_record(
-                name=name_root + 'time_format',
-                value='%I:%M %p',
-            )
-            portal.set_registry_record(
-                name=name_root + 'date_format_short',
-                value='%b %d, %Y',
-            )
-        except InvalidParameterError:
-            # before Plone 4.3, date formats were stored in portal_properties
-            properties = portal.get_tool('portal_properties')
-            properties.localLongTimeFormat = '%b %d, %Y %I:%M %p'
-            properties.localTimeOnlyFormat = '%I:%M %p'
-            properties.localTimeFormat = '%b %d, %Y'
+        self._set_localization_date_format()
 
         # tests
         result = portal.get_localized_time(
@@ -281,6 +288,54 @@ class TestPloneApiPortal(unittest.TestCase):
 
         result = portal.get_localized_time(
             datetime=DateTime(1999, 12, 31, 23, 59),
+        )
+        self.assertEqual(result, 'Dec 31, 1999')
+
+    def test_get_localized_time_python_datetime(self):
+        """Test getting the localized time using Python datetime.datetime."""
+
+        # set the expected localized date format
+        self._set_localization_date_format()
+
+        # tests
+        result = portal.get_localized_time(
+            datetime=datetime(1999, 12, 31, 23, 59),
+            long_format=True,
+        )
+        self.assertEqual(result, 'Dec 31, 1999 11:59 PM')
+
+        result = portal.get_localized_time(
+            datetime=datetime(1999, 12, 31, 23, 59),
+            time_only=True,
+        )
+        self.assertEqual(result, '11:59 PM')
+
+        result = portal.get_localized_time(
+            datetime=datetime(1999, 12, 31, 23, 59),
+        )
+        self.assertEqual(result, 'Dec 31, 1999')
+
+    def test_get_localized_time_python_date(self):
+        """Test getting the localized time using Python datetime.date."""
+
+        # set the expected localized date format
+        self._set_localization_date_format()
+
+        # tests
+        result = portal.get_localized_time(
+            datetime=date(1999, 12, 31),
+            long_format=True,
+        )
+        self.assertEqual(result, 'Dec 31, 1999')
+
+        result = portal.get_localized_time(
+            datetime=date(1999, 12, 31),
+            time_only=True,
+        )
+        self.assertEqual(result, '')
+
+        result = portal.get_localized_time(
+            datetime=date(1999, 12, 31),
         )
         self.assertEqual(result, 'Dec 31, 1999')
 
