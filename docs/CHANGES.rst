@@ -1,8 +1,15 @@
 Changelog
 =========
 
+1.2.2dev (unreleased)
+---------------------
+
+- Made ``api.portal.get_localized_time`` also work with datetime.date
+  [nightmarebadger]
+
 1.2.1 (2014-06-24)
 ------------------
+
 - Resolve issues with CHANGES.rst symlink that prevented 1.2.0 from
   being installed in some circumstances.
   [mattss]

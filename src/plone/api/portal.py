@@ -5,6 +5,8 @@ from Acquisition import aq_inner
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
+from datetime import date
+from datetime import datetime as dtime
 from email.utils import formataddr
 from email.utils import parseaddr
 from logging import getLogger
@@ -165,8 +167,13 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
     (or any other value that can be converted to a boolean True
     value), but time_only then wins: the long_format value is ignored.
 
+    You can also use datetime.datetime or datetime.date instead of Plone's
+    DateTime. In case of datetime.datetime everything works the same, in
+    case of datetime.date the long_format parameter is ignored and on time_only
+    an empty string is returned.
+
     :param datetime: [required] Message to show.
-    :type datetime: DateTime
+    :type datetime: DateTime, datetime or date
     :param long_format: When true, show long date format. When false
         (default), show the short date format.
     :type long_format: boolean
@@ -181,6 +188,14 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
     """
     tool = get_tool(name='translation_service')
     request = getRequest()
+
+    # isinstance won't work because of date -> datetime inheritance
+    if type(datetime) is date:
+        if time_only:
+            return ''
+        datetime = dtime(datetime.year, datetime.month, datetime.day)
+        long_format = False
+
     return tool.ulocalized_time(
         datetime,
         long_format,
