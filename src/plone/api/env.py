@@ -29,15 +29,14 @@ def adopt_user(username=None, user=None):
     :type username: string
     :Example: :ref:`env_adopt_user_example`
     """
-
-    if username is None:
-        username = user.getId()
-
     # Grab the user object out of acl_users because this function
     # accepts 'user' objects that are actually things like MemberData
     # objects, which AccessControl isn't so keen on.
     acl_users = portal.get().acl_users
-    unwrapped = acl_users.getUser(username)
+    if username is None:
+        unwrapped = acl_users.getUserById(user.getId())
+    else:
+        unwrapped = acl_users.getUser(username)
     if unwrapped is None:
         raise UserNotFoundError
 

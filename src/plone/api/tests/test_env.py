@@ -5,7 +5,7 @@ from AccessControl import Unauthorized
 from OFS.SimpleItem import SimpleItem
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
-
+from plone.app.testing import TEST_USER_ID
 import AccessControl
 import AccessControl.SecurityManagement
 import Globals
@@ -414,3 +414,8 @@ class TestPloneApiEnv(unittest.TestCase):
             zope_version(),
             '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?$'
         )
+
+    def test_adopt_user_different_username(self):
+        user = api.user.get(userid=TEST_USER_ID)
+        with api.env.adopt_user(user=user):
+            self.assertEqual(api.user.get_current().getId(), TEST_USER_ID)
