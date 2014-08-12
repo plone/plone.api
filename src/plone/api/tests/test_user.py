@@ -519,6 +519,15 @@ class TestPloneApiUser(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             api.user.grant_roles()
 
+    def test_grant_roles_no_user(self):
+        """If no user is found, raise a suitable error."""
+        from plone.api.exc import InvalidParameterError
+        with self.assertRaises(InvalidParameterError):
+            api.user.grant_roles(
+                username='chuck',
+                roles=['Manager'],
+            )
+
     def test_revoke_roles(self):
         """Test revoke roles."""
 
@@ -589,6 +598,15 @@ class TestPloneApiUser(unittest.TestCase):
             ROLES,
             set(api.user.get_roles(username='Anonymous User'))
         )
+
+    def test_revoke_roles_no_user(self):
+        """If no user is found, raise a suitable error."""
+        from plone.api.exc import InvalidParameterError
+        with self.assertRaises(InvalidParameterError):
+            api.user.revoke_roles(
+                username='chuck',
+                roles=['Manager'],
+            )
 
     def test_grant_roles_in_context(self):
         """Test grant roles."""

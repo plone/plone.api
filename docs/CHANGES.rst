@@ -10,6 +10,10 @@ Changelog
 - Made ``api.portal.get_localized_time`` also work with datetime.date
   [nightmarebadger]
 
+- Raise better/expected errors in ``api.user.grant_roles`` and
+  ``api.user.revoke_roles``
+  [adamcheasley]
+
 1.2.1 (2014-06-24)
 ------------------
 
@@ -241,4 +245,3 @@ Changelog
 - Initial release.
   [davisagli, fulv, iElectric, jcerjak, jonstahl, kcleong, mauritsvanrees,
   wamdam, witsch, zupo]
-
