@@ -310,6 +310,9 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     """
     if user is None:
         user = get(username=username)
+    # check we got a user
+    if user is None:
+        raise InvalidParameterError("User could not be found")
 
     if isinstance(roles, tuple):
         roles = list(roles)
@@ -350,6 +353,9 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     """
     if user is None:
         user = get(username=username)
+    # check we got a user
+    if user is None:
+        raise InvalidParameterError("User could not be found")
 
     if isinstance(roles, tuple):
         roles = list(roles)
