@@ -457,6 +457,44 @@ class TestPloneApiUser(unittest.TestCase):
                                  user=user,
                                  obj=folder).get(k, None))
 
+    def test_has_permissions_context(self):
+        """Test has_permissions on some context."""
+
+        username = 'billy'
+        user = api.user.create(
+            username=username,
+            email='billy@bob.net',
+            password='secret',
+        )
+
+        # Cannot supply both username and user arguments
+        from plone.api.exc import InvalidParameterError
+        with self.assertRaises(InvalidParameterError):
+            api.user.has_permission(
+                'View',
+                username=username,
+                user=user,
+            )
+
+        folder = api.content.create(
+            container=self.portal,
+            type='Folder',
+            id='folder_one',
+            title='A Folder',
+        )
+        api.content.transition(obj=folder, transition='publish')
+
+        self.assertTrue(api.user.has_permission(
+            'View',
+            user=user,
+            obj=folder)
+        )
+        self.assertFalse(api.user.has_permission(
+            'Modify portal content',
+            user=user,
+            obj=folder)
+        )
+
     def test_grant_roles(self):
         """Test granting a couple of roles."""
 
