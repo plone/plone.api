@@ -293,7 +293,7 @@ def has_permission(permission, username=None, user=None, obj=None):
     can either set one or the other, but not both. if ``username`` and
     ``user`` are not given, the authenticated member will be used.
 
-    :param permssion: The permission you wish to check
+    :param permission: The permission you wish to check
     :type permission: string
     :param username: Username of the user for which you want to check
         the permissions.
