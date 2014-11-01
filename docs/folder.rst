@@ -7,7 +7,7 @@
 
 .. module:: plone
 
-.. _chapter_content:
+.. _chapter_folder:
 
 Content
 =======
