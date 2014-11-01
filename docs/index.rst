@@ -20,6 +20,7 @@ Narrative documentation
     about.rst
     portal.rst
     content.rst
+    folder.rst
     user.rst
     group.rst
     env.rst
@@ -34,6 +35,7 @@ Complete API and advanced usage
     api/index.rst
     api/portal.rst
     api/content.rst
+    api/folder.rst
     api/user.rst
     api/group.rst
     api/env.rst
