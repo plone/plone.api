@@ -71,6 +71,24 @@ class TestPloneApiFolder(unittest.TestCase):
         obj_ids = set(obj.getId() for obj in objs)
         self.assertEqual(obj_ids, {'training', 'conference', 'sprint'})
 
+    def test_list_objects_content_filter(self):
+        """ Test with filter constraints """
+
+        objs = list_objects(
+            container=self.portal,
+            content_filter={'portal_type': 'Link'})
+        self.assertEqual(objs[0].getId(), 'blog')
+
+        objs = list_objects(
+            container=self.portal,
+            content_filter={'portal_type': 'Folder'})
+        self.assertEqual(objs[0].getId(), 'about')
+
+        objs = list_objects(
+            container=self.portal,
+            content_filter={'portal_type': 'XXXXX'})
+        self.assertEqual(len(objs), 0)
+
     def test_list_objects_strict(self):
         """Test with content filter checks."""
         with self.assertRaises(ValueError):
