@@ -26,10 +26,26 @@ all configured portal_catalog metadata.
 .. code-block:: python
 
     from plone import api
+    portal = api.portal.get()
+
+    api.create(container, type='Document', id='document', title='Document')
+    api.create(container, type='Link', id='link', title='Link')
+
     objs = api.folder.list_objects(
-        container=some_folder,
+        container=portal,
         content_filter={'portal_type': 'Link'},
         sort_on='sortable_title')
+
+    assert objs[0].getId() == 'link'
+    assert objs[0].Title() == 'Link'
+
+    objs = api.folder.list_objects(
+        container=portal,
+        content_filter={'portal_type': 'Document'},
+        sort_on='sortable_title')
+
+    assert objs[0].getId() == 'document'
+    assert objs[0].Title() == 'Document'
 
 If your application does not need the full content objects and can work
 with Zcatalog brains then you can use the sister method 
@@ -39,11 +55,8 @@ with Zcatalog brains then you can use the sister method
 
     from plone import api
     brains = api.folder.list_brains(
-        container=some_folder,
+        container=portal,
         content_filter={'portal_type': 'Link'})
-    for brain in brains:
-        print brain.getURL()
-        print brain.getPath()
-        print brain.getId
-        print brain.Title
 
+    assert objs[0].getId == 'link'
+    assert objs[0].Title == 'Link'
