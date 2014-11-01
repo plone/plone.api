@@ -35,6 +35,8 @@ If your application does not need the full content objects and can work
 with Zcatalog brains then you can use the sister method 
 ``plone.api.folder.list_brains()``:
 
+.. code-block:: python
+
     from plone import api
     brains = api.folder.list_brains(
         container=some_folder,
