@@ -4,6 +4,7 @@
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.api.folder import list_objects
+from plone.api.folder import list_brains
 
 import unittest2 as unittest
 
@@ -88,6 +89,12 @@ class TestPloneApiFolder(unittest.TestCase):
             container=self.portal,
             content_filter={'portal_type': 'XXXXX'})
         self.assertEqual(len(objs), 0)
+
+    def test_list_brains(self):
+        objs = list_brains(
+            container=self.portal,
+            content_filter={'portal_type': 'Folder'})
+        self.assertEqual(objs[0].getId, 'about')
 
     def test_list_objects_strict(self):
         """Test with content filter checks."""

@@ -28,8 +28,8 @@ all configured portal_catalog metadata.
     from plone import api
     portal = api.portal.get()
 
-    api.create(container, type='Document', id='document', title='Document')
-    api.create(container, type='Link', id='link', title='Link')
+    api.content.create(container=portal, type='Document', id='document', title='Document')
+    api.content.create(container=portal, type='Link', id='link', title='Link')
 
     objs = api.folder.list_objects(
         container=portal,
@@ -58,5 +58,5 @@ with Zcatalog brains then you can use the sister method
         container=portal,
         content_filter={'portal_type': 'Link'})
 
-    assert objs[0].getId == 'link'
-    assert objs[0].Title == 'Link'
+    assert brains[0].getId == 'link', objs[0].getId
+    assert brains[0].Title == 'Link', objs[0].Title
