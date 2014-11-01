@@ -14,7 +14,7 @@ Changelog
   ``api.user.revoke_roles``
   [adamcheasley]
 
-- added ``api.folder.list_objects()`` and ``api.folder.list_brains()``
+- Added ``api.folder.list_objects()`` and ``api.folder.list_brains()``
   [ajung]
 
 1.2.1 (2014-06-24)
