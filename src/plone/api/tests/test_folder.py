@@ -41,11 +41,20 @@ class TestPloneApiFolder(unittest.TestCase):
             container=self.about, type='Document', id='contact')
 
         self.training = api.content.create(
-            container=self.events, type='Event', id='training')
+            container=self.events,
+            type='Event',
+            id='training',
+            title='Training')
         self.conference = api.content.create(
-            container=self.events, type='Event', id='conference')
+            container=self.events,
+            type='Event',
+            id='conference',
+            title='Conference')
         self.sprint = api.content.create(
-            container=self.events, type='Event', id='sprint')
+            container=self.events,
+            type='Event',
+            id='sprint',
+            title='Sprint')
 
     def test_list_objects(self):
         """Test the constraints when creating content."""
@@ -78,3 +87,21 @@ class TestPloneApiFolder(unittest.TestCase):
             content_filter={'no_such_index': 'foo'},
             strict=False)
         self.assertEqual(len(result), 3)
+
+    def test_list_objects_sort_on(self):
+        result = list_objects(container=self.portal.events, sort_on='getId')
+        ids = [obj.getId() for obj in result]
+        self.assertEqual(ids, ['conference', 'sprint', 'training'])
+
+        result = list_objects(
+            container=self.portal.events,
+            sort_on='sortable_title')
+        titles = [obj.Title() for obj in result]
+        self.assertEqual(titles, ['Conference', 'Sprint', 'Training'])
+
+    def test_list_objects_sort_on_strict(self):
+        with self.assertRaises(ValueError):
+            list_objects(
+                container=self.portal.events,
+                sort_on='xxxxx',
+                strict=True)
