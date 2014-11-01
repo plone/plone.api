@@ -49,10 +49,10 @@ def list_brains(
     sort_on=None,
     strict=False,
 ):
-    """ Same as list_objects() but it returns a list of ZCatalog
-        brains instead of full content objects.
+    """ Same as list_objects() but it returns a list of ZCatalog brains
+    instead of full content objects.
 
-        Parameters: see plone.api.folder.list_objects()
+    Parameters: see plone.api.folder.list_objects()
     """
 
     catalog = getToolByName(container, 'portal_catalog')
