@@ -17,26 +17,22 @@ def list_objects(
     :param container: [required] Container object in which to create the new
         object.
     :type container: Folderish content object
-    :param type: [required] Type of the object.
-    :type type: string
-    :param id: Id of the object.  If the id conflicts with another object in
-        the container, a suffix will be added to the new object's id. If no id
-        is provided, automatically generate one from the title. If there is no
-        id or title provided, raise a ValueError.
+    :param content_filter: ZCatalog query filter
+    :type type: dict
+    :param sort_on: Id of a Zcatalog metadata used for sorting the content
+        objects.
     :type id: string
-    :param title: Title of the object. If no title is provided, use id as
-        the title.
-    :type title: string
-    :param safe_id: When False, the given id will be enforced. If the id is
-        conflicting with another object in the target container, raise an
-        InvalidParameterError. When True, choose a new, non-conflicting id.
-    :type safe_id: boolean
-    :returns: Content object
+    :param strict: Perform a consistency check of the content_filter keys
+        against the list of existing index names. Set this parameter to
+        True during development or for debugging reasons because the
+        additional checks take some additional time.
+    :type title: bool
+    :returns: list of content objects
     :raises:
-        KeyError,
+        ValueError,
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
-    :Example: :ref:`content_create_example`
+    :Example: :ref:`list_objects_example`
     """
 
     return [brain.getObject() for brain in list_brains(
@@ -53,8 +49,8 @@ def list_brains(
     sort_on=None,
     strict=False,
 ):
-    """ List all content objects of the current folderish object as
-        Zcatalog brains.
+    """ Same as list_objects() but it returns a list of ZCatalog
+        brains instead of full content objects.
 
         Parameters: see plone.api.folder.list_objects()
     """
