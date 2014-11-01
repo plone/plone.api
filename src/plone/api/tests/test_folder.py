@@ -9,7 +9,7 @@ import unittest2 as unittest
 
 
 class TestPloneApiFolder(unittest.TestCase):
-    """Unit tests for content manipulation using plone.api"""
+    """Unit tests for listing folder contents plone.api"""
 
     layer = INTEGRATION_TESTING
 
