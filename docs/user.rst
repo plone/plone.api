@@ -329,16 +329,7 @@ By default it checks the permission on the site root.
 
 .. invisible-code-block: python
 
-    PERMISSIONS = {
-        'View': True,
-        'Manage portal': False,
-        'Modify portal content': False,
-        'Access contents information': True,
-    }
-
-    for k, v in PERMISSIONS.items():
-        self.assertTrue(v == api.user.has_permission(k, username='adam'))
-        self.assertTrue(v == api.user.has_permission(k, user=adam))
+   self.assertTrue(can_view)
 
 
 If you pass in a content object, it will check the permission
@@ -353,16 +344,7 @@ in that particular context.
 
 .. invisible-code-block: python
 
-    PERMISSIONS = {
-        'View': False,
-        'Manage portal': False,
-        'Modify portal content': False,
-        'Access contents information': False,
-    }
-
-    for k, v in PERMISSIONS.items():
-        self.assertTrue(v == api.user.has_permission(k, username='adam', obj=portal['folder_hp']))
-        self.assertTrue(v == api.user.has_permission(k, user=adam, obj=portal['folder_hp']))
+   self.assertFalse(can_view)
 
 
 .. _user_grant_roles_example:
