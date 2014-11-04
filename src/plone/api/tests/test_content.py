@@ -507,6 +507,42 @@ class TestPloneApiContent(unittest.TestCase):
         assert (container['events']['about'] and
                 container['events']['about'] == about)
 
+        # When copying with safe_id=True, the prior created item should not be
+        # renamed, and the copied item should have a sane postfix
+
+        # Create a products folder
+        products = api.content.create(
+            type='Folder', id='products', container=self.portal)
+
+        # Create a item inside the products folder
+        item = api.content.create(
+            container=products, type='Document', id='item')
+
+        api.content.copy(source=item, id='item', safe_id=True)
+
+        assert container['products']['item-1']
+        assert container['products']['item']
+
+        # When copying with safe_id=True, the created bargain with the id=item
+        # should not be renamed, and the item copied from the products folder
+        # should have a sane postfix.
+        # The item in the the products folder should still exist.
+
+        # Create a second folder named bargains
+        bargains = api.content.create(
+            type='Folder', id='bargains', container=self.portal)
+
+        # Create a bargain inside the bargains folder with the id="item"
+        bargain = api.content.create(
+            container=bargains, type='Document', id='item')
+
+        api.content.copy(source=item, target=bargains, id='item', safe_id=True)
+
+        assert container['bargains']['item-1']
+        assert container['bargains']['item']
+        assert container['bargains']['item'] is bargain
+        assert container['products']['item']
+
     def test_delete_constraints(self):
         """Test the constraints for deleting content."""
 
