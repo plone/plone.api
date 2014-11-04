@@ -245,12 +245,15 @@ def copy(source=None, target=None, id=None, safe_id=False):
     if target is None:
         target = source.aq_parent
 
-    target.manage_pasteObjects(source.aq_parent.manage_copyObjects(source_id))
+    copy_info = target.manage_pasteObjects(
+        source.aq_parent.manage_copyObjects(source_id)
+    )
 
+    new_id = copy_info[0]['new_id']
     if id:
-        return rename(obj=target[source_id], new_id=id, safe_id=safe_id)
+        return rename(obj=target[new_id], new_id=id, safe_id=safe_id)
     else:
-        return target[source_id]
+        return target[new_id]
 
 
 @required_parameters('obj')

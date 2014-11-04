@@ -535,12 +535,11 @@ class TestPloneApiContent(unittest.TestCase):
         # Create a bargain inside the bargains folder with the id="item"
         bargain = api.content.create(
             container=bargains, type='Document', id='item')
-
         api.content.copy(source=item, target=bargains, id='item', safe_id=True)
 
         assert container['bargains']['item-1']
         assert container['bargains']['item']
-        assert container['bargains']['item'] is bargain
+        assert container['bargains']['item'].aq_base is bargain.aq_base
         assert container['products']['item']
 
     def test_delete_constraints(self):

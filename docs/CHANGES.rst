@@ -4,6 +4,11 @@ Changelog
 1.2.2dev (unreleased)
 ---------------------
 
+- fixes if a content is copied in the same folder or in a target folder, where 
+  same source id exists, the existing source(same folder) or third object
+  (same id as source) gets renamed instead of the target.
+  [benniboy]
+
 - Use getUserById to find the user when given a User object in adopt_user.
   [tschanzt]
 
