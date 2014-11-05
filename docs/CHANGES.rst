@@ -5,6 +5,7 @@ Changelog
 ---------------------
 
 - clarified documentation for content.copy. See #185
+  [benniboy]
 
 - fixes if a content is copied in the same folder or in a target folder, where
   same source id exists, the existing source(same folder) or third object

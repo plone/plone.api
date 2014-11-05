@@ -451,6 +451,24 @@ class TestPloneApiContent(unittest.TestCase):
                 container['about']['link-to-blog-1-1'] == linktoblog11)
         assert 'link-to-blog' not in container.keys()
 
+    def test_rename_same_folder(self):
+        # When renaming a folderish item with safe_id=True, and there is
+        # already an existing folderish item with that id, it should choose
+        # a new name.
+
+        events = self.portal['events']
+        about = self.portal['about']
+        api.content.rename(
+            obj=events,
+            new_id='about',
+            safe_id=True
+        )
+
+        assert self.portal['about']
+        assert self.portal['about-1']
+        assert self.portal['about'].aq_base is about.aq_base
+        assert self.portal['about-1'].aq_base is events.aq_base
+
     def test_copy_constraints(self):
         """Test the constraints for moving content."""
         from plone.api.exc import MissingParameterError
