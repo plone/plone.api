@@ -4,6 +4,9 @@ Changelog
 1.2.2dev (unreleased)
 ---------------------
 
+- fixes #184 NameChooser on rename used the wrong way and fails on safe_id=True
+  [benniboy]
+
 - clarified documentation for content.copy. See #185
   [benniboy]
 

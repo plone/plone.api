@@ -202,16 +202,14 @@ def rename(obj=None, new_id=None, safe_id=False):
     :Example: :ref:`content_rename_example`
     """
     obj_id = obj.getId()
+    container = obj.aq_parent
 
     if safe_id:
-        try:
-            chooser = INameChooser(obj)
-        except TypeError:
-            chooser = INameChooser(obj.aq_parent)
+        chooser = INameChooser(container)
         new_id = chooser.chooseName(new_id, obj)
 
-    obj.aq_parent.manage_renameObject(obj_id, new_id)
-    return obj.aq_parent[new_id]
+    container.manage_renameObject(obj_id, new_id)
+    return container[new_id]
 
 
 @required_parameters('source')
