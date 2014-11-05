@@ -230,7 +230,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
         - however, if the new object's id conflicts with another object in the
         target container, a suffix will be added to the new object's id.
     :type id: string
-    :param safe_id: When True, the given id will be enforced. If the id is
+    :param safe_id: When False, the given id will be enforced. If the id is
         conflicting with another object in the target container, raise a
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
