@@ -314,7 +314,7 @@ in that particular context.
 
 .. _user_has_permission_example:
 
-Check user permissions
+Check user permission
 ----------------------
 
 Instead of getting all user permissions, you can check a single permission

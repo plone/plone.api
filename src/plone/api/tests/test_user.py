@@ -457,8 +457,8 @@ class TestPloneApiUser(unittest.TestCase):
                                  user=user,
                                  obj=folder).get(k, None))
 
-    def test_has_permissions_context(self):
-        """Test has_permissions on some context."""
+    def test_has_permission_context(self):
+        """Test has_permission on some context."""
 
         username = 'billy'
         user = api.user.create(

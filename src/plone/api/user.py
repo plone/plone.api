@@ -296,11 +296,11 @@ def has_permission(permission, username=None, user=None, obj=None):
     :param permission: The permission you wish to check
     :type permission: string
     :param username: Username of the user for which you want to check
-        the permissions.
+        the permission.
     :type username: string
-    :param user: User object for which you want to check the permissions.
+    :param user: User object for which you want to check the permission.
     :type user: MemberData object
-    :param obj: If obj is set then check the permissions on this context.
+    :param obj: If obj is set then check the permission on this context.
         If obj is not given, the site root will be used.
     :type obj: content object
     :raises:
