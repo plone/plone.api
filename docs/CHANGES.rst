@@ -26,6 +26,9 @@ Changelog
   ``api.user.revoke_roles``.
   [adamcheasley]
 
+- Add ``api.user.has_permission`` ref #172.
+  [adamcheasley]
+
 
 1.2.1 (2014-06-24)
 ------------------

@@ -312,6 +312,41 @@ in that particular context.
         self.assertTrue(v == api.user.get_permissions(user=mike, obj=portal['folder_two']).get(k, None))
 
 
+.. _user_has_permission_example:
+
+Check user permission
+----------------------
+
+Instead of getting all user permissions, you can check a single permission
+using the :meth:`api.user.has_permission` method.
+By default it checks the permission on the site root.
+
+.. code-block:: python
+
+    from plone import api
+    adam = api.user.create(email='adam@plone.org', username='adam')
+    can_view = api.user.has_permission('View', username='adam')
+
+.. invisible-code-block: python
+
+   self.assertTrue(can_view)
+
+
+If you pass in a content object, it will check the permission
+in that particular context.
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    folder = api.content.create(container=portal, type='Folder', id='folder_hp', title='Folder')
+    can_view = api.user.has_permission('View', username='adam', obj=folder)
+
+.. invisible-code-block: python
+
+   self.assertFalse(can_view)
+
+
 .. _user_grant_roles_example:
 
 Grant roles to user

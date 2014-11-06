@@ -285,6 +285,42 @@ def get_permissions(username=None, user=None, obj=None):
     return d
 
 
+@mutually_exclusive_parameters('username', 'user')
+def has_permission(permission, username=None, user=None, obj=None):
+    """Check whether this user has the given permssion.
+
+    Arguments ``username`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``username`` and
+    ``user`` are not given, the authenticated member will be used.
+
+    :param permission: The permission you wish to check
+    :type permission: string
+    :param username: Username of the user for which you want to check
+        the permission.
+    :type username: string
+    :param user: User object for which you want to check the permission.
+    :type user: MemberData object
+    :param obj: If obj is set then check the permission on this context.
+        If obj is not given, the site root will be used.
+    :type obj: content object
+    :raises:
+        InvalidParameterError
+    :returns: True if the user has the permission, False otherwise.
+    :rtype: bool
+    """
+    if obj is None:
+        obj = portal.get()
+
+    if username is None and user is None:
+        context = _nop_context_manager()
+    else:
+        context = env.adopt_user(username, user)
+
+    with context:
+        adopted_user = get_current()
+        return bool(adopted_user.checkPermission(permission, obj))
+
+
 @required_parameters('roles')
 @mutually_exclusive_parameters('username', 'user')
 def grant_roles(username=None, user=None, obj=None, roles=None):
