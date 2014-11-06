@@ -3,6 +3,8 @@
 
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
+from OFS.event import ObjectWillBeMovedEvent
+from OFS.interfaces import IObjectWillBeMovedEvent
 from Products.CMFCore.interfaces import IContentish
 from Products.ZCatalog.interfaces import IZCatalog
 from plone import api
@@ -11,8 +13,12 @@ from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
 from zExceptions import BadRequest
+from zope.lifecycleevent import IObjectModifiedEvent
+from zope.lifecycleevent import IObjectMovedEvent
+from zope.lifecycleevent import ObjectMovedEvent
 from zope.component import getUtility
 from zope.component import getGlobalSiteManager
+from zope.container.contained import ContainerModifiedEvent
 
 import mock
 import pkg_resources
@@ -390,12 +396,30 @@ class TestPloneApiContent(unittest.TestCase):
         """Test renaming of content."""
 
         container = self.portal
+        sm = getGlobalSiteManager()
+        firedEvents = []
+
+        def recordEvent(event):
+            firedEvents.append(event.__class__)
+
+        sm.registerHandler(recordEvent, (IObjectWillBeMovedEvent,))
+        sm.registerHandler(recordEvent, (IObjectMovedEvent,))
+        sm.registerHandler(recordEvent, (IObjectModifiedEvent,))
 
         # Rename contact
         nucontact = api.content.rename(obj=self.contact, new_id='nu-contact')
         assert (container['about']['nu-contact'] and
                 container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
+
+        self.assertItemsEqual(firedEvents, [
+            ObjectMovedEvent,
+            ObjectWillBeMovedEvent,
+            ContainerModifiedEvent
+        ])
+        sm.unregisterHandler(recordEvent, (IObjectWillBeMovedEvent,))
+        sm.unregisterHandler(recordEvent, (IObjectMovedEvent,))
+        sm.unregisterHandler(recordEvent, (IObjectModifiedEvent,))
 
         # Test with safe_id option when moving content
         api.content.create(
