@@ -4,13 +4,14 @@ Changelog
 1.2.2dev (unreleased)
 ---------------------
 
-- fixes #184 NameChooser on rename used the wrong way and fails on safe_id=True
+- Fixes #184 NameChooser on rename used the wrong way and fails on
+  safe_id=True.
   [benniboy]
 
-- clarified documentation for content.copy. See #185
+- Clarified documentation for content.copy, refs #185.
   [benniboy]
 
-- fixes if a content is copied in the same folder or in a target folder, where
+- Fixes if a content is copied in the same folder or in a target folder, where
   same source id exists, the existing source(same folder) or third object
   (same id as source) gets renamed instead of the target.
   [benniboy]
@@ -18,12 +19,13 @@ Changelog
 - Use getUserById to find the user when given a User object in adopt_user.
   [tschanzt]
 
-- Made ``api.portal.get_localized_time`` also work with datetime.date
+- Made ``api.portal.get_localized_time`` also work with datetime.date.
   [nightmarebadger]
 
 - Raise better/expected errors in ``api.user.grant_roles`` and
-  ``api.user.revoke_roles``
+  ``api.user.revoke_roles``.
   [adamcheasley]
+
 
 1.2.1 (2014-06-24)
 ------------------
@@ -31,6 +33,7 @@ Changelog
 - Resolve issues with CHANGES.rst symlink that prevented 1.2.0 from
   being installed in some circumstances.
   [mattss]
+
 
 1.2.0 (2014-06-24)
 ------------------
@@ -40,14 +43,14 @@ Changelog
   refs. #162
   [adamcheasley]
 
-- Add ``api.env.plone_version()`` and ``api.env.zope_version()`` refs. #126.
+- Add ``api.env.plone_version()`` and ``api.env.zope_version()``, refs #126.
   [hvelarde]
 
-- Stop UnicodeDecodeErrors being swallowed in ``api.content.create``
+- Stop UnicodeDecodeErrors being swallowed in ``api.content.create``.
   [mattss]
 
 - Catch AttributeError in ``api.content.get`` (raised if only part of the
-  traversal path exists)
+  traversal path exists).
   [mattss]
 
 
