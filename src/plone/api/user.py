@@ -276,11 +276,12 @@ def get_permissions(username=None, user=None, obj=None):
         context = env.adopt_user(username, user)
 
     with context:
-        adopted_user = get_current()
+        portal_membership = portal.get_tool('portal_membership')
         permissions = (p[0] for p in getPermissions())
         d = {}
         for permission in permissions:
-            d[permission] = bool(adopted_user.checkPermission(permission, obj))
+            d[permission] = bool(
+                    portal_membership.checkPermission(permission, obj))
 
     return d
 
@@ -317,8 +318,8 @@ def has_permission(permission, username=None, user=None, obj=None):
         context = env.adopt_user(username, user)
 
     with context:
-        adopted_user = get_current()
-        return bool(adopted_user.checkPermission(permission, obj))
+        portal_membership = portal.get_tool('portal_membership')
+        return bool(portal_membership.checkPermission(permission, obj))
 
 
 @required_parameters('roles')
