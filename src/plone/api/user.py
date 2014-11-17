@@ -275,15 +275,16 @@ def get_permissions(username=None, user=None, obj=None):
     else:
         context = env.adopt_user(username, user)
 
+    result = {}
     with context:
         portal_membership = portal.get_tool('portal_membership')
         permissions = (p[0] for p in getPermissions())
-        d = {}
         for permission in permissions:
-            d[permission] = bool(
-                    portal_membership.checkPermission(permission, obj))
+            result[permission] = bool(
+                portal_membership.checkPermission(permission, obj)
+            )
 
-    return d
+    return result
 
 
 @mutually_exclusive_parameters('username', 'user')
