@@ -1,8 +1,9 @@
 include *.rst
+include docs/README.rst
+include docs/CHANGES.rst
+include docs/LICENSE.txt
+include docs/LICENSE.GPL
 
 graft src
-recursive-include docs LICENSE.* 
-include docs README.rst
-include docs CHANGES.rst
 
 global-exclude *.pyc
