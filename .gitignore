@@ -14,6 +14,7 @@
 /htmlcov
 /include/
 /lib/
+/local/
 /local.cfg
 /parts/
 /src/plone.api.egg-info/
