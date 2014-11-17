@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.2 (unreleased)
+1.3.2 (2014-11-17)
 ------------------
 
 - fixes #190 - broken ``MANIFEST.in``. 
