@@ -4,7 +4,9 @@ Changelog
 1.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Resolves issues with ``README.rst`` symlink that prevented 1.3.0 from
+  being installed. And please never ever in future use symlinks in eggs, ok?
+  [jensens]
 
 
 1.3.0 (2014-11-17)
