@@ -1,8 +1,6 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
-    at `api.plone.org <http://api.plone.org/env.html>`_
-    so you have working references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation at `api.plone.org <http://api.plone.org/env.html>`_ so you have working references and proper formatting.
 
 
 .. module:: plone
@@ -17,8 +15,8 @@ Environment
 Switch roles inside a block
 ---------------------------
 
-To temporarily override the list of roles that are available, use
-:meth:`api.env.adopt_roles`. This is especially useful in unit tests.
+To temporarily override the list of roles that are available, use :meth:`api.env.adopt_roles`.
+This is especially useful in unit tests.
 
 .. code-block:: python
 
@@ -41,8 +39,7 @@ To temporarily override the list of roles that are available, use
 Switch user inside a block
 --------------------------
 
-To temporarily override the user which is currently active, use
-:meth:`api.env.adopt_user`.
+To temporarily override the user which is currently active, use :meth:`api.env.adopt_user`.
 
 .. code-block:: python
 
@@ -75,8 +72,7 @@ To temporarily override the user which is currently active, use
 Debug mode
 ----------
 
-To know if your zope instance is running in debug mode, use
-:meth:`api.env.debug_mode`.
+To know if your zope instance is running in debug mode, use :meth:`api.env.debug_mode`.
 
 .. code-block:: python
 
@@ -92,8 +88,7 @@ To know if your zope instance is running in debug mode, use
 Test mode
 ---------
 
-To know if your plone instance is running in a test runner, use
-:meth:`api.env.test_mode`.
+To know if your plone instance is running in a test runner, use :meth:`api.env.test_mode`.
 
 .. code-block:: python
 
@@ -139,6 +134,5 @@ To know what version of Zope 2 you are using, use :meth:`api.env.zope_version`.
 Further reading
 ---------------
 
-For more information on possible flags and usage options please see the full
-:ref:`plone-api-env` specification.
+For more information on possible flags and usage options please see the full :ref:`plone-api-env` specification.
 

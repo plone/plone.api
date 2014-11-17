@@ -1,8 +1,6 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
-    at `api.plone.org <http://api.plone.org/user.html>`_
-    so you have working references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation at `api.plone.org <http://api.plone.org/user.html>`_ so you have working references and proper formatting.
 
 
 .. module:: plone
@@ -17,9 +15,8 @@ Users
 Create user
 -----------
 
-To create a new user, use :meth:`api.user.create`. If your portal is
-configured to use emails as usernames, you just need to pass in the email of
-the new user.
+To create a new user, use :meth:`api.user.create`.
+If your portal is configured to use emails as usernames, you just need to pass in the email of the new user.
 
 .. invisible-code-block: python
 
@@ -105,8 +102,8 @@ You can get a user with :meth:`api.user.get`.
 User properties
 ---------------
 
-Users have various properties set on them. This is how you get and set them,
-using the underlying APIs:
+Users have various properties set on them.
+This is how you get and set them, using the underlying APIs:
 
 .. code-block:: python
 
@@ -142,9 +139,8 @@ Getting the currently logged-in user is easy with :meth:`api.user.get_current`.
 Check if current user is anonymous
 ----------------------------------
 
-Sometimes you need to trigger or display some piece of information only for
-logged-in users. It's easy to use :meth:`api.user.is_anonymous` to do a basic
-check for it.
+Sometimes you need to trigger or display some piece of information only for logged-in users.
+It's easy to use :meth:`api.user.is_anonymous` to do a basic check for it.
 
 .. code-block:: python
 
@@ -180,8 +176,7 @@ Get all users in your portal with :meth:`api.user.get_users`.
 Get group's users
 -----------------
 
-If you set the `groupname` parameter, then :meth:`api.user.get_users` will
-return only users that are members of this group.
+If you set the `groupname` parameter, then :meth:`api.user.get_users` will return only users that are members of this group.
 
 .. invisible-code-block: python
 
@@ -203,8 +198,7 @@ return only users that are members of this group.
 Delete user
 -----------
 
-To delete a user, use :meth:`api.user.delete` and pass in either the username or
-the user object you want to delete.
+To delete a user, use :meth:`api.user.delete` and pass in either the username or the user object you want to delete.
 
 .. code-block:: python
 
@@ -232,8 +226,8 @@ the user object you want to delete.
 Get user roles
 ----------------
 
-The :meth:`api.user.get_roles` method is used for getting a user's roles.  By
-default it returns site-wide roles.
+The :meth:`api.user.get_roles` method is used for getting a user's roles.
+By default it returns site-wide roles.
 
 .. code-block:: python
 
@@ -245,8 +239,7 @@ default it returns site-wide roles.
     self.assertEqual(set(roles), set(['Member','Authenticated']))
 
 
-If you pass in a content object, it will return local roles of the user
-in that particular context.
+If you pass in a content object, it will return local roles of the user in that particular context.
 
 .. code-block:: python
 
@@ -265,8 +258,8 @@ in that particular context.
 Get user permissions
 --------------------
 
-The :meth:`api.user.get_permissions` method is used for getting user's
-permissions. By default it returns site root permissions.
+The :meth:`api.user.get_permissions` method is used for getting user's permissions.
+By default it returns site root permissions.
 
 .. code-block:: python
 
@@ -288,8 +281,7 @@ permissions. By default it returns site root permissions.
         self.assertTrue(v == api.user.get_permissions(user=mike).get(k, None))
 
 
-If you pass in a content object, it will return local permissions of the user
-in that particular context.
+If you pass in a content object, it will return local permissions of the user in that particular context.
 
 .. code-block:: python
 
@@ -317,8 +309,7 @@ in that particular context.
 Check user permission
 ----------------------
 
-Instead of getting all user permissions, you can check a single permission
-using the :meth:`api.user.has_permission` method.
+Instead of getting all user permissions, you can check a single permission using the :meth:`api.user.has_permission` method.
 By default it checks the permission on the site root.
 
 .. code-block:: python
@@ -332,8 +323,7 @@ By default it checks the permission on the site root.
    self.assertTrue(can_view)
 
 
-If you pass in a content object, it will check the permission
-in that particular context.
+If you pass in a content object, it will check the permission in that particular context.
 
 .. code-block:: python
 
@@ -352,8 +342,7 @@ in that particular context.
 Grant roles to user
 -------------------
 
-The :meth:`api.user.grant_roles` allows us to grant a list of roles to the
-user.
+The :meth:`api.user.grant_roles` allows us to grant a list of roles to the user.
 
 .. code-block:: python
 
@@ -371,8 +360,7 @@ user.
 
 If you pass a content object or folder,
 the roles are granted only on that context and not site-wide.
-But all site-wide roles will also be returned by
-:meth:`api.user.get_roles` for this user on the given context.
+But all site-wide roles will also be returned by :meth:`api.user.get_roles` for this user on the given context.
 
 .. code-block:: python
 
@@ -397,8 +385,7 @@ But all site-wide roles will also be returned by
 Revoke roles from user
 ----------------------
 
-The :meth:`api.user.revoke_roles` allows us to revoke a list of roles from the
-user.
+The :meth:`api.user.revoke_roles` allows us to revoke a list of roles from the user.
 
 .. code-block:: python
 
@@ -443,5 +430,4 @@ If you pass a context object the local roles for that context will be removed.
 Further reading
 ---------------
 
-For more information on possible flags and usage options please see the full
-:ref:`plone-api-user` specification.
+For more information on possible flags and usage options please see the full :ref:`plone-api-user` specification.
