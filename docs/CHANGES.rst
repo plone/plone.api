@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.1 (unreleased)
+1.3.1 (2014-11-17)
 ------------------
 
 - Resolves issues with ``README.rst`` symlink that prevented 1.3.0 from
