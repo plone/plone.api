@@ -17,7 +17,6 @@ Releasing a new version of `plone.api` involves the following steps:
 #. Push the git tag upstream to GitHub.
 #. Generate a distribution file for the package.
 #. Upload the generated package to Python Package Index (PyPI).
-#. Tell ReadTheDocs to display the latest version of docs by default.
 
 To avoid human errors and to automate some of the tasks above we use
 ``jarn.mkrelease``. It's listed as a dependency in ``setup.py`` and should

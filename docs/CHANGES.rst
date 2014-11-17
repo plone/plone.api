@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.2dev (unreleased)
+1.3.dev0 (unreleased)
 ---------------------
 
 - Fixes #184 NameChooser on rename used the wrong way and fails on
