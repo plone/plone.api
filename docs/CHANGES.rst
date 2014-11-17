@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.3.dev0 (unreleased)
----------------------
+1.3.0 (2014-11-17)
+------------------
 
 - Fixes #184 NameChooser on rename used the wrong way and fails on
   safe_id=True.
