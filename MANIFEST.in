@@ -1,6 +1,8 @@
 include *.rst
 
 graft src
-recursive-include docs LICENSE.*
+recursive-include docs LICENSE.* 
+include docs README.rst
+include docs CHANGES.rst
 
 global-exclude *.pyc

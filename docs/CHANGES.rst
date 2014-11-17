@@ -4,7 +4,8 @@ Changelog
 1.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- fixes #190 - broken ``MANIFEST.in``. 
+  [jensens]
 
 
 1.3.1 (2014-11-17)
