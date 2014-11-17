@@ -20,6 +20,17 @@ is to guide them through the steps needed to start contributing.
    Windows. Plone does run on Windows but it's not completely trivial to set it
    up.
 
+
+Locations of information and tools
+==================================
+
+* `Documentation @ api.plone.org <http://api.plone.org>`_
+* `Source code @ GitHub <http://github.com/plone/plone.api>`_
+* `Issues @ GitHub <http://github.com/plone/plone.api/issues>`_
+* `Continuous Integration @ Travis CI <http://travis-ci.org/plone/plone.api>`_
+* `Code Coverage @ Coveralls.io <http://coveralls.io/r/plone/plone.api>`_
+
+
 Prerequisites
 =============
 
