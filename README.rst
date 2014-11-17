@@ -34,9 +34,9 @@ Source Code and Contribution
 .. image:: https://secure.travis-ci.org/plone/plone.api.png
     :target: http://travis-ci.org/#!/plone/plone.api
 
-.. image:: https://coveralls.io/repos/plone/plone.api/badge.png
+.. image:: https://coveralls.io/repos/plone/plone.api/badge.png?branch=master
     :alt: Coverage
-    :target: https://coveralls.io/r/plone/plone.api
+    :target: https://coveralls.io/r/plone/plone.api?branch=master
 
 Contributors
     please read the document `Process for Plone core's development <http://docs.plone.org/develop/plone-coredev/index.html>`_.
