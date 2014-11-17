@@ -1,4 +1,6 @@
-from setuptools import setup, find_packages
+# -*- coding: utf-8 -*-
+from setuptools import find_packages
+from setuptools import setup
 
 import os
 
@@ -7,8 +9,8 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 long_description = \
-    read('docs','README.rst') + \
-    read('docs','CHANGES.rst') + \
+    read('docs', 'README.rst') + \
+    read('docs', 'CHANGES.rst') + \
     read('docs', 'LICENSE.txt')
 
 version = '1.3.dev0'
