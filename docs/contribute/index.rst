@@ -1,8 +1,7 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read the documentation
-    at `api.plone.org <http://api.plone.org/contribute/index.html>`_
-    so you have working references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T!
+    Read the documentation at `api.plone.org <http://api.plone.org/contribute/index.html>`_ so you have working references and proper formatting.
 
 
 ==================================
@@ -12,8 +11,7 @@ How to contribute to this package?
 Conventions
 ===========
 
-Rules and guidelines on syntax style, development process, repository workflow,
-etc.
+Rules and guidelines on syntax style, development process, repository workflow, etc.
 
 .. toctree::
    :maxdepth: 2
