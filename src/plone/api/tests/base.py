@@ -20,7 +20,7 @@ class PloneApiLayer(PloneSandboxLayer):
         import plone.app.dexterity
         self.loadZCML(package=plone.app.dexterity)
         import plone.api
-        self.loadZCML(package=plone.api)
+        self.loadZCML(package=plone.api, name="testing.zcml")
 
     def setUpPloneSite(self, portal):
         """Prepare a Plone instance for testing."""

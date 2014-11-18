@@ -3,7 +3,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone.api">
 
-    <includeDependencies package="." />
+    <include package="Products.GenericSetup" file="meta.zcml"/>
 
     <genericsetup:registerProfile
         name="testfixture"

@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- explicit dependencies in setup.py, explicit zcml loading in tests.
+  [jensens]
+
 - import getToolByName from origin location
   [jensens]
 
