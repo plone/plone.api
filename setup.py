@@ -31,7 +31,6 @@ setup(
     install_requires=[
         'AccessControl',
         'Acquisition',
-        'Plone',
         'Products.Archetypes',
         'Products.CMFCore',
         'Products.CMFPlone',
