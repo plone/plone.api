@@ -4,8 +4,12 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- import getToolByName from origin location
+  [jensens]
 
+- overhaul of documentation: semantic linebreaks, few links fixed, minor 
+  rewording.
+  [jensens]
 
 1.3.2 (2014-11-17)
 ------------------

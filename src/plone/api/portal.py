@@ -3,7 +3,7 @@
 
 from Acquisition import aq_inner
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFPlone.utils import getToolByName
+from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from datetime import date
 from datetime import datetime as dtime
