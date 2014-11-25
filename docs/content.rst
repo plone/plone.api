@@ -97,6 +97,9 @@ The following operations will get objects from the stucture above, including usi
     # moreover, you can access content by its UID
     uid = about['team'].UID()
     team = api.content.get(UID=uid)
+    
+    # returns None if UID cannot be found in catalog
+    not_found = api.content.get(UID='notfound')
 
 
 .. invisible-code-block: python
@@ -107,6 +110,7 @@ The following operations will get objects from the stucture above, including usi
     self.assertTrue(conference)
     self.assertTrue(sprint)
     self.assertTrue(team)
+    self.assertEquals(not_found, None)
 
 
 .. _content_find_example:
