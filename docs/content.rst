@@ -40,11 +40,13 @@ The ``id`` of the new object is automatically and safely generated from its ``ti
 .. code-block:: python
 
     assert obj.id == 'my-content'
+    
+.. _content_create_image_example:
 
 Create image object
 ~~~~~~~~~~~~~~~~~~~
 
-Creating an image, is a two step process. First create 
+Creating an image is a two step process. First create 
 an empty object then populate it with a binary "payload".
 
 In this example, we'll add the image to the portal root:
@@ -54,7 +56,7 @@ In this example, we'll add the image to the portal root:
     from plone import api
     portal = api.portal.get()
 
-Create the new image using the :meth:`api.content.create` method.
+Create the empty image using the :meth:`api.content.create` method.
 
 .. code-block:: python
 
@@ -64,7 +66,7 @@ Create the new image using the :meth:`api.content.create` method.
         title='My Image',
         container=portal)
 
-Next you add the binary "payload".
+Next populate the image with a binary "payload".
 
 .. code-block:: python
 
