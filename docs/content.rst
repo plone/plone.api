@@ -41,7 +41,57 @@ The ``id`` of the new object is automatically and safely generated from its ``ti
 
     assert obj.id == 'my-content'
 
+Create image object
+~~~~~~~~~~~~~~~~~~~
 
+Creating an image, is a two step process. First create 
+an empty object then populate it with a binary "payload".
+
+In this example, we'll add the image to the portal root:
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+
+Create the new image using the :meth:`api.content.create` method.
+
+.. code-block:: python
+
+    from plone import api
+    image = api.content.create(
+        type='Image',
+        title='My Image',
+        container=portal)
+
+Next you add the binary "payload".
+
+.. code-block:: python
+
+    import transaction
+    # doesn't matter how you retrieve the image "payload"
+    # this example is hardcoded but it could just as
+    # easily be a "payload" from a form or a url
+    
+    imageFile = context.openDataFile("myfile.gif", "images-somewhere")
+    if imageFile:
+        imagePayload = imageFile.read()
+    
+        # once we have the "payload" we continue use
+        # the setImage method
+    
+        transaction.begin() # in case this image is big
+        image.setImage(imagePayload)
+        imageFile.close()
+                        
+        image.setTitle(title)
+        image.setDescription(description)
+        
+        # required for title/desc to be in catalog
+        image.reindexObject() 
+        transaction.commit()
+        
+        
 .. _content_get_example:
 
 Get content object
