@@ -70,7 +70,6 @@ Next populate the image with a binary "payload".
 
 .. code-block:: python
 
-    import transaction
     # doesn't matter how you retrieve the image "payload"
     # this example is hardcoded but it could just as
     # easily be a "payload" from a form or a url
@@ -95,13 +94,10 @@ Next populate the image with a binary "payload".
          '\x00A\x00;'
          )
     
-    transaction.begin() # in case this image is big
     image.setImage(sample_payload)
-    imageFile.close()
     
-    transaction.commit()
-
 The following URLs have good examples of retrieving a binary image payload:
+http://stackoverflow.com/questions/4664343/open-file-in-python-and-read-bytes
 http://stackoverflow.com/questions/7391945/how-do-i-read-image-data-from-a-url-in-python
 
 .. _content_get_example:
