@@ -798,6 +798,12 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEqual(
             ROLES, set(api.user.get_roles(user=user, obj=folder)))
         self.assertEqual(
+            ('Member', ),
+            api.user.get_roles(username='chuck', obj=folder, inherit=False))
+        self.assertEqual(
+            ('Member', ),
+            api.user.get_roles(user=user, obj=folder, inherit=False))
+        self.assertEqual(
             ROLES, set(api.user.get_roles(username='chuck', obj=document)))
         self.assertEqual(
             ROLES, set(api.user.get_roles(user=user, obj=document)))
@@ -890,4 +896,11 @@ class TestPloneApiUser(unittest.TestCase):
             set(api.user.get_roles(username='chuck', obj=folder)),
         )
         self.assertEqual(
+            ROLES,
+            set(api.user.get_roles(user=user, obj=folder)),
+        )
+        self.assertEqual(
             (), api.user.get_roles(user=user, obj=folder, inherit=False))
+        self.assertEqual(
+            (),
+            api.user.get_roles(username='chuck', obj=folder, inherit=False))
