@@ -123,7 +123,7 @@ and add the following configuration on ``~/.editorconfig``.
     trim_trailing_whitespace = true
     charset = utf-8
 
-    [*.py]
+    [{*.py,*.cfg}]
     indent_size = 4
 
     [{*.html,*.dtml,*.pt,*.zpt,*.xml,*.zcml,*.js}]
