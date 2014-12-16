@@ -369,7 +369,7 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
 
 @required_parameters('roles')
 @mutually_exclusive_parameters('username', 'user')
-def revoke_roles(username=None, user=None, obj=None, roles=None, inherit=True):
+def revoke_roles(username=None, user=None, obj=None, roles=None):
     """Revoke roles from a user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
@@ -385,9 +385,6 @@ def revoke_roles(username=None, user=None, obj=None, roles=None, inherit=True):
     :type obj: content object
     :param roles: List of roles to revoke
     :type roles: list of strings
-    :param inherit: if is False, set locally only local roles, and not global
-    ones
-    :type inherit: bool
     :raises:
         InvalidParameterError
     :Example: :ref:`user_revoke_roles_example`
@@ -403,7 +400,10 @@ def revoke_roles(username=None, user=None, obj=None, roles=None, inherit=True):
 
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise InvalidParameterError
-
+    inherit = True
+    if obj:
+        # if obj, get only a list of local roles, without inherited ones
+        inherit = False
     actual_roles = get_roles(user=user, obj=obj, inherit=inherit)
     if actual_roles.count('Anonymous'):
         actual_roles.remove('Anonymous')
