@@ -400,8 +400,11 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
 
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise InvalidParameterError
-
-    actual_roles = get_roles(user=user, obj=obj)
+    inherit = True
+    if obj is not None:
+        # if obj, get only a list of local roles, without inherited ones
+        inherit = False
+    actual_roles = get_roles(user=user, obj=obj, inherit=inherit)
     if actual_roles.count('Anonymous'):
         actual_roles.remove('Anonymous')
     if actual_roles.count('Authenticated'):
@@ -411,5 +414,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
 
     if obj is None:
         user.setSecurityProfile(roles=roles)
+    elif not roles:
+        obj.manage_delLocalRoles([user.getId()])
     else:
         obj.manage_setLocalRoles(user.getId(), roles)

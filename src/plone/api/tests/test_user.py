@@ -586,6 +586,12 @@ class TestPloneApiUser(unittest.TestCase):
         ROLES = set(('Authenticated', 'Member'))
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
+        self.assertEqual(
+            ROLES,
+            set(api.user.get_roles(username='chuck', inherit=False)))
+        self.assertEqual(
+            ROLES,
+            set(api.user.get_roles(user=user, inherit=False)))
 
     def test_revoke_roles_username_and_user(self):
         """Test revoke roles passing username and user."""
@@ -801,3 +807,16 @@ class TestPloneApiUser(unittest.TestCase):
             ROLES, set(api.user.get_roles(username='chuck', obj=document)))
         self.assertEqual(
             ROLES, set(api.user.get_roles(user=user, obj=document)))
+        self.assertEqual(
+            (),
+            api.user.get_roles(username='chuck', obj=folder, inherit=False),
+        )
+        self.assertEqual(
+            (),
+            api.user.get_roles(user=user, obj=folder, inherit=False))
+        self.assertEqual(
+            (),
+            api.user.get_roles(username='chuck', obj=document, inherit=False))
+        self.assertEqual(
+            (),
+            api.user.get_roles(user=user, obj=document, inherit=False))

@@ -10,14 +10,18 @@ Changelog
 - import getToolByName from origin location
   [jensens]
 
-- overhaul of documentation: semantic linebreaks, few links fixed, minor 
+- overhaul of documentation: semantic linebreaks, few links fixed, minor
   rewording.
   [jensens]
+
+- fix ``revoke_roles`` method: now if is't called with obj parameter,
+  it doesn't set inherited roles locally.
+  [cekk]
 
 1.3.2 (2014-11-17)
 ------------------
 
-- fixes #190 - broken ``MANIFEST.in``. 
+- fixes #190 - broken ``MANIFEST.in``.
   [jensens]
 
 
@@ -290,4 +294,3 @@ Changelog
 - Initial release.
   [davisagli, fulv, iElectric, jcerjak, jonstahl, kcleong, mauritsvanrees,
   wamdam, witsch, zupo]
-
