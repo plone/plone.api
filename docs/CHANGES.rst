@@ -18,6 +18,10 @@ Changelog
   it doesn't set inherited roles locally.
   [cekk]
 
+- Added ``api.folder.list_objects()`` and ``api.folder.list_brains()``
+  [ajung]
+
+
 1.3.2 (2014-11-17)
 ------------------
 
