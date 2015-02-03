@@ -39,6 +39,3 @@ Description of our release process and guidelines.
    :maxdepth: 2
 
    release.rst
-
-
-.. include:: ../CHANGES.rst

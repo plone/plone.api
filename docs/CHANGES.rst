@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- Fixed `make docs`.
+  [jaroel]
+
 - explicit dependencies in setup.py, explicit zcml loading in tests.
   [jensens]
 

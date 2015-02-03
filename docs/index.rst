@@ -65,6 +65,7 @@ Contribute
     :maxdepth: 2
 
     contribute/index.rst
+    CHANGES.rst
 
 
 Indices and tables
