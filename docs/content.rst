@@ -267,6 +267,26 @@ To delete a content object, pass the object to the :meth:`api.content.delete` me
     self.assertFalse(portal.get('copy_of_training'))
 
 
+To delete multiple content objects, pass the objects to the :meth:`api.content.delete` method:
+
+.. invisible-code-block: python
+
+    api.content.copy(source=portal['training'], target=portal, safe_id=True)
+    api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    data = [portal['copy_of_training'], portal['events']['copy_of_training'], ]
+    api.content.delete(objects=data)
+
+.. invisible-code-block: python
+
+    self.assertFalse(portal.get('copy_of_training'))
+    self.assertFalse(portal.events.get('copy_of_training'))
+
+
 .. _content_manipulation_with_safe_id_option:
 
 Content manipulation with the `safe_id` option
