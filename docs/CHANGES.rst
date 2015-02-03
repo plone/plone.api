@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- Added local TOCS to main docs pages. Fixes #90.
+  [jaroel]
+
 - Fixed `make docs`.
   [jaroel]
 
