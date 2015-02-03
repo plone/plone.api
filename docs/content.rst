@@ -97,7 +97,7 @@ The following operations will get objects from the stucture above, including usi
     # moreover, you can access content by its UID
     uid = about['team'].UID()
     team = api.content.get(UID=uid)
-    
+
     # returns None if UID cannot be found in catalog
     not_found = api.content.get(UID='notfound')
 

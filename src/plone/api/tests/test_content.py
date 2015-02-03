@@ -31,6 +31,13 @@ except pkg_resources.DistributionNotFound:
 else:
     HAS_DEXTERITY = True
 
+try:
+    pkg_resources.get_distribution('Products.Archetypes')
+except pkg_resources.DistributionNotFound:
+    HAS_ARCHETYPES = False
+else:
+    HAS_ARCHETYPES = True
+
 
 class TestPloneApiContent(unittest.TestCase):
     """Unit tests for content manipulation using plone.api"""
@@ -183,6 +190,10 @@ class TestPloneApiContent(unittest.TestCase):
                 id='test-item',
             )
 
+    @unittest.skipUnless(
+        HAS_ARCHETYPES,
+        "Only run when Dexterity is available.",
+    )
     def test_create_archetypes(self):
         """Test creating content based on Archetypes."""
 

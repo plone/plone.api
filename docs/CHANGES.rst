@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- Make Products.Archetypes dependency optional. Fixes #197
+  [jaroel]
+
 - Fixed `make docs`.
   [jaroel]
 
