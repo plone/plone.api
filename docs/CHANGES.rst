@@ -7,6 +7,9 @@ Changelog
 - Fixed `make docs`.
   [jaroel]
 
+- Support Zope users in user.adopt_user. Fixes #171 and #157.
+  [jaroel]
+
 - explicit dependencies in setup.py, explicit zcml loading in tests.
   [jensens]
 

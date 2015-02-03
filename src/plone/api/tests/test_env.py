@@ -367,6 +367,10 @@ class TestPloneApiEnv(unittest.TestCase):
             ])
         # /user worker
 
+    def test_adopting_zope_users(self):
+        api.env.adopt_user(username='admin')
+        api.env.adopt_user(user=api.user.get(username='admin'))
+
     def test_empty_warning(self):
         """Tests that empty roles lists get warned about."""
         from plone.api.exc import InvalidParameterError
