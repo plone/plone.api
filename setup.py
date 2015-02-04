@@ -31,7 +31,6 @@ setup(
     install_requires=[
         'AccessControl',
         'Acquisition',
-        'Products.Archetypes',
         'Products.CMFCore',
         'Products.CMFPlone',
         'Products.statusmessages',
@@ -70,6 +69,9 @@ setup(
             'zope.lifecycleevent',
             'zope.site',
         ],
+        'archetypes': [
+            'Products.Archetypes',
+        ]
     },
     classifiers=[
         'Environment :: Web Environment',

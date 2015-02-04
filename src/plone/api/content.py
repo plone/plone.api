@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Module that provides functionality for content manipulation."""
 
-from Products.Archetypes.interfaces.base import IBaseObject
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.WorkflowCore import WorkflowException
 from copy import copy as _copy
@@ -18,8 +17,17 @@ from zope.container.interfaces import INameChooser
 from zope.interface import Interface
 from zope.interface import providedBy
 
+import pkg_resources
 import random
 import transaction
+
+try:
+    pkg_resources.get_distribution('Products.Archetypes')
+except pkg_resources.DistributionNotFound:
+    class IBaseObject(Interface):
+        """Fake Products.Archetypes.interfaces.base.IBaseObject"""
+else:
+    from Products.Archetypes.interfaces.base import IBaseObject
 
 
 @required_parameters('container', 'type')
