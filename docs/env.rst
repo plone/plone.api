@@ -10,6 +10,9 @@
 Environment
 ===========
 
+.. contents:: :local:
+
+
 .. _env_adopt_roles_example:
 
 Switch roles inside a block

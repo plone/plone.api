@@ -7,6 +7,9 @@
 About
 =====
 
+.. contents:: :local:
+
+
 Inspiration
 ===========
 
