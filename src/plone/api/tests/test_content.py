@@ -593,6 +593,18 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.delete(self.contact)
         assert 'contact' not in container['about'].keys()
 
+    def test_delete_multiple(self):
+        """Test deleting multiple content items."""
+
+        container = self.portal
+        api.content.copy(source=container['about'], target=container)
+        api.content.copy(source=container['about'], target=container['events'])
+
+        api.content.delete(objects=[container['copy_of_about'],
+                                    container['events']['about']])
+        assert 'copy_of_about' not in container
+        assert 'about' not in container['events']
+
     def test_get_state(self):
         """Test retrieving the workflow state of a content item."""
 

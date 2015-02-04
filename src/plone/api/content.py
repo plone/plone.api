@@ -262,17 +262,24 @@ def copy(source=None, target=None, id=None, safe_id=False):
         return target[new_id]
 
 
-@required_parameters('obj')
-def delete(obj=None):
-    """Delete the object.
+@at_least_one_of('obj', 'objects')
+def delete(obj=None, objects=None):
+    """Delete the object(s).
 
-    :param obj: [required] Object that we want to delete.
+    :param obj: Object that we want to delete.
     :type obj: Content object
+    :param objects: Objects that we want to delete.
+    :type objects: List of content objects
     :raises:
         ValueError
     :Example: :ref:`content_delete_example`
     """
-    obj.aq_parent.manage_delObjects([obj.getId()])
+    if obj is not None:
+        obj.aq_parent.manage_delObjects([obj.getId()])
+    else:
+        # The objects may have different parents
+        for obj in objects:
+            delete(obj=obj)
 
 
 @required_parameters('obj')

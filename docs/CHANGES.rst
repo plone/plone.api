@@ -7,7 +7,16 @@ Changelog
 - Make Products.Archetypes dependency optional. Fixes #197
   [jaroel]
 
+- Added local TOCS to main docs pages. Fixes #90.
+  [jaroel]
+
+- Allow deleting multiple objects. Fixes #198
+  [jaroel]
+
 - Fixed `make docs`.
+  [jaroel]
+
+- Support Zope users in user.adopt_user. Fixes #171 and #157.
   [jaroel]
 
 - explicit dependencies in setup.py, explicit zcml loading in tests.
