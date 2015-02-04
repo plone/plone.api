@@ -32,11 +32,22 @@ def adopt_user(username=None, user=None):
     # Grab the user object out of acl_users because this function
     # accepts 'user' objects that are actually things like MemberData
     # objects, which AccessControl isn't so keen on.
-    acl_users = portal.get().acl_users
+
+    unwrapped = None
+    plone = portal.get()
+    acls = [plone.acl_users, plone.__parent__.acl_users]
+
     if username is None:
-        unwrapped = acl_users.getUserById(user.getId())
+        for acl_users in acls:
+            unwrapped = acl_users.getUserById(user.getId())
+            if unwrapped:
+                break
     else:
-        unwrapped = acl_users.getUser(username)
+        for acl_users in acls:
+            unwrapped = acl_users.getUser(username)
+            if unwrapped:
+                break
+
     if unwrapped is None:
         raise UserNotFoundError
 
