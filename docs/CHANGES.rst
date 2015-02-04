@@ -7,6 +7,9 @@ Changelog
 - Added local TOCS to main docs pages. Fixes #90.
   [jaroel]
 
+- Allow deleting multiple objects. Fixes #198
+  [jaroel]
+
 - Fixed `make docs`.
   [jaroel]
 
