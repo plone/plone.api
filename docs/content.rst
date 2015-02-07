@@ -120,18 +120,87 @@ The following operations will get objects from the stucture above, including usi
 Find content objects
 --------------------
 
-You can use the *catalog* to search for content.
-Here is a simple example:
+You can use the find function to search for content.
+
+Finding all Documents:
 
 .. code-block:: python
 
     from plone import api
-    catalog = api.portal.get_tool(name='portal_catalog')
-    documents = catalog(portal_type='Document')
+    documents = api.content.find(portal_type='Document')
 
 .. invisible-code-block: python
-    self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
-    self.assertEqual(len(documents), 3)
+
+    self.assertGreater(len(documents), 0)
+
+
+Finding all Documents within a context:
+
+.. code-block:: python
+
+    from plone import api
+    documents = api.content.find(
+        context=api.portal.get(), portal_type='Document')
+
+.. invisible-code-block: python
+
+    self.assertGreater(len(documents), 0)
+
+Limit search depth:
+
+.. code-block:: python
+
+    from plone import api
+    documents = api.content.find(depth=1, portal_type='Document')
+
+.. invisible-code-block: python
+
+    self.assertGreater(len(documents), 0)
+
+
+Limit search depth within a context:
+
+.. code-block:: python
+
+    from plone import api
+    documents = api.content.find(
+        context=api.portal.get(), depth=1, portal_type='Document')
+
+.. invisible-code-block: python
+
+    self.assertGreater(len(documents), 0)
+
+
+Search by interface:
+
+.. code-block:: python
+
+    from plone import api
+    from Products.ATContentTypes.interfaces.document import IATDocument
+    documents = api.content.find(object_provides=IATDocument)
+
+.. invisible-code-block: python
+
+    self.assertGreater(len(documents), 0)
+
+
+Combining multiple arguments:
+
+.. code-block:: python
+
+    from plone import api
+    from Products.ATContentTypes.interfaces.document import IATDocument
+    documents = api.content.find(
+        context=api.portal.get(),
+        depth=2,
+        object_provides=IATDocument,
+        SearchableText='Team',
+    )
+
+.. invisible-code-block: python
+
+    self.assertGreater(len(documents), 0)
+
 
 More information about how to use the catalog may be found in the `Plone Documentation <http://docs.plone.org/develop/plone/searching_and_indexing/index.html>`_.
 Note that the catalog returns *brains* (metadata stored in indexes) and not objects.

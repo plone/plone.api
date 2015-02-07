@@ -605,6 +605,84 @@ class TestPloneApiContent(unittest.TestCase):
         assert 'copy_of_about' not in container
         assert 'about' not in container['events']
 
+    def test_find(self):
+        """Test the finding of content in various ways."""
+
+        # Find documents
+        documents = api.content.find(portal_type='Document')
+        self.assertEqual(len(documents), 2)
+
+    def test_find_empty_query(self):
+        """Make sure an empty query yields no results"""
+
+        documents = api.content.find()
+        self.assertEqual(len(documents), 0)
+
+    def test_find_invalid_indexes(self):
+        """Make sure invalid indexes yield no results"""
+
+        # All invalid indexes yields no results
+        documents = api.content.find(invalid_index='henk')
+        self.assertEqual(len(documents), 0)
+
+        # But at least one valid index does.
+        documents = api.content.find(
+            invalid_index='henk', portal_type='Document')
+        self.assertEqual(len(documents), 2)
+
+    def test_find_context(self):
+        # Find documents in context
+        documents = api.content.find(
+            context=self.portal.about, portal_type='Document')
+        self.assertEqual(len(documents), 2)
+        documents = api.content.find(
+            context=self.portal.events, portal_type='Document')
+        self.assertEqual(len(documents), 0)
+
+    def test_find_depth(self):
+        # Limit search depth from portal root
+        documents = api.content.find(depth=2, portal_type='Document')
+        self.assertEqual(len(documents), 2)
+        documents = api.content.find(depth=1, portal_type='Document')
+        self.assertEqual(len(documents), 0)
+
+        # Limit search depth with explicit context
+        documents = api.content.find(
+            context=self.portal.about, depth=1, portal_type='Document')
+        self.assertEqual(len(documents), 2)
+        documents = api.content.find(
+            context=self.portal.about, depth=0, portal_type='Document')
+        self.assertEqual(len(documents), 0)
+
+    def test_find_interface(self):
+        # Find documents by interface or it's identifier
+        from Products.ATContentTypes.interfaces.document import IATDocument
+
+        identifier = IATDocument.__identifier__
+        documents = api.content.find(object_provides=identifier)
+        self.assertEqual(len(documents), 2)
+
+        documents = api.content.find(object_provides=IATDocument)
+        self.assertEqual(len(documents), 2)
+
+    def test_find_dict(self):
+        # Pass arguments using dict
+        path = '/'.join(self.portal.about.getPhysicalPath())
+
+        query = {
+            'portal_type': 'Document',
+            'path': {'query': path, 'depth': 2}
+            }
+        documents = api.content.find(**query)
+        self.assertEqual(len(documents), 2)
+
+        query = {
+            'portal_type': 'Document',
+            'path': {'query': path, 'depth': 0}
+            }
+        documents = api.content.find(**query)
+        self.assertEqual(len(documents), 0)
+
     def test_get_state(self):
         """Test retrieving the workflow state of a content item."""
 

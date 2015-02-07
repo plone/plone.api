@@ -36,6 +36,7 @@ setup(
         'Products.statusmessages',
         'Zope2',  # Globals, OFS(tests),
         'decorator',
+        'plone.app.contentlisting',
         'plone.app.uuid',
         'plone.uuid',
         'setuptools',
@@ -55,6 +56,7 @@ setup(
             'zest.releaser',
         ],
         'test': [
+            'Products.Archetypes',
             'Products.MailHost',
             'Products.CMFPlone',
             'Products.ZCatalog',
