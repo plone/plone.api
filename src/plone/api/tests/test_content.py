@@ -192,7 +192,7 @@ class TestPloneApiContent(unittest.TestCase):
 
     @unittest.skipUnless(
         HAS_ARCHETYPES,
-        "Only run when Dexterity is available.",
+        "Only run when Archetypes is available.",
     )
     def test_create_archetypes(self):
         """Test creating content based on Archetypes."""
