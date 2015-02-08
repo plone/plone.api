@@ -205,7 +205,7 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
     )
 
 
-@required_parameters('message', 'request')
+@required_parameters('message')
 def show_message(message=None, request=None, type='info'):
     """Display a status message.
 
@@ -219,6 +219,8 @@ def show_message(message=None, request=None, type='info'):
         ValueError
     :Example: :ref:`portal_show_message_example`
     """
+    if request is None:
+        request = getRequest()
     IStatusMessage(request).add(message, type=type)
 
 

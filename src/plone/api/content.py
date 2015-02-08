@@ -14,6 +14,7 @@ from plone.uuid.interfaces import IUUID
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.container.interfaces import INameChooser
+from zope.globalrequest import getRequest
 from zope.interface import Interface
 from zope.interface import providedBy
 
@@ -425,7 +426,7 @@ def transition(obj=None, transition=None, to_state=None):
             )
 
 
-@required_parameters('name', 'context', 'request')
+@required_parameters('name', 'context')
 def get_view(name=None, context=None, request=None):
     """Get a BrowserView object.
 
@@ -433,13 +434,16 @@ def get_view(name=None, context=None, request=None):
     :type name: string
     :param context: [required] Context on which to get view.
     :type context: context object
-    :param request: [required] Request on which to get view.
+    :param request: Request on which to get view.
     :type request: request object
     :raises:
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_get_view_example`
     """
+
+    if request is None:
+        request = getRequest()
 
     try:
         return getMultiAdapter((context, request), name=name)

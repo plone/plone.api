@@ -184,7 +184,7 @@ With :meth:`api.portal.show_message` you can show a notification message to the 
 .. code-block:: python
 
     from plone import api
-    api.portal.show_message(message='Blueberries!', request=request)
+    api.portal.show_message(message='Blueberries!')
 
 .. invisible-code-block: python
 

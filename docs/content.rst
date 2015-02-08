@@ -358,11 +358,7 @@ To get a :class:`BrowserView` for your content, use :meth:`api.content.get_view`
 
     from plone import api
     portal = api.portal.get()
-    view = api.content.get_view(
-        name='plone',
-        context=portal['about'],
-        request=request,
-    )
+    view = api.content.get_view(name='plone', context=portal['about'])
 
 .. invisible-code-block: python
 
