@@ -708,13 +708,6 @@ class TestPloneApiContent(unittest.TestCase):
                 request=request,
             )
 
-        # request is required
-        with self.assertRaises(MissingParameterError):
-            api.content.get_view(
-                name='plone',
-                context=self.blog,
-            )
-
     def test_get_view(self):
         """Test the view."""
         request = self.layer['request']
@@ -736,6 +729,12 @@ class TestPloneApiContent(unittest.TestCase):
         )
         self.assertEqual(view.__name__, 'plone_context_state')
         self.assertEqual(aq_base(view.canonical_object()), aq_base(self.blog))
+
+    def test_get_view_implicit_request(self):
+        """Test that get_view gets a request if none is passed in."""
+        request = self.layer['request']
+        view = api.content.get_view(name='plone', context=self.blog)
+        self.assertEqual(view.request, request)
 
     def test_get_uuid(self):
         """Test getting a content item's UUID."""

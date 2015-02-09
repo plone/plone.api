@@ -347,12 +347,9 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             portal.show_message()
 
-        # message and request are required
+        # message is required
         with self.assertRaises(MissingParameterError):
             portal.show_message(request=self.layer['request'])
-
-        with self.assertRaises(MissingParameterError):
-            portal.show_message(message='Beer is brewing.')
 
     def test_show_message(self):
         """Test to see if message appears."""
@@ -371,6 +368,16 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(len(show), 2)
         self.assertEqual(show[0].message, 'One')
         self.assertEqual(show[1].message, 'Two')
+
+    def test_show_message_implicit_request(self):
+        from Products.statusmessages.interfaces import IStatusMessage
+        request = self.layer['request']
+
+        portal.show_message(message='Blueberries!')
+        messages = IStatusMessage(request)
+        show = messages.show()
+        self.assertEqual(len(show), 1)
+        self.assertIn('Blueberries!', show[0].message)
 
     def test_get_navigation_root(self):
         """Test to see if the navigation_root is returned."""
