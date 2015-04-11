@@ -187,7 +187,7 @@ def move(source=None, target=None, id=None, safe_id=False):
         target.manage_pasteObjects(
             source.aq_parent.manage_cutObjects(source_id))
     else:
-        target = source
+        target = source.aq_parent
 
     if id:
         return rename(obj=target[source_id], new_id=id, safe_id=safe_id)

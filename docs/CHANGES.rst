@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- Use the source's parent as a target when no target is specified.
+  [jaroel]
+
 - Make Products.Archetypes dependency optional. Fixes #197
   [jaroel]
 
