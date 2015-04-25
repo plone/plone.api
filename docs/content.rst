@@ -406,7 +406,7 @@ To transition your content to a new workflow state, use the :meth:`api.content.t
 
     from plone import api
     portal = api.portal.get()
-    state = api.content.transition(obj=portal['about'], transition='publish')
+    api.content.transition(obj=portal['about'], transition='publish')
 
 .. invisible-code-block: python
 
