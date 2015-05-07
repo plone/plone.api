@@ -9,6 +9,7 @@ from datetime import date
 from datetime import datetime
 from email import message_from_string
 from plone.api import content
+from plone.api import env
 from plone.api import portal
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -43,9 +44,14 @@ class TestPloneApiPortal(unittest.TestCase):
         sm.registerUtility(component=mockmailhost, provided=IMailHost)
 
         self.mailhost = portal.get_tool('MailHost')
-
-        self.portal._updateProperty('email_from_name', 'Portal Owner')
-        self.portal._updateProperty('email_from_address', 'sender@example.org')
+        if env.plone_version() >= '5.0b2':
+            portal.set_registry_record('email_from_name', u'Portal Owner')
+            portal.set_registry_record('email_from_address',
+                                       'sender@example.org')
+        else:
+            self.portal._updateProperty('email_from_name', 'Portal Owner')
+            self.portal._updateProperty('email_from_address',
+                                        'sender@example.org')
 
     def _set_localization_date_format(self):
         """Set the expected localized date format."""
@@ -258,6 +264,43 @@ class TestPloneApiPortal(unittest.TestCase):
             subject="Trappist",
             body=u"One for you Bob!",
         )
+
+    def test_send_email_with_config_in_registry(self):
+        """Test mail-setting being stored in registry or portal_properties.
+        Before Plone 5.0b2 the settings were stored in portal_properties,
+        since then they are in the registry.
+        """
+        self.portal._updateProperty('email_from_name', 'Properties')
+        self.portal._updateProperty('email_from_address', 'prop@example.org')
+        self.mailhost.reset()
+        portal.send_email(
+            recipient="bob@plone.org",
+            subject="Trappist",
+            body=u"One for you Bob!",
+        )
+        self.assertEqual(len(self.mailhost.messages), 1)
+        msg = message_from_string(self.mailhost.messages[0])
+        self.assertEqual(msg['From'], 'Properties <prop@example.org>')
+        self.mailhost.reset()
+        registry = getUtility(IRegistry)
+        if 'plone.email_from_address' not in registry.records:
+            registry.records['plone.email_from_address'] = Record(
+                field.TextLine(title=u"Adress"))
+        if 'plone.email_from_name' not in registry.records:
+            registry.records['plone.email_from_name'] = Record(
+                field.TextLine(title=u"Name"))
+        portal.set_registry_record('plone.email_from_address',
+                                   u'reg@example.org')
+        portal.set_registry_record('plone.email_from_name',
+                                   u'Registry')
+        portal.send_email(
+            recipient="bob@plone.org",
+            subject="Trappist",
+            body=u"One for you Bob!",
+        )
+        self.assertEqual(len(self.mailhost.messages), 1)
+        msg = message_from_string(self.mailhost.messages[0])
+        self.assertEqual(msg['From'], 'Registry <reg@example.org>')
 
     def test_get_localized_time_constraints(self):
         """Test the constraints for get_localized_time."""

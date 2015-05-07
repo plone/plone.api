@@ -134,8 +134,13 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     encoding = portal.getProperty('email_charset', 'utf-8')
 
     if not sender:
-        from_address = portal.getProperty('email_from_address', '')
-        from_name = portal.getProperty('email_from_name', '')
+        try:
+            from_address = get_registry_record('plone.email_from_address')
+            from_name = get_registry_record('plone.email_from_name')
+        except InvalidParameterError:
+            # Before Plone 5.0b2 these were stored in portal_properties
+            from_address = portal.getProperty('email_from_address', '')
+            from_name = portal.getProperty('email_from_name', '')
         sender = formataddr((from_name, from_address))
         if parseaddr(sender)[1] != from_address:
             # formataddr probably got confused by special characters.

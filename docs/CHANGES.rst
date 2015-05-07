@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- Make send_email compatible with Plone >= 5.0b2.
+  [pbauer]
+
 - Use the source's parent as a target when no target is specified.
   [jaroel]
 
