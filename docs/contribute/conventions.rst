@@ -30,7 +30,7 @@ Line length
 
 All Python code in this package should be PEP8 valid. This includes adhering
 to the 80-char line length. If you absolutely need to break this rule, append
-``# noPEP8`` to the offending line to skip it in syntax checks.
+``# noqa`` to the offending line to skip it in syntax checks.
 
 .. note::
     Configuring your editor to display a line at 79th column helps a lot
