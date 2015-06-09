@@ -4,7 +4,6 @@
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.WorkflowCore import WorkflowException
 from copy import copy as _copy
-from plone.app.contentlisting.interfaces import IContentListing
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
@@ -560,6 +559,6 @@ def find(context=None, depth=None, **kwargs):
     indexes = catalog.indexes()
     valid_indexes = [index for index in query if index in indexes]
     if not valid_indexes:
-        return IContentListing([])
+        return []
 
-    return IContentListing(catalog(**query))
+    return catalog(**query)
