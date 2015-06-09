@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- Add plone.api.content.find. Refs #210
+  [jaroel]
+
 - Make send_email compatible with Plone >= 5.0b2.
   [pbauer]
 
