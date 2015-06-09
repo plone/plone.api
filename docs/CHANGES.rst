@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- plone.api.content.get_view no longer swallows exceptions.
+  [jaroel]
+
 - Add plone.api.content.find. Refs #210
   [jaroel]
 
