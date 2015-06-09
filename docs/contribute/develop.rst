@@ -1,6 +1,6 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read the documentation at `api.plone.org <http://api.plone.org/contribute/develop.html>`_     so you have working references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation at `docs.plone.org <http://docs.plone.org/external/plone.api/docs/contribute/develop.html>`_     so you have working references and proper formatting.
 
 
 =======================
@@ -19,7 +19,7 @@ Its purpose is to guide them through the steps needed to start contributing.
 Locations of information and tools
 ==================================
 
-* `Documentation @ api.plone.org <http://api.plone.org>`_
+* `Documentation @ docs.plone.org <http://docs.plone.org>`_
 * `Source code @ GitHub <http://github.com/plone/plone.api>`_
 * `Issues @ GitHub <http://github.com/plone/plone.api/issues>`_
 * `Continuous Integration @ Travis CI <http://travis-ci.org/plone/plone.api>`_

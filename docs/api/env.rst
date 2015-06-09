@@ -1,7 +1,7 @@
 .. admonition:: GitHub-only
 
     WARNING: If you are reading this on GitHub, DON'T! Read the documentation
-    at `api.plone.org <http://api.plone.org/api/env.html>`_
+    at `docs.plone.org <http://docs.plone.org/external/plone.api/docs/api/env.html>`_
     so you have working references and proper formatting.
 
 

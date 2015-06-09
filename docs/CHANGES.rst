@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- api.plone.org docs point to docs.plone.org/external/plone.api/docs/. Refs #202
+  [jaroel]
+
 - plone.api.content.get_view no longer swallows exceptions.
   [jaroel]
 
