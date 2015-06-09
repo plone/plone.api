@@ -482,8 +482,8 @@ def find(context=None, depth=None, **kwargs):
     :type obj: Content object
     :param depth: How far in the content tree we want to search from context
     :type obj: Content object
-    :returns: ContentListing objects
-    :rtype: ContentListing
+    :returns: Catalog brains
+    :rtype: List
     :Example: :ref:`content_find_example`
 
     Find works alike catalog(). Indexes are passing in as arguments with the
