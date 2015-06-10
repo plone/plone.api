@@ -440,24 +440,27 @@ def get_view(name=None, context=None, request=None):
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_get_view_example`
     """
+    # We do not use exceptionhandling to detect if the requested view is
+    # available, because the __init__ of said view will contain
+    # errors in client code.
 
-    try:
-        return getMultiAdapter((context, request), name=name)
-    except:
-        # get a list of all views so we can display their names in the error
-        # msg
-        sm = getSiteManager()
-        views = sm.adapters.lookupAll(
-            required=(providedBy(context), providedBy(request)),
-            provided=Interface,
-        )
-        views_names = [view[0] for view in views]
+    # Get all available views...
+    sm = getSiteManager()
+    available_views = sm.adapters.lookupAll(
+        required=(providedBy(context), providedBy(request)),
+        provided=Interface,
+    )
+    # and get their names.
+    available_view_names = [view[0] for view in available_views]
 
+    # Raise an error if the requested view is not available.
+    if name not in available_view_names:
         raise InvalidParameterError(
             "Cannot find a view with name '{0}'.\n"
             "Available views are:\n"
-            "{1}".format(name, '\n'.join(sorted(views_names)))
+            "{1}".format(name, '\n'.join(sorted(available_view_names)))
         )
+    return getMultiAdapter((context, request), name=name)
 
 
 @required_parameters('obj')
