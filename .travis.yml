@@ -30,6 +30,7 @@ install:
   - make version=$TRAVIS_PYTHON_VERSION .installed.cfg
 
 script:
+  - bin/code-analysis
   - make coverage
 
 after_success:
