@@ -1,6 +1,6 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read the documentation at `docs.plone.org <http://docs.plone.org/external/plone.api/docs/content.html>`_ so you have working references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T! Read the documentation at `api.plone.org <http://api.plone.org/content.html>`_ so you have working references and proper formatting.
 
 
 .. module:: plone
@@ -202,7 +202,7 @@ Combining multiple arguments:
     self.assertGreater(len(documents), 0)
 
 
-More information about how to use the catalog may be found in the `Plone Documentation <http://docs.plone.org/external/plone.api/docs/develop/plone/searching_and_indexing/index.html>`_.
+More information about how to use the catalog may be found in the `Plone Documentation <http://docs.plone.org/develop/plone/searching_and_indexing/index.html>`_.
 Note that the catalog returns *brains* (metadata stored in indexes) and not objects.
 However, calling ``getObject()`` on brains does in fact give you the object.
 
