@@ -1,6 +1,8 @@
 .. admonition:: GitHub-only
 
-    WARNING: If you are reading this on GitHub, DON'T! Read the documentation at `docs.plone.org <http://docs.plone.org/external/plone.api/docs/contribute/develop.html>`_     so you have working references and proper formatting.
+    WARNING: If you are reading this on GitHub, DON'T!
+    Read the documentation at `docs.plone.org <http://docs.plone.org/external/plone.api/docs/contribute/develop.html>`_
+    so you have working references and proper formatting.
 
 
 =======================
@@ -179,4 +181,3 @@ This command also re-generates your documentation.
     It pays off to invest a little time to make your editor run `pep8` and `pyflakes` on a file every time you save that file
     (or use `flake8` which combines both).
     This saves you lots of time in the long run.
-
