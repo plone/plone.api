@@ -12,6 +12,8 @@ global:
   - secure: "nTXMNU2aYbCtvKD74PndF8Xm2h6IvsxPjr6vj45AxjXmaB7Wf5oGi/4b6ObV\nexBtUQkFnc+M0ThGyUznOCPi3YxcbTzsyhQYhHUtmtw/6QRyYgo4E0GLDItU\n37Ff6wpxl3NMMJTvpi6SOVUvIJUl3+cs+4bkMkS48RSFGg2rGmo="  # Coveralls.io token
 matrix:
   allow_failures:
+  - env: PLONE_VERSION=4.0
+  - env: PLONE_VERSION=4.1
   - env: PLONE_VERSION=5.0
   include:
     - python: 2.6
@@ -25,7 +27,7 @@ matrix:
 install:
   - mkdir -p buildout-cache/eggs
   - mkdir -p buildout-cache/downloads
-  - sed -ie "s#test-4.3#test-$PLONE_VERSION#" buildout.cfg
+  - sed -ie "s#-4.3.x#-$PLONE_VERSION.x#" buildout.cfg
   - make "bin/python"
   - bin/python bootstrap.py
   - bin/buildout annotate
