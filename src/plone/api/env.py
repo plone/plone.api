@@ -18,9 +18,9 @@ import traceback
 IS_TEST = None
 
 
-@at_least_one_of('username', 'user')
-@mutually_exclusive_parameters('username', 'user')
-def adopt_user(username=None, user=None):
+@at_least_one_of('username', 'user', 'userid')
+@mutually_exclusive_parameters('username', 'user', 'userid')
+def adopt_user(username=None, user=None, userid=None):
     """Context manager for temporarily switching user inside a block.
 
     :param user: User object to switch to inside block.
@@ -37,16 +37,17 @@ def adopt_user(username=None, user=None):
     plone = portal.get()
     acls = [plone.acl_users, plone.__parent__.acl_users]
 
-    if username is None:
-        for acl_users in acls:
-            unwrapped = acl_users.getUserById(user.getId())
-            if unwrapped:
-                break
+    if username is not None:
+        accessor = 'getUser'  # acl_users.getUser
+        key = username
     else:
-        for acl_users in acls:
-            unwrapped = acl_users.getUser(username)
-            if unwrapped:
-                break
+        accessor = 'getUserById'  # acl_users.getUserById
+        key = userid or user.getId()
+
+    for acl_users in acls:
+        unwrapped = getattr(acl_users, accessor)(key)
+        if unwrapped:
+            break
 
     if unwrapped is None:
         raise UserNotFoundError

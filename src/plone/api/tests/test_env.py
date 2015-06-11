@@ -419,7 +419,18 @@ class TestPloneApiEnv(unittest.TestCase):
             '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?$'
         )
 
-    def test_adopt_user_different_username(self):
-        user = api.user.get(userid=TEST_USER_ID)
+    def test_adopt_user_by_userid(self):
+        with api.env.adopt_user(userid=TEST_USER_ID):
+            self.assertEqual(api.user.get_current().getId(), TEST_USER_ID)
+
+    def test_adopt_user_by_username(self):
+        acl_users = api.portal.get().acl_users
+        user = acl_users.getUserById(TEST_USER_ID)
+        with api.env.adopt_user(username=user.getUserName()):
+            self.assertEqual(api.user.get_current().getId(), TEST_USER_ID)
+
+    def test_adopt_user_by_user(self):
+        acl_users = api.portal.get().acl_users
+        user = acl_users.getUserById(TEST_USER_ID)
         with api.env.adopt_user(user=user):
             self.assertEqual(api.user.get_current().getId(), TEST_USER_ID)

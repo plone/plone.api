@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- plone.api.env.adopt_user now supports userid too. Refs #204.
+  [jaroel]
+
 - api.plone.org docs point to docs.plone.org/external/plone.api/docs/. Refs #202
   [jaroel]
 

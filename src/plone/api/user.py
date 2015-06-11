@@ -198,8 +198,8 @@ def is_anonymous():
     return bool(portal.get_tool('portal_membership').isAnonymousUser())
 
 
-@mutually_exclusive_parameters('username', 'user')
-def get_roles(username=None, user=None, obj=None, inherit=True):
+@mutually_exclusive_parameters('username', 'user', 'userid')
+def get_roles(username=None, user=None, obj=None, inherit=True, userid=None):
     """Get user's site-wide or local roles.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
