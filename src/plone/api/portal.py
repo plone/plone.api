@@ -32,6 +32,17 @@ except pkg_resources.DistributionNotFound:
         'set_registry_record will be unavailable.'
     )
 
+try:
+    pkg_resources.get_distribution('Products.PrintingMailHost')
+except pkg_resources.DistributionNotFound:
+    PRINTINGMAILHOST_ENABLED = False
+else:
+    # PrintingMailHost only patches in debug mode.
+    # plone.api.env.debug_mode cannot be used here, because .env imports this
+    # file
+    import Globals
+    PRINTINGMAILHOST_ENABLED = Globals.DevelopmentMode
+
 
 def get():
     """Get the Plone portal object out of thin air.
@@ -122,14 +133,16 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     :Example: :ref:`portal_send_email_example`
     """
     portal = get()
-    from plone.api import content
-    ctrlOverview = content.get_view(
-        context=portal,
-        request=portal.REQUEST,
-        name='overview-controlpanel',
-    )
-    if ctrlOverview.mailhost_warning():
-        raise ValueError('MailHost is not configured.')
+
+    if not PRINTINGMAILHOST_ENABLED:
+        from plone.api import content
+        ctrlOverview = content.get_view(
+            context=portal,
+            request=portal.REQUEST,
+            name='overview-controlpanel',
+        )
+        if ctrlOverview.mailhost_warning():
+            raise ValueError('MailHost is not configured.')
 
     encoding = portal.getProperty('email_charset', 'utf-8')
 
