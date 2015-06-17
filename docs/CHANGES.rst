@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- Support Products.PrintingMailHost. Refs #228.
+  [jaroel]
+
 - api.plone.org docs point to docs.plone.org/external/plone.api/docs/. Refs #202
   [jaroel]
 

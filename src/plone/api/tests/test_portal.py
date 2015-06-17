@@ -302,6 +302,36 @@ class TestPloneApiPortal(unittest.TestCase):
         msg = message_from_string(self.mailhost.messages[0])
         self.assertEqual(msg['From'], 'Registry <reg@example.org>')
 
+    def test_send_email_with_printingmailhost(self):
+        """ Test that send_email does not raise an exception when
+        Products.PrintingMailHost is installed and active.
+        """
+        old_smtp_host = self.portal.MailHost.smtp_host
+
+        # PrintingMailHost disabled
+        portal.PRINTINGMAILHOST_ENABLED = False
+        self.portal.MailHost.smtp_host = None
+        with self.assertRaises(ValueError):
+            portal.send_email(
+                recipient="bob@plone.org",
+                sender="noreply@plone.org",
+                subject="Trappist",
+                body=u"One for you Bob!"
+            )
+
+        # PrintingMailHost enabled
+        portal.PRINTINGMAILHOST_ENABLED = True
+        portal.send_email(
+            recipient="bob@plone.org",
+            sender="noreply@plone.org",
+            subject="Trappist",
+            body=u"One for you Bob!",
+        )
+
+        # Prevents sideeffects in other tests.
+        portal.PRINTINGMAILHOST_ENABLED = False
+        self.portal.MailHost.smtp_host = old_smtp_host
+
     def test_get_localized_time_constraints(self):
         """Test the constraints for get_localized_time."""
 
