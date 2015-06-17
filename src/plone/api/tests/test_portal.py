@@ -303,7 +303,8 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(msg['From'], 'Registry <reg@example.org>')
 
     def test_send_email_with_printingmailhost(self):
-        """
+        """ Test that send_email does not raise an exception when
+        Products.PrintingMailHost is installed and active.
         """
         old_smtp_host = self.portal.MailHost.smtp_host
 
