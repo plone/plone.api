@@ -291,7 +291,7 @@ def get_state(obj=None):
     :returns: Object's current workflow state
     :rtype: string
     :raises:
-        ValueError
+        Products.CMFCore.WorkflowCore.WorkflowException
     :Example: :ref:`content_get_state_example`
     """
     workflow = portal.get_tool('portal_workflow')
