@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Base module for unittesting."""
 
+import pkg_resources
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
@@ -9,6 +10,14 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import login
 from plone.app.testing import setRoles
+
+
+try:
+    pkg_resources.get_distribution('plone.app.contenttypes')
+except pkg_resources.DistributionNotFound:
+    HAS_PA_CONTENTTYPES = False
+else:
+    HAS_PA_CONTENTTYPES = True
 
 
 class PloneApiLayer(PloneSandboxLayer):
@@ -22,10 +31,18 @@ class PloneApiLayer(PloneSandboxLayer):
         import plone.api
         self.loadZCML(package=plone.api, name="testing.zcml")
 
+        if HAS_PA_CONTENTTYPES:
+            import plone.app.contenttypes
+            self.loadZCML(package=plone.app.contenttypes)
+
     def setUpPloneSite(self, portal):
         """Prepare a Plone instance for testing."""
         # Install into Plone site using portal_setup
         self.applyProfile(portal, 'Products.CMFPlone:plone')
+
+        # Plone 5 support
+        if HAS_PA_CONTENTTYPES:
+            self.applyProfile(portal, 'plone.app.contenttypes:default')
 
         # Create dummy content types for Dexterity tests
         self.applyProfile(portal, 'plone.api:testfixture')

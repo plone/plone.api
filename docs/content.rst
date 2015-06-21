@@ -178,8 +178,8 @@ Search by interface:
 .. code-block:: python
 
     from plone import api
-    from Products.ATContentTypes.interfaces.document import IATDocument
-    documents = api.content.find(object_provides=IATDocument)
+    from Products.CMFCore.interfaces import IContentish
+    documents = api.content.find(object_provides=IContentish)
 
 .. invisible-code-block: python
 
@@ -191,11 +191,11 @@ Combining multiple arguments:
 .. code-block:: python
 
     from plone import api
-    from Products.ATContentTypes.interfaces.document import IATDocument
+    from Products.CMFCore.interfaces import IContentish
     documents = api.content.find(
         context=api.portal.get(),
         depth=2,
-        object_provides=IATDocument,
+        object_provides=IContentish,
         SearchableText='Team',
     )
 
@@ -212,7 +212,6 @@ However, calling ``getObject()`` on brains does in fact give you the object.
 
     document_brain = documents[0]
     document_obj = document_brain.getObject()
-    assert document_obj.__class__.__name__ == 'ATDocument'
 
 .. _content_get_uuid_example:
 

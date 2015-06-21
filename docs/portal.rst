@@ -141,12 +141,12 @@ To send an e-mail use :meth:`api.portal.send_email`:
     from Products.CMFPlone.tests.utils import MockMailHost
     from Products.CMFPlone.utils import getToolByName
     from Products.MailHost.interfaces import IMailHost
+    api.portal.PRINTINGMAILHOST_ENABLED = True
 
     mockmailhost = MockMailHost('MailHost')
     if not hasattr(mockmailhost, 'smtp_host'):
         mockmailhost.smtp_host = 'localhost'
     portal = api.portal.get()
-    portal._updateProperty('email_from_address', 'sender@example.org')
     portal.MailHost = mockmailhost
     sm = portal.getSiteManager()
     sm.registerUtility(component=mockmailhost, provided=IMailHost)
@@ -173,6 +173,7 @@ To send an e-mail use :meth:`api.portal.send_email`:
     self.assertEqual(msg['From'], 'noreply@plone.org')
     self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
     self.assertEqual(msg.get_payload(), 'One for you Bob!')
+    api.portal.PRINTINGMAILHOST_ENABLED = False
     mailhost.reset()
 
 

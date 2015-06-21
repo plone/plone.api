@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Boilerplate for doctest functional tests."""
 
+import pkg_resources
 from plone.app.testing import applyProfile
 from plone.app.testing import setRoles
 from plone.app.testing import PLONE_INTEGRATION_TESTING
@@ -19,6 +20,13 @@ import os
 import re
 import transaction
 import unittest2 as unittest
+
+try:
+    pkg_resources.get_distribution('plone.app.contenttypes')
+except pkg_resources.DistributionNotFound:
+    HAS_PA_CONTENTTYPES = False
+else:
+    HAS_PA_CONTENTTYPES = True
 
 FLAGS = (
     doctest.NORMALIZE_WHITESPACE |
@@ -58,6 +66,10 @@ def setUp(self):  # pragma: no cover
     setRoles(portal, TEST_USER_ID, ['Manager'])
 
     applyProfile(portal, 'Products.CMFPlone:plone')
+
+    # Plone 5 support
+    if HAS_PA_CONTENTTYPES:
+        applyProfile(portal, 'plone.app.contenttypes:default')
 
     transaction.commit()
 
