@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- Fixed tests for Plone 5. Refs #241.
+  [jaroel]
+
 - Support Products.PrintingMailHost. Refs #228.
   [jaroel]
 

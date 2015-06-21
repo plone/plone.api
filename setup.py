@@ -47,10 +47,7 @@ setup(
             'zest.releaser',
         ],
         'test': [
-            'Products.Archetypes',
-            #'Products.MailHost',
             'Products.CMFPlone',
-            #'Products.ZCatalog',
             'manuel',
             'mock',
             'plone.app.dexterity',
@@ -58,9 +55,6 @@ setup(
             'plone.indexer',
             'plone.registry',
             'unittest2',
-            #'zExceptions',
-            #'zope.lifecycleevent',
-            #'zope.site',
         ],
         'archetypes': [
             'Products.Archetypes',

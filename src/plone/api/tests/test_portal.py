@@ -23,6 +23,8 @@ from zope.site import LocalSiteManager
 import mock
 import unittest2 as unittest
 
+HAS_PLONE5 = env.plone_version() >= '5.0b2'
+
 
 class TestPloneApiPortal(unittest.TestCase):
     """Unit tests for getting portal info using plone.api."""
@@ -44,14 +46,19 @@ class TestPloneApiPortal(unittest.TestCase):
         sm.registerUtility(component=mockmailhost, provided=IMailHost)
 
         self.mailhost = portal.get_tool('MailHost')
-        if env.plone_version() >= '5.0b2':
-            portal.set_registry_record('email_from_name', u'Portal Owner')
-            portal.set_registry_record('email_from_address',
-                                       'sender@example.org')
+        if HAS_PLONE5:
+            portal.set_registry_record(
+                'plone.email_from_name', u'Portal Owner'
+            )
+            portal.set_registry_record(
+                'plone.email_from_address',
+                'sender@example.org'
+            )
         else:
             self.portal._updateProperty('email_from_name', 'Portal Owner')
-            self.portal._updateProperty('email_from_address',
-                                        'sender@example.org')
+            self.portal._updateProperty(
+                'email_from_address', 'sender@example.org'
+            )
 
     def _set_localization_date_format(self):
         """Set the expected localized date format."""
@@ -134,36 +141,7 @@ class TestPloneApiPortal(unittest.TestCase):
         # A selection of portal tools which should exist in all plone versions
         should_be_theres = (
             "portal_setup",
-            "portal_actionicons",
-            "portal_actions",
-            "portal_atct",
-            "portal_calendar",
             "portal_catalog",
-            "portal_controlpanel",
-            "portal_css",
-            "portal_diff",
-            "portal_factory",
-            "portal_groupdata",
-            "portal_groups",
-            "portal_interface",
-            "portal_javascripts",
-            "portal_memberdata",
-            "portal_membership",
-            "portal_metadata",
-            "portal_migration",
-            "portal_password_reset",
-            "portal_properties",
-            "portal_quickinstaller",
-            "portal_registration",
-            "portal_skins",
-            "portal_types",
-            "portal_uidannotation",
-            "portal_uidgenerator",
-            "portal_uidhandler",
-            "portal_undo",
-            "portal_url",
-            "portal_view_customizations",
-            "portal_workflow",
         )
 
         for should_be_there in should_be_theres:
@@ -241,7 +219,13 @@ class TestPloneApiPortal(unittest.TestCase):
         """By default, the MailHost is not configured yet, so we cannot
         send email.
         """
-        self.portal._updateProperty('email_from_address', None)
+        if HAS_PLONE5:
+            old_value = portal.get_registry_record('plone.email_from_address')
+            portal.set_registry_record('plone.email_from_address', '')  # ASCII
+        else:
+            old_smtp_host = self.portal.MailHost.smtp_host
+            self.portal.MailHost.smtp_host = None
+
         with self.assertRaises(ValueError):
             portal.send_email(
                 recipient="bob@plone.org",
@@ -249,6 +233,11 @@ class TestPloneApiPortal(unittest.TestCase):
                 subject="Trappist",
                 body=u"One for you Bob!",
             )
+
+        if HAS_PLONE5:
+            portal.set_registry_record('plone.email_from_address', old_value)
+        else:
+            self.portal.MailHost.smtp_host = old_smtp_host
 
     @mock.patch('plone.api.portal.parseaddr')
     def test_send_email_parseaddr(self, mock_parseaddr):
@@ -265,10 +254,13 @@ class TestPloneApiPortal(unittest.TestCase):
             body=u"One for you Bob!",
         )
 
-    def test_send_email_with_config_in_registry(self):
-        """Test mail-setting being stored in registry or portal_properties.
-        Before Plone 5.0b2 the settings were stored in portal_properties,
-        since then they are in the registry.
+    @unittest.skipIf(
+        HAS_PLONE5,
+        "Plone 4 uses portal_properties for mail settings"
+    )
+    def test_send_email_with_config_in_portal_properties(self):
+        """Test mail-setting being stored in portal_properties.
+        Before Plone 5.0b2 the settings were stored in portal_properties.
         """
         self.portal._updateProperty('email_from_name', 'Properties')
         self.portal._updateProperty('email_from_address', 'prop@example.org')
@@ -281,18 +273,20 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(len(self.mailhost.messages), 1)
         msg = message_from_string(self.mailhost.messages[0])
         self.assertEqual(msg['From'], 'Properties <prop@example.org>')
+
+    @unittest.skipUnless(
+        HAS_PLONE5,
+        "Plone 5 uses the registry for mail settings"
+    )
+    def test_send_email_with_config_in_registry(self):
+        """Test mail-setting being stored in registry
+        """
         self.mailhost.reset()
-        registry = getUtility(IRegistry)
-        if 'plone.email_from_address' not in registry.records:
-            registry.records['plone.email_from_address'] = Record(
-                field.TextLine(title=u"Adress"))
-        if 'plone.email_from_name' not in registry.records:
-            registry.records['plone.email_from_name'] = Record(
-                field.TextLine(title=u"Name"))
+
         portal.set_registry_record('plone.email_from_address',
-                                   u'reg@example.org')
+                                   'reg@example.org')  # ASCII
         portal.set_registry_record('plone.email_from_name',
-                                   u'Registry')
+                                   u'Registry')  # TextLine
         portal.send_email(
             recipient="bob@plone.org",
             subject="Trappist",
@@ -306,11 +300,17 @@ class TestPloneApiPortal(unittest.TestCase):
         """ Test that send_email does not raise an exception when
         Products.PrintingMailHost is installed and active.
         """
-        old_smtp_host = self.portal.MailHost.smtp_host
+        old_flag = portal.PRINTINGMAILHOST_ENABLED
+
+        if HAS_PLONE5:
+            old_value = portal.get_registry_record('plone.email_from_address')
+            portal.set_registry_record('plone.email_from_address', '')  # ASCII
+        else:
+            old_smtp_host = self.portal.MailHost.smtp_host
+            self.portal.MailHost.smtp_host = None
 
         # PrintingMailHost disabled
         portal.PRINTINGMAILHOST_ENABLED = False
-        self.portal.MailHost.smtp_host = None
         with self.assertRaises(ValueError):
             portal.send_email(
                 recipient="bob@plone.org",
@@ -329,8 +329,11 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
         # Prevents sideeffects in other tests.
-        portal.PRINTINGMAILHOST_ENABLED = False
-        self.portal.MailHost.smtp_host = old_smtp_host
+        if HAS_PLONE5:
+            portal.set_registry_record('plone.email_from_address', old_value)
+        else:
+            self.portal.MailHost.smtp_host = old_smtp_host
+        portal.PRINTINGMAILHOST_ENABLED = old_flag
 
     def test_get_localized_time_constraints(self):
         """Test the constraints for get_localized_time."""

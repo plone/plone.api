@@ -25,18 +25,11 @@ import pkg_resources
 import unittest2 as unittest
 
 try:
-    pkg_resources.get_distribution('plone.dexterity')
+    pkg_resources.get_distribution('plone.app.contenttypes')
 except pkg_resources.DistributionNotFound:
-    HAS_DEXTERITY = False
+    HAS_PACONTENTYPES = False
 else:
-    HAS_DEXTERITY = True
-
-try:
-    pkg_resources.get_distribution('Products.Archetypes')
-except pkg_resources.DistributionNotFound:
-    HAS_ARCHETYPES = False
-else:
-    HAS_ARCHETYPES = True
+    HAS_PACONTENTYPES = True
 
 
 class TestPloneApiContent(unittest.TestCase):
@@ -139,9 +132,18 @@ class TestPloneApiContent(unittest.TestCase):
         folder = api.content.create(
             container=container, type='Folder', id='test-folder')
         assert folder
+
         # Constraint the allowed types
-        folder.setConstrainTypesMode(1)
-        folder.setLocallyAllowedTypes(('News Item',))
+        ENABLED = 1
+        if getattr(aq_base(folder), 'setConstrainTypesMode', None):  # AT
+            folder.setConstrainTypesMode(ENABLED)
+            folder.setLocallyAllowedTypes(('News Item',))
+        else:  # DX
+            from Products.CMFPlone.interfaces import ISelectableConstrainTypes
+            constraints = ISelectableConstrainTypes(folder)
+            constraints.setConstrainTypesMode(ENABLED)
+            constraints.setLocallyAllowedTypes(('News Item',))
+
         with self.assertRaises(InvalidParameterError):
             api.content.create(
                 container=folder,
@@ -149,13 +151,12 @@ class TestPloneApiContent(unittest.TestCase):
                 id='test-doc'
             )
 
-    @unittest.skipUnless(
-        HAS_DEXTERITY,
-        "Only run when Dexterity is available.",
-    )
     def test_create_dexterity(self):
-        """Test create content based on Dexterity."""
+        """Test create dexterity"""
         container = self.portal
+
+        # This section check for DX compatibilty. The custom DX types defined
+        # in plone.api are for Plone 4 compatiblity.
 
         # Create a folder
         folder = api.content.create(
@@ -190,14 +191,13 @@ class TestPloneApiContent(unittest.TestCase):
                 id='test-item',
             )
 
-    @unittest.skipUnless(
-        HAS_ARCHETYPES,
-        "Only run when Archetypes is available.",
-    )
-    def test_create_archetypes(self):
-        """Test creating content based on Archetypes."""
-
+    def test_create_content(self):
+        """Test create content"""
         container = self.portal
+
+        # This section below is either AT (Plone < 5) or DX (Plone >= 5)
+        # We use Products.ATContentTypes in Plone 4 or plone.app.contenttypes
+        # in Plone 5
 
         # Create a folder
         folder = api.content.create(
@@ -656,14 +656,12 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_find_interface(self):
         # Find documents by interface or it's identifier
-        from Products.ATContentTypes.interfaces.document import IATDocument
-
-        identifier = IATDocument.__identifier__
+        identifier = IContentish.__identifier__
         documents = api.content.find(object_provides=identifier)
-        self.assertEqual(len(documents), 2)
+        self.assertEqual(len(documents), 8)
 
-        documents = api.content.find(object_provides=IATDocument)
-        self.assertEqual(len(documents), 2)
+        documents = api.content.find(object_provides=IContentish)
+        self.assertEqual(len(documents), 8)
 
     def test_find_dict(self):
         # Pass arguments using dict
@@ -838,15 +836,15 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(uuid1, uuid2)
         self.assertIsInstance(uuid2, str)
 
-        # Archetypes
-        container.invokeFactory('Document', 'test-archetype')
-        document = container['test-archetype']
-        uuid1 = generator()
-        document._setUID(uuid1)
+        if not HAS_PACONTENTYPES:
+            container.invokeFactory('Document', 'test-archetype')
+            document = container['test-archetype']
+            uuid1 = generator()
+            document._setUID(uuid1)
 
-        uuid2 = api.content.get_uuid(document)
-        self.assertEqual(uuid1, uuid2)
-        self.assertIsInstance(uuid2, str)
+            uuid2 = api.content.get_uuid(document)
+            self.assertEqual(uuid1, uuid2)
+            self.assertIsInstance(uuid2, str)
 
     def test_get_view_view_not_found(self):
         """Test that error msg lists available views if a view is not found."""
