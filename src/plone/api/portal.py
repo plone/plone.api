@@ -255,14 +255,19 @@ def get_registry_record(name=None):
 
     registry = getUtility(IRegistry)
     if name not in registry:
-
-        records = [_name for _name, record in registry.records.items()]
-
-        raise InvalidParameterError(
-            "Cannot find a record with name '{0}'.\n"
-            "Available records are:\n"
-            "{1}".format(name, '\n'.join(records))
-        )
+        # Show all records that 'look like' name.
+        # We don't dump the whole list, because it 1500+ items.
+        records = [key for key in registry.records.keys() if name in key]
+        if records:
+            raise InvalidParameterError(
+                "Cannot find a record with name '{0}'.\n"
+                "Did you mean?:\n"
+                "{1}".format(name, '\n'.join(records))
+            )
+        else:
+            raise InvalidParameterError(
+                "Cannot find a record with name '{0}'".format(name)
+            )
 
     return registry[name]
 

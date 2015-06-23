@@ -4,6 +4,9 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- plone.api.portal.get_registry_record now suggests look-alike records when no records is found. Refs #249.
+  [jaroel]
+
 - Fixed tests for Plone 5. Refs #241.
   [jaroel]
 
