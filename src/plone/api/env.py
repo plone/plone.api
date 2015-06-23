@@ -186,16 +186,16 @@ def test_mode():
 
     :Example: :ref:`env_test_mode_example`
     """
-    from plone.api import env
+    global IS_TEST
 
-    if env.IS_TEST is None:
-        env.IS_TEST = False
+    if IS_TEST is None:
+        IS_TEST = False
         for frame in traceback.extract_stack():
-            if 'zope/testing/testrunner' in frame[0]:
-                env.IS_TEST = True
+            if '.testrunner' in frame[0]:
+                IS_TEST = True
                 break
 
-    return env.IS_TEST
+    return IS_TEST
 
 
 def plone_version():
