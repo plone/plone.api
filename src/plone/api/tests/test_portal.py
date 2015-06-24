@@ -492,29 +492,37 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_get_invalid_registry_record_msg(self):
         """Test that the error message from trying to get a
         nonexistant registry record produces an error message which
-        lists known registry records.
+        lists suggested registry records.
         """
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_registry_record(name='nonexistent.sharepoint.power')
+        exc_str = str(cm.exception)
 
-        self.assertTrue(
-            str(cm.exception).startswith(
-                "Cannot find a record with name "
-                "'nonexistent.sharepoint.power'.\n"
-            )
-        )
+        # Check if there is an error message.
+        self.assertTrue(exc_str.startswith("Cannot find a record with name"))
 
-        # A selection of records which should exist in all plone versions
-        should_be_theres = (
-            "plone.app.discussion.interfaces.IDiscussionSettings.captcha",
-            "plone.app.querystring.field.Creator.title",
-            "plone.app.querystring.operation.int.largerThan.description",
-            "plone.app.querystring.operation.selection.is.widget",
-        )
+    def test_get_invalid_registry_record_suggestions(self):
+        from plone.api.exc import InvalidParameterError
 
-        for should_be_there in should_be_theres:
-            self.assertIn((should_be_there + '\n'), str(cm.exception))
+        # Check without suggestion
+        with self.assertRaises(InvalidParameterError) as cm:
+            portal.get_registry_record(name='a random unique string')
+        exc_str = str(cm.exception)
+
+        # Check for an error, but no suggestions.
+        self.assertTrue(exc_str.startswith("Cannot find a record with name"))
+        self.assertFalse('Did you mean?:' in exc_str)
+
+        # Check with suggestions
+        with self.assertRaises(InvalidParameterError) as cm:
+            portal.get_registry_record(name='querystring')
+        exc_str = str(cm.exception)
+
+        # Check for an error with suggestions.
+        self.assertTrue(exc_str.startswith("Cannot find a record with name"))
+        self.assertTrue('Did you mean?:' in exc_str)
 
     def test_set_valid_registry_record(self):
         """Test that setting a valid registry record succeeds."""
