@@ -191,7 +191,7 @@ def test_mode():
     if IS_TEST is None:
         IS_TEST = False
         for frame in traceback.extract_stack():
-            if 'testrunner' in frame[0]:
+            if 'testrunner' in frame[0] or 'testreport/runner' in frame[0]:
                 IS_TEST = True
                 break
 
