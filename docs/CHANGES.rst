@@ -4,6 +4,10 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
+- plone.api.content.get_state now allows for an optional default value.
+  This is used when no workflow is defined for the object. Refs #246
+  [jaroel]
+
 - plone.api.portal.get_registry_record now suggests look-alike records when no records is found. Refs #249.
   [jaroel]
 

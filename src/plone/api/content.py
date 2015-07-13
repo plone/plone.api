@@ -29,6 +29,8 @@ except pkg_resources.DistributionNotFound:
 else:
     from Products.Archetypes.interfaces.base import IBaseObject
 
+_marker = []
+
 
 @required_parameters('container', 'type')
 @at_least_one_of('id', 'title')
@@ -283,19 +285,26 @@ def delete(obj=None, objects=None):
 
 
 @required_parameters('obj')
-def get_state(obj=None):
+def get_state(obj=None, default=_marker):
     """Get the current workflow state of the object.
 
     :param obj: [required] Object that we want to get the state for.
     :type obj: Content object
-    :returns: Object's current workflow state
+    :param default: Returned if no workflow is defined for the object.
+    :returns: Object's current workflow state, or `default`.
     :rtype: string
     :raises:
         Products.CMFCore.WorkflowCore.WorkflowException
     :Example: :ref:`content_get_state_example`
     """
     workflow = portal.get_tool('portal_workflow')
-    return workflow.getInfoFor(obj, 'review_state')
+
+    if default is not _marker and not workflow.getWorkflowsFor(obj):
+        return default
+
+    # This still raises WorkflowException when the workflow state is broken,
+    # ie 'review_state' is absent
+    return workflow.getInfoFor(ob=obj, name='review_state')
 
 
 def _wf_transitions_for(workflow, from_state, to_state):

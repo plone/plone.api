@@ -6,6 +6,7 @@ from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
 from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.ZCatalog.interfaces import IZCatalog
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
@@ -41,6 +42,7 @@ class TestPloneApiContent(unittest.TestCase):
         """Create a portal structure which we can test against.
 
         Plone (portal root)
+        |-- image
         |-- blog
         |-- about
         |   |-- team
@@ -70,6 +72,9 @@ class TestPloneApiContent(unittest.TestCase):
             container=self.events, type='Event', id='conference')
         self.sprint = api.content.create(
             container=self.events, type='Event', id='sprint')
+
+        self.image = api.content.create(
+            container=self.portal, type='Image', id='image')
 
     def test_create_constraints(self):
         """Test the constraints when creating content."""
@@ -657,11 +662,13 @@ class TestPloneApiContent(unittest.TestCase):
     def test_find_interface(self):
         # Find documents by interface or it's identifier
         identifier = IContentish.__identifier__
-        documents = api.content.find(object_provides=identifier)
-        self.assertEqual(len(documents), 8)
+        brains = api.content.find(object_provides=identifier)
+        by_identifier = [x.getObject() for x in brains]
 
-        documents = api.content.find(object_provides=IContentish)
-        self.assertEqual(len(documents), 8)
+        brains = api.content.find(object_provides=IContentish)
+        by_interface = [x.getObject() for x in brains]
+
+        self.assertEqual(by_identifier, by_interface)
 
     def test_find_dict(self):
         # Pass arguments using dict
@@ -691,6 +698,22 @@ class TestPloneApiContent(unittest.TestCase):
 
         review_state = api.content.get_state(obj=self.blog)
         self.assertEqual(review_state, 'private')
+
+    def test_get_state_default_value(self):
+        """Test passing in a default value.
+        """
+        # A WorkflowException is raise if no workflow is defined for the obj.
+        # This is normally the case for Images and Files.
+        with self.assertRaises(WorkflowException):
+            review_state = api.content.get_state(obj=self.image)
+
+        default = 'my default value'
+        review_state = api.content.get_state(obj=self.image, default=default)
+        review_state is default
+
+        # the default should not override the actual state.
+        review_state = api.content.get_state(obj=self.blog, default=default)
+        review_state is not default
 
     def test_transition(self):
         """Test transitioning the workflow state on a content item."""

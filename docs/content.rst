@@ -67,6 +67,7 @@ Consider the following portal structure::
 .. invisible-code-block: python
 
     portal = api.portal.get()
+    image = api.content.create(type='Image', id='image', container=portal)
     blog = api.content.create(type='Link', id='blog', container=portal)
     about = api.content.create(type='Folder', id='about', container=portal)
     events = api.content.create(type='Folder', id='events', container=portal)
@@ -395,6 +396,17 @@ To find out the current workflow state of your content, use the :meth:`api.conte
 
     self.assertEqual(state, 'private')
 
+The optional `default` argument is returned if no workflow is defined for the object.
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    state = api.content.get_state(obj=portal['image'], default='Unknown')
+
+.. invisible-code-block: python
+
+    self.assertEqual(state, 'Unknown')
 
 .. _content_transition_example:
 
