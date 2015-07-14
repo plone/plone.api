@@ -134,14 +134,14 @@ def get_current():
     return portal_membership.getAuthenticatedMember()
 
 
-@mutually_exclusive_parameters('groupname', 'group')
-def get_users(groupname=None, group=None):
+@mutually_exclusive_parameters('groupid', 'group')
+def get_users(groupid=None, group=None):
     """Get all users or all users filtered by group.
 
-    Arguments ``group`` and ``groupname`` are mutually exclusive.
+    Arguments ``group`` and ``groupid`` are mutually exclusive.
     You can either set one or the other, but not both.
 
-    :param groupname: Groupname of the group of which to return users. If set,
+    :param groupid: groupid of the group of which to return users. If set,
         only return users that are member of this group.
     :type username: string
     :param group: Group of which to return users.
@@ -152,9 +152,9 @@ def get_users(groupname=None, group=None):
     :Example: :ref:`user_get_all_users_example`,
         :ref:`user_get_groups_users_example`
     """
-    if groupname:
+    if groupid:
         group_tool = portal.get_tool('portal_groups')
-        group = group_tool.getGroupById(groupname)
+        group = group_tool.getGroupById(groupid)
         if not group:
             raise GroupNotFoundError
 
