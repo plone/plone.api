@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.3 (unreleased)
+1.3.3 (2015-07-14)
 ------------------
 
 - plone.api.content.get_state now allows for an optional default value.
