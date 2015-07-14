@@ -196,23 +196,23 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-        api.group.create(groupname='staff')
-        api.group.add_user(username='chuck', groupname='staff')
+        api.group.create(groupid='staff')
+        api.group.add_user(username='chuck', groupid='staff')
 
-        users = api.user.get_users(groupname='staff')
+        users = api.user.get_users(groupid='staff')
         usernames = [user.getUserName() for user in users]
 
         self.assertEqual(usernames, ['chuck'])
 
-    def test_get_users_groupname_and_group(self):
-        """Test getting users passing both groupname and group."""
-        api.group.create(groupname='bacon')
-        bacon = api.group.get(groupname='bacon')
+    def test_get_users_groupid_and_group(self):
+        """Test getting users passing both groupid and group."""
+        api.group.create(groupid='bacon')
+        bacon = api.group.get(groupid='bacon')
 
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError):
             api.user.get_users(
-                groupname='bacon',
+                groupid='bacon',
                 group=bacon,
             )
 
@@ -221,7 +221,7 @@ class TestPloneApiUser(unittest.TestCase):
 
         from plone.api.exc import GroupNotFoundError
         with self.assertRaises(GroupNotFoundError):
-            api.user.get_users(groupname='bacon')
+            api.user.get_users(groupid='bacon')
 
     def test_delete_no_username(self):
         """Test deleting of a member with email login."""
