@@ -181,17 +181,17 @@ Get all users in your portal with :meth:`api.user.get_users`.
 Get group's users
 -----------------
 
-If you set the `groupid` parameter, then :meth:`api.user.get_users` will return only users that are members of this group.
+If you set the `groupname` parameter, then :meth:`api.user.get_users` will return only users that are members of this group.
 
 .. invisible-code-block: python
 
-    api.group.create(groupid='staff')
-    api.group.add_user(username='jane', groupid='staff')
+    api.group.create(groupname='staff')
+    api.group.add_user(username='jane', groupname='staff')
 
 .. code-block:: python
 
     from plone import api
-    users = api.user.get_users(groupid='staff')
+    users = api.user.get_users(groupname='staff')
 
 .. invisible-code-block: python
 
