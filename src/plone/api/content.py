@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Module that provides functionality for content manipulation."""
 
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.WorkflowCore import WorkflowException
 from copy import copy as _copy
 from plone.api import portal
@@ -81,16 +80,7 @@ def create(
         # so will be swallowed below unless we re-raise it here
         raise
     except ValueError as e:
-        if ISiteRoot.providedBy(container):
-            allowed_types = container.allowedContentTypes()
-            types = [allowed_type.id for allowed_type in allowed_types]
-        else:
-            try:
-                types = container.getLocallyAllowedTypes()
-            except AttributeError:
-                raise InvalidParameterError(
-                    "Cannot add a '%s' object to the container." % type
-                )
+        types = [fti.getId() for fti in container.allowedContentTypes()]
 
         raise InvalidParameterError(
             "Cannot add a '{0}' object to the container.\n"

@@ -4,7 +4,8 @@ Changelog
 1.3.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed plone.api.content.create in Plone 5. Refs 160.
+  [jaroel]
 
 
 1.3.3 (2015-07-14)
