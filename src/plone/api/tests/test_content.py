@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.content."""
 
+from AccessControl import Unauthorized
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
@@ -258,6 +259,21 @@ class TestPloneApiContent(unittest.TestCase):
         assert second_page
         self.assertEqual(second_page.id, 'test-document-1')
         self.assertEqual(second_page.portal_type, 'Document')
+
+    def test_create_raises_unauthorized(self):
+        with api.env.adopt_roles('Manager'):
+            folder = api.content.create(
+                type='Folder', id='restricted_folder', container=self.portal
+            )
+
+            # Check that we have the permission to do so.
+            api.content.create(type='Document', id='doc1', container=folder)
+
+        with api.env.adopt_roles('Anonymous'):
+            with self.assertRaises(Unauthorized):
+                api.content.create(
+                    type='Document', id='doc2', container=folder
+                )
 
     def test_create_raises_unicodedecodeerror(self):
         """Test that the create method raises UnicodeDecodeErrors correctly."""

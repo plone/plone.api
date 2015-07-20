@@ -4,6 +4,9 @@ Changelog
 1.3.4 (unreleased)
 ------------------
 
+- Added permission check in plone.api.content.create. Refs #160.
+  [jaroel]
+
 - Fixed plone.api.content.create in Plone 5. Refs 160.
   [jaroel]
 

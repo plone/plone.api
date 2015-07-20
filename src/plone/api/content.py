@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module that provides functionality for content manipulation."""
 
+from AccessControl import Unauthorized
 from Products.CMFCore.WorkflowCore import WorkflowException
 from copy import copy as _copy
 from plone.api import portal
@@ -67,6 +68,11 @@ def create(
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content_create_example`
     """
+
+    fti = portal.get_tool('portal_types')[type]
+    if not fti.isConstructionAllowed(container):
+        raise Unauthorized()
+
     # Create a temporary id if the id is not given
     content_id = not safe_id and id or str(random.randint(0, 99999999))
 
@@ -80,7 +86,7 @@ def create(
         # so will be swallowed below unless we re-raise it here
         raise
     except ValueError as e:
-        types = [fti.getId() for fti in container.allowedContentTypes()]
+        types = [x.getId() for x in container.allowedContentTypes()]
 
         raise InvalidParameterError(
             "Cannot add a '{0}' object to the container.\n"
