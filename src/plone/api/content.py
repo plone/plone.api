@@ -69,9 +69,15 @@ def create(
     :Example: :ref:`content_create_example`
     """
 
-    fti = portal.get_tool('portal_types')[type]
-    if not fti.isConstructionAllowed(container):
-        raise Unauthorized()
+    # Check if we are allowed to add type to container.
+    types_tool = portal.get_tool('portal_types')
+    try:
+        fti = types_tool[type]
+    except KeyError:
+        raise InvalidParameterError('No such content type: {0}'.format(type))
+    else:
+        if not fti.isConstructionAllowed(container):
+            raise Unauthorized()
 
     # Create a temporary id if the id is not given
     content_id = not safe_id and id or str(random.randint(0, 99999999))
