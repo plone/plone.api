@@ -4,6 +4,9 @@ Changelog
 1.3.4 (unreleased)
 ------------------
 
+- plone.api.content.find: object_provides arguments accepts tuples.
+  Fixes #266.
+  [ale-rt]
 - Fixed plone.api.content.create in Plone 5. Refs 160.
   [jaroel]
 

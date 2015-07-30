@@ -549,12 +549,11 @@ def find(context=None, depth=None, **kwargs):
     # Convert interfaces to their identifiers
     object_provides = query.get('object_provides', [])
     if object_provides:
-        if not isinstance(object_provides, list):
+        if not isinstance(object_provides, (list, tuple)):
             object_provides = [object_provides]
-        for k, v in enumerate(object_provides):
-            if not isinstance(v, basestring):
-                object_provides[k] = v.__identifier__
-        query['object_provides'] = object_provides
+        query['object_provides'] = [
+            getattr(x, '__identifier__', x) for x in object_provides
+        ]
 
     # Make sure we don't dump the whole catalog.
     catalog = portal.get_tool('portal_catalog')
