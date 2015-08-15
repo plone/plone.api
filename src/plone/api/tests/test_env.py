@@ -79,21 +79,21 @@ class TestPloneApiEnv(unittest.TestCase):
             portal.manage_permission(permission, roles, 1)
 
         api.user.create(
-            username='worker',
+            login='worker',
             email='ordinary_person@example.com',
             password='password1',
             roles=('Member',),
         )
 
         api.user.create(
-            username='boss',
+            login='boss',
             email='important_person@example.com',
             password='123',
             roles=('Member', 'VIP'),
         )
 
         api.user.create(
-            username='superhuman',
+            login='superhuman',
             email='xavier@example.com',
             password='think_carefully',
             roles=('Member', 'Manager'),
@@ -187,7 +187,7 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_become_manager_by_name(self):
         """Tests that becoming a manager user works."""
-        with api.env.adopt_user(username='superhuman'):
+        with api.env.adopt_user(login='superhuman'):
             self.should_allow([
                 'public_method',
                 'pp_method',
@@ -201,7 +201,7 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_become_manager_by_obj(self):
         """Tests that becoming a manager with user from api.user works."""
-        with api.env.adopt_user(user=api.user.get(username='superhuman')):
+        with api.env.adopt_user(user=api.user.get(login='superhuman')):
             self.should_allow([
                 'public_method',
                 'pp_method',
@@ -243,7 +243,7 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_become_ordinary(self):
         """Tests that becoming a user with fewer permissions works."""
-        with api.env.adopt_user(username='worker'):
+        with api.env.adopt_user(login='worker'):
             self.should_allow([
                 'public_method',
                 'pp_method',
@@ -257,7 +257,7 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_adopted_content_ownership(self):
         """Tests that content created while user-switched is owned."""
-        with api.env.adopt_user(username='superhuman'):
+        with api.env.adopt_user(login='superhuman'):
             doc3 = api.content.create(
                 container=self.portal,
                 type='Document',
@@ -269,7 +269,7 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_adopted_nested_ownership(self):
         """Test deep nesting of adopt_user and adopt_roles blocks."""
-        with api.env.adopt_user(username='worker'):
+        with api.env.adopt_user(login='worker'):
             self.should_allow([
                 'public_method',
                 'pp_method',
@@ -289,7 +289,7 @@ class TestPloneApiEnv(unittest.TestCase):
                     'qq_method',
                     'rr_method',
                 ])
-                with api.env.adopt_user(username='boss'):
+                with api.env.adopt_user(login='boss'):
                     self.should_allow([
                         'public_method',
                         'pp_method',
@@ -368,8 +368,8 @@ class TestPloneApiEnv(unittest.TestCase):
         # /user worker
 
     def test_adopting_zope_users(self):
-        api.env.adopt_user(username='admin')
-        api.env.adopt_user(user=api.user.get(username='admin'))
+        api.env.adopt_user(login='admin')
+        api.env.adopt_user(user=api.user.get(login='admin'))
 
     def test_empty_warning(self):
         """Tests that empty roles lists get warned about."""
@@ -419,7 +419,7 @@ class TestPloneApiEnv(unittest.TestCase):
             '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?$'
         )
 
-    def test_adopt_user_different_username(self):
+    def test_adopt_user_different_login(self):
         user = api.user.get(userid=TEST_USER_ID)
         with api.env.adopt_user(user=user):
             self.assertEqual(api.user.get_current().getId(), TEST_USER_ID)

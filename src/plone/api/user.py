@@ -20,7 +20,7 @@ import string
 
 def create(
     email=None,
-    username=None,
+    login=None,
     password=None,
     roles=('Member', ),
     properties=None
@@ -29,9 +29,9 @@ def create(
 
     :param email: [required] Email for the new user.
     :type email: string
-    :param username: Username for the new user. This is required if email
-        is not used as a username.
-    :type username: string
+    :param login: Login for the new user. This is required if email
+        is not used as a login.
+    :type login: string
     :param password: Password for the new user. If it's not set we generate
         a random 8-char alpha-numeric one.
     :type password: string
@@ -59,16 +59,17 @@ def create(
 
     site = portal.get()
     props = site.portal_properties
-    use_email_as_username = props.site_properties.use_email_as_login
+    use_email_as_login = props.site_properties.use_email_as_login
 
-    if not use_email_as_username and not username:
+    if not use_email_as_login and not login:
         raise InvalidParameterError(
-            "The portal is configured to use username "
-            "that is not email so you need to pass a username."
+            "The portal is configured to use login "
+            "that is not email so you need to pass a login."
         )
 
     registration = portal.get_tool('portal_registration')
-    user_id = use_email_as_username and email or username
+    # TODO: make this a parameter
+    user_id = use_email_as_login and email or login
 
     # Generate a random 8-char password
     if not password:
@@ -84,16 +85,16 @@ def create(
         roles,
         properties=properties
     )
-    return get(username=user_id)
+    return get(userid=user_id)
 
 
-@mutually_exclusive_parameters('userid', 'username')
-@at_least_one_of('userid', 'username')
-def get(userid=None, username=None):
+@mutually_exclusive_parameters('userid', 'login')
+@at_least_one_of('userid', 'login')
+def get(userid=None, login=None):
     """Get a user.
 
     Plone provides both a unique, unchanging identifier for a user (the
-    userid) and a username, which is the value a user types into the login
+    userid) and a login, which is the value a user types into the login
     form. In many cases, the values for each will be the same, but under some
     circumstances they will differ. Known instances of this behavior include:
 
@@ -104,8 +105,8 @@ def get(userid=None, username=None):
 
     :param userid: Userid of the user we want to get.
     :type userid: string
-    :param username: Username of the user we want to get.
-    :type username: string
+    :param login: Login of the user we want to get.
+    :type login: string
     :returns: User
     :rtype: MemberData object
     :raises:
@@ -118,7 +119,7 @@ def get(userid=None, username=None):
 
     return get_member_by_login_name(
         portal.get(),
-        username,
+        login,
         raise_exceptions=False
     )
 
@@ -143,7 +144,7 @@ def get_users(groupname=None, group=None):
 
     :param groupname: Groupname of the group of which to return users. If set,
         only return users that are member of this group.
-    :type username: string
+    :type login: string
     :param group: Group of which to return users.
         If set, only return users that are member of this group.
     :type group: GroupData object
@@ -166,16 +167,16 @@ def get_users(groupname=None, group=None):
         return portal_membership.listMembers()
 
 
-@mutually_exclusive_parameters('username', 'user')
-@at_least_one_of('username', 'user')
-def delete(username=None, user=None):
+@mutually_exclusive_parameters('login', 'user')
+@at_least_one_of('login', 'user')
+def delete(login=None, user=None):
     """Delete a user.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    Arguments ``login`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
 
-    :param username: Username of the user to be deleted.
-    :type username: string
+    :param login: Username of the user to be deleted.
+    :type login: string
     :param user: User object to be deleted.
     :type user: MemberData object
     :raises:
@@ -184,7 +185,7 @@ def delete(username=None, user=None):
     :Example: :ref:`user_delete_example`
     """
     portal_membership = portal.get_tool('portal_membership')
-    user_id = username or user.id
+    user_id = login or user.id
     portal_membership.deleteMembers((user_id,))
 
 
@@ -198,16 +199,16 @@ def is_anonymous():
     return bool(portal.get_tool('portal_membership').isAnonymousUser())
 
 
-@mutually_exclusive_parameters('username', 'user')
-def get_roles(username=None, user=None, obj=None, inherit=True):
+@mutually_exclusive_parameters('login', 'user')
+def get_roles(login=None, user=None, obj=None, inherit=True):
     """Get user's site-wide or local roles.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You
-    can either set one or the other, but not both. if ``username`` and
+    Arguments ``login`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``login`` and
     ``user`` are not given, the currently authenticated member will be used.
 
-    :param username: Username of the user for which to get roles.
-    :type username: string
+    :param login: Username of the user for which to get roles.
+    :type login: string
     :param user: User object for which to get roles.
     :type user: MemberData object
     :param obj: If obj is set then return local roles on this context.
@@ -222,13 +223,13 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
     """
     portal_membership = portal.get_tool('portal_membership')
 
-    if username is None:
+    if login is None:
         if user is None:
-            username = portal_membership.getAuthenticatedMember().getId()
+            login = portal_membership.getAuthenticatedMember().getId()
         else:
-            username = user.getId()
+            login = user.getId()
 
-    user = portal_membership.getMemberById(username)
+    user = portal_membership.getMemberById(login)
     if user is None:
         raise UserNotFoundError
 
@@ -236,7 +237,7 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
         if inherit:
             return user.getRolesInContext(obj)
         else:
-            return obj.get_local_roles_for_userid(username)
+            return obj.get_local_roles_for_userid(login)
     else:
         return user.getRoles()
 
@@ -247,17 +248,17 @@ def _nop_context_manager():
     yield
 
 
-@mutually_exclusive_parameters('username', 'user')
-def get_permissions(username=None, user=None, obj=None):
+@mutually_exclusive_parameters('login', 'user')
+def get_permissions(login=None, user=None, obj=None):
     """Get user's site-wide or local permissions.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You
-    can either set one or the other, but not both. if ``username`` and
+    Arguments ``login`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``login`` and
     ``user`` are not given, the authenticated member will be used.
 
-    :param username: Username of the user for which you want to check
+    :param login: Username of the user for which you want to check
         the permissions.
-    :type username: string
+    :type login: string
     :param user: User object for which you want to check the permissions.
     :type user: MemberData object
     :param obj: If obj is set then check the permissions on this context.
@@ -270,10 +271,10 @@ def get_permissions(username=None, user=None, obj=None):
     if obj is None:
         obj = portal.get()
 
-    if username is None and user is None:
+    if login is None and user is None:
         context = _nop_context_manager()
     else:
-        context = env.adopt_user(username, user)
+        context = env.adopt_user(login, user)
 
     result = {}
     with context:
@@ -287,19 +288,19 @@ def get_permissions(username=None, user=None, obj=None):
     return result
 
 
-@mutually_exclusive_parameters('username', 'user')
-def has_permission(permission, username=None, user=None, obj=None):
+@mutually_exclusive_parameters('login', 'user')
+def has_permission(permission, login=None, user=None, obj=None):
     """Check whether this user has the given permssion.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You
-    can either set one or the other, but not both. if ``username`` and
+    Arguments ``login`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``login`` and
     ``user`` are not given, the authenticated member will be used.
 
     :param permission: The permission you wish to check
     :type permission: string
-    :param username: Username of the user for which you want to check
+    :param login: Username of the user for which you want to check
         the permission.
-    :type username: string
+    :type login: string
     :param user: User object for which you want to check the permission.
     :type user: MemberData object
     :param obj: If obj is set then check the permission on this context.
@@ -313,10 +314,10 @@ def has_permission(permission, username=None, user=None, obj=None):
     if obj is None:
         obj = portal.get()
 
-    if username is None and user is None:
+    if login is None and user is None:
         context = _nop_context_manager()
     else:
-        context = env.adopt_user(username, user)
+        context = env.adopt_user(login, user)
 
     with context:
         portal_membership = portal.get_tool('portal_membership')
@@ -324,16 +325,16 @@ def has_permission(permission, username=None, user=None, obj=None):
 
 
 @required_parameters('roles')
-@mutually_exclusive_parameters('username', 'user')
-def grant_roles(username=None, user=None, obj=None, roles=None):
+@mutually_exclusive_parameters('login', 'user')
+def grant_roles(login=None, user=None, obj=None, roles=None):
     """Grant roles to a user.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You
-    can either set one or the other, but not both. if ``username`` and
+    Arguments ``login`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``login`` and
     ``user`` are not given, the authenticated member will be used.
 
-    :param username: Username of the user that will receive the granted roles.
-    :type username: string
+    :param login: Username of the user that will receive the granted roles.
+    :type login: string
     :param user: User object that will receive the granted roles.
     :type user: MemberData object
     :param obj: If obj is set then grant roles on this context. If obj is not
@@ -347,7 +348,7 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     :Example: :ref:`user_grant_roles_example`
     """
     if user is None:
-        user = get(username=username)
+        user = get(login=login)
     # check we got a user
     if user is None:
         raise InvalidParameterError("User could not be found")
@@ -368,16 +369,16 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
 
 
 @required_parameters('roles')
-@mutually_exclusive_parameters('username', 'user')
-def revoke_roles(username=None, user=None, obj=None, roles=None):
+@mutually_exclusive_parameters('login', 'user')
+def revoke_roles(login=None, user=None, obj=None, roles=None):
     """Revoke roles from a user.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You
-    can either set one or the other, but not both. if ``username`` and
+    Arguments ``login`` and ``user`` are mutually exclusive. You
+    can either set one or the other, but not both. if ``login`` and
     ``user`` are not given, the authenticated member will be used.
 
-    :param username: Username of the user that will receive the revoked roles.
-    :type username: string
+    :param login: Username of the user that will receive the revoked roles.
+    :type login: string
     :param user: User object that will receive the revoked roles.
     :type user: MemberData object
     :param obj: If obj is set then revoke roles on this context. If obj is not
@@ -390,7 +391,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     :Example: :ref:`user_revoke_roles_example`
     """
     if user is None:
-        user = get(username=username)
+        user = get(login=login)
     # check we got a user
     if user is None:
         raise InvalidParameterError("User could not be found")

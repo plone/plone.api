@@ -61,16 +61,16 @@ def get(groupname=None):
     return group_tool.getGroupById(groupname)
 
 
-@mutually_exclusive_parameters('username', 'user', 'userid')
-def get_groups(username=None, user=None, userid=None):
+@mutually_exclusive_parameters('login', 'user', 'userid')
+def get_groups(login=None, user=None, userid=None):
     """Get all groups or all groups filtered by user.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    Arguments ``login`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
 
-    :param username: Username of the user for which to return groups. If set,
+    :param login: Username of the user for which to return groups. If set,
         only return groups that this user is member of.
-    :type username: string
+    :type login: string
     :param user: User for which to return groups. If set, only return groups
         that this user is member of.
     :type user: MemberData object
@@ -83,8 +83,8 @@ def get_groups(username=None, user=None, userid=None):
     :Example: :ref:`group_get_all_groups_example`,
         :ref:`group_get_users_groups_example`
     """
-    if username:
-        user = user_get(username=username, userid=userid)
+    if login:
+        user = user_get(login=login, userid=userid)
         if not user:
             raise UserNotFoundError
 
@@ -123,25 +123,25 @@ def delete(groupname=None, group=None):
 
 @mutually_exclusive_parameters('groupname', 'group')
 @at_least_one_of('groupname', 'group')
-@mutually_exclusive_parameters('username', 'user', 'userid')
-@at_least_one_of('username', 'user', 'userid')
+@mutually_exclusive_parameters('login', 'user', 'userid')
+@at_least_one_of('login', 'user', 'userid')
 def add_user(
-    groupname=None, group=None, username=None, user=None, userid=None
+    groupname=None, group=None, login=None, user=None, userid=None
 ):
     """Add the user to a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You can
+    Arguments ``login`` and ``user`` are mutually exclusive. You can
     either set one or the other, but not both.
 
     :param groupname: Name of the group to which to add the user.
     :type groupname: string
     :param group: Group to which to add the user.
     :type group: GroupData object
-    :param username: Username of the user to add to the group.
-    :type username: string
+    :param login: Username of the user to add to the group.
+    :type login: string
     :param user: User to add to the group.
     :type user: MemberData object
     :param userid: Userid of the user to add to the group.
@@ -152,8 +152,8 @@ def add_user(
     :Example: :ref:`group_add_user_example`
 
     """
-    if username:
-        user = user_get(username=username)
+    if login:
+        user = user_get(login=login)
         if not user:
             raise UserNotFoundError
 
@@ -171,25 +171,25 @@ def add_user(
 
 @mutually_exclusive_parameters('groupname', 'group')
 @at_least_one_of('groupname', 'group')
-@mutually_exclusive_parameters('username', 'user', 'userid')
-@at_least_one_of('username', 'user', 'userid')
+@mutually_exclusive_parameters('login', 'user', 'userid')
+@at_least_one_of('login', 'user', 'userid')
 def remove_user(
-    groupname=None, group=None, username=None, user=None, userid=None
+    groupname=None, group=None, login=None, user=None, userid=None
 ):
     """Remove the user from a group.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
     either set one or the other, but not both.
 
-    Arguments ``username`` and ``user`` are mutually exclusive. You can either
+    Arguments ``login`` and ``user`` are mutually exclusive. You can either
     set one or the other, but not both.
 
     :param groupname: Name of the group to remove the user from.
     :type groupname: string
     :param group: Group to remove the user from.
     :type group: GroupData object
-    :param username: Username of the user to delete from the group.
-    :type username: string
+    :param login: Username of the user to delete from the group.
+    :type login: string
     :param user: User to delete from the group.
     :type user: MemberData object
     :param userid: Userid of the user to delete from the group
@@ -199,8 +199,8 @@ def remove_user(
         UserNotFoundError
     :Example: :ref:`group_remove_user_example`
     """
-    if username:
-        user = user_get(username=username)
+    if login:
+        user = user_get(login=login)
         if not user:
             raise UserNotFoundError
     user_id = user.id
