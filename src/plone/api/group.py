@@ -157,9 +157,6 @@ def add_user(
         if not user:
             raise UserNotFoundError
 
-    user_id = user.id
-    group_id = groupname or group.id
-
     if not userid:
         userid = user.id
 
@@ -203,8 +200,6 @@ def remove_user(
         user = user_get(login=login)
         if not user:
             raise UserNotFoundError
-    user_id = user.id
-    group_id = groupname or group.id
 
     if not userid:
         userid = user.id

@@ -119,7 +119,6 @@ class TestPloneApiGroup(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             api.group.get_groups(userid='chuck', login="chucksname")
 
-
     def test_get_groups_user(self):
         """Test retrieving of groups that the user is member of."""
         user = self.portal_membership.getAuthenticatedMember()
@@ -207,6 +206,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_add_user_login_and_user(self):
         """Test adding a user to a group passing both login and user."""
+        from plone.api.exc import InvalidParameterError
         # group and groupname are mutually exclusive
         with self.assertRaises(InvalidParameterError):
             api.group.add_user(
