@@ -4,6 +4,9 @@ Changelog
 1.3.4 (unreleased)
 ------------------
 
+- Rename the `username` parameter to `login`.
+  [jaroel]
+
 - plone.api.content.find: object_provides arguments accepts tuples.
   Fixes #266.
   [ale-rt]

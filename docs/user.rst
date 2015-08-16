@@ -48,7 +48,7 @@ Otherwise, you also need to pass in the username of the new user.
 
 .. code-block:: python
 
-    user = api.user.create(email='jane@plone.org', username='jane')
+    user = api.user.create(email='jane@plone.org', login='jane')
 
 .. invisible-code-block: python
 
@@ -65,7 +65,7 @@ To set user properties when creating a new user, pass in a properties dict.
         location='Munich',
     )
     user = api.user.create(
-        username='bob',
+        login='bob',
         email='bob@plone.org',
         properties=properties,
     )
@@ -82,7 +82,7 @@ Otherwise a random 8-character alphanumeric password will be generated.
 .. code-block:: python
 
     user = api.user.create(
-        username='noob',
+        login='noob',
         email='noob@plone.org',
         password='secret',
     )
@@ -98,7 +98,7 @@ You can get a user with :meth:`api.user.get`.
 .. code-block:: python
 
     from plone import api
-    user = api.user.get(username='bob')
+    user = api.user.get(login='bob')
 
 .. invisible-code-block: python
 
@@ -113,7 +113,7 @@ This is how you get and set them, using the underlying APIs:
 .. code-block:: python
 
     from plone import api
-    user = api.user.get(username='bob')
+    user = api.user.get(login='bob')
     user.setMemberProperties(mapping={ 'location': 'Neverland', })
     location = user.getProperty('location')
 
@@ -186,7 +186,7 @@ If you set the `groupname` parameter, then :meth:`api.user.get_users` will retur
 .. invisible-code-block: python
 
     api.group.create(groupname='staff')
-    api.group.add_user(username='jane', groupname='staff')
+    api.group.add_user(login='jane', groupname='staff')
 
 .. code-block:: python
 
@@ -203,27 +203,27 @@ If you set the `groupname` parameter, then :meth:`api.user.get_users` will retur
 Delete user
 -----------
 
-To delete a user, use :meth:`api.user.delete` and pass in either the username or the user object you want to delete.
+To delete a user, use :meth:`api.user.delete` and pass in either the login or the user object you want to delete.
 
 .. code-block:: python
 
     from plone import api
-    api.user.create(username='unwanted', email='unwanted@example.org')
-    api.user.delete(username='unwanted')
+    api.user.create(login='unwanted', email='unwanted@example.org')
+    api.user.delete(login='unwanted')
 
 
 .. invisible-code-block: python
 
-    self.assertEqual(api.user.get(username='unwanted'), None)
+    self.assertEqual(api.user.get(login='unwanted'), None)
 
 .. code-block:: python
 
-    unwanted = api.user.create(username='unwanted', email='unwanted@example.org')
+    unwanted = api.user.create(login='unwanted', email='unwanted@example.org')
     api.user.delete(user=unwanted)
 
 .. invisible-code-block: python
 
-    self.assertEqual(api.user.get(username='unwanted'), None)
+    self.assertEqual(api.user.get(login='unwanted'), None)
 
 
 .. _user_get_roles_example:
@@ -237,7 +237,7 @@ By default it returns site-wide roles.
 .. code-block:: python
 
     from plone import api
-    roles = api.user.get_roles(username='jane')
+    roles = api.user.get_roles(login='jane')
 
 .. invisible-code-block: python
 
@@ -251,7 +251,7 @@ If you pass in a content object, it will return local roles of the user in that 
     from plone import api
     portal = api.portal.get()
     blog = api.content.create(container=portal, type='Document', id='blog', title='My blog')
-    roles = api.user.get_roles(username='jane', obj=portal['blog'])
+    roles = api.user.get_roles(login='jane', obj=portal['blog'])
 
 .. invisible-code-block: python
 
@@ -269,8 +269,8 @@ By default it returns site root permissions.
 .. code-block:: python
 
     from plone import api
-    mike = api.user.create(email='mike@plone.org', username='mike')
-    permissions = api.user.get_permissions(username='mike')
+    mike = api.user.create(email='mike@plone.org', login='mike')
+    permissions = api.user.get_permissions(login='mike')
 
 .. invisible-code-block: python
 
@@ -282,7 +282,7 @@ By default it returns site root permissions.
     }
 
     for k, v in PERMISSIONS.items():
-        self.assertTrue(v == api.user.get_permissions(username='mike').get(k, None))
+        self.assertTrue(v == api.user.get_permissions(login='mike').get(k, None))
         self.assertTrue(v == api.user.get_permissions(user=mike).get(k, None))
 
 
@@ -293,7 +293,7 @@ If you pass in a content object, it will return local permissions of the user in
     from plone import api
     portal = api.portal.get()
     folder = api.content.create(container=portal, type='Folder', id='folder_two', title='Folder Two')
-    permissions = api.user.get_permissions(username='mike', obj=portal['folder_two'])
+    permissions = api.user.get_permissions(login='mike', obj=portal['folder_two'])
 
 .. invisible-code-block: python
 
@@ -305,7 +305,7 @@ If you pass in a content object, it will return local permissions of the user in
     }
 
     for k, v in PERMISSIONS.items():
-        self.assertTrue(v == api.user.get_permissions(username='mike', obj=portal['folder_two']).get(k, None))
+        self.assertTrue(v == api.user.get_permissions(login='mike', obj=portal['folder_two']).get(k, None))
         self.assertTrue(v == api.user.get_permissions(user=mike, obj=portal['folder_two']).get(k, None))
 
 
@@ -320,8 +320,8 @@ By default it checks the permission on the site root.
 .. code-block:: python
 
     from plone import api
-    adam = api.user.create(email='adam@plone.org', username='adam')
-    can_view = api.user.has_permission('View', username='adam')
+    adam = api.user.create(email='adam@plone.org', login='adam')
+    can_view = api.user.has_permission('View', login='adam')
 
 .. invisible-code-block: python
 
@@ -335,7 +335,7 @@ If you pass in a content object, it will check the permission in that particular
     from plone import api
     portal = api.portal.get()
     folder = api.content.create(container=portal, type='Folder', id='folder_hp', title='Folder')
-    can_view = api.user.has_permission('View', username='adam', obj=folder)
+    can_view = api.user.has_permission('View', login='adam', obj=folder)
 
 .. invisible-code-block: python
 
@@ -352,14 +352,14 @@ The :meth:`api.user.grant_roles` allows us to grant a list of roles to the user.
 .. code-block:: python
 
     from plone import api
-    api.user.grant_roles(username='jane',
+    api.user.grant_roles(login='jane',
         roles=['Reviewer', 'SiteAdministrator']
     )
 
 .. invisible-code-block: python
 
     EXPECTED_ROLES_SITE = ['Member', 'Reviewer', 'SiteAdministrator', 'Authenticated']
-    roles = api.user.get_roles(username='jane')
+    roles = api.user.get_roles(login='jane')
     self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
 
 
@@ -371,7 +371,7 @@ But all site-wide roles will also be returned by :meth:`api.user.get_roles` for 
 
     from plone import api
     folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
-    api.user.grant_roles(username='jane',
+    api.user.grant_roles(login='jane',
         roles=['Editor', 'Contributor'],
         obj=portal['folder_one']
     )
@@ -379,9 +379,9 @@ But all site-wide roles will also be returned by :meth:`api.user.get_roles` for 
 .. invisible-code-block: python
 
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Editor', 'Contributor']
-    roles = api.user.get_roles(username='jane', obj=portal['folder_one'])
+    roles = api.user.get_roles(login='jane', obj=portal['folder_one'])
     self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
-    roles = api.user.get_roles(username='jane')
+    roles = api.user.get_roles(login='jane')
     self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
 
 
@@ -395,12 +395,12 @@ The :meth:`api.user.revoke_roles` allows us to revoke a list of roles from the u
 .. code-block:: python
 
     from plone import api
-    api.user.revoke_roles(username='jane', roles=['SiteAdministrator'])
+    api.user.revoke_roles(login='jane', roles=['SiteAdministrator'])
 
 .. invisible-code-block: python
 
     EXPECTED_ROLES_SITE = ['Member', 'Authenticated', 'Reviewer']
-    roles = api.user.get_roles(username='jane')
+    roles = api.user.get_roles(login='jane')
     self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
 
 
@@ -416,12 +416,12 @@ If you pass a context object the local roles for that context will be removed.
         title='Folder Three'
     )
     api.user.grant_roles(
-        username='jane',
+        login='jane',
         roles=['Editor', 'Contributor'],
         obj=portal['folder_three'],
     )
     api.user.revoke_roles(
-        username='jane',
+        login='jane',
         roles=['Editor'],
         obj=portal['folder_three'],
     )
@@ -429,7 +429,7 @@ If you pass a context object the local roles for that context will be removed.
 .. invisible-code-block: python
 
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
-    roles = api.user.get_roles(username='jane', obj=portal['folder_three'])
+    roles = api.user.get_roles(login='jane', obj=portal['folder_three'])
     self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
 
 Further reading

@@ -54,13 +54,13 @@ To temporarily override the user which is currently active, use :meth:`api.env.a
 
     # Create a new user.
     api.user.create(
-        username="doc_owner",
+        login="doc_owner",
         roles=('Member', 'Manager',),
         email="new_owner@example.com",
     )
 
     # Become that user and create a document.
-    with api.env.adopt_user(username="doc_owner"):
+    with api.env.adopt_user(login="doc_owner"):
         api.content.create(
             container=portal,
             type='Document',

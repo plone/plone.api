@@ -126,20 +126,20 @@ You can also get all groups, by using :meth:`api.group.get_groups`.
 Get user's groups
 -----------------
 
-The groups returned may be filtered by member. By passing the ``username`` parameter,
+The groups returned may be filtered by member. By passing the ``login`` parameter,
 :meth:`api.group.get_groups` will return only those groups to which the user belongs.
 
 .. invisible-code-block: python
 
-    api.user.create(email='jane@plone.org', username='jane')
-    api.group.add_user(username='jane', groupname='staff')
-    api.group.add_user(username='jane', groupname='Reviewers')
+    api.user.create(email='jane@plone.org', login='jane')
+    api.group.add_user(login='jane', groupname='staff')
+    api.group.add_user(login='jane', groupname='Reviewers')
 
 .. code-block:: python
 
     from plone import api
-    user = api.user.get(username='jane')
-    groups = api.group.get_groups(username='jane')
+    user = api.user.get(login='jane')
+    groups = api.group.get_groups(login='jane')
 
 .. invisible-code-block: python
 
@@ -150,7 +150,7 @@ The groups returned may be filtered by member. By passing the ``username`` param
 You may also pass the user directly to :meth:`api.group.get_groups`:
 
     from plone import api
-    user = api.user.get(username='jane')
+    user = api.user.get(login='jane')
     groups = api.group.get_groups(user=user)
 
 .. invisible-code-block: python
@@ -208,19 +208,19 @@ Adding user to group
 --------------------
 
 To add a user to a group, use the :meth:`api.group.add_user` method.
-This method accepts either the groupname or the group object for the target group and the username or the user object you want to add to the group.
+This method accepts either the groupname or the group object for the target group and the login or the user object you want to add to the group.
 
 .. code-block:: python
 
     from plone import api
 
-    api.user.create(email='bob@plone.org', username='bob')
-    api.group.add_user(groupname='staff', username='bob')
+    api.user.create(email='bob@plone.org', login='bob')
+    api.group.add_user(groupname='staff', login='bob')
 
 .. invisible-code-block: python
 
     self.assertTrue(
-        'staff' in [g.id for g in api.group.get_groups(username='bob')]
+        'staff' in [g.id for g in api.group.get_groups(login='bob')]
     )
 
 
@@ -230,17 +230,17 @@ Removing user from group
 ------------------------
 
 To remove a user from a group, use the :meth:`api.group.remove_user` method.
-This also accepts either the groupname or the group object for the target group and either the username or the user object you want to remove from the group.
+This also accepts either the groupname or the group object for the target group and either the login or the user object you want to remove from the group.
 
 .. code-block:: python
 
     from plone import api
-    api.group.remove_user(groupname='staff', username='bob')
+    api.group.remove_user(groupname='staff', login='bob')
 
 
 .. invisible-code-block: python
 
-    self.assertFalse('staff' in [g.id for g in api.group.get_groups(username='bob')])
+    self.assertFalse('staff' in [g.id for g in api.group.get_groups(login='bob')])
 
 
 .. _group_get_roles_example:

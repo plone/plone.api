@@ -117,7 +117,7 @@ For the curious, here are the reasons:
 
     # GOOD
     from plone import api
-    alice = api.user.get(username='alice@plone.org')
+    alice = api.user.get(login='alice@plone.org')
 
     # BAD
     from plone.api import user
