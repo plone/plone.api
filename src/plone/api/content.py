@@ -361,10 +361,12 @@ def _wf_transitions_for(workflow, from_state, to_state):
 @required_parameters('obj')
 @at_least_one_of('transition', 'to_state')
 @mutually_exclusive_parameters('transition', 'to_state')
-def transition(obj=None, transition=None, to_state=None):
+def transition(obj=None, transition=None, to_state=None, **kwargs):
     """Perform a workflow transition for the object or attempt to perform
     workflow transitions on the object to reach the given state.
     The later will not guarantee that transition guards conditions can be met.
+
+    Accepts kwargs to supply to the workflow policy in use, such as "comment"
 
     :param obj: [required] Object for which we want to perform the workflow
         transition.
@@ -381,7 +383,7 @@ def transition(obj=None, transition=None, to_state=None):
     workflow = portal.get_tool('portal_workflow')
     if transition is not None:
         try:
-            workflow.doActionFor(obj, transition)
+            workflow.doActionFor(obj, transition, **kwargs)
         except WorkflowException:
             transitions = [
                 action['id'] for action in workflow.listActions(object=obj)
@@ -411,7 +413,7 @@ def transition(obj=None, transition=None, to_state=None):
                 continue
 
             for transition in transitions:
-                workflow.doActionFor(obj, transition)
+                workflow.doActionFor(obj, transition, **kwargs)
 
             break
 
