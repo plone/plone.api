@@ -34,7 +34,7 @@ else:
 
 # Old linkintegrity (Plone <= 5.0b4) or new (Plone > 5.0b4)
 linkintegrity_version = get_distribution('plone.app.linkintegrity').version
-if parse_version(linkintegrity_version) >= parse_version('3.0'):
+if parse_version(linkintegrity_version) >= parse_version('3.0.dev0'):
     NEW_LINKINTEGRITY = True
 else:
     NEW_LINKINTEGRITY = False
