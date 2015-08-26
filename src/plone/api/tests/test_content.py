@@ -602,7 +602,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Delete the contact page
         api.content.delete(self.contact)
-        assert 'contact' not in container['about'].keys()
+        self.assertNotIn('contact', container['about'].keys())
 
     def test_delete_multiple(self):
         """Test deleting multiple content items."""
@@ -613,36 +613,35 @@ class TestPloneApiContent(unittest.TestCase):
 
         api.content.delete(objects=[container['copy_of_about'],
                                     container['events']['about']])
-        assert 'copy_of_about' not in container
-        assert 'about' not in container['events']
+        self.assertNotIn('copy_of_about', container)
+        self.assertNotIn('about', container['events'])
 
     def test_delete_ignore_linkintegrity(self):
         """Test deleting a content item with a link pointed at it."""
         self._set_text(self.team, '<a href="contact">contact</a>')
         # Delete the contact page
         api.content.delete(self.contact, check_linkintegrity=False)
-        assert 'contact' not in self.portal['about'].keys()
+        self.assertNotIn('contact', self.portal['about'].keys())
 
+    @unittest.skipIf(
+        HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
+        'This test only makes sense with Archetypes or new Linkintegrity.')
     def test_delete_check_linkintegrity(self):
         """Test deleting a content item with a link pointed at it."""
-        if not IBaseContent.providedBy(self.team) or not NEW_LINKINTEGRITY:
-            # This test only makes sense with Archetypes or new Linkintegrity
-            return
         self._set_text(self.team, '<a href="contact">contact</a>')
         # Delete the contact page
         with self.assertRaises(LinkIntegrityNotificationException):
             api.content.delete(self.contact)
-        assert 'contact' in self.portal['about'].keys()
         if NEW_LINKINTEGRITY:
             # In the old implementation of linkintegrity the items are
             # still gone during this request.
             self.assertIn('contact', self.portal['about'].keys())
 
+    @unittest.skipIf(
+        HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
+        'This test only makes sense with Archetypes or new Linkintegrity.')
     def test_delete_multiple_check_linkintegrity(self):
         """Test deleting multiple item with linkintegrity-breaches."""
-        if not IBaseContent.providedBy(self.team) or not NEW_LINKINTEGRITY:
-            # This test only makes sense with Archetypes or new Linkintegrity
-            return
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
         self._set_text(self.training, '<a href="../blog">contact</a>')
         # Delete the contact page
@@ -654,11 +653,11 @@ class TestPloneApiContent(unittest.TestCase):
             self.assertIn('contact', self.portal['about'].keys())
             self.assertIn('blog', self.portal.keys())
 
+    @unittest.skipIf(
+        HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
+        'This test only makes sense with Archetypes or new Linkintegrity.')
     def test_delete_multiple_ignore_linkintegrity(self):
         """Test deleting multiple items ignoring linkintegrity-breaches."""
-        if not IBaseContent.providedBy(self.team) or not NEW_LINKINTEGRITY:
-            # This test only makes sense with Archetypes or new Linkintegrity
-            return
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
         self._set_text(self.training, '<a href="../blog">contact</a>')
         # Delete linked pages
@@ -668,16 +667,29 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertNotIn('contact', self.portal['about'].keys())
         self.assertNotIn('blog', self.portal.keys())
 
+    @unittest.skipIf(
+        HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
+        'This test only makes sense with Archetypes or new Linkintegrity.')
     def test_delete_with_internal_breaches(self):
         """Test deleting multiple with internal linkintegrity breaches."""
-        if not IBaseContent.providedBy(self.team) or not NEW_LINKINTEGRITY:
-            # This test only makes sense with Archetypes or new Linkintegrity
-            return
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
         self._set_text(self.training, '<a href="../blog">contact</a>')
         # Deleting pages with unresolved breaches throws an exception
         with self.assertRaises(LinkIntegrityNotificationException):
             api.content.delete(objects=[self.blog, self.about])
+        if NEW_LINKINTEGRITY:
+            # In the old implementation of linkintegrity the items are
+            # still gone during this request.
+            self.assertIn('about', self.portal.keys())
+            self.assertIn('blog', self.portal.keys())
+            self.assertIn('training', self.portal['events'].keys())
+
+    @unittest.skipUnless(
+        NEW_LINKINTEGRITY, 'Only new Linkintegrity resolves internal breaches')
+    def test_delete_with_resolved_internal_breaches(self):
+        """Test deleting multiple with internal linkintegrity breaches."""
+        self._set_text(self.team, '<a href="../about/contact">contact</a>')
+        self._set_text(self.training, '<a href="../blog">contact</a>')
         # Deleting pages with resolved breaches throws no exception
         api.content.delete(objects=[self.blog, self.training, self.about])
         self.assertNotIn('about', self.portal.keys())
