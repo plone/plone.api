@@ -5,21 +5,25 @@ from Acquisition import aq_base
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
-from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFCore.interfaces import IContentish
 from Products.ZCatalog.interfaces import IZCatalog
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.app.linkintegrity.exceptions import \
+    LinkIntegrityNotificationException
+from plone.app.textfield import RichTextValue
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
 from zExceptions import BadRequest
+from zope.component import getGlobalSiteManager
+from zope.component import getUtility
+from zope.container.contained import ContainerModifiedEvent
 from zope.lifecycleevent import IObjectModifiedEvent
 from zope.lifecycleevent import IObjectMovedEvent
 from zope.lifecycleevent import ObjectMovedEvent
-from zope.component import getUtility
-from zope.component import getGlobalSiteManager
-from zope.container.contained import ContainerModifiedEvent
+from zope.lifecycleevent import modified
 
 import mock
 import pkg_resources
@@ -609,6 +613,88 @@ class TestPloneApiContent(unittest.TestCase):
                                     container['events']['about']])
         assert 'copy_of_about' not in container
         assert 'about' not in container['events']
+
+    def test_delete_ignore_linkintegrity(self):
+        """Test deleting a content item with a link pointed at it."""
+        self.team.text = RichTextValue('<a href="contact">contact</a>')
+        modified(self.team)
+        container = self.portal
+        # Delete the contact page
+        api.content.delete(self.contact)
+        assert 'contact' not in container['about'].keys()
+
+    def test_delete_check_linkintegrity(self):
+        """Test deleting a content item with a link pointed at it."""
+        self.team.text = RichTextValue('<a href="contact">contact</a>')
+        modified(self.team)
+        container = self.portal
+        # Delete the contact page
+        with self.assertRaises(LinkIntegrityNotificationException):
+            api.content.delete(self.contact, check_linkintegrity=True)
+        assert 'contact' in container['about'].keys()
+
+    def test_delete_multiple_check_linkintegrity(self):
+        """Test deleting multiple item with linkintegrity-breaches."""
+        self.team.text = RichTextValue(
+            '<a href="../about/contact">contact</a>')
+        self.training.text = RichTextValue(
+            '<a href="../blog">contact</a>')
+        modified(self.team)
+        modified(self.training)
+        container = self.portal
+        # Delete the contact page
+        with self.assertRaises(LinkIntegrityNotificationException):
+            api.content.delete(
+                objects=[self.blog, self.contact],
+                check_linkintegrity=True)
+        self.assertIn('contact', container['about'].keys())
+        self.assertIn('blog', container.keys())
+
+    def test_delete_multiple_ignore_linkintegrity(self):
+        """Test deleting multiple items ignoring linkintegrity-breaches."""
+        from plone.app.linkintegrity.utils import hasOutgoingLinks
+        from plone.app.linkintegrity.utils import hasIncomingLinks
+        self.team.text = RichTextValue(
+            '<a href="../about/contact">contact</a>')
+        self.training.text = RichTextValue(
+            '<a href="../blog">contact</a>')
+        modified(self.team)
+        modified(self.training)
+        self.assertTrue(hasIncomingLinks(self.blog))
+        self.assertTrue(hasIncomingLinks(self.contact))
+        container = self.portal
+        # Delete linked pages
+        api.content.delete(objects=[self.blog, self.contact])
+        self.assertNotIn('contact', container['about'].keys())
+        self.assertNotIn('blog', container.keys())
+        # Linkintegrity-relations are removed and objects have broken links
+        self.assertFalse(hasOutgoingLinks(self.team))
+        self.assertFalse(hasOutgoingLinks(self.training))
+
+    def test_delete_with_internal_breaches(self):
+        """Test deleting multiple with internal linkintegrity breaches."""
+        from plone.app.linkintegrity.utils import hasIncomingLinks
+        self.team.text = RichTextValue(
+            '<a href="../about/contact">contact</a>')
+        self.training.text = RichTextValue(
+            '<a href="../blog">contact</a>')
+        modified(self.team)
+        modified(self.training)
+        self.assertTrue(hasIncomingLinks(self.blog))
+        self.assertTrue(hasIncomingLinks(self.contact))
+        container = self.portal
+        # Deleting pages with unresolved breaches throws an exception
+        with self.assertRaises(LinkIntegrityNotificationException):
+            api.content.delete(
+                objects=[self.blog, self.about],
+                check_linkintegrity=True)
+        # Deleting pages with resolved breaches throws no exception
+        api.content.delete(
+            objects=[self.blog, self.training, self.about],
+            check_linkintegrity=True)
+        self.assertNotIn('about', container.keys())
+        self.assertNotIn('blog', container.keys())
+        self.assertNotIn('training', container['events'].keys())
 
     def test_find(self):
         """Test the finding of content in various ways."""

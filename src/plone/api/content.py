@@ -8,6 +8,8 @@ from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
+from plone.app.linkintegrity.exceptions import \
+    LinkIntegrityNotificationException
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from zope.component import getMultiAdapter
@@ -255,20 +257,44 @@ def copy(source=None, target=None, id=None, safe_id=False):
 
 
 @at_least_one_of('obj', 'objects')
-def delete(obj=None, objects=None):
+def delete(obj=None, objects=None, check_linkintegrity=False):
     """Delete the object(s).
 
     :param obj: Object that we want to delete.
     :type obj: Content object
     :param objects: Objects that we want to delete.
     :type objects: List of content objects
+    :param check_linkintegrity: Raise exception if there are
+        linkintegrity-breaches.
+    :type check_linkintegrity: boolean
+
     :raises:
         ValueError
+        plone.app.linkintegrity.exception.LinkIntegrityNotificationException
+
     :Example: :ref:`content_delete_example`
     """
+    if check_linkintegrity:
+        site = portal.get()
+        linkintegrity_view = get_view(
+            name='delete_confirmation_info',
+            context=site,
+            request=site.REQUEST)
     if obj is not None:
+        if check_linkintegrity:
+            breaches = linkintegrity_view.get_breaches([obj])
+            if breaches:
+                raise LinkIntegrityNotificationException(
+                    "Linkintegrity-breaches: {0}".format(breaches)
+                )
         obj.aq_parent.manage_delObjects([obj.getId()])
     else:
+        if check_linkintegrity:
+            breaches = linkintegrity_view.get_breaches(objects)
+            if breaches:
+                raise LinkIntegrityNotificationException(
+                    "Linkintegrity-breaches: {0}".format(breaches)
+                )
         # The objects may have different parents
         for obj in objects:
             delete(obj=obj)

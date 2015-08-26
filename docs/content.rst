@@ -358,6 +358,34 @@ To delete multiple content objects, pass the objects to the :meth:`api.content.d
     self.assertFalse(portal.events.get('copy_of_training'))
 
 
+To check if deleting a content object would result in a broken link for another object, set the option `check_linkintegrity` to `True`:
+
+.. invisible-code-block: python
+
+    from plone.app.textfield import RichTextValue
+    from zope.lifecycleevent import modified
+    api.content.copy(source=portal['training'], target=portal, safe_id=True)
+    api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
+    portal['about']['team'].text = RichTextValue('<a href="../copy_of_training">contact</a>')
+    modified(portal['about']['team'])
+
+.. code-block:: python
+
+    from plone import api
+    from plone.app.linkintegrity.exceptions import \
+        LinkIntegrityNotificationException
+    portal = api.portal.get()
+    try:
+        api.content.delete(
+            obj=portal['copy_of_training'], check_linkintegrity=True)
+    except LinkIntegrityNotificationException:
+        pass
+
+.. invisible-code-block: python
+
+    self.assertIn('copy_of_training', portal.keys())
+
+
 .. _content_manipulation_with_safe_id_option:
 
 Content manipulation with the `safe_id` option
