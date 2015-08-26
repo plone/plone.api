@@ -3,6 +3,7 @@
 
 from Products.CMFCore.WorkflowCore import WorkflowException
 from copy import copy as _copy
+from pkg_resources import get_distribution
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
@@ -29,6 +30,12 @@ except pkg_resources.DistributionNotFound:
         """Fake Products.Archetypes.interfaces.base.IBaseObject"""
 else:
     from Products.Archetypes.interfaces.base import IBaseObject
+
+# Old linkintegrity (Plone <= 5.0b4) or new (Plone > 5.0b4)
+if get_distribution('plone.app.linkintegrity').version >= 3.0:
+    NEW_LINKINTEGRITY = True
+else:
+    NEW_LINKINTEGRITY = False
 
 _marker = []
 
@@ -257,7 +264,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
 
 
 @at_least_one_of('obj', 'objects')
-def delete(obj=None, objects=None, check_linkintegrity=False):
+def delete(obj=None, objects=None, check_linkintegrity=True):
     """Delete the object(s).
 
     :param obj: Object that we want to delete.
@@ -270,34 +277,59 @@ def delete(obj=None, objects=None, check_linkintegrity=False):
 
     :raises:
         ValueError
-        plone.app.linkintegrity.exception.LinkIntegrityNotificationException
+        plone.app.linkintegrity.exceptions.LinkIntegrityNotificationException
 
     :Example: :ref:`content_delete_example`
     """
-    if check_linkintegrity:
+    if check_linkintegrity and NEW_LINKINTEGRITY:
         site = portal.get()
         linkintegrity_view = get_view(
             name='delete_confirmation_info',
             context=site,
             request=site.REQUEST)
+
     if obj is not None:
         if check_linkintegrity:
-            breaches = linkintegrity_view.get_breaches([obj])
-            if breaches:
-                raise LinkIntegrityNotificationException(
-                    "Linkintegrity-breaches: {0}".format(breaches)
-                )
-        obj.aq_parent.manage_delObjects([obj.getId()])
+            if NEW_LINKINTEGRITY:
+                # new: look for breaches and manually raise a exception
+                breaches = linkintegrity_view.get_breaches([obj])
+                if breaches:
+                    raise LinkIntegrityNotificationException(
+                        "Linkintegrity-breaches: {0}".format(breaches)
+                    )
+            # old: exception will be raised when there are breaches
+            obj.aq_parent.manage_delObjects([obj.getId()])
+        else:
+            if NEW_LINKINTEGRITY:
+                # new: deleting ignores linkintegrity-breaches
+                obj.aq_parent.manage_delObjects([obj.getId()])
+            else:
+                # old: we have to explicitly ignore the exception
+                try:
+                    obj.aq_parent.manage_delObjects([obj.getId()])
+                except LinkIntegrityNotificationException:
+                    pass
+
     else:
         if check_linkintegrity:
-            breaches = linkintegrity_view.get_breaches(objects)
-            if breaches:
-                raise LinkIntegrityNotificationException(
-                    "Linkintegrity-breaches: {0}".format(breaches)
-                )
-        # The objects may have different parents
-        for obj in objects:
-            delete(obj=obj)
+            if NEW_LINKINTEGRITY:
+                # new: check for unresolved breaches for all objects
+                breaches = linkintegrity_view.get_breaches(objects)
+                if breaches:
+                    raise LinkIntegrityNotificationException(
+                        "Linkintegrity-breaches: {0}".format(breaches)
+                    )
+                # there are no breaches so we need to skip the check
+                for obj in objects:
+                    delete(obj=obj, check_linkintegrity=False)
+            else:
+                # old the check will be done by manage_delObjects
+                for obj in objects:
+                    delete(obj=obj, check_linkintegrity=True)
+
+        else:
+            for obj in objects:
+                delete(obj=obj, check_linkintegrity=False)
 
 
 @required_parameters('obj')

@@ -358,7 +358,7 @@ To delete multiple content objects, pass the objects to the :meth:`api.content.d
     self.assertFalse(portal.events.get('copy_of_training'))
 
 
-To check if deleting a content object would result in a broken link for another object, set the option `check_linkintegrity` to `True`:
+If deleting content would result in broken links you will get a `LinkIntegrityNotificationException`. To delete anyway, set the option `check_linkintegrity` to `False`:
 
 .. invisible-code-block: python
 
@@ -372,18 +372,12 @@ To check if deleting a content object would result in a broken link for another 
 .. code-block:: python
 
     from plone import api
-    from plone.app.linkintegrity.exceptions import \
-        LinkIntegrityNotificationException
     portal = api.portal.get()
-    try:
-        api.content.delete(
-            obj=portal['copy_of_training'], check_linkintegrity=True)
-    except LinkIntegrityNotificationException:
-        pass
+    api.content.delete(obj=portal['copy_of_training'], check_linkintegrity=False)
 
 .. invisible-code-block: python
 
-    self.assertIn('copy_of_training', portal.keys())
+    self.assertNotIn('copy_of_training', portal.keys())
 
 
 .. _content_manipulation_with_safe_id_option:

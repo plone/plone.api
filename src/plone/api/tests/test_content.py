@@ -620,7 +620,7 @@ class TestPloneApiContent(unittest.TestCase):
         modified(self.team)
         container = self.portal
         # Delete the contact page
-        api.content.delete(self.contact)
+        api.content.delete(self.contact, check_linkintegrity=False)
         assert 'contact' not in container['about'].keys()
 
     def test_delete_check_linkintegrity(self):
@@ -630,7 +630,7 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
         # Delete the contact page
         with self.assertRaises(LinkIntegrityNotificationException):
-            api.content.delete(self.contact, check_linkintegrity=True)
+            api.content.delete(self.contact)
         assert 'contact' in container['about'].keys()
 
     def test_delete_multiple_check_linkintegrity(self):
@@ -644,9 +644,7 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
         # Delete the contact page
         with self.assertRaises(LinkIntegrityNotificationException):
-            api.content.delete(
-                objects=[self.blog, self.contact],
-                check_linkintegrity=True)
+            api.content.delete(objects=[self.blog, self.contact])
         self.assertIn('contact', container['about'].keys())
         self.assertIn('blog', container.keys())
 
@@ -664,7 +662,9 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertTrue(hasIncomingLinks(self.contact))
         container = self.portal
         # Delete linked pages
-        api.content.delete(objects=[self.blog, self.contact])
+        api.content.delete(
+            objects=[self.blog, self.contact],
+            check_linkintegrity=False)
         self.assertNotIn('contact', container['about'].keys())
         self.assertNotIn('blog', container.keys())
         # Linkintegrity-relations are removed and objects have broken links
@@ -685,13 +685,9 @@ class TestPloneApiContent(unittest.TestCase):
         container = self.portal
         # Deleting pages with unresolved breaches throws an exception
         with self.assertRaises(LinkIntegrityNotificationException):
-            api.content.delete(
-                objects=[self.blog, self.about],
-                check_linkintegrity=True)
+            api.content.delete(objects=[self.blog, self.about])
         # Deleting pages with resolved breaches throws no exception
-        api.content.delete(
-            objects=[self.blog, self.training, self.about],
-            check_linkintegrity=True)
+        api.content.delete(objects=[self.blog, self.training, self.about])
         self.assertNotIn('about', container.keys())
         self.assertNotIn('blog', container.keys())
         self.assertNotIn('training', container['events'].keys())
