@@ -3,7 +3,9 @@
 
 from Products.CMFCore.WorkflowCore import WorkflowException
 from copy import copy as _copy
+from pkg_resources import DistributionNotFound
 from pkg_resources import get_distribution
+from pkg_resources import parse_version
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
@@ -19,20 +21,20 @@ from zope.container.interfaces import INameChooser
 from zope.interface import Interface
 from zope.interface import providedBy
 
-import pkg_resources
 import random
 import transaction
 
 try:
-    pkg_resources.get_distribution('Products.Archetypes')
-except pkg_resources.DistributionNotFound:
+    get_distribution('Products.Archetypes')
+except DistributionNotFound:
     class IBaseObject(Interface):
         """Fake Products.Archetypes.interfaces.base.IBaseObject"""
 else:
     from Products.Archetypes.interfaces.base import IBaseObject
 
 # Old linkintegrity (Plone <= 5.0b4) or new (Plone > 5.0b4)
-if get_distribution('plone.app.linkintegrity').version >= 3.0:
+linkintegrity_version = get_distribution('plone.app.linkintegrity').version
+if parse_version(linkintegrity_version) >= parse_version('3.0'):
     NEW_LINKINTEGRITY = True
 else:
     NEW_LINKINTEGRITY = False
