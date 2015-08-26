@@ -633,43 +633,24 @@ class TestPloneApiContent(unittest.TestCase):
         with self.assertRaises(LinkIntegrityNotificationException):
             api.content.delete(self.contact)
         assert 'contact' in self.portal['about'].keys()
-
-    def test_delete_check_linkintegrity_archetypes(self):
-        """Test deleting archetypes content with a link pointed at it."""
-        if not IBaseContent.providedBy(self.team) or not NEW_LINKINTEGRITY:
-            # This test only makes sense with Archetypes or new Linkintegrity
-            return
-        self._set_text(self.team, '<a href="contact">contact</a>')
-        self.assertIn('contact', self.portal['about'].keys())
-        # Delete the contact page
-        api.content.delete(self.contact)
-        with self.assertRaises(LinkIntegrityNotificationException):
-            api.content.delete(self.contact)
         if NEW_LINKINTEGRITY:
-            # In the old implementation the items are still during this
-            # request.
+            # In the old implementation of linkintegrity the items are
+            # still gone during this request.
             self.assertIn('contact', self.portal['about'].keys())
-
-    def test_delete_ignore_linkintegrity_archetypes(self):
-        """Test deleting archetypes content with a link pointed at it."""
-        if not IBaseContent.providedBy(self.team) or not NEW_LINKINTEGRITY:
-            # This test only makes sense with Archetypes or new Linkintegrity
-            return
-        self._set_text(self.team, '<a href="contact">contact</a>')
-        # Delete the contact page
-        api.content.delete(self.contact, check_linkintegrity=False)
-        self.assertNotIn('contact', self.portal['about'].keys())
 
     def test_delete_multiple_check_linkintegrity(self):
         """Test deleting multiple item with linkintegrity-breaches."""
+        if not IBaseContent.providedBy(self.team) or not NEW_LINKINTEGRITY:
+            # This test only makes sense with Archetypes or new Linkintegrity
+            return
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
         self._set_text(self.training, '<a href="../blog">contact</a>')
         # Delete the contact page
         with self.assertRaises(LinkIntegrityNotificationException):
             api.content.delete(objects=[self.blog, self.contact])
         if NEW_LINKINTEGRITY:
-            # In the old implementation the items are still during this
-            # request.
+            # In the old implementation of linkintegrity the items are
+            # still gone during this request.
             self.assertIn('contact', self.portal['about'].keys())
             self.assertIn('blog', self.portal.keys())
 
