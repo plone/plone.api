@@ -12,6 +12,7 @@ from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.linkintegrity.exceptions import \
     LinkIntegrityNotificationException
+from plone.api.content import NEW_LINKINTEGRITY
 from plone.app.textfield import RichTextValue
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
@@ -623,6 +624,7 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.delete(self.contact, check_linkintegrity=False)
         assert 'contact' not in container['about'].keys()
 
+    @unittest.skipUnless(NEW_LINKINTEGRITY, 'Test fails with old linintegrity')
     def test_delete_check_linkintegrity(self):
         """Test deleting a content item with a link pointed at it."""
         self.team.text = RichTextValue('<a href="contact">contact</a>')
@@ -633,6 +635,7 @@ class TestPloneApiContent(unittest.TestCase):
             api.content.delete(self.contact)
         assert 'contact' in container['about'].keys()
 
+    @unittest.skipUnless(NEW_LINKINTEGRITY, 'Test fails with old linintegrity')
     def test_delete_multiple_check_linkintegrity(self):
         """Test deleting multiple item with linkintegrity-breaches."""
         self.team.text = RichTextValue(
@@ -648,6 +651,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertIn('contact', container['about'].keys())
         self.assertIn('blog', container.keys())
 
+    @unittest.skipUnless(NEW_LINKINTEGRITY, 'Test fails with old linintegrity')
     def test_delete_multiple_ignore_linkintegrity(self):
         """Test deleting multiple items ignoring linkintegrity-breaches."""
         from plone.app.linkintegrity.utils import hasOutgoingLinks
@@ -671,6 +675,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertFalse(hasOutgoingLinks(self.team))
         self.assertFalse(hasOutgoingLinks(self.training))
 
+    @unittest.skipUnless(NEW_LINKINTEGRITY, 'Test fails with old linintegrity')
     def test_delete_with_internal_breaches(self):
         """Test deleting multiple with internal linkintegrity breaches."""
         from plone.app.linkintegrity.utils import hasIncomingLinks
