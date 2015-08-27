@@ -5,7 +5,6 @@ from Acquisition import aq_base
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
-from Products.Archetypes.interfaces.base import IBaseContent
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFCore.interfaces import IContentish
 from Products.ZCatalog.interfaces import IZCatalog
@@ -15,6 +14,7 @@ from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.linkintegrity.exceptions import \
     LinkIntegrityNotificationException
 from plone.app.textfield import RichTextValue
+from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
@@ -697,10 +697,12 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertNotIn('training', self.portal['events'].keys())
 
     def _set_text(self, obj, text):
-        if IBaseContent.providedBy(obj):
-            obj.setText(text, mimetype='text/html')
-        else:
+        if IDexterityContent.providedBy(obj):
+            # Dexterity
             obj.text = RichTextValue(text)
+        else:
+            # Archetypes
+            obj.setText(text, mimetype='text/html')
         modified(obj)
 
     def test_find(self):
