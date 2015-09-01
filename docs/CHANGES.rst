@@ -4,9 +4,14 @@ Changelog
 1.3.4 (unreleased)
 ------------------
 
+- plone.api.content.delete: add option check_linkintegrity. If True raise
+  exception if deleting would result in broken links.
+  [pbauer]
+
 - plone.api.content.find: object_provides arguments accepts tuples.
   Fixes #266.
   [ale-rt]
+
 - Fixed plone.api.content.create in Plone 5. Refs 160.
   [jaroel]
 

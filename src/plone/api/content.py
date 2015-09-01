@@ -3,11 +3,16 @@
 
 from Products.CMFCore.WorkflowCore import WorkflowException
 from copy import copy as _copy
+from pkg_resources import DistributionNotFound
+from pkg_resources import get_distribution
+from pkg_resources import parse_version
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
+from plone.app.linkintegrity.exceptions import \
+    LinkIntegrityNotificationException
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from zope.component import getMultiAdapter
@@ -16,17 +21,23 @@ from zope.container.interfaces import INameChooser
 from zope.interface import Interface
 from zope.interface import providedBy
 
-import pkg_resources
 import random
 import transaction
 
 try:
-    pkg_resources.get_distribution('Products.Archetypes')
-except pkg_resources.DistributionNotFound:
+    get_distribution('Products.Archetypes')
+except DistributionNotFound:
     class IBaseObject(Interface):
         """Fake Products.Archetypes.interfaces.base.IBaseObject"""
 else:
     from Products.Archetypes.interfaces.base import IBaseObject
+
+# Old linkintegrity (Plone <= 5.0b4) or new (Plone > 5.0b4)
+linkintegrity_version = get_distribution('plone.app.linkintegrity').version
+if parse_version(linkintegrity_version) >= parse_version('3.0.dev0'):
+    NEW_LINKINTEGRITY = True
+else:
+    NEW_LINKINTEGRITY = False
 
 _marker = []
 
@@ -255,23 +266,72 @@ def copy(source=None, target=None, id=None, safe_id=False):
 
 
 @at_least_one_of('obj', 'objects')
-def delete(obj=None, objects=None):
+def delete(obj=None, objects=None, check_linkintegrity=True):
     """Delete the object(s).
 
     :param obj: Object that we want to delete.
     :type obj: Content object
     :param objects: Objects that we want to delete.
     :type objects: List of content objects
+    :param check_linkintegrity: Raise exception if there are
+        linkintegrity-breaches.
+    :type check_linkintegrity: boolean
+
     :raises:
         ValueError
+        plone.app.linkintegrity.exceptions.LinkIntegrityNotificationException
+
     :Example: :ref:`content_delete_example`
     """
+    if check_linkintegrity and NEW_LINKINTEGRITY:
+        site = portal.get()
+        linkintegrity_view = get_view(
+            name='delete_confirmation_info',
+            context=site,
+            request=site.REQUEST)
+
     if obj is not None:
-        obj.aq_parent.manage_delObjects([obj.getId()])
+        if check_linkintegrity:
+            if NEW_LINKINTEGRITY:
+                # new: look for breaches and manually raise a exception
+                breaches = linkintegrity_view.get_breaches([obj])
+                if breaches:
+                    raise LinkIntegrityNotificationException(
+                        "Linkintegrity-breaches: {0}".format(breaches)
+                    )
+            # old: exception will be raised when there are breaches
+            obj.aq_parent.manage_delObjects([obj.getId()])
+        else:
+            if NEW_LINKINTEGRITY:
+                # new: deleting ignores linkintegrity-breaches
+                obj.aq_parent.manage_delObjects([obj.getId()])
+            else:
+                # old: we have to explicitly ignore the exception
+                try:
+                    obj.aq_parent.manage_delObjects([obj.getId()])
+                except LinkIntegrityNotificationException:
+                    pass
+
     else:
-        # The objects may have different parents
-        for obj in objects:
-            delete(obj=obj)
+        if check_linkintegrity:
+            if NEW_LINKINTEGRITY:
+                # new: check for unresolved breaches for all objects
+                breaches = linkintegrity_view.get_breaches(objects)
+                if breaches:
+                    raise LinkIntegrityNotificationException(
+                        "Linkintegrity-breaches: {0}".format(breaches)
+                    )
+                # there are no breaches so we need to skip the check
+                for obj in objects:
+                    delete(obj=obj, check_linkintegrity=False)
+            else:
+                # old the check will be done by manage_delObjects
+                for obj in objects:
+                    delete(obj=obj, check_linkintegrity=True)
+
+        else:
+            for obj in objects:
+                delete(obj=obj, check_linkintegrity=False)
 
 
 @required_parameters('obj')
