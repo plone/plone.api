@@ -603,3 +603,9 @@ is widely considered the gold standard:
 `Github flavored markdown
 <http://github.github.com/github-flavored-markdown/>`_
 is also useful in commit messages.
+
+Squashing commits
+-----------------
+
+In order to keep a clear and concise git history, it is good practice to squash commits before merging.
+Use ``git rebase --interactive`` to squash all commits that you think are unnecessary.
