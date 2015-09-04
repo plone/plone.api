@@ -14,7 +14,8 @@ Changelog
 
 - Fixed plone.api.content.create in Plone 5. Refs 160.
   [jaroel]
-
+- plone.api.content.transition: Now accepts kwargs that can be supplied to the workflow transition.
+  [neilferreira]
 
 1.3.3 (2015-07-14)
 ------------------

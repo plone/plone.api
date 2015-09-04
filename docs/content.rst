@@ -450,6 +450,15 @@ To transition your content to a new workflow state, use the :meth:`api.content.t
         'published'
     )
 
+If your workflow accepts any additional arguments to the checkin method you may supply them via kwargs.  These arguments can be saved to your transition using custom workflow variables inside of the ZMI using an expression.  ie. "python:state_change.kwargs.get('comment', '')"
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    api.content.transition(obj=portal['about'], transition='reject', comment='You had a typo on your page.')
+
+.. invisible-code-block: python
 
 .. _content_get_view_example:
 
