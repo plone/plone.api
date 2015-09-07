@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.2 (unreleased)
+1.4.2 (2015-09-07)
 ------------------
 
 - Use the version defined in Products.CMFPlone in env.plone_version, just like Plone's control panel.
