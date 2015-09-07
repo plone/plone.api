@@ -4,7 +4,8 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Removed dependency on Products.CMFPlone to avoid circular dependencies. Products.CMFPlone will be there.
+  [jaroel]
 
 
 1.4 (2015-09-04)
