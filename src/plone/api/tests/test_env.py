@@ -403,9 +403,10 @@ class TestPloneApiEnv(unittest.TestCase):
         self.assertTrue(isinstance(plone_version(), str))
         # version should be something like 'X.Y' or 'X.Y.Z'
         # it could also include a package status id (Alpha, Beta or RC)
+        # When run against coredev, we may have a .devN suffix as well.
         self.assertRegexpMatches(
             plone_version(),
-            '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?$'
+            '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?(\.dev\d)?$'
         )
 
     def test_zope_version(self):
