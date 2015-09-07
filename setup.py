@@ -29,7 +29,6 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'Products.CMFPlone',
         'Products.statusmessages',
         'decorator',
         'plone.app.uuid',
