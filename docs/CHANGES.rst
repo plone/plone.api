@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.1 (unreleased)
+1.4.1 (2015-09-07)
 ------------------
 
 - Removed dependency on Products.CMFPlone to avoid circular dependencies. Products.CMFPlone will be there.
