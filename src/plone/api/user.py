@@ -57,11 +57,11 @@ def create(
     if not email:
         raise MissingParameterError("You need to pass the new user's email.")
 
-    site = portal.get()
     try:
         use_email_as_username = portal.get_registry_record(
             'plone.use_email_as_login')
     except InvalidParameterError:
+        site = portal.get()
         props = site.portal_properties
         use_email_as_username = props.site_properties.use_email_as_login
 
