@@ -4,7 +4,8 @@ Changelog
 1.4.3 (unreleased)
 --------------
 
-- Nothing changed yet.
+- Try to get use_email_as_login from registry first.
+  [pbauer]
 
 
 1.4.2 (2015-09-07)
