@@ -204,7 +204,7 @@ def plone_version():
     :returns: string denoting what release of Plone this distribution contains
     :Example: :ref:`env_plone_version_example`
     """
-    return get_distribution('Plone').version
+    return get_distribution('Products.CMFPlone').version
 
 
 def zope_version():

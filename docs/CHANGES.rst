@@ -4,7 +4,9 @@ Changelog
 1.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use the version defined in Products.CMFPlone in env.plone_version, just like Plone's control panel.
+  Also fixes Jenkins testrunner where we don't have the Plone egg.
+  [jaroel]
 
 
 1.4.1 (2015-09-07)
