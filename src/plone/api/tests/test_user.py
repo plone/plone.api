@@ -36,10 +36,18 @@ class TestPloneApiUser(unittest.TestCase):
         username = user.getUserName()
         self.assertNotEqual(userid, username)
 
+    def _set_emaillogin(self, value):
+        from plone.api.exc import InvalidParameterError
+        try:
+            api.portal.set_registry_record('plone.use_email_as_login', value)
+        except InvalidParameterError:
+            portal = api.portal.get()
+            portal.portal_properties.site_properties.use_email_as_login = value
+
     def test_create_no_email(self):
         """Test that exception is raised if no email is given."""
 
-        self.portal.portal_properties.site_properties.use_email_as_login = True
+        self._set_emaillogin(True)
 
         from plone.api.exc import MissingParameterError
         with self.assertRaises(MissingParameterError):
@@ -74,8 +82,7 @@ class TestPloneApiUser(unittest.TestCase):
         """Test create if no username is provided."""
 
         # If there is no username, email will be used instead
-        properties = self.portal.portal_properties.site_properties
-        properties.manage_changeProperties(use_email_as_login=True)
+        self._set_emaillogin(True)
 
         user = api.user.create(
             email='chuck@norris.org',
@@ -86,7 +93,7 @@ class TestPloneApiUser(unittest.TestCase):
 
         # But if using emails as a username is disabled, we should get
         # an error
-        properties.manage_changeProperties(use_email_as_login=False)
+        self._set_emaillogin(False)
 
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError):
@@ -97,8 +104,7 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_create_with_username(self):
         """Test if the correct username if used."""
-        properties = self.portal.portal_properties.site_properties
-        properties.manage_changeProperties(use_email_as_login=True)
+        self._set_emaillogin(True)
 
         user = api.user.create(
             username='chuck',
@@ -107,8 +113,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertEqual(user.getUserName(), 'chuck@norris.org')
 
-        properties = self.portal.portal_properties.site_properties
-        properties.manage_changeProperties(use_email_as_login=False)
+        self._set_emaillogin(False)
 
         user = api.user.create(
             username='chuck',
@@ -226,7 +231,7 @@ class TestPloneApiUser(unittest.TestCase):
     def test_delete_no_username(self):
         """Test deleting of a member with email login."""
 
-        self.portal.portal_properties.site_properties.use_email_as_login = True
+        self._set_emaillogin(True)
 
         # This should fail either an username or user object should be given
         from plone.api.exc import MissingParameterError
