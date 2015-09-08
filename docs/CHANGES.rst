@@ -1,10 +1,12 @@
 Changelog
 =========
 
-1.4.4 (unreleased)
+1.4.4 (2015-09-08)
 ------------------
 
-- Nothing changed yet.
+- Symlink doctests so that they'll be included in the built egg and don't 
+  break coredev builds.
+  [esteele]
 
 
 1.4.3 (2015-09-08)
