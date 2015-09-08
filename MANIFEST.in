@@ -1,5 +1,4 @@
 include *.rst
-include docs/README.rst
 include docs/CHANGES.rst
 include docs/LICENSE.txt
 include docs/LICENSE.GPL
