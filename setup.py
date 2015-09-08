@@ -28,6 +28,8 @@ setup(
     namespace_packages=['plone'],
     include_package_data=True,
     zip_safe=False,
+    url='https://github.com/plone/plone.api',
+    keywords='plone api code conventions',
     install_requires=[
         'Products.statusmessages',
         'decorator',
@@ -64,10 +66,13 @@ setup(
         'Framework :: Plone',
         'Framework :: Plone :: 4.2',
         'Framework :: Plone :: 4.3',
+        'Framework :: Plone :: 5.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
     ],
     platforms='Any',
 )
