@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.4.3 (unreleased)
---------------
+1.4.3 (2015-09-08)
+------------------
 
 - Try to get use_email_as_login from registry first.
   [pbauer]
