@@ -4,7 +4,9 @@ Changelog
 1.4.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed long description of package to be valid restructured text,
+  displaying nicely on PyPI.
+  [maurits]
 
 
 1.4.4 (2015-09-08)
