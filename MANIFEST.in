@@ -7,3 +7,12 @@ include docs/LICENSE.GPL
 graft src
 
 global-exclude *.pyc
+exclude bootstrap.py
+exclude buildout.cfg
+exclude coverage.cfg
+exclude dependencies.cfg
+exclude Makefile
+exclude plone-4.2.x.cfg
+exclude plone-4.3.x.cfg
+exclude plone-5.0.x.cfg
+exclude 
