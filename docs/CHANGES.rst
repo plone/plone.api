@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.5 (unreleased)
+1.4.5 (2015-09-09)
 ------------------
 
 - Fixed long description of package to be valid restructured text,
