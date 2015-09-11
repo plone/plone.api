@@ -596,11 +596,17 @@ def find(context=None, depth=None, **kwargs):
     query = {}
     query.update(**kwargs)
 
-    # Passing a context or depth overrides the existing path query
-    # Save the original path to maybe restore it.
+    # Save the original path to maybe restore it later.
     orig_path = query.get('path')
+    if isinstance(orig_path, dict):
+        orig_path = orig_path.get('query')
+
+    # Passing a context or depth overrides the existing path query,
+    # for now.
     if context or depth is not None:
-        query['path'] = {}
+        # Make the path a dictionary, unless it already is.
+        if not isinstance(orig_path, dict):
+            query['path'] = {}
 
     # Limit search depth
     if depth is not None:

@@ -797,6 +797,24 @@ class TestPloneApiContent(unittest.TestCase):
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 0)
 
+        # This is a bit awkward, but it is nice if this does not crash.
+        query = {
+            'depth': 2,
+            'portal_type': 'Document',
+            'path': {'query': path}
+            }
+        documents = api.content.find(**query)
+        self.assertEqual(len(documents), 2)
+
+        path = '/'.join(self.portal.events.getPhysicalPath())
+        query = {
+            'depth': 2,
+            'portal_type': 'Document',
+            'path': {'query': path}
+            }
+        documents = api.content.find(**query)
+        self.assertEqual(len(documents), 0)
+
     def test_get_state(self):
         """Test retrieving the workflow state of a content item."""
 
