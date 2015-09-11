@@ -572,9 +572,11 @@ def find(context=None, depth=None, **kwargs):
     Specifing the search depth is supported using the `depth` argument.
     >>> find(depth=1)
 
-    Using `depth` needs a context for it's path. If no context is passed, the
-    portal root is used.
+    Using `depth` needs a context for it's path. If no context and no
+    path is passed, the portal root is used.
     >>> find(context=portal, depth=1, portal_type='Document')
+    - or -
+    >>> find(depth=1, path='/plone/folder', portal_type='Document')
     - or -
     >>> find(depth=1, portal_type='Document')
 
@@ -595,14 +597,19 @@ def find(context=None, depth=None, **kwargs):
     query.update(**kwargs)
 
     # Passing a context or depth overrides the existing path query
-    if context or depth:
+    # Save the original path to maybe restore it.
+    orig_path = query.get('path')
+    if context or depth is not None:
         query['path'] = {}
 
     # Limit search depth
     if depth is not None:
         # If we don't have a context, we'll assume the portal root.
-        if context is None:
+        if context is None and not orig_path:
             context = portal.get()
+        else:
+            # Restore the original path
+            query['path']['query'] = orig_path
         query['path']['depth'] = depth
 
     if context is not None:

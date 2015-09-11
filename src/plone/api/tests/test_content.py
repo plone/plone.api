@@ -754,6 +754,20 @@ class TestPloneApiContent(unittest.TestCase):
             context=self.portal.about, depth=0, portal_type='Document')
         self.assertEqual(len(documents), 0)
 
+        # Limit search depth with explicit path
+        documents = api.content.find(
+            path='/'.join(self.portal.about.getPhysicalPath()),
+            depth=1, portal_type='Document')
+        self.assertEqual(len(documents), 2)
+        documents = api.content.find(
+            path='/'.join(self.portal.about.getPhysicalPath()),
+            depth=0, portal_type='Document')
+        self.assertEqual(len(documents), 0)
+        documents = api.content.find(
+            path='/'.join(self.portal.events.getPhysicalPath()),
+            depth=1, portal_type='Document')
+        self.assertEqual(len(documents), 0)
+
     def test_find_interface(self):
         # Find documents by interface or it's identifier
         identifier = IContentish.__identifier__
