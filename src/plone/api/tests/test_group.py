@@ -6,7 +6,7 @@ from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 
 import mock
-import unittest2 as unittest
+import unittest
 
 
 class TestPloneApiGroup(unittest.TestCase):

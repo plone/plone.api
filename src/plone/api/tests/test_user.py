@@ -9,7 +9,7 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_ID
 
 import mock
-import unittest2 as unittest
+import unittest
 
 
 class TestPloneApiUser(unittest.TestCase):

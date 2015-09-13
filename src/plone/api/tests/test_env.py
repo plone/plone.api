@@ -9,7 +9,7 @@ from plone.app.testing import TEST_USER_ID
 import AccessControl
 import AccessControl.SecurityManagement
 import Globals
-import unittest2 as unittest
+import unittest
 
 
 class ExampleException(Exception):
