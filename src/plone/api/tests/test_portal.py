@@ -21,7 +21,7 @@ from zope.component.hooks import setSite
 from zope.site import LocalSiteManager
 
 import mock
-import unittest2 as unittest
+import unittest
 
 HAS_PLONE5 = env.plone_version() >= '5.0b2'
 

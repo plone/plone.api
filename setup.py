@@ -55,7 +55,6 @@ setup(
             'plone.app.testing',
             'plone.indexer',
             'plone.registry',
-            'unittest2',
         ],
         'archetypes': [
             'Products.Archetypes',

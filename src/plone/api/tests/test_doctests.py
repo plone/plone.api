@@ -19,7 +19,7 @@ import manuel.testing
 import os
 import re
 import transaction
-import unittest2 as unittest
+import unittest
 
 try:
     pkg_resources.get_distribution('plone.app.contenttypes')

@@ -7,7 +7,7 @@ from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 
-import unittest2 as unittest
+import unittest
 
 
 def undecorated_func(arg1=None, arg2=None, arg3=None):

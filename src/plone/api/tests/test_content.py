@@ -29,7 +29,7 @@ from zope.lifecycleevent import modified
 
 import mock
 import pkg_resources
-import unittest2 as unittest
+import unittest
 
 try:
     pkg_resources.get_distribution('plone.app.contenttypes')
