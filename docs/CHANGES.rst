@@ -4,7 +4,9 @@ Changelog
 1.4.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed `api.content.find` with combination of depth and path.  Path
+  is no longer ignored then.
+  [maurits]
 
 
 1.4.5 (2015-09-09)
