@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.6 (unreleased)
+1.4.6 (2015-09-14)
 ------------------
 
 - Fixed `api.content.find` with combination of depth and path.  Path
