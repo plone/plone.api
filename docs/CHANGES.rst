@@ -8,6 +8,9 @@ Changelog
   is no longer ignored then.
   [maurits]
 
+- Remove unittest2 dependency.
+  [gforcada]
+
 
 1.4.5 (2015-09-09)
 ------------------
