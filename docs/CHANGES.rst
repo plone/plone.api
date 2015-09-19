@@ -4,7 +4,9 @@ Changelog
 1.4.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Get email_charset value from the configuration registry, falling back
+  to portal property if not found.
+  [esteele]
 
 
 1.4.6 (2015-09-14)

@@ -144,7 +144,10 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
         if ctrlOverview.mailhost_warning():
             raise ValueError('MailHost is not configured.')
 
-    encoding = portal.getProperty('email_charset', 'utf-8')
+    try:
+        encoding = get_registry_record('plone.email_charset')
+    except InvalidParameterError:
+        encoding = portal.getProperty('email_charset', 'utf-8')
 
     if not sender:
         try:
