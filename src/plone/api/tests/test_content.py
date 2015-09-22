@@ -786,14 +786,14 @@ class TestPloneApiContent(unittest.TestCase):
         query = {
             'portal_type': 'Document',
             'path': {'query': path, 'depth': 2}
-            }
+        }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 2)
 
         query = {
             'portal_type': 'Document',
             'path': {'query': path, 'depth': 0}
-            }
+        }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 0)
 
@@ -802,7 +802,7 @@ class TestPloneApiContent(unittest.TestCase):
             'depth': 2,
             'portal_type': 'Document',
             'path': {'query': path}
-            }
+        }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 2)
 
@@ -811,7 +811,7 @@ class TestPloneApiContent(unittest.TestCase):
             'depth': 2,
             'portal_type': 'Document',
             'path': {'query': path}
-            }
+        }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 0)
 
