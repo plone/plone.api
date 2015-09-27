@@ -8,6 +8,7 @@ from Products.MailHost.interfaces import IMailHost
 from datetime import date
 from datetime import datetime
 from email import message_from_string
+from pkg_resources import parse_version
 from plone.api import content
 from plone.api import env
 from plone.api import portal
@@ -23,7 +24,7 @@ from zope.site import LocalSiteManager
 import mock
 import unittest
 
-HAS_PLONE5 = env.plone_version() >= '5.0b2'
+HAS_PLONE5 = parse_version(env.plone_version()) >= parse_version('5.0b2')
 
 
 class TestPloneApiPortal(unittest.TestCase):

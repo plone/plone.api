@@ -4,7 +4,8 @@ Changelog
 1.4.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed Plone 5 version comparison in tests.
+  [maurits]
 
 
 1.4.7 (2015-09-27)
