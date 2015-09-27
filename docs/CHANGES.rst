@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.7 (unreleased)
+1.4.7 (2015-09-27)
 ------------------
 
 - Get email_charset value from the configuration registry, falling back
