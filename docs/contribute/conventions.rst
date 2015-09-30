@@ -88,6 +88,61 @@ This package follows all rules above, `check out the source
 <https://github.com/plone/plone.api/tree/master/src/plone/api>`_ to see them
 in action.
 
+autopep8
+--------
+
+Making old code pep8 compliant can be a lot of work.  There is a tool
+that can automatically do some of this work for you: `autopep8
+<https://pypi.python.org/pypi/autopep8>`_.  This fixes various issues,
+for example fixing indentation to be a multiple of four.  Just install
+it with pip and call it like this::
+
+    pip install autopep8
+    autopep8 -i filename.py
+    autopep8 -i -r directory
+
+It is best to first run autopep8 in the default non aggressive mode,
+which means it only does whitespace changes.  To run this recursively
+on the current directory, changing files in place::
+
+    autopep8 -i -r .
+
+Quickly check the changes and then commit them.
+
+WARNING: be *very* careful when running this in a skins directory, if
+you run it there at all.  It will make changes to the top of the file
+like this, which completely breaks the skin script::
+
+    -##parameters=policy_in=''
+    +# parameters=policy_in=''
+
+With those safe changes out of the way, you can move on to a second,
+more aggresive round::
+
+    autopep8 -i --aggressive -r .
+
+Check these changes more thoroughly.  At the very least check if Plone
+can still start in the foreground and that there are no failures or
+errors in the tests.
+
+Not all changes are always safe.  You can ignore some checks::
+
+    autopep8 -i --ignore W690,E711,E721 --aggressive -r .
+
+This skips the following changes:
+
+- W690: Fix various deprecated code (via lib2to3). (Can be bad for
+  Python 2.4.)
+
+- E721: Use `isinstance()` instead of comparing types directly. (There
+  are uses of this in for example GenericSetup and plone.api that must
+  not be fixed.)
+
+- E711: Fix comparison with None.  (This can break SQLAlchemy code.)
+
+You can check what would be changed by one specific code::
+
+    autopep8 --diff --select E309 -r .
 
 Indentation
 ===========
