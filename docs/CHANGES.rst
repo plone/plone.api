@@ -6,6 +6,8 @@ Changelog
 
 - Fixed Plone 5 version comparison in tests.
   [maurits]
+- update documentation links, we live in docs.plone.org/develop/plone.api now
+  [polyester]
 
 
 1.4.7 (2015-09-27)
@@ -38,7 +40,7 @@ Changelog
 1.4.4 (2015-09-08)
 ------------------
 
-- Symlink doctests so that they'll be included in the built egg and don't 
+- Symlink doctests so that they'll be included in the built egg and don't
   break coredev builds.
   [esteele]
 

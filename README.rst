@@ -22,7 +22,7 @@ The intention is
 Documentation
 =============
 
-`plone.api documentation <http://docs.plone.org/external/plone.api/docs/contribute/index.html>`_ is part of the official plone documentation.
+`plone.api documentation <http://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_ is part of the official plone documentation.
 
 ``plone.api`` comes with *cookbook*-like documentation and step-by-step instructions for doing common development tasks in Plone.
 Recipes try to assume the user does not have extensive knowledge about Plone internals.
@@ -39,8 +39,8 @@ Source Code and Contribution
     :target: https://coveralls.io/r/plone/plone.api?branch=master
 
 Contributors
-    please read the document `Process for Plone core's development <http://docs.plone.org/develop/plone-coredev/index.html>`_.
-    Also consult the section about contribution in the `plone.api contributors documentation <http://docs.plone.org/external/plone.api/docs/contribute/index.html>`_.
+    please read the document `Process for Plone core's development <http://docs.plone.org/develop/coredev/docs/index.html>`_.
+    Also consult the section about contribution in the `plone.api contributors documentation <http://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_.
 
 Source-Code
     at the `Plone code repository hosted at Github <https://github.com/plone/plone.api>`_.
