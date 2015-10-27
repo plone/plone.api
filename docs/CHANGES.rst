@@ -4,10 +4,15 @@ Changelog
 1.4.8 (unreleased)
 ------------------
 
-- Fixed Plone 5 version comparison in tests.
-  [maurits]
+New:
+
 - update documentation links, we live in docs.plone.org/develop/plone.api now
   [polyester]
+
+Fixes:
+
+- Fixed Plone 5 version comparison in tests.
+  [maurits]
 
 
 1.4.7 (2015-09-27)
