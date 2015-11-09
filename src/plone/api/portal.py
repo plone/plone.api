@@ -245,7 +245,7 @@ def show_message(message=None, request=None, type='info'):
 
 @required_parameters('name')
 def get_registry_record(name=None):
-    """Get a record value from a the ``plone.app.registry``
+    """Get a record value from ``plone.app.registry``
 
     :param name: [required] Name
     :type name: string
