@@ -4,7 +4,13 @@ Changelog
 1.4.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+New:
+
+- Nothing new yet.
+
+Fixes:
+
+- Nothing fixed yet.
 
 
 1.4.9 (2015-11-19)
