@@ -116,7 +116,8 @@ def get_tool(name=None):
 
 
 @required_parameters('recipient', 'subject', 'body')
-def send_email(sender=None, recipient=None, subject=None, body=None):
+def send_email(sender=None, recipient=None, subject=None, body=None,
+               immediate=False):
     """Send an email.
 
     :param sender: Email sender, 'from' field. If not set, the portal default
@@ -128,6 +129,10 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
     :type subject: string
     :param body: [required] Body text of the email
     :type body: string
+    :param immediate: Send immediate or queued at transaction commit time. When
+        sending immediate the mail might get sent out multiple time in case of
+        transaction aborts and retries.
+    :type body: boolean
     :raises:
         ValueError
     :Example: :ref:`portal_send_email_example`
@@ -174,7 +179,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None):
         sender,
         subject=subject,
         charset=encoding,
-        immediate=True
+        immediate=immediate
     )
 
 
