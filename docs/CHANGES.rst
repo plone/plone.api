@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- #283 portal.send_email does not respect transaction aborts
+  [jensens]
 
 
 1.4.8 (2015-10-27)
