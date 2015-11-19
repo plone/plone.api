@@ -4,10 +4,6 @@ Changelog
 1.4.9 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - #283 portal.send_email does not respect transaction aborts
