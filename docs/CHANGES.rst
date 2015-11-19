@@ -4,13 +4,10 @@ Changelog
 1.4.10 (unreleased)
 -------------------
 
-New:
-
-- Nothing new yet.
-
 Fixes:
 
-- Nothing fixed yet.
+- Rerelease, as 1.4.9 misses the doctests directory.
+  [maurits]
 
 
 1.4.9 (2015-11-19)
