@@ -1,0 +1,1 @@
+../src/plone/api/tests/doctests/group.rst
