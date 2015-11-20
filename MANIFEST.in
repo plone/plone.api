@@ -1,6 +1,10 @@
 include *.rst
+
+# Ignore most of the docs directory.
 prune docs
-include docs/CHANGES.rst
+
+# The doctests point to docs/*.rst, so we need them, including CHANGES.rst.
+include docs/*.rst
 include docs/LICENSE.txt
 include docs/LICENSE.GPL
 
