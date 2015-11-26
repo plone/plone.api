@@ -226,6 +226,30 @@ Plone comes with a package ``plone.app.registry`` that provides a common way to 
 
     self.assertTrue(api.portal.get_registry_record('my.package.someoption'))
 
+One common pattern when using registry records is to define an interface with all the settings.
+:meth:`api.portal.get_registry_record` also allows you to use this pattern.
+
+.. invisible-code-block: python
+
+    from plone.registry.interfaces import IRegistry
+    from plone.api.tests.test_portal import IMyRegistrySettings
+
+    registry = getUtility(IRegistry)
+    registry.registerInterface(IMyRegistrySettings)
+    records = registry.forInterface(IMyRegistrySettings)
+    records.field_one = u'my text'
+
+.. code-block:: python
+
+    from plone import api
+    api.portal.get_registry_record('field_one', interface=IMyRegistrySettings)
+
+.. invisible-code-block: python
+
+    self.assertEqual(
+        api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),
+        u'my text'
+    )
 
 .. _portal_set_registry_record_example:
 
@@ -255,6 +279,30 @@ Plone comes with a package ``plone.app.registry`` that provides a common way to 
 
     self.assertFalse(registry['my.package.someoption'])
 
+One common pattern when using registry records is to define an interface with all the settings.
+:meth:`api.portal.set_registry_record` also allows you to use this pattern.
+
+
+.. invisible-code-block: python
+
+    from plone.registry.interfaces import IRegistry
+    from plone.api.tests.test_portal import IMyRegistrySettings
+
+    registry = getUtility(IRegistry)
+    registry.registerInterface(IMyRegistrySettings)
+    records = registry.forInterface(IMyRegistrySettings)
+
+.. code-block:: python
+
+    from plone import api
+    api.portal.set_registry_record('field_one', u'new value', interface=IMyRegistrySettings)
+
+.. invisible-code-block: python
+
+    self.assertEqual(
+        api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),
+        u'new value'
+    )
 
 Further reading
 ---------------
