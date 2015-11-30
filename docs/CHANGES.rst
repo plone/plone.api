@@ -6,7 +6,9 @@ Changelog
 
 New:
 
-- *add item here*
+- Allow to set/get registry settings from an interface.
+  https://github.com/plone/plone.api/issues/269
+  [gforcada]
 
 Fixes:
 

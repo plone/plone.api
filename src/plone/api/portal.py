@@ -18,6 +18,7 @@ from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
+from zope.interface.interfaces import IInterface
 
 import pkg_resources
 
@@ -249,19 +250,46 @@ def show_message(message=None, request=None, type='info'):
 
 
 @required_parameters('name')
-def get_registry_record(name=None):
+def get_registry_record(name=None, interface=None):
     """Get a record value from ``plone.app.registry``
 
     :param name: [required] Name
     :type name: string
+    :param interface: interface whose attributes are plone.app.registry
+        settings
+    :type interface: zope.interface.Interface
     :returns: Registry record value
     :rtype: plone.app.registry registry record
     :Example: :ref:`portal_get_registry_record_example`
     """
     if not isinstance(name, str):
-        raise InvalidParameterError(u"The parameter has to be a string")
+        raise InvalidParameterError(u"The 'name' parameter has to be a string")
+
+    if interface is not None and not IInterface.providedBy(interface):
+        raise InvalidParameterError(
+            u"The interface parameter has to derive from "
+            u"zope.interface.Interface"
+        )
 
     registry = getUtility(IRegistry)
+
+    if interface is not None:
+        records = registry.forInterface(interface)
+        _marker = object()
+        if getattr(records, name, _marker) == _marker:
+            # Show all records on the interface.
+            records = [key for key in interface.names()]
+            raise InvalidParameterError(
+                "Cannot find a record with name '{0}' on interface {1}.\n"
+                "Did you mean?"
+                "{2}".format(
+                    name,
+                    interface.__identifier__,
+                    '\n'.join(records)
+                )
+            )
+        return registry['{0}.{1}'.format(interface.__identifier__, name)]
+
     if name not in registry:
         # Show all records that 'look like' name.
         # We don't dump the whole list, because it 1500+ items.
@@ -281,19 +309,52 @@ def get_registry_record(name=None):
 
 
 @required_parameters('name', 'value')
-def set_registry_record(name=None, value=None):
+def set_registry_record(name=None, value=None, interface=None):
     """Set a record value in the ``plone.app.registry``
 
     :param name: [required] Name of the record
     :type name: string
     :param value: [required] Value to set
     :type value: python primitive
+    :param interface: interface whose attributes are plone.app.registry
+        settings
+    :type interface: zope.interface.Interface
     :Example: :ref:`portal_set_registry_record_example`
     """
     if not isinstance(name, str):
         raise InvalidParameterError(u"The parameter 'name' has to be a string")
+
+    if interface is not None and not IInterface.providedBy(interface):
+        raise InvalidParameterError(
+            u"The interface parameter has to derive from "
+            u"zope.interface.Interface"
+        )
+
     registry = getUtility(IRegistry)
-    if isinstance(name, str):
+
+    if interface is not None:
+        # confirm that the name exists on the interface
+        get_registry_record(name=name, interface=interface)
+
+        from zope.schema._bootstrapinterfaces import WrongType
+        try:
+            registry['{0}.{1}'.format(interface.__identifier__, name)] = value
+        except WrongType:
+            field_type = [
+                f[1]
+                for f in interface.namesAndDescriptions()
+                if f[0] == 'field_one'
+            ][0]
+            raise InvalidParameterError(
+                u"The value parameter for the field {0} needs to be {1}"
+                u"instead of {2}".format(
+                    name,
+                    str(field_type.__class__),
+                    type(value)
+                )
+            )
+
+    elif isinstance(name, str):
 
         # confirm that the record exists before setting the value
         get_registry_record(name)
