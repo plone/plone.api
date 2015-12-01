@@ -41,7 +41,7 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
         groupname='board_members',
         title='Board members',
         description='Just a description',
-        roles=['Readers', ],
+        roles=['Reader', ],
         groups=['Site Administrators', ],
     )
 
@@ -50,7 +50,7 @@ When creating groups ``title``, ``description``, ``roles`` and ``groups`` are op
     self.assertEqual(group.id, 'board_members')
     self.assertEqual(group.getProperty('title'), 'Board members')
     self.assertEqual(group.getProperty('description'), 'Just a description')
-    self.assertTrue('Readers' in group.getRoles())
+    self.assertTrue('Reader' in group.getRoles())
     self.assertTrue('Site Administrators' in group.getMemberIds())
 
 
