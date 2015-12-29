@@ -825,3 +825,67 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEqual(
             (),
             api.user.get_roles(user=user, obj=document, inherit=False))
+
+    def test_adopt_roles_is_superweird(self):
+        from AccessControl import Unauthorized
+        from plone.app.testing import logout
+        api.content.create(
+            type='Document',
+            container=self.portal,
+            title='private Doc',
+        )
+        api.user.create(
+            username='superman',
+            email='superman@krypton.gov',
+            password='secret',
+            roles=('Member', 'Manager'),
+        )
+        api.user.create(
+            username='punyman',
+            email='punyman@earth.gov',
+            password='secret',
+            roles=('Member'),
+        )
+        catalog = api.portal.get_tool('portal_catalog')
+
+        # The new object can be found
+        brains = catalog(review_state='private')
+        self.assertEqual(len(brains), 1)
+
+        logout()
+
+        # As anonymous there are no results
+        brains = catalog(review_state='private')
+        self.assertEqual(len(brains), 0)
+
+        # Anonymous canot access the object
+        brains = catalog.unrestrictedSearchResults(review_state='private')
+        self.assertEqual(len(brains), 1)
+        self.assertRaises(Unauthorized, brains[0].getObject)
+
+        with api.env.adopt_roles(roles=['Manager']):
+
+            # This should return the the brains but does not. Why?
+            brains = catalog(review_state='private')
+            self.assertEqual(len(brains), 0)
+
+            # But accessing the object from the brain now works!
+            brains = catalog.unrestrictedSearchResults(review_state='private')
+            self.assertEqual(len(brains), 1)
+            obj = brains[0].getObject()
+            self.assertEqual(api.content.get_state(obj), 'private')
+
+        # adopt_user works nicely :-)
+        with api.env.adopt_user(username='superman'):
+            brains = catalog(review_state='private')
+            self.assertEqual(len(brains), 1)
+
+        with api.env.adopt_user(username='punyman'):
+            brains = catalog(review_state='private')
+            self.assertEqual(len(brains), 0)
+
+        # When granting manager-role to punyman the result is still empty :-(
+        # In the next request the brain would be found. Why?
+        api.user.grant_roles(username='punyman', roles=['Manager'])
+        brains = catalog(review_state='private')
+        self.assertEqual(len(brains), 0)
