@@ -10,10 +10,6 @@ New:
   https://github.com/plone/plone.api/issues/269
   [gforcada]
 
-Fixes:
-
-- *add item here*
-
 
 1.4.10 (2015-11-19)
 -------------------
