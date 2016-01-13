@@ -132,8 +132,6 @@ Send E-Mail
 
 To send an e-mail use :meth:`api.portal.send_email`:
 
-.. Todo: Add example for creating a mime-mail
-
 .. invisible-code-block: python
 
     # Mock the mail host so we can test sending the email
@@ -173,6 +171,47 @@ To send an e-mail use :meth:`api.portal.send_email`:
     self.assertEqual(msg['From'], 'noreply@plone.org')
     self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
     self.assertEqual(msg.get_payload(), 'One for you Bob!')
+
+If you need to add other fields not supported on send_email signature,
+python's standard `email module<https://docs.python.org/2.7/library/email.message.html#email.message.Message>`_ can also be used::
+
+.. code-block:: python
+
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    message = MIMEMultipart()
+    message.attach(MIMEText("One for you Bar!"))
+
+    part = MIMEText('<xml></xml>', 'xml')
+    part.add_header(
+        'Content-Disposition',
+        'attachment; filename="report.xml"'
+    )
+    message.attach(part)
+
+    message['Reply-To'] = "community@plone.org"
+
+    api.portal.send_email(
+        recipient="bob@plone.org",
+        sender="noreply@plone.org",
+        subject="Trappist",
+        body=message,
+    )
+
+.. invisible-code-block: python
+
+    self.assertEqual(len(mailhost.messages), 2)
+
+    msg = message_from_string(mailhost.messages[1])
+    payloads = msg.get_payload()
+    self.assertEqual(len(payloads), 2)
+    self.assertEqual(msg['Reply-To'], 'community@plone.org')
+    self.assertEqual(payloads[0].get_payload(), 'One for you Bar!')
+    self.assertIn(
+        'attachment; filename="report.xml',
+        payloads[1]['Content-Disposition']
+    )
     api.portal.PRINTINGMAILHOST_ENABLED = False
     mailhost.reset()
 
