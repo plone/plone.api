@@ -46,8 +46,7 @@ Folow these step to create a new release of `plone.api`.
 
 #. Modify the version identifier in the ``setup.py`` to reflect the version of the new release.
 
-#. Confirm that the package description (generated from ``README.rst`` and others) renders correctly by running ``bin/longtest`` and open its ouput in
-   your favorite browser.
+#. Confirm that the package description (generated from ``README.rst`` and others) renders correctly by running ``bin/longtest`` and open its ouput in your favorite browser.
 
 #. Commit all changes to the git repository and push them upstream to GitHub.
 

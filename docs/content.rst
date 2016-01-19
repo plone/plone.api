@@ -450,7 +450,8 @@ To transition your content to a new workflow state, use the :meth:`api.content.t
         'published'
     )
 
-If your workflow accepts any additional arguments to the checkin method you may supply them via kwargs.  These arguments can be saved to your transition using custom workflow variables inside of the ZMI using an expression.  ie. "python:state_change.kwargs.get('comment', '')"
+If your workflow accepts any additional arguments to the checkin method you may supply them via kwargs.
+These arguments can be saved to your transition using custom workflow variables inside of the ZMI using an expression, for example: "python:state_change.kwargs.get('comment', '')"
 
 .. code-block:: python
 

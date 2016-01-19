@@ -17,7 +17,8 @@ The intention of this package is to provide clear API methods for Plone function
 As the underlying code improves some API methods may be deprecated and the documentation here will be updated to show how to use the improved code
 (even if it means not using ``plone.api``).
 
-Some parts of the documentation do not use *plone.api* methods directly, but simply provide guidance on achieving a task using Plone's internal API. For example, using the portal catalog (see 'Find content objects').
+Some parts of the documentation do not use *plone.api* methods directly, but simply provide guidance on achieving a task using Plone's internal API.
+For example, using the portal catalog (see 'Find content objects').
 
 The intention is to cover 20% of the tasks any Plone developer does 80% of the time.
 By keeping everything in one place, the API stays introspectable and discoverable, important aspects of being Pythonic.
