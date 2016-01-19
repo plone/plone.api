@@ -12,12 +12,7 @@ How to contribute to this package?
 Conventions
 ===========
 
-Rules and guidelines on syntax style, development process, repository workflow, etc.
-
-.. toctree::
-   :maxdepth: 2
-
-   conventions.rst
+For rules and guidelines on syntax style, development process, repository workflow, etc see `The Plone Styleguides <http://docs.plone.org/develop/styleguide/>`_ and `Working with Git and GitHub <http://docs.plone.org/develop/coredev/docs/git.html>`_
 
 
 Local development environment

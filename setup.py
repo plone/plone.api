@@ -29,7 +29,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     url='https://github.com/plone/plone.api',
-    keywords='plone api code conventions',
+    keywords='plone api',
     install_requires=[
         'Products.statusmessages',
         'decorator',

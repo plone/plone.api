@@ -77,6 +77,28 @@ Use https://github.com/collective/buildout.python and be happy.
 Also applicable to other OSes, if getting a working Python proves a challenge.
 
 
+.. _git_workflow:
+
+Git workflow & branching model
+==============================
+
+Our repository on GitHub has the following layout:
+
+* **feature branches**: all development for new features must be done in
+  dedicated branches, normally one branch per feature,
+* **master branch**: when features get completed they are merged into the
+  master branch; bugfixes are commited directly on the master branch,
+* **tags**: whenever we create a new release we tag the repository so we can
+  later re-trace our steps, re-release versions, etc.
+
+
+Squashing commits
+-----------------
+
+In order to keep a clear and concise git history, it is good practice to squash commits before merging.
+Use ``git rebase --interactive`` to squash all commits that you think are unnecessary.
+
+
 Creating and using the development environment
 ==============================================
 
@@ -145,8 +167,7 @@ Once we are happy with your implementation, your branch gets merged into *master
     them; in other words, others can comment on your code without your code
     changing their development environments
 
-Read more about Git branching at http://learn.github.com/p/branching.html.
-Also, to make your git nicer, read the :ref:`setting_up_git` chapter.
+Read more about Git branching at http://learn.github.com/p/branching.html and on our Git workflow at `Working with Git and GitHub <http://docs.plone.org/develop/coredev/docs/git.html>`_.
 
 
 Once you are done with your work and you would like us to merge your changes into master, go to GitHub to do a *pull request*.
@@ -181,3 +202,61 @@ This command also re-generates your documentation.
     It pays off to invest a little time to make your editor run `pep8` and `pyflakes` on a file every time you save that file
     (or use `flake8` which combines both).
     This saves you lots of time in the long run.
+
+
+Travis Continuous Integration
+=============================
+
+On every push to GitHub, `Travis <http://travis-ci.org/plone/plone.api>`_ runs all tests and syntax validation checks and reports build outcome to the ``#sprint`` IRC channel and the person who committed the last change.
+
+Travis is configured with the ``.travis.yml`` file located in the root of this package.
+
+
+Sphinx Documentation
+====================
+
+Un-documented code is broken code.
+
+For every feature you add to the codebase you should also add documentation for it to ``docs/``.
+
+After adding/modifying documentation, run ``make`` to re-generate your docs.
+
+Publicly available documentation on http://api.plone.org is automatically generated from these source files, periodically.
+So when you push changes to master on GitHub you should soon be able to see them published on ``api.plone.org``.
+
+Read the `reStructuredText Primer <http://sphinx-doc.org/rest.html>`_ to brush up on your `reST` skills.
+
+Example:
+
+.. sourcecode:: python
+
+    def add(a, b):
+        """Calculate the sum of the two parameters.
+
+        Also see the :func:`mod.path.my_func`, :meth:`mod.path.MyClass.method` and :attr:`mod.path.MY_CONSTANT` for more details.
+
+        :param a: The first operand.
+        :type a: :class:`mod.path.A`
+
+        :param b: The second operand.
+        :type b: :class:`mod.path.B`
+
+        :rtype: int
+        :return: The sum of the operands.
+        :raises: `KeyError`, if the operands are not the correct type.
+        """
+
+Attributes are documented using the `#:` marker above the attribute.
+The documentation may span multiple lines.
+
+.. sourcecode:: python
+
+    #: Description of the constant value
+    MY_CONSTANT = 0xc0ffee
+
+    class Foobar(object):
+
+        #: Description of the class variable which spans over
+        #: multiple lines
+        FOO = 1
+

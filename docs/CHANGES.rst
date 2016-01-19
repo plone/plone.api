@@ -10,7 +10,10 @@ New:
 
 Fixes:
 
-- *add item here*
+- Remove the Plone APIs conventions. They are moved to  
+http://docs.plone.org/develop/styleguide
+and http://docs.plone.org/develop/coredev/docs/git.html
+[thet]
 
 
 1.4.11 (2016-01-08)
