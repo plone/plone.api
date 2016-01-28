@@ -417,7 +417,7 @@ class TestPloneApiEnv(unittest.TestCase):
         # it could also include a package status id (Alpha, Beta or RC)
         self.assertRegexpMatches(
             zope_version(),
-            '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?$'
+            '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?(\.dev\d)?$'
         )
 
     def test_adopt_user_different_username(self):
