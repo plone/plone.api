@@ -371,13 +371,14 @@ def get_default_language():
     """
     try:
         from Products.CMFPlone.interfaces import ILanguageSchema
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ILanguageSchema, prefix="plone")
-        return settings.default_language
     except ImportError:
         portal = get()
         return portal.portal_properties.site_properties.getProperty(
             'default_language', None)
+    else:
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix="plone")
+        return settings.default_language
 
 
 def get_current_language(context=None):
