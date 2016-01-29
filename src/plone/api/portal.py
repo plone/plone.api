@@ -376,7 +376,8 @@ def get_default_language():
         return settings.default_language
     except ImportError:
         portal = get()
-        return portal.getProperty('default_language', None)
+        return portal.portal_properties.site_properties.getProperty(
+            'default_language', None)
 
 
 def get_current_language(context=None):
