@@ -148,7 +148,7 @@ To get the default language, use :meth:`api.portal.get_default_language`.
 Get current language
 --------------------
 
-To get the currently negociated language, use :meth:`api.portal.get_current_language`.
+To get the currently negotiated language, use :meth:`api.portal.get_current_language`.
 
 .. code-block:: python
 
