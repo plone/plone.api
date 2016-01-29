@@ -6,7 +6,8 @@ Changelog
 
 New:
 
-- *add item here*
+- Add `portal.get_default_language` and `portal.get_current_language`
+  [ebrehault]
 
 Fixes:
 
