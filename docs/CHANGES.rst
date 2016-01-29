@@ -10,6 +10,9 @@ New:
 
 Fixes:
 
+- Fix ``test_zope_version`` test to be able to deal with development versions of Zope.
+  [thet]
+
 - Remove the Plone APIs conventions. They are moved to  
 http://docs.plone.org/develop/styleguide
 and http://docs.plone.org/develop/coredev/docs/git.html
