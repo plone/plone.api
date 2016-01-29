@@ -360,3 +360,37 @@ def set_registry_record(name=None, value=None, interface=None):
         get_registry_record(name)
 
         registry[name] = value
+
+
+def get_default_language():
+    """Return the default language.
+
+    :returns: language identifier
+    :rtype: string
+    :Example: :ref:`portal_get_default_language_example`
+    """
+    try:
+        from Products.CMFPlone.interfaces import ILanguageSchema
+    except ImportError:
+        portal = get()
+        return portal.portal_properties.site_properties.getProperty(
+            'default_language', None)
+    else:
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix="plone")
+        return settings.default_language
+
+
+def get_current_language(context=None):
+    """Return the current negociated language.
+
+    :param context: context object
+    :type name: object
+    :returns: language identifier
+    :rtype: string
+    :Example: :ref:`portal_get_current_language_example`
+    """
+    request = getRequest()
+    return request.get('LANGUAGE', None) or \
+        (context and aq_inner(context).Language()) \
+        or get_default_language()

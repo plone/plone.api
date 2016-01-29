@@ -786,3 +786,13 @@ class TestPloneApiPortal(unittest.TestCase):
         )
         self.assertTrue(exc_str.find(" needs to be ") != -1)
         self.assertTrue(exc_str.find("TextLine") != -1)
+
+    def test_get_default_language(self):
+        """Test that default language is properly returned."""
+        self.assertEqual(portal.get_default_language(), 'en')
+
+    def test_get_current_language(self):
+        """Test that current language is properly returned."""
+        self.assertEqual(portal.get_current_language(portal.get()), 'en')
+        self.layer['request']['LANGUAGE'] = 'fr'
+        self.assertEqual(portal.get_current_language(), 'fr')

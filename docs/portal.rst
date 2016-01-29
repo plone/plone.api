@@ -125,6 +125,42 @@ To display the date/time in a user-friendly way, localized to the user's prefere
     self.assertEqual(DateTime(localized).__class__, DateTime)
 
 
+.. _portal_get_default_language_example:
+
+Get default language
+--------------------
+
+To get the default language, use :meth:`api.portal.get_default_language`.
+
+.. code-block:: python
+
+    from plone import api
+    lang = api.portal.get_default_language()
+
+.. invisible-code-block: python
+
+    # assert that the result is 'en'
+    self.assertEqual(lang, 'en')
+
+
+.. _portal_get_current_language_example:
+
+Get current language
+--------------------
+
+To get the currently negotiated language, use :meth:`api.portal.get_current_language`.
+
+.. code-block:: python
+
+    from plone import api
+    lang = api.portal.get_current_language()
+
+.. invisible-code-block: python
+
+    # assert that the result is 'en'
+    self.assertEqual(lang, 'en')
+
+
 .. _portal_send_email_example:
 
 Send E-Mail
