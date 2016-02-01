@@ -5,31 +5,31 @@ from Acquisition import aq_base
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
-from Products.CMFCore.WorkflowCore import WorkflowException
-from Products.CMFCore.interfaces import IContentish
-from Products.ZCatalog.interfaces import IZCatalog
 from plone import api
 from plone.api.content import NEW_LINKINTEGRITY
 from plone.api.tests.base import INTEGRATION_TESTING
-from plone.app.linkintegrity.exceptions import \
-    LinkIntegrityNotificationException
+from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # noqa
 from plone.app.textfield import RichTextValue
 from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.ZCatalog.interfaces import IZCatalog
 from zExceptions import BadRequest
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.container.contained import ContainerModifiedEvent
 from zope.lifecycleevent import IObjectModifiedEvent
 from zope.lifecycleevent import IObjectMovedEvent
-from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import modified
+from zope.lifecycleevent import ObjectMovedEvent
 
 import mock
 import pkg_resources
 import unittest
+
 
 try:
     pkg_resources.get_distribution('plone.app.contenttypes')
@@ -134,7 +134,7 @@ class TestPloneApiContent(unittest.TestCase):
         # Check if the underlying error message is included
         # in the InvalidParameterError message
         self.assertIn(
-            "No such content type: foo",
+            'No such content type: foo',
             cm.exception.message
         )
 
@@ -268,7 +268,7 @@ class TestPloneApiContent(unittest.TestCase):
     def test_create_raises_unicodedecodeerror(self):
         """Test that the create method raises UnicodeDecodeErrors correctly."""
         site = getGlobalSiteManager()
-        unicode_exception_message = "This is a fake unicode error"
+        unicode_exception_message = 'This is a fake unicode error'
 
         # register a title indexer that will force a UnicodeDecodeError
         # during content reindexing
@@ -876,9 +876,9 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertMultiLineEqual(
             str(cm.exception),
             "Invalid transition 'foo'.\n"
-            "Valid transitions are:\n"
-            "reject\n"
-            "retract"
+            'Valid transitions are:\n'
+            'reject\n'
+            'retract'
         )
 
         # change the workflow of a document so that there is no transition
@@ -1012,7 +1012,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertTrue(
             str(cm.exception).startswith(
                 "Cannot find a view with name 'foo'.\n"
-                "Available views are:\n"
+                'Available views are:\n'
                 '\n'
             )
         )
@@ -1021,20 +1021,20 @@ class TestPloneApiContent(unittest.TestCase):
         # Test against only these rather than the full list. Otherwise, this
         # test has to maintain an up-to-date list of every view in Plone.
         should_be_theres = (
-            "adapter",
-            "authenticator",
-            "checkDocument",
-            "get_macros",
-            "history",
-            "plone",
-            "plone_tools",
-            "resource",
-            "search",
-            "sharing",
-            "skin",
-            "text-transform",
-            "uuid",
-            "view",
+            'adapter',
+            'authenticator',
+            'checkDocument',
+            'get_macros',
+            'history',
+            'plone',
+            'plone_tools',
+            'resource',
+            'search',
+            'sharing',
+            'skin',
+            'text-transform',
+            'uuid',
+            'view',
         )
 
         for should_be_there in should_be_theres:

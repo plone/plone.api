@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """Boilerplate for doctest functional tests."""
 
-import pkg_resources
 from plone.app.testing import applyProfile
-from plone.app.testing import setRoles
 from plone.app.testing import PLONE_INTEGRATION_TESTING
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
@@ -17,9 +16,11 @@ import manuel.codeblock
 import manuel.doctest
 import manuel.testing
 import os
+import pkg_resources
 import re
 import transaction
 import unittest
+
 
 try:
     pkg_resources.get_distribution('plone.app.contenttypes')

@@ -15,10 +15,12 @@ Fixes:
   [thet]
 
 - Remove the Plone APIs conventions. They are moved to  
-http://docs.plone.org/develop/styleguide
-and http://docs.plone.org/develop/coredev/docs/git.html
-[thet]
+  http://docs.plone.org/develop/styleguide
+  and http://docs.plone.org/develop/coredev/docs/git.html
+  [thet]
 
+- Cleanup code to match Plone's style guide.
+  [gforcada]
 
 1.4.11 (2016-01-08)
 -------------------

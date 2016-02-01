@@ -2,7 +2,6 @@
 """Module that provides functionality for user manipulation."""
 
 from AccessControl.Permission import getPermissions
-from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from contextlib import contextmanager
 from plone.api import env
 from plone.api import portal
@@ -13,6 +12,7 @@ from plone.api.exc import UserNotFoundError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
+from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 
 import random
 import string
@@ -67,8 +67,8 @@ def create(
 
     if not use_email_as_username and not username:
         raise InvalidParameterError(
-            "The portal is configured to use username "
-            "that is not email so you need to pass a username."
+            'The portal is configured to use username '
+            'that is not email so you need to pass a username.'
         )
 
     registration = portal.get_tool('portal_registration')
@@ -354,7 +354,7 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
         user = get(username=username)
     # check we got a user
     if user is None:
-        raise InvalidParameterError("User could not be found")
+        raise InvalidParameterError('User could not be found')
 
     if isinstance(roles, tuple):
         roles = list(roles)
@@ -397,7 +397,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
         user = get(username=username)
     # check we got a user
     if user is None:
-        raise InvalidParameterError("User could not be found")
+        raise InvalidParameterError('User could not be found')
 
     if isinstance(roles, tuple):
         roles = list(roles)

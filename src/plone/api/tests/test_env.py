@@ -6,6 +6,7 @@ from OFS.SimpleItem import SimpleItem
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
+
 import AccessControl
 import AccessControl.SecurityManagement
 import Globals

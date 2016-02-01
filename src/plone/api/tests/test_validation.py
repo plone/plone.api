@@ -34,10 +34,10 @@ class TestPloneAPIValidation(unittest.TestCase):
         _func2_decorated = required_parameters('arg1')(_func2_undecorated)
 
         # Check that the decorated function gets the correct docstring
-        self.assertEquals(_func1_decorated.__doc__, 'This is my docstring')
+        self.assertEqual(_func1_decorated.__doc__, 'This is my docstring')
 
         # Check that both functions have the same docstring
-        self.assertEquals(_func1_decorated.__doc__, _func2_decorated.__doc__)
+        self.assertEqual(_func1_decorated.__doc__, _func2_decorated.__doc__)
 
     def test_non_existant_required_arg(self):
         """Test that ValueError is returned if the decorator requires
@@ -62,40 +62,40 @@ class TestPloneAPIValidation(unittest.TestCase):
 
         # test that positional args are recognised correctly
         result = _gsa(signature, ('foo', 'wibble'), {})
-        self.assertEquals(set(result), set(('arg1', 'arg2')))
+        self.assertEqual(set(result), set(('arg1', 'arg2')))
 
         # test that keyword args are recognised correctly
         result = _gsa(
             signature, (), {'arg1': 'foo', 'arg2': 'wibble'})
-        self.assertEquals(set(result), set(('arg1', 'arg2')))
+        self.assertEqual(set(result), set(('arg1', 'arg2')))
 
         # test that a mixture of args are recognised correctly
         result = _gsa(signature, ('foo',), {'arg2': 'wibble'})
-        self.assertEquals(set(result), set(('arg1', 'arg2')))
+        self.assertEqual(set(result), set(('arg1', 'arg2')))
 
         # test that None-valued positional args are ignored
         result = _gsa(
             signature, ('foo', None), {})
-        self.assertEquals(set(result), set(('arg1',)))
+        self.assertEqual(set(result), set(('arg1',)))
 
         # test that None-valued keyword args are ignored
         result = _gsa(
             signature, (), {'arg1': None, 'arg2': 'wibble'})
-        self.assertEquals(set(result), set(('arg2',)))
+        self.assertEqual(set(result), set(('arg2',)))
 
     def test_single_keyword_arg_provided(self):
         """Test for passing a single required parameter
         as a keyword argument.
         """
         _func = required_parameters('arg1')(undecorated_func)
-        self.assertEquals(_func(arg1='hello'), 'foo')
+        self.assertEqual(_func(arg1='hello'), 'foo')
 
     def test_single_positional_arg_provided(self):
         """Test for passing a single required parameter
         as a positional argument.
         """
         _func = required_parameters('arg1')(undecorated_func)
-        self.assertEquals(_func('hello'), 'foo')
+        self.assertEqual(_func('hello'), 'foo')
 
     def test_single_arg_missing(self):
         """Test that MissingParameterError is raised if the
@@ -120,17 +120,17 @@ class TestPloneAPIValidation(unittest.TestCase):
         mutually exclusive parameters.
         """
         _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
-        self.assertEquals(_func(), 'foo')
-        self.assertEquals(_func(arg3='hello'), 'foo')
+        self.assertEqual(_func(), 'foo')
+        self.assertEqual(_func(arg3='hello'), 'foo')
 
     def test_one_mutually_exclusive_arg_provided(self):
         """Test for passing one arg (the right number) to a function
         that specifies mutually exclusive parameters.
         """
         _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
-        self.assertEquals(_func('hello'), 'foo')
-        self.assertEquals(_func(arg1='hello'), 'foo')
-        self.assertEquals(_func(arg2='hello'), 'foo')
+        self.assertEqual(_func('hello'), 'foo')
+        self.assertEqual(_func(arg1='hello'), 'foo')
+        self.assertEqual(_func(arg2='hello'), 'foo')
 
     def test_two_mutually_exclusive_args_provided(self):
         """Test that InvalidParameterError is raised if more than
@@ -156,15 +156,15 @@ class TestPloneAPIValidation(unittest.TestCase):
     def test_require_at_least_one_and_one_provided(self):
         """Test for passing one argument when at least one is required."""
         _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
-        self.assertEquals(_func('ahoy'), 'foo')
-        self.assertEquals(_func(arg2='ahoy'), 'foo')
+        self.assertEqual(_func('ahoy'), 'foo')
+        self.assertEqual(_func(arg2='ahoy'), 'foo')
 
     def test_require_at_least_one_and_several_provided(self):
         """Test for passing several arguments when at least one is required."""
         _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
-        self.assertEquals(_func('ahoy', 'there'), 'foo')
-        self.assertEquals(_func(arg1='ahoy', arg2='there'), 'foo')
-        self.assertEquals(_func('ahoy', arg2='there', arg3='matey'), 'foo')
+        self.assertEqual(_func('ahoy', 'there'), 'foo')
+        self.assertEqual(_func(arg1='ahoy', arg2='there'), 'foo')
+        self.assertEqual(_func('ahoy', arg2='there', arg3='matey'), 'foo')
 
     def test_required_and_mutually_exclusive(self):
         """Test that multiple decorators can be used together."""

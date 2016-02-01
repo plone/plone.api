@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 """Base module for unittesting."""
 
-import pkg_resources
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
+from plone.app.testing import login
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
-from plone.app.testing import login
-from plone.app.testing import setRoles
+
+import pkg_resources
 
 
 try:
@@ -29,7 +30,7 @@ class PloneApiLayer(PloneSandboxLayer):
         import plone.app.dexterity
         self.loadZCML(package=plone.app.dexterity)
         import plone.api
-        self.loadZCML(package=plone.api, name="testing.zcml")
+        self.loadZCML(package=plone.api, name='testing.zcml')
 
         if HAS_PA_CONTENTTYPES:
             import plone.app.contenttypes
@@ -57,6 +58,6 @@ class PloneApiLayer(PloneSandboxLayer):
 
 FIXTURE = PloneApiLayer()
 INTEGRATION_TESTING = IntegrationTesting(
-    bases=(FIXTURE,), name="PloneApiLayer:Integration")
+    bases=(FIXTURE,), name='PloneApiLayer:Integration')
 FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(FIXTURE,), name="PloneApiLayer:Functional")
+    bases=(FIXTURE,), name='PloneApiLayer:Functional')

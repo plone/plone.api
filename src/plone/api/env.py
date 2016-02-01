@@ -15,6 +15,7 @@ from zope.globalrequest import getRequest
 import Globals
 import traceback
 
+
 IS_TEST = None
 
 

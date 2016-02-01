@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Module that provides functionality for content manipulation."""
 
-from Products.CMFCore.WorkflowCore import WorkflowException
 from copy import copy as _copy
 from pkg_resources import DistributionNotFound
 from pkg_resources import get_distribution
@@ -11,10 +10,10 @@ from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
-from plone.app.linkintegrity.exceptions import \
-    LinkIntegrityNotificationException
+from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # noqa
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
+from Products.CMFCore.WorkflowCore import WorkflowException
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.container.interfaces import INameChooser
@@ -23,6 +22,7 @@ from zope.interface import providedBy
 
 import random
 import transaction
+
 
 try:
     get_distribution('Products.Archetypes')
@@ -95,9 +95,9 @@ def create(
 
         raise InvalidParameterError(
             "Cannot add a '{0}' object to the container.\n"
-            "Allowed types are:\n"
-            "{1}\n"
-            "{2}".format(type, '\n'.join(sorted(types)), e.message)
+            'Allowed types are:\n'
+            '{1}\n'
+            '{2}'.format(type, '\n'.join(sorted(types)), e.message)
         )
 
     content = container[content_id]
@@ -297,7 +297,7 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
                 breaches = linkintegrity_view.get_breaches([obj])
                 if breaches:
                     raise LinkIntegrityNotificationException(
-                        "Linkintegrity-breaches: {0}".format(breaches)
+                        'Linkintegrity-breaches: {0}'.format(breaches)
                     )
             # old: exception will be raised when there are breaches
             obj.aq_parent.manage_delObjects([obj.getId()])
@@ -319,7 +319,7 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
                 breaches = linkintegrity_view.get_breaches(objects)
                 if breaches:
                     raise LinkIntegrityNotificationException(
-                        "Linkintegrity-breaches: {0}".format(breaches)
+                        'Linkintegrity-breaches: {0}'.format(breaches)
                     )
                 # there are no breaches so we need to skip the check
                 for obj in objects:
@@ -451,8 +451,8 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
 
             raise InvalidParameterError(
                 "Invalid transition '{0}'.\n"
-                "Valid transitions are:\n"
-                "{1}".format(transition, '\n'.join(sorted(transitions)))
+                'Valid transitions are:\n'
+                '{1}'.format(transition, '\n'.join(sorted(transitions)))
             )
     else:
         # move from the current state to the given state
@@ -479,7 +479,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
 
         if workflow.getInfoFor(obj, 'review_state') != to_state:
             raise InvalidParameterError(
-                "Could not find workflow to set state to {0} on {1}".format(
+                'Could not find workflow to set state to {0} on {1}'.format(
                     to_state,
                     obj,
                 )
@@ -518,8 +518,8 @@ def get_view(name=None, context=None, request=None):
     if name not in available_view_names:
         raise InvalidParameterError(
             "Cannot find a view with name '{0}'.\n"
-            "Available views are:\n"
-            "{1}".format(name, '\n'.join(sorted(available_view_names)))
+            'Available views are:\n'
+            '{1}'.format(name, '\n'.join(sorted(available_view_names)))
         )
     return getMultiAdapter((context, request), name=name)
 

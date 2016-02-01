@@ -2,9 +2,6 @@
 """Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
-from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.utils import getToolByName
-from Products.statusmessages.interfaces import IStatusMessage
 from datetime import date
 from datetime import datetime as dtime
 from email.utils import formataddr
@@ -14,6 +11,9 @@ from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import required_parameters
 from plone.app.layout.navigation.root import getNavigationRootObject
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
@@ -21,6 +21,7 @@ from zope.globalrequest import getRequest
 from zope.interface.interfaces import IInterface
 
 import pkg_resources
+
 
 logger = getLogger('plone.api.portal')
 
@@ -63,9 +64,9 @@ def get():
                 return potential_portal
 
     raise CannotGetPortalError(
-        "Unable to get the portal object. More info on "
-        "http://docs.plone.org/develop/plone.api/docs/api/exceptions.html"
-        "#plone.api.exc.CannotGetPortalError"
+        'Unable to get the portal object. More info on '
+        'http://docs.plone.org/develop/plone.api/docs/api/exceptions.html'
+        '#plone.api.exc.CannotGetPortalError'
     )
 
 
@@ -111,8 +112,8 @@ def get_tool(name=None):
 
         raise InvalidParameterError(
             "Cannot find a tool with name '{0}'.\n"
-            "Available tools are:\n"
-            "{1}".format(name, '\n'.join(tools))
+            'Available tools are:\n'
+            '{1}'.format(name, '\n'.join(tools))
         )
 
 
@@ -281,8 +282,8 @@ def get_registry_record(name=None, interface=None):
             records = [key for key in interface.names()]
             raise InvalidParameterError(
                 "Cannot find a record with name '{0}' on interface {1}.\n"
-                "Did you mean?"
-                "{2}".format(
+                'Did you mean?'
+                '{2}'.format(
                     name,
                     interface.__identifier__,
                     '\n'.join(records)
@@ -297,8 +298,8 @@ def get_registry_record(name=None, interface=None):
         if records:
             raise InvalidParameterError(
                 "Cannot find a record with name '{0}'.\n"
-                "Did you mean?:\n"
-                "{1}".format(name, '\n'.join(records))
+                'Did you mean?:\n'
+                '{1}'.format(name, '\n'.join(records))
             )
         else:
             raise InvalidParameterError(
@@ -326,8 +327,8 @@ def set_registry_record(name=None, value=None, interface=None):
 
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
-            u"The interface parameter has to derive from "
-            u"zope.interface.Interface"
+            u'The interface parameter has to derive from '
+            u'zope.interface.Interface'
         )
 
     registry = getUtility(IRegistry)
@@ -346,8 +347,8 @@ def set_registry_record(name=None, value=None, interface=None):
                 if f[0] == 'field_one'
             ][0]
             raise InvalidParameterError(
-                u"The value parameter for the field {0} needs to be {1}"
-                u"instead of {2}".format(
+                u'The value parameter for the field {0} needs to be {1}'
+                u'instead of {2}'.format(
                     name,
                     str(field_type.__class__),
                     type(value)
@@ -377,7 +378,7 @@ def get_default_language():
             'default_language', None)
     else:
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ILanguageSchema, prefix="plone")
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
         return settings.default_language
 
 
