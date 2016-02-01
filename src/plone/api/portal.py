@@ -129,7 +129,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None,
     :param subject: [required] Subject of the email.
     :type subject: string
     :param body: [required] Body text of the email
-    :type body: string
+    :type body: string or python's email object
     :param immediate: Send immediate or queued at transaction commit time. When
         sending immediate the mail might get sent out multiple time in case of
         transaction aborts and retries.
