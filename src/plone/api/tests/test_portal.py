@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.portal."""
 
-from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.tests.utils import MockMailHost
-from Products.MailHost.interfaces import IMailHost
 from datetime import date
 from datetime import datetime
+from DateTime import DateTime
 from email import message_from_string
 from pkg_resources import parse_version
 from plone.api import content
@@ -17,6 +14,9 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.tests.utils import MockMailHost
+from Products.MailHost.interfaces import IMailHost
 from zope import schema
 from zope.component import getUtility
 from zope.component.hooks import setSite
@@ -25,6 +25,7 @@ from zope.site import LocalSiteManager
 
 import mock
 import unittest
+
 
 HAS_PLONE5 = parse_version(env.plone_version()) >= parse_version('5.0b2')
 
@@ -58,7 +59,7 @@ class TestPloneApiPortal(unittest.TestCase):
         # Mock the mail host so we can test sending the email
         mockmailhost = MockMailHost('MailHost')
 
-        if not hasattr(mockmailhost, 'smtp_host'):
+        if not getattr(mockmailhost, 'smtp_host', None):
             mockmailhost.smtp_host = 'localhost'
 
         self.portal.MailHost = mockmailhost
@@ -122,7 +123,7 @@ class TestPloneApiPortal(unittest.TestCase):
         still returns the portal.
         """
         a_site = content.create(
-            container=self.portal, type="Folder", title="A Site")
+            container=self.portal, type='Folder', title='A Site')
         a_site.setSiteManager(LocalSiteManager(a_site))
 
         setSite(a_site)
@@ -160,8 +161,8 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # A selection of portal tools which should exist in all plone versions
         should_be_theres = (
-            "portal_setup",
-            "portal_catalog",
+            'portal_setup',
+            'portal_catalog',
         )
 
         for should_be_there in should_be_theres:
@@ -191,7 +192,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             portal.send_email(
                 subject='Beer',
-                body="To beer or not to beer, that is the question",
+                body='To beer or not to beer, that is the question',
             )
         with self.assertRaises(MissingParameterError):
             portal.send_email(
@@ -201,7 +202,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             portal.send_email(
                 recipient='joe@example.org',
-                body="To beer or not to beer, that is the question",
+                body='To beer or not to beer, that is the question',
             )
 
     def test_send_email(self):
@@ -210,10 +211,10 @@ class TestPloneApiPortal(unittest.TestCase):
         self.mailhost.reset()
 
         portal.send_email(
-            recipient="bob@plone.org",
-            sender="noreply@plone.org",
-            subject="Trappist",
-            body=u"One for you Bob!",
+            recipient='bob@plone.org',
+            sender='noreply@plone.org',
+            subject='Trappist',
+            body=u'One for you Bob!',
         )
 
         self.assertEqual(len(self.mailhost.messages), 1)
@@ -226,9 +227,9 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # When no sender is set, we take the portal properties.
         portal.send_email(
-            recipient="bob@plone.org",
-            subject="Trappist",
-            body=u"One for you Bob!",
+            recipient='bob@plone.org',
+            subject='Trappist',
+            body=u'One for you Bob!',
         )
 
         self.assertEqual(len(self.mailhost.messages), 1)
@@ -248,10 +249,10 @@ class TestPloneApiPortal(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             portal.send_email(
-                recipient="bob@plone.org",
-                sender="noreply@plone.org",
-                subject="Trappist",
-                body=u"One for you Bob!",
+                recipient='bob@plone.org',
+                sender='noreply@plone.org',
+                subject='Trappist',
+                body=u'One for you Bob!',
             )
 
         if HAS_PLONE5:
@@ -269,14 +270,14 @@ class TestPloneApiPortal(unittest.TestCase):
 
         mock_parseaddr.return_value = ('Chuck Norris', 'chuck@norris.org')
         portal.send_email(
-            recipient="bob@plone.org",
-            subject="Trappist",
-            body=u"One for you Bob!",
+            recipient='bob@plone.org',
+            subject='Trappist',
+            body=u'One for you Bob!',
         )
 
     @unittest.skipIf(
         HAS_PLONE5,
-        "Plone 4 uses portal_properties for mail settings"
+        'Plone 4 uses portal_properties for mail settings'
     )
     def test_send_email_with_config_in_portal_properties(self):
         """Test mail-setting being stored in portal_properties.
@@ -286,9 +287,9 @@ class TestPloneApiPortal(unittest.TestCase):
         self.portal._updateProperty('email_from_address', 'prop@example.org')
         self.mailhost.reset()
         portal.send_email(
-            recipient="bob@plone.org",
-            subject="Trappist",
-            body=u"One for you Bob!",
+            recipient='bob@plone.org',
+            subject='Trappist',
+            body=u'One for you Bob!',
         )
         self.assertEqual(len(self.mailhost.messages), 1)
         msg = message_from_string(self.mailhost.messages[0])
@@ -296,7 +297,7 @@ class TestPloneApiPortal(unittest.TestCase):
 
     @unittest.skipUnless(
         HAS_PLONE5,
-        "Plone 5 uses the registry for mail settings"
+        'Plone 5 uses the registry for mail settings'
     )
     def test_send_email_with_config_in_registry(self):
         """Test mail-setting being stored in registry
@@ -308,9 +309,9 @@ class TestPloneApiPortal(unittest.TestCase):
         portal.set_registry_record('plone.email_from_name',
                                    u'Registry')  # TextLine
         portal.send_email(
-            recipient="bob@plone.org",
-            subject="Trappist",
-            body=u"One for you Bob!",
+            recipient='bob@plone.org',
+            subject='Trappist',
+            body=u'One for you Bob!',
         )
         self.assertEqual(len(self.mailhost.messages), 1)
         msg = message_from_string(self.mailhost.messages[0])
@@ -333,19 +334,19 @@ class TestPloneApiPortal(unittest.TestCase):
         portal.PRINTINGMAILHOST_ENABLED = False
         with self.assertRaises(ValueError):
             portal.send_email(
-                recipient="bob@plone.org",
-                sender="noreply@plone.org",
-                subject="Trappist",
-                body=u"One for you Bob!"
+                recipient='bob@plone.org',
+                sender='noreply@plone.org',
+                subject='Trappist',
+                body=u'One for you Bob!'
             )
 
         # PrintingMailHost enabled
         portal.PRINTINGMAILHOST_ENABLED = True
         portal.send_email(
-            recipient="bob@plone.org",
-            sender="noreply@plone.org",
-            subject="Trappist",
-            body=u"One for you Bob!",
+            recipient='bob@plone.org',
+            sender='noreply@plone.org',
+            subject='Trappist',
+            body=u'One for you Bob!',
         )
 
         # Prevents sideeffects in other tests.
@@ -484,7 +485,7 @@ class TestPloneApiPortal(unittest.TestCase):
         registry.records['plone.api.norris_power'] = Record(
             field.TextLine(title=u"Chuck Norris' Power"))
         registry.records['plone.api.unset'] = Record(
-            field.TextLine(title=u"An unset field"))
+            field.TextLine(title=u'An unset field'))
         registry['plone.api.norris_power'] = u'infinite'
 
         self.assertEqual(
@@ -521,7 +522,7 @@ class TestPloneApiPortal(unittest.TestCase):
         exc_str = str(cm.exception)
 
         # Check if there is an error message.
-        self.assertTrue(exc_str.startswith("Cannot find a record with name"))
+        self.assertTrue(exc_str.startswith('Cannot find a record with name'))
 
     def test_get_invalid_registry_record_suggestions(self):
         from plone.api.exc import InvalidParameterError
@@ -532,7 +533,7 @@ class TestPloneApiPortal(unittest.TestCase):
         exc_str = str(cm.exception)
 
         # Check for an error, but no suggestions.
-        self.assertTrue(exc_str.startswith("Cannot find a record with name"))
+        self.assertTrue(exc_str.startswith('Cannot find a record with name'))
         self.assertFalse('Did you mean?:' in exc_str)
 
         # Check with suggestions
@@ -541,7 +542,7 @@ class TestPloneApiPortal(unittest.TestCase):
         exc_str = str(cm.exception)
 
         # Check for an error with suggestions.
-        self.assertTrue(exc_str.startswith("Cannot find a record with name"))
+        self.assertTrue(exc_str.startswith('Cannot find a record with name'))
         self.assertTrue('Did you mean?:' in exc_str)
 
     def test_get_registry_record_from_interface(self):
@@ -579,7 +580,7 @@ class TestPloneApiPortal(unittest.TestCase):
         exc_str = str(cm.exception)
 
         # Check if there is an error message.
-        self.assertTrue(exc_str.startswith("The interface parameter has to "))
+        self.assertTrue(exc_str.startswith('The interface parameter has to '))
 
     def test_get_invalid_record_in_interface_for_registry_record(self):
         """Test that trying to get an invalid field from an interface raises
@@ -611,10 +612,10 @@ class TestPloneApiPortal(unittest.TestCase):
         exc_str = str(cm.exception)
 
         # Check if there is an error message.
-        self.assertTrue(exc_str.startswith("Cannot find a record with name "))
-        self.assertTrue(exc_str.find(" on interface ") != -1)
-        self.assertTrue(exc_str.find("field_one") != -1)
-        self.assertTrue(exc_str.find("field_two") != -1)
+        self.assertTrue(exc_str.startswith('Cannot find a record with name '))
+        self.assertTrue(exc_str.find(' on interface ') != -1)
+        self.assertTrue(exc_str.find('field_one') != -1)
+        self.assertTrue(exc_str.find('field_two') != -1)
 
     def test_set_valid_registry_record(self):
         """Test that setting a valid registry record succeeds."""
@@ -664,7 +665,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             portal.set_registry_record(
                 name=['foo', 'bar'],
-                value=u"baz",
+                value=u'baz',
             )
 
     def test_set_registry_record_from_interface(self):
@@ -710,7 +711,7 @@ class TestPloneApiPortal(unittest.TestCase):
         exc_str = str(cm.exception)
 
         # Check if there is an error message.
-        self.assertTrue(exc_str.startswith("The interface parameter has to "))
+        self.assertTrue(exc_str.startswith('The interface parameter has to '))
 
     def test_set_invalid_registry_record_from_interface(self):
         """Test that trying to set an invalid field from an interface raises
@@ -744,10 +745,10 @@ class TestPloneApiPortal(unittest.TestCase):
         exc_str = str(cm.exception)
 
         # Check if there is an error message.
-        self.assertTrue(exc_str.startswith("Cannot find a record with name "))
-        self.assertTrue(exc_str.find(" on interface ") != -1)
-        self.assertTrue(exc_str.find("field_one") != -1)
-        self.assertTrue(exc_str.find("field_two") != -1)
+        self.assertTrue(exc_str.startswith('Cannot find a record with name '))
+        self.assertTrue(exc_str.find(' on interface ') != -1)
+        self.assertTrue(exc_str.find('field_one') != -1)
+        self.assertTrue(exc_str.find('field_two') != -1)
 
     def test_set_invalid_value_on_registry_record_from_interface(self):
         """Test that setting a value not meant for the record raises an
@@ -782,10 +783,10 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # Check if there is an error message.
         self.assertTrue(
-            exc_str.startswith("The value parameter for the field")
+            exc_str.startswith('The value parameter for the field')
         )
-        self.assertTrue(exc_str.find(" needs to be ") != -1)
-        self.assertTrue(exc_str.find("TextLine") != -1)
+        self.assertTrue(exc_str.find(' needs to be ') != -1)
+        self.assertTrue(exc_str.find('TextLine') != -1)
 
     def test_get_default_language(self):
         """Test that default language is properly returned."""

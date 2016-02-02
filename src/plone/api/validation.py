@@ -17,9 +17,9 @@ def _get_arg_spec(func, validator_args):
     extra_args = set(validator_args) - set(signature_args)
     if extra_args:
         raise ValueError(
-            "Validator for {0} refers to parameters "
-            "that are not part of the function signature: {1}".format(
-                func.__name__, ", ".join(extra_args))
+            'Validator for {0} refers to parameters '
+            'that are not part of the function signature: {1}'.format(
+                func.__name__, ', '.join(extra_args))
         )
 
     return signature_args
@@ -63,8 +63,8 @@ def required_parameters(*required_params):
             missing = [p for p in required_params if p not in supplied_args]
             if len(missing):
                 raise MissingParameterError(
-                    "Missing required parameter(s): {0}".format(
-                        ", ".join(missing))
+                    'Missing required parameter(s): {0}'.format(
+                        ', '.join(missing))
                 )
 
             return f(*args, **kwargs)
@@ -93,8 +93,8 @@ def mutually_exclusive_parameters(*exclusive_params):
             clashes = [s for s in supplied_args if s in exclusive_params]
             if len(clashes) > 1:
                 raise InvalidParameterError(
-                    "These parameters are mutually exclusive: {0}.".format(
-                        ", ".join(supplied_args))
+                    'These parameters are mutually exclusive: {0}.'.format(
+                        ', '.join(supplied_args))
                 )
 
             return f(*args, **kwargs)
@@ -124,8 +124,8 @@ def at_least_one_of(*candidate_params):
             candidates = [s for s in supplied_args if s in candidate_params]
             if len(candidates) < 1:
                 raise MissingParameterError(
-                    "At least one of these parameters must be "
-                    "supplied: {0}.".format(", ".join(candidate_params))
+                    'At least one of these parameters must be '
+                    'supplied: {0}.'.format(', '.join(candidate_params))
                 )
 
             return f(*args, **kwargs)

@@ -5,8 +5,8 @@ from AccessControl.Permission import getPermissions
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout
-from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 
 import mock
 import unittest
@@ -638,7 +638,7 @@ class TestPloneApiUser(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             api.user.revoke_roles()
 
-    @unittest.skip("Getting the Anonymous user does not work like this.")
+    @unittest.skip('Getting the Anonymous user does not work like this.')
     def test_revoke_roles_from_anonymous(self):
         """Test revoking roles from an Anonymous user."""
         api.user.revoke_roles(username='Anonymous User', roles=['Reviewer'])

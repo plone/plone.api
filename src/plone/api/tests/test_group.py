@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.group."""
 
-from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
+from Products.CMFCore.utils import getToolByName
 
 import mock
 import unittest
