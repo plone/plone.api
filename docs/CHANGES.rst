@@ -6,6 +6,9 @@ Changelog
 
 New:
 
+- Add `portal.translate`
+  [ebrehault]
+
 - Add `portal.get_default_language` and `portal.get_current_language`
   [ebrehault]
 

@@ -383,10 +383,10 @@ def get_default_language():
 
 
 def get_current_language(context=None):
-    """Return the current negociated language.
+    """Return the current negotiated language.
 
     :param context: context object
-    :type name: object
+    :type context: object
     :returns: language identifier
     :rtype: string
     :Example: :ref:`portal_get_current_language_example`
@@ -395,3 +395,29 @@ def get_current_language(context=None):
     return request.get('LANGUAGE', None) or \
         (context and aq_inner(context).Language()) \
         or get_default_language()
+
+
+def translate(msgid, domain='plone', lang=None):
+    """Translate a message into a given language.
+
+    Default to current negotiated language if no target language specified.
+
+    :param msgid: [required] message to translate
+    :type msgid: string
+    :param domain: i18n domain to use
+    :type domain: string
+    :param lang: target language
+    :type lang: string
+    :returns: translated message
+    :rtype: unicode
+    :Example: :ref:`portal_translate_example`
+    """
+    translation_service = get_tool('translation_service')
+    if not lang:
+        lang = get_current_language()
+
+    return translation_service.utranslate(
+        msgid=msgid,
+        domain=domain,
+        target_language=lang
+    )

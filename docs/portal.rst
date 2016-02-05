@@ -161,6 +161,24 @@ To get the currently negotiated language, use :meth:`api.portal.get_current_lang
     self.assertEqual(lang, 'en')
 
 
+.. _portal_translate_example:
+
+Translate
+---------
+
+To translate a message in a given language, use :meth:`api.portal.translate`.
+
+.. code-block:: python
+
+    from plone import api
+    msg = api.portal.translate('Edited', lang='es')
+
+.. invisible-code-block: python
+
+    # assert that the translation is correct
+    self.assertEqual(msg, u'Editado')
+
+
 .. _portal_send_email_example:
 
 Send E-Mail

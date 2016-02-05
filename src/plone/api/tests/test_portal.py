@@ -797,3 +797,21 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(portal.get_current_language(portal.get()), 'en')
         self.layer['request']['LANGUAGE'] = 'fr'
         self.assertEqual(portal.get_current_language(), 'fr')
+
+    def test_translate(self):
+        """Test translation."""
+        self.assertEqual(
+            portal.translate(
+                'A workflow action triggers a workflow transition on an '
+                'object.', lang='es'
+            ),
+            u'Una acción de flujo de trabajo dispara una transición de '
+            'flujo de trabajo en un objeto.'
+        )
+        self.assertEqual(
+            portal.translate(
+                'Set my password',
+                domain='passwordresettool',
+                lang='fr'),
+            u'Définir mon mot de passe'
+        )
