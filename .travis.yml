@@ -30,7 +30,7 @@ script:
   - make coverage
 
 after_success:
-- pip install python-coveralls==2.4.0
+- pip install -q coverage==3.6 coveralls
 - coveralls
 
 notifications:
