@@ -477,7 +477,14 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
                 continue
 
             for transition in transitions:
-                workflow.doActionFor(obj, transition, **kwargs)
+                try:
+                    workflow.doActionFor(obj, transition, **kwargs)
+                except WorkflowException:
+                    # take into account automatic transitions.
+                    # If the transitions list that are being iterated over
+                    # have automatic transitions they need to be skipped
+                    if get_state(obj) == to_state:
+                        break
 
             break
 
