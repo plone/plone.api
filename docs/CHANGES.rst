@@ -25,6 +25,10 @@ Fixes:
 - Cleanup code to match Plone's style guide.
   [gforcada]
 
+- Fix corner case on content.transition code: if a transition only has
+  exit transitions and no transition goes back to it ``find_path`` will fail.
+  [gforcada]
+
 1.4.11 (2016-01-08)
 -------------------
 
