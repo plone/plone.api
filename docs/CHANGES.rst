@@ -29,6 +29,9 @@ Fixes:
   exit transitions and no transition goes back to it ``find_path`` will fail.
   [gforcada]
 
+- Handle automatic transitions on api.content.transition.
+  [gforcada]
+
 1.4.11 (2016-01-08)
 -------------------
 
