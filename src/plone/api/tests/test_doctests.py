@@ -18,7 +18,6 @@ import manuel.testing
 import os
 import pkg_resources
 import re
-import transaction
 import unittest
 
 
@@ -71,8 +70,6 @@ def setUp(self):  # pragma: no cover
     # Plone 5 support
     if HAS_PA_CONTENTTYPES:
         applyProfile(portal, 'plone.app.contenttypes:default')
-
-    transaction.commit()
 
 
 def DocFileSuite(
