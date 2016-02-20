@@ -1,12 +1,12 @@
 plone.api
 =========
 
-.. image:: https://pypip.in/v/plone.api/badge.png
-    :target: https://pypi.python.org/pypi/plone.api
+.. image:: https://img.shields.io/pypi/v/plone.api.svg
+    :target: https://pypi.python.org/pypi/plone.api/
     :alt: Latest PyPI version
 
-.. image:: https://pypip.in/d/plone.api/badge.png
-    :target: https://pypi.python.org/pypi/plone.api
+.. image:: https://img.shields.io/pypi/dm/plone.api.svg
+    :target: https://pypi.python.org/pypi/plone.api/
     :alt: Number of PyPI downloads
 
 A simple API, built for humans wishing to develop with Plone.
