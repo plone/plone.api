@@ -31,12 +31,12 @@ Recipes try to assume the user does not have extensive knowledge about Plone int
 Source Code and Contribution
 ============================
 
-.. image:: https://secure.travis-ci.org/plone/plone.api.png
+.. image:: https://api.travis-ci.org/plone/plone.api.svg
     :target: http://travis-ci.org/#!/plone/plone.api
 
-.. image:: https://coveralls.io/repos/plone/plone.api/badge.png?branch=master
+.. image:: https://coveralls.io/repos/github/plone/plone.api/badge.svg?branch=master
     :alt: Coverage
-    :target: https://coveralls.io/r/plone/plone.api?branch=master
+    :target: https://coveralls.io/github/plone/plone.api?branch=master
 
 Contributors
     please read the document `Process for Plone core's development <http://docs.plone.org/develop/coredev/docs/index.html>`_.
