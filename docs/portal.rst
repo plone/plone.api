@@ -227,7 +227,7 @@ To send an e-mail use :meth:`api.portal.send_email`:
     self.assertEqual(msg.get_payload(), 'One for you Bob!')
 
 If you need to add other fields not supported on send_email signature,
-python's standard `email module<https://docs.python.org/2.7/library/email.message.html#email.message.Message>`_ can also be used::
+Python's standard `email module <https://docs.python.org/2.7/library/email.message.html#email.message.Message>`_ can also be used::
 
 .. code-block:: python
 

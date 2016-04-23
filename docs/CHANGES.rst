@@ -4,8 +4,10 @@ Changelog
 1.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Fixes:
 
+- Typo in the documentation.
+  [ale-rt]
 
 1.5 (2016-02-20)
 ----------------
@@ -23,7 +25,7 @@ Fixes:
 - Fix ``test_zope_version`` test to be able to deal with development versions of Zope.
   [thet]
 
-- Remove the Plone APIs conventions. They are moved to  
+- Remove the Plone APIs conventions. They are moved to
   http://docs.plone.org/develop/styleguide
   and http://docs.plone.org/develop/coredev/docs/git.html
   [thet]
