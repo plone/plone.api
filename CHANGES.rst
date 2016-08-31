@@ -26,6 +26,10 @@ Bug fixes:
   user.get_roles or group.get_roles. Fixes #354
   [pbauer]
 
+- Fix title wrongly set by ``api.content.create`` when called from GS setup
+  handler https://github.com/plone/plone.api/issues/99
+  [gotcha, pgrunewald]
+
 1.6 (2017-02-15)
 ----------------
 
