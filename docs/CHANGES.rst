@@ -5,6 +5,8 @@ Changelog
 ------------------
 
 Fixes:
+- Fix an AttributeError in `api.user.revoke_roles`
+  [ale-rt]
 
 - Typo in the documentation.
   [ale-rt]
