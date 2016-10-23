@@ -17,6 +17,9 @@ Bug fixes:
 - Support user.get_roles for anonymous users. Refs #339
   [jaroel]
 
+- Fix imports from Globals that was removed in Zope4
+  [pbauer]
+
 
 1.5.1 (2016-12-06)
 ------------------

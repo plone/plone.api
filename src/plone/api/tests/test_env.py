@@ -389,12 +389,13 @@ class TestPloneApiEnv(unittest.TestCase):
             api.env.adopt_roles()
 
     def test_debug_mode(self):
-        """Tests that returned value is the same as Globals.DevelopmentMode."""
+        """Tests that the retured value is the same as
+        getConfiguration.debug_mode."""
         from plone.api.env import debug_mode
-        import Globals
-        Globals.DevelopmentMode = True
+        from App.config import getConfiguration
+        getConfiguration().debug_mode = True
         self.assertEqual(debug_mode(), True)
-        Globals.DevelopmentMode = False
+        getConfiguration().debug_mode = False
         self.assertEqual(debug_mode(), False)
 
     def test_test_mode(self):

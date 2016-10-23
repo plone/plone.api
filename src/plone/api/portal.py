@@ -52,7 +52,11 @@ elif (
 ):
     PRINTINGMAILHOST_ENABLED = True
 else:
-    PRINTINGMAILHOST_ENABLED = False
+    # PrintingMailHost only patches in debug mode.
+    # plone.api.env.debug_mode cannot be used here, because .env imports this
+    # file
+    from App.config import getConfiguration
+    PRINTINGMAILHOST_ENABLED = getConfiguration().debug_mode
 
 MISSING = object()
 
