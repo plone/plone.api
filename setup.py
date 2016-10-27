@@ -34,6 +34,7 @@ setup(
         'Products.statusmessages',
         'decorator',
         'plone.app.uuid',
+        'plone.app.linkintegrity',
         'plone.uuid',
         'setuptools',
         'zope.globalrequest',
