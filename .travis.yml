@@ -11,27 +11,25 @@ env:
 global:
   - secure: "nTXMNU2aYbCtvKD74PndF8Xm2h6IvsxPjr6vj45AxjXmaB7Wf5oGi/4b6ObV\nexBtUQkFnc+M0ThGyUznOCPi3YxcbTzsyhQYhHUtmtw/6QRyYgo4E0GLDItU\n37Ff6wpxl3NMMJTvpi6SOVUvIJUl3+cs+4bkMkS48RSFGg2rGmo="  # Coveralls.io token
 matrix:
-  include:
-    - python: 2.6
-      env: PLONE_VERSION=4.2
   fast_finish: true
 
 install:
   - mkdir -p buildout-cache/eggs
   - mkdir -p buildout-cache/downloads
   - sed -ie "s#-4.3.x#-$PLONE_VERSION.x#" buildout.cfg
-  - make "bin/python"
-  - bin/python bootstrap.py
-  - bin/buildout annotate
-  - make version=$TRAVIS_PYTHON_VERSION .installed.cfg
+  - pip install -U zc.buildout setuptools==21.0.0
+  - buildout annotate
+  - buildout
 
 script:
   - bin/code-analysis
-  - make coverage
+  - bin/test
 
 after_success:
-- pip install -q coverage==3.6 coveralls
-- coveralls
+  - buildout -c coverage.cfg
+  - bin/coverage
+  - pip install -q coveralls
+  - coveralls
 
 notifications:
   irc:

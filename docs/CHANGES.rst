@@ -9,6 +9,9 @@ Fixes:
 - Typo in the documentation.
   [ale-rt]
 
+- Fix travis and coveralls.
+  [gforcada]
+
 1.5 (2016-02-20)
 ----------------
 
