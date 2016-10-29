@@ -17,7 +17,7 @@ install:
   - mkdir -p buildout-cache/eggs
   - mkdir -p buildout-cache/downloads
   - sed -ie "s#-4.3.x#-$PLONE_VERSION.x#" buildout.cfg
-  - pip install -U zc.buildout setuptools==20.1.1
+  - pip install -U zc.buildout setuptools==21.0.0
   - buildout annotate
   - buildout
 
