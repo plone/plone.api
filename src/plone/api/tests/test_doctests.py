@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Boilerplate for doctest functional tests."""
-
 from logging import getLogger
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_INTEGRATION_TESTING
@@ -20,6 +19,7 @@ import os
 import pkg_resources
 import re
 import unittest
+
 
 logger = getLogger(__name__)
 
