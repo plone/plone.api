@@ -5,6 +5,8 @@ Changelog
 ------------------
 
 Fixes:
+- Fix an AttributeError in `api.user.revoke_roles`
+  [ale-rt]
 
 - Remove print statements and use @security decorators to make
   code-analysis happy.

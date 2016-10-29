@@ -408,7 +408,8 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     if obj is not None:
         # if obj, get only a list of local roles, without inherited ones
         inherit = False
-    actual_roles = get_roles(user=user, obj=obj, inherit=inherit)
+
+    actual_roles = list(get_roles(user=user, obj=obj, inherit=inherit))
     if actual_roles.count('Anonymous'):
         actual_roles.remove('Anonymous')
     if actual_roles.count('Authenticated'):
