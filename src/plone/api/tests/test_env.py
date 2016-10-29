@@ -8,7 +8,6 @@ from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
 
 import AccessControl
-import AccessControl.SecurityManagement
 import Globals
 import unittest
 
@@ -28,27 +27,26 @@ class HasProtectedMethods(SimpleItem):
 
     security = AccessControl.ClassSecurityInfo()
 
-    security.declarePublic('public_method')
-    security.declareProtected('ppp', 'pp_method')
-    security.declareProtected('qqq', 'qq_method')
-    security.declareProtected('rrr', 'rr_method')
-    security.declarePrivate('private_method')
-
     def __init__(self, id):
         self.id = id
 
+    @security.public
     def public_method(self):
         pass
 
+    @security.protected('ppp')
     def pp_method(self):
         pass
 
+    @security.protected('qqq')
     def qq_method(self):
         pass
 
+    @security.protected('rrr')
     def rr_method(self):
         pass
 
+    @security.private
     def private_method(self):
         pass
 

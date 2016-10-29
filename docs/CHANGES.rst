@@ -6,6 +6,10 @@ Changelog
 
 Fixes:
 
+- Remove print statements and use @security decorators to make
+  code-analysis happy.
+  [ale-rt]
+
 - Typo in the documentation.
   [ale-rt]
 
