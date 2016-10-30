@@ -5,6 +5,9 @@ Changelog
 ------------------
 
 Fixes:
+- Allow adopting to a Special User. Fixes #320 - checking permissions for Anonymous User.
+  [jaroel]
+
 - Fix an AttributeError in `api.user.revoke_roles`
   [ale-rt]
 
