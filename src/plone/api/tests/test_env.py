@@ -370,6 +370,10 @@ class TestPloneApiEnv(unittest.TestCase):
         api.env.adopt_user(username='admin')
         api.env.adopt_user(user=api.user.get(username='admin'))
 
+    def test_adopting_anonymous(self):
+        from AccessControl import users
+        api.env.adopt_user(user=users.nobody)
+
     def test_empty_warning(self):
         """Tests that empty roles lists get warned about."""
         from plone.api.exc import InvalidParameterError
