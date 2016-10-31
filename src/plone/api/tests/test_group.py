@@ -143,6 +143,19 @@ class TestPloneApiGroup(unittest.TestCase):
         with self.assertRaises(UserNotFoundError):
             api.group.get_groups(username='theurbanspaceman')
 
+    def test_get_groups_anonymous(self):
+        from AccessControl.users import nobody
+        # In test the anonymous user is aq wrapped in /plone/acl_users
+        # > self.portal.acl_users in api.user.get_current().aq_chain
+        # >>> True
+        # In practice is is aq wrapped in /acl_users
+        # > self.context.acl_users in api.user.get_current().aq_chain
+        # >>> False
+        # We'll force the user into /acl_users, which has no portal_groups.
+        user = nobody.__of__(api.portal.get().__parent__.acl_users)
+        groups = api.group.get_groups(user=user)
+        self.assertEqual(groups, [])  # should be empty
+
     def test_delete_contraints(self):
         """Test deleting a group without passing parameters."""
         from plone.api.exc import MissingParameterError
