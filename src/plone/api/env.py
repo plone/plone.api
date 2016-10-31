@@ -34,27 +34,29 @@ def adopt_user(username=None, user=None):
     # accepts 'user' objects that are actually things like MemberData
     # objects, which AccessControl isn't so keen on.
 
+    # ZopeSecurityPolicy appears to strongly expect the user object to
+    # be Acquisition-wrapped in the acl_users from which it was taken.
+
     unwrapped = None
     plone = portal.get()
     acls = [plone.acl_users, plone.__parent__.acl_users]
 
     if username is None:
+        # Note: this path does not raise UserNotFoundError, so we can still
+        # support SpecialUser ie 'Anonymous User'
         for acl_users in acls:
             unwrapped = acl_users.getUserById(user.getId())
             if unwrapped:
+                user = unwrapped.__of__(acl_users)
                 break
     else:
         for acl_users in acls:
             unwrapped = acl_users.getUser(username)
             if unwrapped:
+                user = unwrapped.__of__(acl_users)
                 break
-
-    if unwrapped is None:
-        raise UserNotFoundError
-
-    # ZopeSecurityPolicy appears to strongly expect the user object to
-    # be Acquisition-wrapped in the acl_users from which it was taken.
-    user = unwrapped.__of__(acl_users)
+        else:
+            raise UserNotFoundError
 
     return _adopt_user(user)
 
