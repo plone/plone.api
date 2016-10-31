@@ -5,6 +5,10 @@ Changelog
 ------------------
 
 Fixes:
+
+- Allow plone.api.group.get_groups for Anonymous user. Refs #290
+  [jaroel]
+
 - Allow adopting to a Special User. Fixes #320 - checking permissions for Anonymous User.
   [jaroel]
 
