@@ -88,6 +88,8 @@ def get_groups(username=None, user=None):
     group_tool = portal.get_tool('portal_groups')
 
     if user:
+        if not getattr(user, 'portal_groups', None):
+            return []
         groups = group_tool.getGroupsForPrincipal(user)
         return [get(groupname=group) for group in groups]
 
