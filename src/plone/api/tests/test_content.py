@@ -91,14 +91,14 @@ class TestPloneApiContent(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             api.content.create()
 
-        # Check the contraints for the type container
+        # Check the constraints for the type container
         with self.assertRaises(MissingParameterError):
             api.content.create(
                 type='Document',
                 id='test-doc',
             )
 
-        # Check the contraints for the type parameter
+        # Check the constraints for the type parameter
         container = mock.Mock()
         with self.assertRaises(MissingParameterError):
             api.content.create(
@@ -106,13 +106,13 @@ class TestPloneApiContent(unittest.TestCase):
                 id='test-doc',
             )
 
-        # Check the contraints for id and title parameters
+        # Check the constraints for id and title parameters
         with self.assertRaises(MissingParameterError):
             api.content.create(
                 container=container, type='Document'
             )
 
-        # Check the contraints for allowed types in the container
+        # Check the constraints for allowed types in the container
         container = self.events
         with self.assertRaises(InvalidParameterError):
             api.content.create(
@@ -121,7 +121,7 @@ class TestPloneApiContent(unittest.TestCase):
                 id='test-foo',
             )
 
-        # Check the contraints for allowed types in the container if
+        # Check the constraints for allowed types in the container if
         # the container is the portal
         container = self.portal
         with self.assertRaises(InvalidParameterError) as cm:
@@ -138,7 +138,7 @@ class TestPloneApiContent(unittest.TestCase):
             cm.exception.message
         )
 
-        # Check the contraints for allowed types in the container
+        # Check the constraints for allowed types in the container
         # Create a folder
         folder = api.content.create(
             container=container, type='Folder', id='test-folder')
