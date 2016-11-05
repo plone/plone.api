@@ -20,7 +20,7 @@ Groups
 Create group
 ------------
 
-To create a new portal group, use :meth:`api.group.create`.
+To create a new group, use :meth:`api.group.create`.
 
 .. code-block:: python
 
@@ -31,7 +31,7 @@ To create a new portal group, use :meth:`api.group.create`.
 
     self.assertEqual(group.id, 'staff')
 
-When creating groups ``title``, ``description``, ``roles`` and ``groups`` are optional.
+When you create groups, ``title``, ``description``, ``roles`` and ``groups`` are optional.
 
 .. code-block:: python
 
@@ -77,7 +77,7 @@ Editing a group
 ---------------
 
 Groups can be edited by using the ``group_tool``.
-In this example the ``title``, ``description`` and ``roles`` are updated for the group 'Staff'.
+In this example, the ``title``, ``description`` and ``roles`` are updated for the group 'Staff'.
 
 .. code-block:: python
 
@@ -109,7 +109,7 @@ In this example the ``title``, ``description`` and ``roles`` are updated for the
 Get all groups
 --------------
 
-You can also get all groups, by using :meth:`api.group.get_groups`.
+You can also get all groups by using :meth:`api.group.get_groups`.
 
 .. code-block:: python
 
@@ -126,8 +126,8 @@ You can also get all groups, by using :meth:`api.group.get_groups`.
 Get user's groups
 -----------------
 
-The groups returned may be filtered by member. By passing the ``username`` parameter,
-:meth:`api.group.get_groups` will return only those groups to which the user belongs.
+Groups may be filtered by member. By passing the ``username`` parameter,
+:meth:`api.group.get_groups` will return only the groups the user belongs to.
 
 .. invisible-code-block: python
 
@@ -147,7 +147,7 @@ The groups returned may be filtered by member. By passing the ``username`` param
     self.assertEqual(groups[1].id, 'AuthenticatedUsers')
     self.assertEqual(groups[2].id, 'staff')
 
-You may also pass the user directly to :meth:`api.group.get_groups`:
+You can also pass the user directly to :meth:`api.group.get_groups`:
 
     from plone import api
     user = api.user.get(username='jane')
@@ -180,7 +180,7 @@ Use the :meth:`api.user.get_users` method to get all the users that are members 
 Delete group
 ------------
 
-To delete a group, use :meth:`api.group.delete` and pass in either the groupname or the group object you want to delete.
+To delete a group, use :meth:`api.group.delete` and pass in either the group name or the group object you want to delete.
 
 .. code-block:: python
 
@@ -208,7 +208,7 @@ Adding user to group
 --------------------
 
 To add a user to a group, use the :meth:`api.group.add_user` method.
-This method accepts either the groupname or the group object for the target group and the username or the user object you want to add to the group.
+This method accepts either the group name or the group object for the target group and the user name or the user object you want to add to the group.
 
 .. code-block:: python
 
