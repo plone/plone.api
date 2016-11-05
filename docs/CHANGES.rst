@@ -25,6 +25,9 @@ Fixes:
 - Fix travis and coveralls.
   [gforcada]
 
+- In api.content.move if source **and** target are specified and target is already
+  source parent, skip the operation.
+
 1.5 (2016-02-20)
 ----------------
 

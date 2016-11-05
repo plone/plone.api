@@ -401,6 +401,14 @@ class TestPloneApiContent(unittest.TestCase):
         assert (container['events']['about'] and
                 container['events']['about'] == about)
 
+    def test_move_no_move_if_target_is_source_parent(self):
+        """Test that trying to move an object to its parent is a noop"""
+        new_contact = api.content.move(
+            source=self.contact,
+            target=self.contact.aq_parent,
+        )
+        assert new_contact == self.contact
+
     def test_rename_constraints(self):
         """Test the constraints for rename content."""
         from plone.api.exc import MissingParameterError
