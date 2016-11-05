@@ -32,7 +32,7 @@ Two libraries are especially inspiring:
   Arguably, the reason for SQLAlchemy's success in the developer community lies as much in its feature set as in the fact that its API is very well   designed, is consistent, explicit, and easy to learn.
 
 `Requests <http://docs.python-requests.org>`_
-  If you look at the documentation for this library, or see `the comparison between the urllib2 way and the requests way <https://gist.github.com/973705>`_, you can see a parallel for Plone with the way we *have been* and the way we *should be* writing code.
+  If you look at the documentation for this library, or see `the comparison between the urllib2 way and the requests way <https://gist.github.com/973705>`_, you can see a parallel for Plone regarding the way we *have been* versus the way we *should be* writing code.
   At the very least, we should have the option of being able to write such clean code.
 
 The API provides grouped functional access to otherwise distributed logic in Plone.
