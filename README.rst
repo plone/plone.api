@@ -46,7 +46,7 @@ Source Code
     at the `Plone code repository hosted at GitHub <https://github.com/plone/plone.api>`_.
 
 Issues
-    Please use the `Issue tracker <http://github.com/plone/plone.api/issues>`_
+    Please use the `issue tracker <http://github.com/plone/plone.api/issues>`_
 
 Continuous Integration
     runs on `Travis CI <http://travis-ci.org/plone/plone.api>`_.
