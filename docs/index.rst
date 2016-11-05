@@ -14,7 +14,7 @@ A Plone API
     Recipes try to assume the user does not have extensive knowledge about Plone internals.
 
 The intention of this package is to provide clear API methods for Plone functionality which may be confusing or difficult to access.
-As the underlying code improves some API methods may be deprecated and the documentation here will be updated to show how to use the improved code
+As the underlying code improves, some API methods may be deprecated and the documentation here will be updated to show how to use the improved code
 (even if it means not using ``plone.api``).
 
 Some parts of the documentation do not use *plone.api* methods directly, but simply provide guidance on achieving a task using Plone's internal API.
@@ -26,7 +26,7 @@ By keeping everything in one place, the API stays introspectable and discoverabl
 .. note::
 
     This package is stable and used in production, but from time to time changes will be made to the API.
-    Additional api methods may be introduced in minor versions (1.1 -> 1.2).
+    Additional API methods may be introduced in minor versions (1.1 -> 1.2).
     Backward-incompatible changes to the API will be restricted to major versions (1.x -> 2.x).
 
 

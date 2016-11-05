@@ -19,8 +19,8 @@ Content
 Create content
 --------------
 
-To add an object, you must first have a container in which to put it.
-Get the portal object, it will serve nicely:
+To add an object, you must first have a container to put it in.
+Get the portal object; it will serve nicely:
 
 .. code-block:: python
 
@@ -219,7 +219,7 @@ However, calling ``getObject()`` on brains does in fact give you the object.
 Get content object UUID
 -----------------------
 
-A Universally Unique IDentifier (UUID) is a unique, non-human-readable identifier for a content object which stays on the object even if the object is moved.
+A Universally Unique IDentifier (UUID) is a unique, non-human-readable identifier for a content object which remains constant for the object even if the object is moved.
 
 Plone uses UUIDs for storing references between content and for linking by UIDs, enabling persistent links.
 
@@ -260,7 +260,7 @@ The code below moves the ``contact`` item (with all it contains) out of the fold
     self.assertTrue(portal['contact'])
 
 Actually, ``move`` behaves like a filesystem move.
-If you pass it an ``id`` argument the object will have that new ID in it's new home.
+If you pass it an ``id`` argument, the object will have that new ID in its new home.
 By default it will retain its original ID.
 
 .. _content_rename_example:
@@ -385,11 +385,11 @@ If deleting content would result in broken links you will get a `LinkIntegrityNo
 Content manipulation with the `safe_id` option
 ----------------------------------------------
 
-When manipulating content with :meth:`api.content.create`, :meth:`api.content.move` or :meth:`api.content.copy` the `safe_id` flag is disabled by default.
+When you manipulate content with :meth:`api.content.create`, :meth:`api.content.move` or :meth:`api.content.copy` the `safe_id` flag is disabled by default.
 This means the uniqueness of IDs will be enforced.
 If another object with the same ID is already present in the target container these API methods will raise an error.
 
-However, if the `safe_id` option is enabled, a non-conflicting id will be generated.
+However, if the `safe_id` option is enabled, a non-conflicting ID will be generated.
 
 .. invisible-code-block: python
 
@@ -451,7 +451,7 @@ To transition your content to a new workflow state, use the :meth:`api.content.t
     )
 
 If your workflow accepts any additional arguments to the checkin method you may supply them via kwargs.
-These arguments can be saved to your transition using custom workflow variables inside of the ZMI using an expression, for example: "python:state_change.kwargs.get('comment', '')"
+These arguments can be saved to your transition using custom workflow variables inside the ZMI using an expression such as "python:state_change.kwargs.get('comment', '')"
 
 .. code-block:: python
 
