@@ -21,8 +21,8 @@ class TestPloneApiGroup(unittest.TestCase):
         self.portal_membership = getToolByName(
             self.portal, 'portal_membership')
 
-    def test_create_contraints(self):
-        """Test the contraints for creating a group."""
+    def test_create_constraints(self):
+        """Test the constraints for creating a group."""
         from plone.api.exc import MissingParameterError
         with self.assertRaises(MissingParameterError):
             api.group.create()
@@ -156,7 +156,7 @@ class TestPloneApiGroup(unittest.TestCase):
         groups = api.group.get_groups(user=user)
         self.assertEqual(groups, [])  # should be empty
 
-    def test_delete_contraints(self):
+    def test_delete_constraints(self):
         """Test deleting a group without passing parameters."""
         from plone.api.exc import MissingParameterError
         with self.assertRaises(MissingParameterError):
@@ -189,7 +189,7 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.delete(group=group)
         self.assertIsNone(api.group.get('bacon'))
 
-    def test_add_user_contraints(self):
+    def test_add_user_constraints(self):
         """Test the constraints when a user is added to a group."""
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError):
@@ -253,7 +253,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         self.assertIn('jane', group.getMemberIds())
 
-    def test_remove_user_contraints(self):
+    def test_remove_user_constraints(self):
         """Test the constraints when a user is removed from a group."""
         from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
