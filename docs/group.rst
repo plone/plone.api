@@ -180,7 +180,7 @@ Use the :meth:`api.user.get_users` method to get all the users that are members 
 Delete group
 ------------
 
-To delete a group, use :meth:`api.group.delete` and pass in either the group name or the group object you want to delete.
+To delete a group, use :meth:`api.group.delete` and pass in either the groupname or the group object you want to delete.
 
 .. code-block:: python
 
@@ -208,7 +208,7 @@ Adding user to group
 --------------------
 
 To add a user to a group, use the :meth:`api.group.add_user` method.
-This method accepts either the group name or the group object for the target group and the user name or the user object you want to add to the group.
+This method accepts either the groupname or the group object for the target group and the username or the user object you want to add to the group.
 
 .. code-block:: python
 
