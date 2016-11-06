@@ -185,9 +185,10 @@ def move(source=None, target=None, id=None, safe_id=False):
     source_id = source.getId()
 
     # If no target is given the object is probably renamed
-    if target:
-        target.manage_pasteObjects(
-            source.aq_parent.manage_cutObjects(source_id))
+    if target and source.aq_parent is not target:
+            target.manage_pasteObjects(
+                source.aq_parent.manage_cutObjects(source_id)
+            )
     else:
         target = source.aq_parent
 
