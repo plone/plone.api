@@ -403,11 +403,15 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_move_no_move_if_target_is_source_parent(self):
         """Test that trying to move an object to its parent is a noop"""
-        new_contact = api.content.move(
-            source=self.contact,
-            target=self.contact.aq_parent,
-        )
-        assert new_contact == self.contact
+
+        target = self.contact.aq_parent
+        with mock.patch.object(target, 'manage_pasteObjects'):
+            api.content.move(
+                source=self.contact,
+                target=target,
+            )
+
+            self.assertFalse(target.manage_pasteObjects.called)
 
     def test_rename_constraints(self):
         """Test the constraints for rename content."""
