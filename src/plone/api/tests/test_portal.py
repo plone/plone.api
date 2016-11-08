@@ -810,8 +810,8 @@ class TestPloneApiPortal(unittest.TestCase):
         )
         self.assertEqual(
             portal.translate(
-                'Set my password',
-                domain='passwordresettool',
+                'month_apr',
+                domain='plonelocales',
                 lang='fr'),
-            u'Définir mon mot de passe'
+            u'Avril'
         )
