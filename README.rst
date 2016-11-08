@@ -22,7 +22,7 @@ The intention is
 Documentation
 =============
 
-`plone.api documentation <http://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_ is part of the official plone documentation.
+`plone.api documentation <http://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_ is part of the official Plone documentation.
 
 ``plone.api`` comes with *cookbook*-like documentation and step-by-step instructions for doing common development tasks in Plone.
 Recipes try to assume the user does not have extensive knowledge about Plone internals.
@@ -39,14 +39,14 @@ Source Code and Contribution
     :target: https://coveralls.io/github/plone/plone.api?branch=master
 
 Contributors
-    please read the document `Process for Plone core's development <http://docs.plone.org/develop/coredev/docs/index.html>`_.
+    Please read the document `Process for Plone core's development <http://docs.plone.org/develop/coredev/docs/index.html>`_.
     Also consult the section about contribution in the `plone.api contributors documentation <http://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_.
 
-Source-Code
-    at the `Plone code repository hosted at Github <https://github.com/plone/plone.api>`_.
+Source Code
+    at the `Plone code repository hosted at GitHub <https://github.com/plone/plone.api>`_.
 
 Issues
-    Please use the `Issue-Tracker <http://github.com/plone/plone.api/issues>`_
+    Please use the `issue tracker <http://github.com/plone/plone.api/issues>`_
 
 Continuous Integration
     runs on `Travis CI <http://travis-ci.org/plone/plone.api>`_.

@@ -38,7 +38,7 @@ Getting the Plone portal object is easy with :meth:`api.portal.get`.
 Get navigation root
 -------------------
 
-In multi-lingual or multi-site Plone installations you probably want to get the language-specific navigation root object, not the top portal object.
+In multilingual or multi-site Plone installations you probably want to get the language-specific navigation root object, not the top portal object.
 You do this with :meth:`api.portal.get_navigation_root()`.
 
 Assuming there is a document ``english_page`` in a folder ``en``, which is the navigation root:
@@ -76,7 +76,7 @@ returns the folder ``en``. If the folder ``en`` is not a navigation root it woul
 Get portal url
 --------------
 
-Since we now have the portal object, it's easy to get the portal url.
+Since we now have the portal object, it's easy to get the portal URL.
 
 .. code-block:: python
 
@@ -93,7 +93,7 @@ Since we now have the portal object, it's easy to get the portal url.
 Get tool
 --------
 
-To get a portal tool in a simple way, just use :meth:`api.portal.get_tool` and pass in the name of the tool you need.
+To get a portal tool easily, use :meth:`api.portal.get_tool` and pass in the name of the tool you need.
 
 .. code-block:: python
 
@@ -110,7 +110,7 @@ To get a portal tool in a simple way, just use :meth:`api.portal.get_tool` and p
 Get localized time
 ------------------
 
-To display the date/time in a user-friendly way, localized to the user's prefered language, use :meth:`api.portal.get_localized_time`.
+To display the date/time in a user-friendly way, localized to the user's preferred language, use :meth:`api.portal.get_localized_time`.
 
 .. code-block:: python
 
@@ -296,7 +296,7 @@ With :meth:`api.portal.show_message` you can show a notification message to the 
 Get plone.app.registry record
 -----------------------------
 
-Plone comes with a package ``plone.app.registry`` that provides a common way to store various configuration and settings.
+Plone comes with a package ``plone.app.registry`` that provides a common way to store configuration and settings.
 :meth:`api.portal.get_registry_record` provides an easy way to access these.
 
 .. invisible-code-block: python
@@ -349,8 +349,7 @@ One common pattern when using registry records is to define an interface with al
 Set plone.app.registry record
 -----------------------------
 
-Plone comes with a package ``plone.app.registry`` that provides a common way to store various configuration and settings.
-:meth:`api.portal.set_registry_record` provides an easy way to change these.
+:meth:`api.portal.set_registry_record` provides an easy way to change ``plone.app.registry`` configuration and settings.
 
 .. invisible-code-block: python
 
@@ -372,8 +371,7 @@ Plone comes with a package ``plone.app.registry`` that provides a common way to 
 
     self.assertFalse(registry['my.package.someoption'])
 
-One common pattern when using registry records is to define an interface with all the settings.
-:meth:`api.portal.set_registry_record` also allows you to use this pattern.
+:meth:`api.portal.set_registry_record` allows you to define an interface with all the settings.
 
 
 .. invisible-code-block: python

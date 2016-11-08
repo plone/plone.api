@@ -32,11 +32,11 @@ Two libraries are especially inspiring:
   Arguably, the reason for SQLAlchemy's success in the developer community lies as much in its feature set as in the fact that its API is very well   designed, is consistent, explicit, and easy to learn.
 
 `Requests <http://docs.python-requests.org>`_
-  If you look at the documentation for this library, or make `a comparison between the urllib2 way and the requests way <https://gist.github.com/973705>`_, you cannot but see a parallel between the way we *have been* and the way we *should be* writing code for Plone.
-  At the least, we should have the option to write such clean code.
+  If you look at the documentation for this library, or see `the comparison between the urllib2 way and the requests way <https://gist.github.com/973705>`_, you can see a parallel for Plone regarding the way we *have been* versus the way we *should be* writing code.
+  At the very least, we should have the option of being able to write such clean code.
 
 The API provides grouped functional access to otherwise distributed logic in Plone.
-This distribution is a result of two historical factors: re-use of CMF- and Zope-methods and reasonable but hard to remember splits like `acl_users` and `portal_memberdata`.
+This distribution is a result of two historical factors: reuse of CMF- and Zope-methods, and reasonable but hard to remember splits like `acl_users` and `portal_memberdata`.
 Methods defined in `plone.api` implement best-practice access to the original distributed APIs.
 These methods also provide clear documentation of how best to access Plone APIs directly.
 
@@ -44,7 +44,7 @@ These methods also provide clear documentation of how best to access Plone APIs 
    If you doubt those last sentences:
    We had five different ways to get the portal root with different edge-cases.
    We had three different ways to move an object.
-   With this in mind, it's obvious that even the most simple tasks can't be documented in Plone in a sane way.
+   With this in mind, it's obvious that even the simplest Plone tasks can't be documented in a sane way.
 
 We do not intend to cover all possible use-cases, only the most common.
 We will cover the 20% of possible tasks on which we spend 80% of our time.
@@ -102,12 +102,12 @@ Prefer keyword arguments
 ------------------------
 
 We prefer using keyword arguments to positional arguments.
-Example code in `plone.api` will use this style, and we recommend users to follow this convention.
-For the curious, here are the reasons:
+Example code in `plone.api` will use this style, and we recommend users follow this convention.
+For the curious, here are the reasons why:
 
-#. There will never be a doubt when writing a method on whether an argument should be positional or not.
+#. There will never be any doubt when writing a method whether an argument should be positional or not.
    Decision already made.
-#. There will never be a doubt when using the API on which argument comes first, or which ones are named/positional.
+#. There will never be asy doubt when using the API on which argument comes first, or which ones are named/positional.
    All arguments are named.
 #. When using positional arguments, the method signature is dictated by the underlying implementation
    (think required vs. optional arguments).
@@ -150,5 +150,5 @@ Consider the failure lurking behind test code such as this::
 Why ``delete`` instead of ``remove``?
 -------------------------------------
 
-* The underlying code uses methods that are named more similarly to *delete* rather than to *remove*.
+* The underlying code uses method names similar to *delete* rather than to *remove*.
 * The ``CRUD`` verb is *delete*, not *remove*.
