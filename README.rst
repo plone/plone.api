@@ -22,7 +22,7 @@ The intention is
 Documentation
 =============
 
-`plone.api documentation <http://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_ is part of the official plone documentation.
+`plone.api documentation <http://docs.plone.org/develop/plone.api/docs/>`_ is part of the official plone documentation.
 
 ``plone.api`` comes with *cookbook*-like documentation and step-by-step instructions for doing common development tasks in Plone.
 Recipes try to assume the user does not have extensive knowledge about Plone internals.
