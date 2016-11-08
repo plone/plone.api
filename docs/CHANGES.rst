@@ -23,6 +23,9 @@ Bug fixes:
 - Fix 'bad' quotes.
   [adamcheasley]
 
+- Typo in the documentation.
+  [ale-rt]
+
 - Fix error in tests that try to add built-in roles, which no longer fails
   silently in Zope4.
   [MatthewWilkes]
