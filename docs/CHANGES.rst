@@ -6,6 +6,10 @@ Changelog
 
 Fixes:
 
+- Fix translation related tests to use the ``plonelocales`` domain instead ``passwordresettool``.
+  Products.PasswordResetTool was removed in Plone 5.1.
+  [thet]
+
 - Allow plone.api.group.get_groups for Anonymous user. Refs #290
   [jaroel]
 
