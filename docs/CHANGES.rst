@@ -24,6 +24,9 @@ Fixes:
 
 - Fix travis and coveralls.
   [gforcada]
+  
+- Various wording tweaks
+  [tkimnguyen]
 
 1.5 (2016-02-20)
 ----------------
