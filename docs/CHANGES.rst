@@ -34,6 +34,9 @@ Fixes:
 - Fix travis and coveralls.
   [gforcada]
 
+- Various wording tweaks
+  [tkimnguyen]
+
 - In api.content.move if source **and** target are specified and target is already
   source parent, skip the operation.
 
