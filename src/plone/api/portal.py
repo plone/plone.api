@@ -2,8 +2,8 @@
 """Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
-from datetime import date
 from datetime import datetime as dtime
+from datetime import date
 from email.utils import formataddr
 from email.utils import parseaddr
 from logging import getLogger
@@ -44,6 +44,8 @@ else:
     # file
     import Globals
     PRINTINGMAILHOST_ENABLED = Globals.DevelopmentMode
+
+MISSING = object()
 
 
 def get():
@@ -251,7 +253,7 @@ def show_message(message=None, request=None, type='info'):
 
 
 @required_parameters('name')
-def get_registry_record(name=None, interface=None):
+def get_registry_record(name=None, interface=None, default=MISSING):
     """Get a record value from ``plone.app.registry``
 
     :param name: [required] Name
@@ -259,6 +261,8 @@ def get_registry_record(name=None, interface=None):
     :param interface: interface whose attributes are plone.app.registry
         settings
     :type interface: zope.interface.Interface
+    :param default: The value returned if the record is not found
+    :type default: anything
     :returns: Registry record value
     :rtype: plone.app.registry registry record
     :Example: :ref:`portal_get_registry_record_example`
@@ -277,36 +281,44 @@ def get_registry_record(name=None, interface=None):
     if interface is not None:
         records = registry.forInterface(interface)
         _marker = object()
-        if getattr(records, name, _marker) == _marker:
-            # Show all records on the interface.
-            records = [key for key in interface.names()]
-            raise InvalidParameterError(
-                "Cannot find a record with name '{0}' on interface {1}.\n"
-                'Did you mean?'
-                '{2}'.format(
-                    name,
-                    interface.__identifier__,
-                    '\n'.join(records)
-                )
-            )
-        return registry['{0}.{1}'.format(interface.__identifier__, name)]
+        if getattr(records, name, _marker) != _marker:
+            return registry['{0}.{1}'.format(interface.__identifier__, name)]
 
-    if name not in registry:
-        # Show all records that 'look like' name.
-        # We don't dump the whole list, because it 1500+ items.
-        records = [key for key in registry.records.keys() if name in key]
-        if records:
-            raise InvalidParameterError(
-                "Cannot find a record with name '{0}'.\n"
-                'Did you mean?:\n'
-                '{1}'.format(name, '\n'.join(records))
-            )
-        else:
-            raise InvalidParameterError(
-                "Cannot find a record with name '{0}'".format(name)
-            )
+        if default is not MISSING:
+            return default
 
-    return registry[name]
+        # Show all records on the interface.
+        records = [key for key in interface.names()]
+        msg = (
+            "Cannot find a record with name '{0}' on interface {1}.\n"
+            'Did you mean?\n'
+            '{2}'.format(
+                name,
+                interface.__identifier__,
+                '\n'.join(records)
+            )
+        )
+        raise InvalidParameterError(msg)
+
+    if name in registry:
+        return registry[name]
+
+    if default is not MISSING:
+        return default
+
+    # Show all records that 'look like' name.
+    # We don't dump the whole list, because it 1500+ items.
+    msg = (
+        "Cannot find a record with name '{0}'".format(name)
+    )
+    records = [key for key in registry.records.keys() if name in key]
+    if records:
+        msg = (
+            "{0}\n"
+            'Did you mean?:\n'
+            '{1}'.format(msg, '\n'.join(records))
+        )
+    raise InvalidParameterError(msg)
 
 
 @required_parameters('name', 'value')

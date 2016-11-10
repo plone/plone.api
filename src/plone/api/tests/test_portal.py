@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.portal."""
 
+from DateTime import DateTime
 from datetime import date
 from datetime import datetime
-from DateTime import DateTime
 from email import message_from_string
 from pkg_resources import parse_version
 from plone.api import content
@@ -616,6 +616,30 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertTrue(exc_str.find(' on interface ') != -1)
         self.assertTrue(exc_str.find('field_one') != -1)
         self.assertTrue(exc_str.find('field_two') != -1)
+
+    def test_get_invalid_record_with_default(self):
+        """ If get_registry_record is called with a default parameter
+        and the record cannot be resolved
+        the default will be returned instead of raising InvalidParameterError
+        """
+        registry = getUtility(IRegistry)
+        registry.registerInterface(IMyRegistrySettings)
+
+        self.assertEqual(
+            portal.get_registry_record(
+                'non_existing_field',
+                interface=IMyRegistrySettings,
+                default=1
+            ),
+            1
+        )
+        self.assertEqual(
+            portal.get_registry_record(
+                'something',
+                default=2
+            ),
+            2
+        )
 
     def test_set_valid_registry_record(self):
         """Test that setting a valid registry record succeeds."""

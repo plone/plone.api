@@ -4,6 +4,11 @@ Changelog
 1.5.1 (unreleased)
 ------------------
 
+New:
+
+- `api.portal.get_registry_record` supports an optional `default` parameter
+  [ale-rt]
+
 Fixes:
 
 - Fix translation related tests to use the ``plonelocales`` domain instead ``passwordresettool``.

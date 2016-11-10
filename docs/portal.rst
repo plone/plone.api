@@ -344,6 +344,30 @@ One common pattern when using registry records is to define an interface with al
         u'my text'
     )
 
+It is possible to provide a default value
+that will be returned by :meth:`api.portal.get_registry_record`
+if the queried record is not found.
+
+.. code-block:: python
+
+    from plone import api
+    api.portal.get_registry_record('foo', interface=IMyRegistrySettings, default=u'bar')
+    api.portal.get_registry_record('foo', default=u'baz')
+
+.. invisible-code-block: python
+    self.assertEqual(
+        api.portal.get_registry_record(
+            'foo',
+            interface=IMyRegistrySettings,
+            default=u'bar'
+        ),
+        u'bar',
+    )
+    self.assertEqual(
+        api.portal.get_registry_record('foo', default=u'baz'),
+        u'baz',
+    )
+
 .. _portal_set_registry_record_example:
 
 Set plone.app.registry record
