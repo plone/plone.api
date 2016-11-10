@@ -107,7 +107,7 @@ For the curious, here are the reasons why:
 
 #. There will never be any doubt when writing a method whether an argument should be positional or not.
    Decision already made.
-#. There will never be asy doubt when using the API on which argument comes first, or which ones are named/positional.
+#. There will never be any doubt when using the API on which argument comes first, or which ones are named/positional.
    All arguments are named.
 #. When using positional arguments, the method signature is dictated by the underlying implementation
    (think required vs. optional arguments).
