@@ -32,6 +32,9 @@ Fixes:
 - In api.content.move if source **and** target are specified and target is already
   source parent, skip the operation.
 
+- Fix test
+  [gforcada]
+
 1.5 (2016-02-20)
 ----------------
 

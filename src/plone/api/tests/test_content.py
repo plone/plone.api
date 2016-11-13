@@ -964,7 +964,7 @@ class TestPloneApiContent(unittest.TestCase):
         )
         self.assertEqual(aq_base(view.context), aq_base(self.blog))
         self.assertEqual(view.__name__, 'plone')
-        self.assertTrue(hasattr(view, 'getIcon'))
+        self.assertTrue(hasattr(view, 'toLocalizedTime'))
 
         # Try another standard view.
         view = api.content.get_view(
