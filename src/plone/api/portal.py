@@ -35,15 +35,24 @@ except pkg_resources.DistributionNotFound:
     )
 
 try:
-    pkg_resources.get_distribution('Products.PrintingMailHost')
-except pkg_resources.DistributionNotFound:
+    from Products import PrintingMailHost
+except ImportError:
+    PrintingMailHost = None
+
+if not PrintingMailHost:
     PRINTINGMAILHOST_ENABLED = False
+elif (
+    PrintingMailHost.ENABLED is not None and
+    PrintingMailHost.ENABLED.lower() in PrintingMailHost.TRUISMS
+):
+    PRINTINGMAILHOST_ENABLED = True
+elif (
+    PrintingMailHost.ENABLED is None and
+    PrintingMailHost.DevelopmentMode is True
+):
+    PRINTINGMAILHOST_ENABLED = True
 else:
-    # PrintingMailHost only patches in debug mode.
-    # plone.api.env.debug_mode cannot be used here, because .env imports this
-    # file
-    import Globals
-    PRINTINGMAILHOST_ENABLED = Globals.DevelopmentMode
+    PRINTINGMAILHOST_ENABLED = False
 
 MISSING = object()
 

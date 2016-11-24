@@ -43,6 +43,10 @@ Fixes:
 - Fix test
   [gforcada]
 
+- Fix PRINTINGMAILHOST_ENABLED evaluation to respect Products.PrintingMailHost
+  internal logic
+  [ale-rt]
+
 1.5 (2016-02-20)
 ----------------
 
