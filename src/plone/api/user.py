@@ -232,7 +232,11 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
         else:
             username = user.getId()
 
-    user = portal_membership.getMemberById(username)
+    if username is None and user is None:
+        user = portal_membership.getAuthenticatedMember()
+    else:
+        user = portal_membership.getMemberById(username)
+
     if user is None:
         raise UserNotFoundError
 
