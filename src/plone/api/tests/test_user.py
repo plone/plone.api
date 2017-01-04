@@ -328,6 +328,15 @@ class TestPloneApiUser(unittest.TestCase):
         with self.assertRaises(UserNotFoundError):
             api.user.get_roles(username='theurbanspaceman')
 
+    def test_get_roles_anonymous(self):
+        """Test get_roles for an anonymous user."""
+        from AccessControl.users import nobody
+        with api.env.adopt_user(user=nobody):
+            self.assertEqual(
+                api.user.get_roles(),
+                ('Anonymous', )
+            )
+
     def test_get_roles_in_context(self):
         """Test get local and inherited roles for a user on an object"""
         api.user.create(
