@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Support user.get_roles for anonymous users. Refs #339
+  [jaroel]
 
 
 1.5.1 (2016-12-06)
