@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Allow to only get local roles for groups by passing inherit=False to groups.get_roles()
+  [pbauer]
 
 Bug fixes:
 
@@ -19,7 +20,7 @@ Bug fixes:
 
 - Fix imports from Globals that was removed in Zope4
   [pbauer]
-  
+
 - Fix 'bad' quotes.
   [adamcheasley]
 
@@ -29,6 +30,10 @@ Bug fixes:
 - Fix error in tests that try to add built-in roles, which no longer fails
   silently in Zope4.
   [MatthewWilkes]
+
+- Do not reassign global roles as local roles when using group.grant_roles()
+  [pbauer]
+
 
 1.5.1 (2016-12-06)
 ------------------

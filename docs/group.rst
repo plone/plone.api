@@ -261,7 +261,6 @@ By default it returns site-wide roles.
     EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader']
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
 
-
 If you pass in a content object, it will return the local roles of the group in that particular context.
 
 .. code-block:: python
@@ -279,6 +278,21 @@ If you pass in a content object, it will return the local roles of the group in 
 .. invisible-code-block: python
 
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
+
+If you pass in a content object and `inherit=False`, it will return only the local roles of the group on that particular object and ignore global roles.
+
+.. code-block:: python
+
+    api.group.grant_roles(
+        groupname='staff', roles=['Contributor'], obj=portal['folder_four'])
+
+    roles = api.group.get_roles(
+        groupname='staff', obj=portal['folder_four'], inherit=False)
+
+.. invisible-code-block: python
+
+    EXPECTED_OBJ_ROLES = ['Contributor']
+    self.assertEqual(set(EXPECTED_OBJ_ROLES), set(roles))
 
 
 .. _group_grant_roles_example:
@@ -318,6 +332,8 @@ If you pass in a content object, roles will be assigned in that particular conte
 .. invisible-code-block: python
 
     EXPECTED_CONTEXT_ROLES = EXPECTED_SITE_ROLES + ['Contributor']
+    roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
+    self.assertEqual(set(['Contributor']), set(roles))
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'])
     self.assertEqual(set(EXPECTED_CONTEXT_ROLES), set(roles))
 
@@ -344,6 +360,14 @@ To revoke roles already granted to a group, use the :meth:`api.group.revoke_role
 
 If you pass in a content object, it will revoke roles granted in that particular context.
 
+.. invisible-code-block: python
+
+    EXPECTED_CONTEXT_ROLES = ['Contributor']
+    roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
+    print set(EXPECTED_CONTEXT_ROLES), set(roles)
+    self.assertEqual(['Contributor'], roles)
+
+
 .. code-block:: python
 
     from plone import api
@@ -353,8 +377,9 @@ If you pass in a content object, it will revoke roles granted in that particular
 
 .. invisible-code-block: python
 
-    EXPECTED_CONTEXT_ROLES.remove('Contributor')
-    roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'])
+    EXPECTED_CONTEXT_ROLES = []
+    roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
+    print set(EXPECTED_CONTEXT_ROLES), set(roles)
     self.assertEqual(set(EXPECTED_CONTEXT_ROLES), set(roles))
 
 

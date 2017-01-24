@@ -196,7 +196,7 @@ def remove_user(groupname=None, group=None, username=None, user=None):
 
 @mutually_exclusive_parameters('groupname', 'group')
 @at_least_one_of('groupname', 'group')
-def get_roles(groupname=None, group=None, obj=None):
+def get_roles(groupname=None, group=None, obj=None, inherit=True):
     """Get group's site-wide or local roles.
 
     Arguments ``groupname`` and ``group`` are mutually exclusive. You can
@@ -219,12 +219,23 @@ def get_roles(groupname=None, group=None, obj=None):
         raise GroupNotFoundError
 
     group = group.getGroup()
-    # when context obj is available we bypass getRolesInContext method
-    # from PloneGroup class to use PloneUser class implementation because
-    # PloneGroup class disables all local roles support
-    # see: Products.PlonePAS.plugins.group.PloneGroup
-    return group.getRoles() if obj is None else \
-        super(group.__class__, group).getRolesInContext(obj)
+    if obj is None:
+        return group.getRoles()
+    elif inherit:
+        # when context obj is available we bypass getRolesInContext method
+        # from PloneGroup class to use PloneUser class implementation because
+        # PloneGroup class disables all local roles support
+        # see: Products.PlonePAS.plugins.group.PloneGroup
+        roles = super(group.__class__, group).getRolesInContext(obj)
+        return list(roles)
+    elif obj and not inherit:
+        # same as above we use the PloneUser version of getRolesInContext
+        plone_user = super(group.__class__, group)
+        lrmanagers = plone_user._getLocalRolesPlugins()
+        roles = set([])
+        for _, lrmanager in lrmanagers:
+            roles.update(lrmanager.getRolesInContext(plone_user, obj))
+        return list(roles)
 
 
 @required_parameters('roles')
@@ -253,7 +264,11 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
 
     group_id = groupname or group.id
 
-    actual_roles = get_roles(groupname=group_id, obj=obj)
+    if obj is None:
+        actual_roles = get_roles(groupname=group_id)
+    else:
+        actual_roles = get_roles(groupname=group_id, obj=obj, inherit=False)
+
     if actual_roles.count('Anonymous'):
         actual_roles.remove('Anonymous')
     if actual_roles.count('Authenticated'):
@@ -294,7 +309,10 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
 
     group_id = groupname or group.id
 
-    actual_roles = get_roles(groupname=group_id, obj=obj)
+    if obj is None:
+        actual_roles = get_roles(groupname=group_id)
+    else:
+        actual_roles = get_roles(groupname=group_id, obj=obj, inherit=False)
     if actual_roles.count('Anonymous'):
         actual_roles.remove('Anonymous')
     if actual_roles.count('Authenticated'):
