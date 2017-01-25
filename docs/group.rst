@@ -364,7 +364,6 @@ If you pass in a content object, it will revoke roles granted in that particular
 
     EXPECTED_CONTEXT_ROLES = ['Contributor']
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
-    print set(EXPECTED_CONTEXT_ROLES), set(roles)
     self.assertEqual(['Contributor'], roles)
 
 
@@ -379,7 +378,6 @@ If you pass in a content object, it will revoke roles granted in that particular
 
     EXPECTED_CONTEXT_ROLES = []
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
-    print set(EXPECTED_CONTEXT_ROLES), set(roles)
     self.assertEqual(set(EXPECTED_CONTEXT_ROLES), set(roles))
 
 
