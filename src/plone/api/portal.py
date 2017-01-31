@@ -285,8 +285,8 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
-            u"The interface parameter has to derive from "
-            u"zope.interface.Interface"
+            u'The interface parameter has to derive from '
+            u'zope.interface.Interface'
         )
 
     registry = getUtility(IRegistry)
@@ -327,7 +327,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
     records = [key for key in registry.records.keys() if name in key]
     if records:
         msg = (
-            "{0}\n"
+            '{0}\n'
             'Did you mean?:\n'
             '{1}'.format(msg, '\n'.join(records))
         )
