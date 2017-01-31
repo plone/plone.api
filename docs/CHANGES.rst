@@ -19,6 +19,9 @@ Bug fixes:
 
 - Fix imports from Globals that was removed in Zope4
   [pbauer]
+  
+- Fix "bad" quotes.
+  [adamcheasley]
 
 
 1.5.1 (2016-12-06)
