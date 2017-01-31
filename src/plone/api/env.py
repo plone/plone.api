@@ -2,6 +2,7 @@
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
+from App.config import getConfiguration
 from contextlib import contextmanager
 from pkg_resources import get_distribution
 from plone.api import portal
@@ -12,7 +13,6 @@ from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
 
-import Globals
 import traceback
 
 
@@ -181,7 +181,7 @@ def debug_mode():
 
     :Example: :ref:`env_debug_mode_example`
     """
-    return Globals.DevelopmentMode
+    return getConfiguration().debug_mode
 
 
 def test_mode():
