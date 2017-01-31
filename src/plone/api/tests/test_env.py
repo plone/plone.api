@@ -8,7 +8,6 @@ from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
 
 import AccessControl
-import Globals
 import unittest
 
 
@@ -51,7 +50,7 @@ class HasProtectedMethods(SimpleItem):
         pass
 
 
-Globals.InitializeClass(HasProtectedMethods)
+AccessControl.class_init.InitializeClass(HasProtectedMethods)
 
 
 class TestPloneApiEnv(unittest.TestCase):
