@@ -70,8 +70,8 @@ class TestPloneApiEnv(unittest.TestCase):
 
         # Roles need to be created by name before we can assign permissions
         # to them or grant them to users.
-        for role in ('Member', 'VIP', 'Manager'):
-            portal._addRole(role)
+        # 'Member' and 'Manager' already exist by default, we need to add 'VIP'
+        portal._addRole('VIP')
 
         for permission, roles in role_mapping:
             portal.manage_permission(permission, roles, 1)

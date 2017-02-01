@@ -20,6 +20,9 @@ Bug fixes:
 - Fix imports from Globals that was removed in Zope4
   [pbauer]
 
+- Fix error in tests that try to add built-in roles, which no longer fails
+  silently in Zope4.
+  [MatthewWilkes]
 
 1.5.1 (2016-12-06)
 ------------------
