@@ -19,6 +19,9 @@ Bug fixes:
 
 - Fix imports from Globals that was removed in Zope4
   [pbauer]
+  
+- Fix 'bad' quotes.
+  [adamcheasley]
 
 - Fix error in tests that try to add built-in roles, which no longer fails
   silently in Zope4.
