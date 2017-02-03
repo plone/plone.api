@@ -20,7 +20,7 @@ Bug fixes:
 - Fix imports from Globals that was removed in Zope4
   [pbauer]
   
-- Fix "bad" quotes.
+- Fix 'bad' quotes.
   [adamcheasley]
 
 
