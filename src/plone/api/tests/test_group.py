@@ -471,6 +471,84 @@ class TestPloneApiGroup(unittest.TestCase):
             ROLES,
             set(api.group.get_roles(group=group, obj=document)),
         )
+        ROLES = set(['Editor', 'Contributor'])
+        self.assertEqual(
+            ROLES,
+            set(api.group.get_roles(
+                groupname='foo', obj=folder, inherit=False)),
+        )
+        self.assertEqual(
+            ROLES,
+            set(api.group.get_roles(group=group, obj=folder, inherit=False)),
+        )
+        self.assertEqual(
+            ROLES,
+            set(api.group.get_roles(
+                groupname='foo', obj=document, inherit=False)),
+        )
+        self.assertEqual(
+            ROLES,
+            set(api.group.get_roles(group=group, obj=document, inherit=False)),
+        )
+
+    def test_local_roles_without_inheritance(self):
+        """Test granting and getting local_roles."""
+
+        api.group.create(groupname='foo')
+
+        portal = api.portal.get()
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One',
+        )
+        document = api.content.create(
+            container=folder,
+            type='Document',
+            id='document_one',
+            title='Document One',
+        )
+        self.assertEqual(
+            ['Authenticated'],
+            api.group.get_roles(groupname='foo'),
+        )
+        # Add the editor-role as global role
+        api.group.grant_roles(groupname='foo', roles=['Editor'])
+        self.assertEqual(
+            ['Authenticated', 'Editor'],
+            api.group.get_roles(groupname='foo'),
+        )
+        # local_roles plus global_roles
+        self.assertEqual(
+            ['Authenticated', 'Editor'],
+            api.group.get_roles(groupname='foo', obj=folder),
+        )
+        # only local_roles
+        self.assertEqual(
+            [],
+            api.group.get_roles(groupname='foo', obj=folder, inherit=False),
+        )
+
+        # The Contributor-role is added
+        api.group.grant_roles(
+            groupname='foo', roles=['Contributor'], obj=folder)
+        self.assertEqual(
+            ['Contributor'],
+            api.group.get_roles(groupname='foo', obj=folder, inherit=False),
+        )
+        # local_roles plus global_roles
+        self.assertEqual(
+            set(['Authenticated', 'Editor', 'Contributor']),
+            set(api.group.get_roles(groupname='foo', obj=document)),
+        )
+        # The Editor-role is added even though it is already a global role
+        api.group.grant_roles(groupname='foo', roles=['Editor'], obj=folder)
+        self.assertEqual(
+            set(['Contributor', 'Editor']),
+            set(api.group.get_roles(
+                groupname='foo', obj=folder, inherit=False)),
+        )
 
     def test_revoke_roles_in_context(self):
         """Test revoke roles."""
