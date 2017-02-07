@@ -228,7 +228,8 @@ def get_roles(groupname=None, group=None, obj=None, inherit=True):
         # see: Products.PlonePAS.plugins.group.PloneGroup
         roles = super(group.__class__, group).getRolesInContext(obj)
         return list(roles)
-    elif obj and not inherit:
+    else:
+        # get only the local roles on a object
         # same as above we use the PloneUser version of getRolesInContext
         plone_user = super(group.__class__, group)
         lrmanagers = plone_user._getLocalRolesPlugins()

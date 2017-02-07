@@ -10,7 +10,7 @@ Breaking changes:
 
 New features:
 
-- Allow to only get local roles for groups by passing inherit=False to groups.get_roles()
+- Passing inherit=False to groups.get_roles() will only get local roles for the group.
   [pbauer]
 
 Bug fixes:
