@@ -5,8 +5,9 @@ from Products.CMFCore.utils import getToolByName
 from borg.localrole.interfaces import ILocalRoleProvider
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
-from zope.component import adapter, provideAdapter
+from zope.component import adapter
 from zope.component import getGlobalSiteManager
+from zope.component import provideAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 
