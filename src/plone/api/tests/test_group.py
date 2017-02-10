@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.group."""
 
+from Products.CMFCore.utils import getToolByName
 from borg.localrole.interfaces import ILocalRoleProvider
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
-from Products.CMFCore.utils import getToolByName
 from zope.component import adapter, provideAdapter
 from zope.component import getGlobalSiteManager
 from zope.interface import implementer
 from zope.interface import Interface
-
 
 import mock
 import unittest
