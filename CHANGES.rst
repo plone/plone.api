@@ -34,7 +34,8 @@ Bug fixes:
 - Do not reassign global roles as local roles when using group.grant_roles()
   [pbauer]
 
-- reST syntax in documentation, follow style-guide
+- reST syntax in documentation, follow style-guide, adjust setup.py
+  [svx]
 
 1.5.1 (2016-12-06)
 ------------------
