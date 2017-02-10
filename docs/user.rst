@@ -12,8 +12,6 @@
 Users
 =====
 
-.. contents:: :local:
-
 
 .. _user_create_example:
 

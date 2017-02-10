@@ -12,9 +12,6 @@
 Portal
 ======
 
-.. contents:: :local:
-
-
 .. _portal_get_example:
 
 Get portal object
@@ -38,7 +35,9 @@ Getting the Plone portal object is easy with :meth:`api.portal.get`.
 Get navigation root
 -------------------
 
-In multilingual or multi-site Plone installations you probably want to get the language-specific navigation root object, not the top portal object.
+In multilingual or multi-site Plone installations you probably want to get the language-specific navigation root object,
+not the top portal object.
+
 You do this with :meth:`api.portal.get_navigation_root()`.
 
 Assuming there is a document ``english_page`` in a folder ``en``, which is the navigation root:
