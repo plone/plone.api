@@ -268,7 +268,9 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
     if obj is None:
         actual_roles = get_roles(groupname=group_id)
     else:
-        actual_roles = get_roles(groupname=group_id, obj=obj, inherit=False)
+        # only roles persistent on the object, not from other providers
+        local_roles = getattr(obj, '__ac_local_roles__', {})
+        actual_roles = local_roles.get(group_id, [])
 
     if actual_roles.count('Anonymous'):
         actual_roles.remove('Anonymous')

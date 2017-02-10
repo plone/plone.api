@@ -37,6 +37,9 @@ Bug fixes:
 - reST syntax in documentation, follow style-guide, adjust setup.py
   [svx]
 
+- Do not reassign dynamic roles as local roles when using group.grant_roles().
+  [pbauer]
+
 1.5.1 (2016-12-06)
 ------------------
 
