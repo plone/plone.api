@@ -12,7 +12,6 @@
 Groups
 ======
 
-.. contents:: :local:
 
 
 .. _group_create_example:

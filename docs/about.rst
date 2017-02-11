@@ -9,9 +9,6 @@
 About
 =====
 
-.. contents:: :local:
-
-
 Inspiration
 ===========
 

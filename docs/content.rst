@@ -9,15 +9,14 @@
 
 .. _chapter_content:
 
+=======
 Content
 =======
-
-.. contents:: :local:
 
 .. _content_create_example:
 
 Create content
---------------
+==============
 
 To add an object, you must first have a container to put it in.
 Get the portal object; it will serve nicely:
@@ -49,7 +48,7 @@ The ``id`` of the new object is automatically and safely generated from its ``ti
 .. _content_get_example:
 
 Get content object
-------------------
+==================
 
 There are several approaches to getting your content object.
 Consider the following portal structure::
@@ -121,7 +120,7 @@ The following operations will get objects from the stucture above, including usi
 .. _content_find_example:
 
 Find content objects
---------------------
+====================
 
 You can use the find function to search for content.
 
@@ -205,7 +204,9 @@ Combining multiple arguments:
     self.assertGreater(len(documents), 0)
 
 
-More information about how to use the catalog may be found in the `Plone Documentation <http://docs.plone.org/develop/plone/searching_and_indexing/index.html>`_.
+More information about how to use the catalog may be found in the
+`Plone Documentation <http://docs.plone.org/develop/plone/searching_and_indexing/index.html>`_.
+
 Note that the catalog returns *brains* (metadata stored in indexes) and not objects.
 However, calling ``getObject()`` on brains does in fact give you the object.
 
@@ -217,7 +218,7 @@ However, calling ``getObject()`` on brains does in fact give you the object.
 .. _content_get_uuid_example:
 
 Get content object UUID
------------------------
+=======================
 
 A Universally Unique IDentifier (UUID) is a unique, non-human-readable identifier for a content object which remains constant for the object even if the object is moved.
 
@@ -241,7 +242,7 @@ The following code gets the UUID of the ``contact`` document.
 .. _content_move_example:
 
 Move content
-------------
+============
 
 To move content around the portal structure defined above use the :meth:`api.content.move` method.
 The code below moves the ``contact`` item (with all it contains) out of the folder ``about`` and into the Plone portal root.
@@ -266,7 +267,7 @@ By default it will retain its original ID.
 .. _content_rename_example:
 
 Rename content
---------------
+==============
 
 To rename a content object (change its ID), use the :meth:`api.content.rename` method.
 
@@ -285,7 +286,7 @@ To rename a content object (change its ID), use the :meth:`api.content.rename` m
 .. _content_copy_example:
 
 Copy content
-------------
+============
 
 To copy a content object, use the :meth:`api.content.copy` method.
 
@@ -323,7 +324,7 @@ This will duplicate your content object in the same container and assign it a ne
 .. _content_delete_example:
 
 Delete content
---------------
+==============
 
 To delete a content object, pass the object to the :meth:`api.content.delete` method:
 
@@ -383,7 +384,7 @@ If deleting content would result in broken links you will get a `LinkIntegrityNo
 .. _content_manipulation_with_safe_id_option:
 
 Content manipulation with the `safe_id` option
-----------------------------------------------
+==============================================
 
 When you manipulate content with :meth:`api.content.create`, :meth:`api.content.move` or :meth:`api.content.copy` the `safe_id` flag is disabled by default.
 This means the uniqueness of IDs will be enforced.
@@ -404,7 +405,7 @@ However, if the `safe_id` option is enabled, a non-conflicting ID will be genera
 .. _content_get_state_example:
 
 Get workflow state
-------------------
+==================
 
 To find out the current workflow state of your content, use the :meth:`api.content.get_state` method.
 
@@ -433,7 +434,7 @@ The optional `default` argument is returned if no workflow is defined for the ob
 .. _content_transition_example:
 
 Transition
-----------
+==========
 
 To transition your content to a new workflow state, use the :meth:`api.content.transition` method.
 
@@ -464,7 +465,7 @@ These arguments can be saved to your transition using custom workflow variables 
 .. _content_get_view_example:
 
 Get view
---------
+========
 
 To get a :class:`BrowserView` for your content, use :meth:`api.content.get_view`.
 
@@ -484,6 +485,6 @@ To get a :class:`BrowserView` for your content, use :meth:`api.content.get_view`
 
 
 Further reading
----------------
+===============
 
 For more information on possible flags and usage options please see the full :ref:`plone-api-content` specification.

@@ -9,16 +9,14 @@
 
 .. _chapter_env:
 
+===========
 Environment
 ===========
-
-.. contents:: :local:
-
 
 .. _env_adopt_roles_example:
 
 Switch roles inside a block
----------------------------
+===========================
 
 To temporarily override the list of available roles, use :meth:`api.env.adopt_roles`.
 This is especially useful in unit tests.
@@ -42,7 +40,7 @@ This is especially useful in unit tests.
 .. _env_adopt_user_example:
 
 Switch user inside a block
---------------------------
+==========================
 
 To temporarily override the currently active user, use :meth:`api.env.adopt_user`.
 
@@ -75,7 +73,7 @@ To temporarily override the currently active user, use :meth:`api.env.adopt_user
 .. _env_debug_mode_example:
 
 Debug mode
-----------
+==========
 
 To know if your Zope instance is running in debug mode, use :meth:`api.env.debug_mode`.
 
@@ -91,7 +89,7 @@ To know if your Zope instance is running in debug mode, use :meth:`api.env.debug
 .. _env_test_mode_example:
 
 Test mode
----------
+=========
 
 To know if your Plone instance is running in a test runner, use :meth:`api.env.test_mode`.
 
@@ -107,7 +105,7 @@ To know if your Plone instance is running in a test runner, use :meth:`api.env.t
 .. _env_plone_version_example:
 
 Plone version
--------------
+=============
 
 To know which version of Plone you are using, use :meth:`api.env.plone_version`.
 
@@ -123,7 +121,7 @@ To know which version of Plone you are using, use :meth:`api.env.plone_version`.
 .. _env_zope_version_example:
 
 Zope version
-------------
+============
 
 To know which version of Zope 2 you are using, use :meth:`api.env.zope_version`.
 
@@ -137,6 +135,6 @@ To know which version of Zope 2 you are using, use :meth:`api.env.zope_version`.
 
 
 Further reading
----------------
+===============
 
 For more information on possible flags and usage options please see the full :ref:`plone-api-env` specification.
