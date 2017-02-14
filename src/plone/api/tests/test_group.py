@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.group."""
 
+from Products.CMFCore.utils import getToolByName
+from borg.localrole.interfaces import ILocalRoleProvider
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
-from Products.CMFCore.utils import getToolByName
+from zope.component import adapter
+from zope.component import getGlobalSiteManager
+from zope.component import provideAdapter
+from zope.interface import implementer
+from zope.interface import Interface
 
 import mock
 import unittest
@@ -549,6 +555,75 @@ class TestPloneApiGroup(unittest.TestCase):
             set(api.group.get_roles(
                 groupname='foo', obj=folder, inherit=False)),
         )
+
+    def test_local_roles_disregard_adapter(self):
+        """Test that borg.localrole-adpaters are not copied when granting
+        local roles."""
+
+        portal = api.portal.get()
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One',
+        )
+        api.group.create(groupname='foo')
+
+        self.assertEqual(
+            api.group.get_roles(groupname='foo', obj=folder),
+            ['Authenticated'],
+        )
+        self.assertEqual(
+            api.group.get_roles(groupname='foo', obj=folder, inherit=False),
+            [],
+        )
+
+        # throw in a adapter granting the reviewer-roles
+        @adapter(Interface)
+        @implementer(ILocalRoleProvider)
+        class LocalRoleProvider(object):
+
+            def __init__(self, context):
+                self.context = context
+
+            def getRoles(self, principal_id):
+                return ('Reviewer',)
+
+        provideAdapter(LocalRoleProvider)
+
+        # the adapter-role is added for get_role
+        self.assertItemsEqual(
+            api.group.get_roles(groupname='foo', obj=folder),
+            ['Authenticated', 'Reviewer'],
+        )
+
+        self.assertItemsEqual(
+            api.group.get_roles(groupname='foo', obj=folder, inherit=False),
+            ['Reviewer'],
+        )
+
+        # Assign a local role
+        api.group.grant_roles(
+            groupname='foo', roles=['Contributor'], obj=folder)
+        self.assertItemsEqual(
+            api.group.get_roles(groupname='foo', obj=folder),
+            ['Authenticated', 'Contributor', 'Reviewer'],
+        )
+
+        # The adapter role in in the local roles but not persistent
+        self.assertEqual(
+            api.group.get_roles(groupname='foo', obj=folder, inherit=False),
+            ['Contributor', 'Reviewer'],
+        )
+        local_roles = getattr(folder, '__ac_local_roles__', {})
+        self.assertEqual(
+            local_roles.get('foo'),
+            ['Contributor'],
+        )
+        # cleanup
+        gsm = getGlobalSiteManager()
+        gsm.unregisterAdapter(
+            factory=LocalRoleProvider, provided=ILocalRoleProvider)
 
     def test_revoke_roles_in_context(self):
         """Test revoke roles."""
