@@ -4,10 +4,6 @@ Changelog
 1.6 (unreleased)
 ----------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Passing inherit=False to groups.get_roles() will only get local roles for the group.
