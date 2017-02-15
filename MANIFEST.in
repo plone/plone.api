@@ -1,4 +1,4 @@
-include *.rst
+include *.rst LICENSE
 
 # Ignore most of the docs directory.
 prune docs
