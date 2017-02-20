@@ -8,8 +8,8 @@ from plone.api.tests.base import INTEGRATION_TESTING
 from zope.component import adapter
 from zope.component import getGlobalSiteManager
 from zope.component import provideAdapter
-from zope.interface import implementer
 from zope.interface import Interface
+from zope.interface import implementer
 
 import mock
 import unittest

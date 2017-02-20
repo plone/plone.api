@@ -397,12 +397,12 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_roles_local_includes_group_roles(self):
         """Test if get local roles for a user on an object respects groups."""
-        user = api.user.create(
+        api.user.create(
             username='chuck',
             email='chuck@norris.org',
             password='secret',
         )
-        group = api.group.create('foo', roles=['Reviewer'])
+        api.group.create('foo', roles=['Reviewer'])
         api.group.add_user(groupname='foo', username='chuck')
 
         portal = api.portal.get()
