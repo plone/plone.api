@@ -13,6 +13,7 @@ from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
+from Products.PlonePAS.interfaces.plugins import ILocalRolesPlugin
 
 import random
 import string
@@ -244,7 +245,18 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
         if inherit:
             return user.getRolesInContext(obj)
         else:
-            return obj.get_local_roles_for_userid(username)
+            # Include roles inherited from being the member of a group
+            # and from adapters granting local roles
+            plone_user = user.getUser()
+            principal_ids = list(plone_user.getGroups())
+            principal_ids.insert(0, plone_user.getId())
+            roles = set([])
+            pas = portal.get_tool('acl_users')
+            for _, lrmanager in pas.plugins.listPlugins(ILocalRolesPlugin):
+                for adapter in lrmanager._getAdapters(obj):
+                    for pid in principal_ids:
+                        roles.update(adapter.getRoles(pid))
+            return list(roles)
     else:
         return user.getRoles()
 
@@ -367,7 +379,12 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise InvalidParameterError
 
-    roles.extend(get_roles(user=user, obj=obj, inherit=False))
+    if obj is None:
+        actual_roles = get_roles(user=user)
+    else:
+        # only roles persistent on the object, not from other providers
+        actual_roles = obj.get_local_roles_for_userid(username)
+    roles = list(set(actual_roles) | set(roles))
 
     if obj is None:
         user.setSecurityProfile(roles=roles)

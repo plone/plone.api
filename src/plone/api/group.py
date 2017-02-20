@@ -8,6 +8,7 @@ from plone.api.user import get as user_get
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
+from Products.PlonePAS.interfaces.plugins import ILocalRolesPlugin
 
 
 @required_parameters('groupname')
@@ -230,12 +231,18 @@ def get_roles(groupname=None, group=None, obj=None, inherit=True):
         return list(roles)
     else:
         # get only the local roles on a object
-        # same as above we use the PloneUser version of getRolesInContext
+        # same as above we use the PloneUser version of getRolesInContext.
+        # Include roles inherited from being the member of a group
+        # and from adapters granting local roles
         plone_user = super(group.__class__, group)
-        lrmanagers = plone_user._getLocalRolesPlugins()
+        principal_ids = list(plone_user.getGroups())
+        principal_ids.insert(0, plone_user.getId())
         roles = set([])
-        for _, lrmanager in lrmanagers:
-            roles.update(lrmanager.getRolesInContext(plone_user, obj))
+        pas = portal.get_tool('acl_users')
+        for _, lrmanager in pas.plugins.listPlugins(ILocalRolesPlugin):
+            for adapter in lrmanager._getAdapters(obj):
+                for pid in principal_ids:
+                    roles.update(adapter.getRoles(pid))
         return list(roles)
 
 
@@ -269,8 +276,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         actual_roles = get_roles(groupname=group_id)
     else:
         # only roles persistent on the object, not from other providers
-        local_roles = getattr(obj, '__ac_local_roles__', {})
-        actual_roles = local_roles.get(group_id, [])
+        actual_roles = obj.get_local_roles_for_userid(group_id)
 
     if actual_roles.count('Anonymous'):
         actual_roles.remove('Anonymous')

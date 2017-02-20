@@ -488,12 +488,12 @@ class TestPloneApiGroup(unittest.TestCase):
             set(api.group.get_roles(group=group, obj=folder, inherit=False)),
         )
         self.assertEqual(
-            ROLES,
+            set([]),
             set(api.group.get_roles(
                 groupname='foo', obj=document, inherit=False)),
         )
         self.assertEqual(
-            ROLES,
+            set([]),
             set(api.group.get_roles(group=group, obj=document, inherit=False)),
         )
 
@@ -548,6 +548,19 @@ class TestPloneApiGroup(unittest.TestCase):
             set(['Authenticated', 'Editor', 'Contributor']),
             set(api.group.get_roles(groupname='foo', obj=document)),
         )
+        # no only-local roles
+        self.assertEqual(
+            set([]),
+            set(api.group.get_roles(groupname='foo', obj=document, inherit=False)),  # noqa
+        )
+        api.group.grant_roles(
+            groupname='foo', roles=['Contributor'], obj=document)
+        # one only-local role
+        self.assertEqual(
+            set(['Contributor']),
+            set(api.group.get_roles(groupname='foo', obj=document, inherit=False)),  # noqa
+        )
+
         # The Editor-role is added even though it is already a global role
         api.group.grant_roles(groupname='foo', roles=['Editor'], obj=folder)
         self.assertEqual(
