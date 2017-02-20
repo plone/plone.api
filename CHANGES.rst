@@ -14,8 +14,17 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Do not reassign dynamic roles as local roles when using user.grant_roles().
+  Fixes same issue as #351 for groups.
+  [pbauer]
 
+- Include local roles granted from being in a group when using "inherit=False"
+  in user.get_roles. Fixes #346
+  [pbauer]
+
+- Ignore local roles granted on parents when using "inherit=False" in either
+  user.get_roles or group.get_roles. Fixes #354
+  [pbauer]
 
 1.6 (2017-02-15)
 ----------------

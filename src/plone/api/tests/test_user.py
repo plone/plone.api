@@ -2,11 +2,17 @@
 """Tests for plone.api.user."""
 
 from AccessControl.Permission import getPermissions
+from borg.localrole.interfaces import ILocalRoleProvider
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from zope.component import adapter
+from zope.component import getGlobalSiteManager
+from zope.component import provideAdapter
+from zope.interface import implementer
+from zope.interface import Interface
 
 import mock
 import unittest
@@ -389,6 +395,53 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.get_roles(username='chuck', obj=document, inherit=False),
         )
 
+    def test_get_roles_local_includes_group_roles(self):
+        """Test if get local roles for a user on an object respects groups."""
+        api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+        api.group.create('foo', roles=['Reviewer'])
+        api.group.add_user(groupname='foo', username='chuck')
+
+        portal = api.portal.get()
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One',
+        )
+        document = api.content.create(
+            container=folder,
+            type='Document',
+            id='document_one',
+            title='Document One',
+        )
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=document),
+            ['Member', 'Reviewer', 'Authenticated'],
+        )
+        api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=document),
+            ['Member', 'Reviewer', 'Authenticated', 'Editor'],
+        )
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=document, inherit=False),
+            [],
+        )
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=folder, inherit=False),
+            ['Editor'],
+        )
+        api.group.grant_roles(
+            groupname='foo', roles=['Contributor'], obj=document)
+        self.assertEqual(
+            ['Contributor'],
+            api.user.get_roles(username='chuck', obj=document, inherit=False),
+        )
+
     def test_get_permissions_root(self):
         """Test get permissions on site root."""
 
@@ -695,7 +748,7 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.get_roles(username='chuck', obj=folder),
         )
         self.assertEqual(
-            ('Editor',),
+            ['Editor'],
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
         )
         self.assertIn(
@@ -744,6 +797,121 @@ class TestPloneApiUser(unittest.TestCase):
             ROLES,
             set(api.user.get_roles(user=user, obj=document)),
         )
+
+    def test_grant_roles_disregards_adapter(self):
+        """Test that borg.localrole-adpaters are not copied when granting
+        local roles."""
+
+        portal = api.portal.get()
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One',
+        )
+        document = api.content.create(
+            container=folder,
+            type='Document',
+            id='document_one',
+            title='Document One',
+        )
+        user = api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=folder),
+            ['Member', 'Authenticated'],
+        )
+        self.assertFalse(
+            api.user.get_roles(user=user, obj=folder, inherit=False),
+        )
+
+        # throw in a adapter granting the reviewer-roles
+        @adapter(Interface)
+        @implementer(ILocalRoleProvider)
+        class LocalRoleProvider(object):
+
+            def __init__(self, context):
+                self.context = context
+
+            def getRoles(self, principal_id):
+                return ('Reviewer',)
+
+        provideAdapter(LocalRoleProvider)
+
+        # the adapter-role is added for get_role
+        self.assertItemsEqual(
+            api.user.get_roles(username='chuck', obj=folder),
+            ['Member', 'Authenticated', 'Reviewer'],
+        )
+
+        self.assertItemsEqual(
+            api.user.get_roles(username='chuck', obj=folder, inherit=False),
+            ['Reviewer'],
+        )
+
+        # Assign a local role
+        api.user.grant_roles(
+            username='chuck', roles=['Contributor'], obj=folder)
+        self.assertItemsEqual(
+            api.user.get_roles(username='chuck', obj=folder),
+            ['Member', 'Authenticated', 'Contributor', 'Reviewer'],
+        )
+
+        # The adapter role is in in the local roles but not persistent
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=folder, inherit=False),
+            ['Contributor', 'Reviewer'],
+        )
+        local_roles = getattr(folder, '__ac_local_roles__', {})
+        self.assertEqual(
+            local_roles.get('chuck'),
+            ['Contributor'],
+        )
+
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=document, inherit=False),
+            ['Reviewer'],
+        )
+        self.assertItemsEqual(
+            api.user.get_roles(username='chuck', obj=document),
+            ['Member', 'Authenticated', 'Contributor', 'Reviewer'],
+        )
+
+        # add a group and test mix of group and adapter and user-roles
+        api.group.create('foo')
+        api.group.grant_roles(groupname='foo', roles=['Contributor'], obj=document)  # noqa
+        api.group.add_user(groupname='foo', username='chuck')
+
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=document, inherit=False),
+            ['Contributor', 'Reviewer'],
+        )
+        api.group.grant_roles(groupname='foo', roles=['Manager'], obj=folder)
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=document, inherit=False),
+            ['Contributor', 'Reviewer'],
+        )
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=document),
+            ['Contributor', 'Reviewer', 'Manager', 'Authenticated', 'Member'],
+        )
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=folder),
+            ['Contributor', 'Reviewer', 'Manager', 'Authenticated', 'Member'],
+        )
+        self.assertEqual(
+            api.user.get_roles(username='chuck', obj=folder, inherit=False),
+            ['Contributor', 'Reviewer', 'Manager'],
+        )
+
+        # cleanup
+        gsm = getGlobalSiteManager()
+        gsm.unregisterAdapter(
+            factory=LocalRoleProvider, provided=ILocalRoleProvider)
 
     def test_revoke_roles_in_context(self):
         """Test revoke roles."""
@@ -822,15 +990,15 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEqual(
             ROLES, set(api.user.get_roles(user=user, obj=document)))
         self.assertEqual(
-            (),
+            [],
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
         )
         self.assertEqual(
-            (),
+            [],
             api.user.get_roles(user=user, obj=folder, inherit=False))
         self.assertEqual(
-            (),
+            [],
             api.user.get_roles(username='chuck', obj=document, inherit=False))
         self.assertEqual(
-            (),
+            [],
             api.user.get_roles(user=user, obj=document, inherit=False))
