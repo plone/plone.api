@@ -310,19 +310,11 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
                 pass
 
     else:
-        if check_linkintegrity:
-            if NEW_LINKINTEGRITY:
-                # there are no breaches so we need to skip the check
-                for obj in objects:
-                    delete(obj=obj, check_linkintegrity=False)
-            else:
-                # old the check will be done by manage_delObjects
-                for obj in objects:
-                    delete(obj=obj, check_linkintegrity=True)
-
-        else:
-            for obj in objects:
-                delete(obj=obj, check_linkintegrity=False)
+        check = False
+        if check_linkintegrity and not NEW_LINKINTEGRITY:
+            check = True
+        for obj in objects:
+            delete(obj=obj, check_linkintegrity=check)
 
 
 @required_parameters('obj')
