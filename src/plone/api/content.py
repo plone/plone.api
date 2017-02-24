@@ -291,37 +291,27 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
             context=site,
             request=site.REQUEST)
 
+        objects_to_check = objects or [obj]
+        breaches = linkintegrity_view.get_breaches(objects_to_check)
+        if breaches:
+            raise LinkIntegrityNotificationException(
+                'Linkintegrity-breaches: {0}'.format(breaches)
+            )
+
     if obj is not None:
-        if check_linkintegrity:
-            if NEW_LINKINTEGRITY:
-                # new: look for breaches and manually raise a exception
-                breaches = linkintegrity_view.get_breaches([obj])
-                if breaches:
-                    raise LinkIntegrityNotificationException(
-                        'Linkintegrity-breaches: {0}'.format(breaches)
-                    )
-            # old: exception will be raised when there are breaches
+        if check_linkintegrity or (
+                not check_linkintegrity and NEW_LINKINTEGRITY):
             obj.aq_parent.manage_delObjects([obj.getId()])
         else:
-            if NEW_LINKINTEGRITY:
-                # new: deleting ignores linkintegrity-breaches
+            # old: we have to explicitly ignore the exception
+            try:
                 obj.aq_parent.manage_delObjects([obj.getId()])
-            else:
-                # old: we have to explicitly ignore the exception
-                try:
-                    obj.aq_parent.manage_delObjects([obj.getId()])
-                except LinkIntegrityNotificationException:
-                    pass
+            except LinkIntegrityNotificationException:
+                pass
 
     else:
         if check_linkintegrity:
             if NEW_LINKINTEGRITY:
-                # new: check for unresolved breaches for all objects
-                breaches = linkintegrity_view.get_breaches(objects)
-                if breaches:
-                    raise LinkIntegrityNotificationException(
-                        'Linkintegrity-breaches: {0}'.format(breaches)
-                    )
                 # there are no breaches so we need to skip the check
                 for obj in objects:
                     delete(obj=obj, check_linkintegrity=False)
@@ -358,6 +348,37 @@ def get_state(obj=None, default=_marker):
     return workflow.getInfoFor(ob=obj, name='review_state')
 
 
+# work backwards from our end state
+def _find_path(maps, path, current_state, start_state):
+    paths = []
+    # current_state could not be on maps if it only has outgoing
+    # transitions. i.e an initial state you are not able to return to.
+    if current_state not in maps:
+        return
+    for new_transition, from_states in maps[current_state]:
+        next_path = _copy(path)
+        if new_transition in path:
+            # Don't go in a circle
+            continue
+
+        next_path.insert(0, new_transition)
+        if start_state in from_states:
+            paths.append(next_path)
+            continue
+
+        for state in from_states:
+            recursive_paths = _find_path(
+                maps,
+                next_path,
+                state,
+                start_state,
+            )
+            if recursive_paths:
+                paths.append(recursive_paths)
+
+    return len(paths) and min(paths, key=len) or None
+
+
 def _wf_transitions_for(workflow, from_state, to_state):
     """Get a list of transition IDs required to transition
     from ``from_state`` to ``to_state``.
@@ -390,37 +411,38 @@ def _wf_transitions_for(workflow, from_state, to_state):
         # impossible to reach via this workflow
         return None
 
-    # work backwards from our end state
-    def find_path(maps, path, current_state, start_state):
-        paths = []
-        # current_state could not be on maps if it only has outgoing
-        # transitions. i.e an initial state you are not able to return to.
-        if current_state not in maps:
+    return _find_path(transition_maps, [], to_state, from_state)
+
+
+def _transition_to(obj, workflow, to_state, **kwargs):
+    # move from the current state to the given state
+    # via any route we can find
+    for wf in workflow.getWorkflowsFor(obj):
+        status = workflow.getStatusOf(wf.getId(), obj)
+        if not status or not status.get('review_state'):
+            continue
+        if status['review_state'] == to_state:
             return
-        for new_transition, from_states in maps[current_state]:
-            next_path = _copy(path)
-            if new_transition in path:
-                # Don't go in a circle
-                continue
 
-            next_path.insert(0, new_transition)
-            if start_state in from_states:
-                paths.append(next_path)
-                continue
+        transitions = _wf_transitions_for(
+            wf,
+            status['review_state'],
+            to_state,
+        )
+        if not transitions:
+            continue
 
-            for state in from_states:
-                recursive_paths = find_path(
-                    maps,
-                    next_path,
-                    state,
-                    start_state,
-                )
-                if recursive_paths:
-                    paths.append(recursive_paths)
+        for transition in transitions:
+            try:
+                workflow.doActionFor(obj, transition, **kwargs)
+            except WorkflowException:
+                # take into account automatic transitions.
+                # If the transitions list that are being iterated over
+                # have automatic transitions they need to be skipped
+                if get_state(obj) == to_state:
+                    break
 
-        return len(paths) and min(paths, key=len) or None
-
-    return find_path(transition_maps, [], to_state, from_state)
+        break
 
 
 @required_parameters('obj')
@@ -460,35 +482,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
                 '{1}'.format(transition, '\n'.join(sorted(transitions)))
             )
     else:
-        # move from the current state to the given state
-        # via any route we can find
-        for wf in workflow.getWorkflowsFor(obj):
-            status = workflow.getStatusOf(wf.getId(), obj)
-            if not status or not status.get('review_state'):
-                continue
-            if status['review_state'] == to_state:
-                return
-
-            transitions = _wf_transitions_for(
-                wf,
-                status['review_state'],
-                to_state,
-            )
-            if not transitions:
-                continue
-
-            for transition in transitions:
-                try:
-                    workflow.doActionFor(obj, transition, **kwargs)
-                except WorkflowException:
-                    # take into account automatic transitions.
-                    # If the transitions list that are being iterated over
-                    # have automatic transitions they need to be skipped
-                    if get_state(obj) == to_state:
-                        break
-
-            break
-
+        _transition_to(obj, workflow, to_state, **kwargs)
         if workflow.getInfoFor(obj, 'review_state') != to_state:
             raise InvalidParameterError(
                 'Could not find workflow to set state to {0} on {1}'.format(
