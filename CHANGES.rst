@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Simplify delete and transition functions.
+  [adamcheasley]
+
 - Do not reassign dynamic roles as local roles when using user.grant_roles().
   Fixes same issue as #351 for groups.
   [pbauer]
