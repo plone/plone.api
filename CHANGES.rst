@@ -4,14 +4,6 @@ Changelog
 1.6.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Simplify delete and transition functions.
