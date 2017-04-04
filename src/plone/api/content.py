@@ -266,6 +266,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
         return target[new_id]
 
 
+@mutually_exclusive_parameters('obj', 'objects')
 @at_least_one_of('obj', 'objects')
 def delete(obj=None, objects=None, check_linkintegrity=True):
     """Delete the object(s).
@@ -284,6 +285,8 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
 
     :Example: :ref:`content_delete_example`
     """
+    objects = objects or [obj]
+
     if check_linkintegrity and NEW_LINKINTEGRITY:
         site = portal.get()
         linkintegrity_view = get_view(
@@ -291,30 +294,24 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
             context=site,
             request=site.REQUEST)
 
-        objects_to_check = objects or [obj]
-        breaches = linkintegrity_view.get_breaches(objects_to_check)
+        # look for breaches and manually raise a exception
+        breaches = linkintegrity_view.get_breaches(objects)
         if breaches:
             raise LinkIntegrityNotificationException(
                 'Linkintegrity-breaches: {0}'.format(breaches)
             )
 
-    if obj is not None:
-        if check_linkintegrity or (
-                not check_linkintegrity and NEW_LINKINTEGRITY):
-            obj.aq_parent.manage_delObjects([obj.getId()])
-        else:
-            # old: we have to explicitly ignore the exception
+    for obj_ in objects:
+        if not check_linkintegrity and not NEW_LINKINTEGRITY:
+            # old style ignoring breaches:
+            # we have to explicitly ignore the exception
             try:
-                obj.aq_parent.manage_delObjects([obj.getId()])
+                obj_.aq_parent.manage_delObjects([obj_.getId()])
             except LinkIntegrityNotificationException:
                 pass
-
-    else:
-        check = False
-        if check_linkintegrity and not NEW_LINKINTEGRITY:
-            check = True
-        for obj in objects:
-            delete(obj=obj, check_linkintegrity=check)
+        else:
+            # All other cases
+            obj_.aq_parent.manage_delObjects([obj_.getId()])
 
 
 @required_parameters('obj')
