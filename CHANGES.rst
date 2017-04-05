@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Simplify the ``plone.api.content.delete`` method.
+  [thet]
 
 
 1.6.1 (2017-03-31)
