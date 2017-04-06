@@ -261,7 +261,11 @@ def copy(source=None, target=None, id=None, safe_id=False):
 
     new_id = copy_info[0]['new_id']
     if id:
-        return rename(obj=target[new_id], new_id=id, safe_id=safe_id)
+        if not safe_id and id in target:
+            msg = "Duplicate ID '{0}' in '{1}' for '{2}'"
+            raise InvalidParameterError(msg.format(id, target, source))
+        else:
+            return rename(obj=target[new_id], new_id=id, safe_id=safe_id)
     else:
         return target[new_id]
 

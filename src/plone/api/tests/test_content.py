@@ -594,6 +594,17 @@ class TestPloneApiContent(unittest.TestCase):
         assert container['bargains']['item'].aq_base is bargain.aq_base
         assert container['products']['item']
 
+    def test_copy_same_id(self):
+        obj = self.contact
+
+        # Using the same id should fail
+        from plone.api.exc import InvalidParameterError
+        with self.assertRaises(InvalidParameterError):
+            api.content.copy(obj, obj.__parent__, obj.id)
+
+        # Using safe_id=True should work
+        api.content.copy(obj, obj.__parent__, obj.id, safe_id=True)
+
     def test_delete_constraints(self):
         """Test the constraints for deleting content."""
 

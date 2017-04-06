@@ -17,6 +17,9 @@ Bug fixes:
 - Simplify the ``plone.api.content.delete`` method.
   [thet]
 
+- content.copy with safe_id=False should raise it's own exeception. Fixes #340
+  [jaroel]
+
 
 1.6.1 (2017-03-31)
 ------------------
