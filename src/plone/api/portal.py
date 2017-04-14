@@ -255,7 +255,7 @@ def show_message(message=None, request=None, type='info'):
     :param message: [required] Message to show.
     :type message: string
     :param request: [required] Request.
-    :type request: TODO: hm?
+    :type request: TODO: hm?  # NOQA: T000
     :param type: Message type. Possible values: 'info', 'warn', 'error'
     :type type: string
     :raises:

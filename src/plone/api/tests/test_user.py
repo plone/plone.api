@@ -323,7 +323,7 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_permissions_no_parameters(self):
         """Test get_permissions passing no parameters."""
-        self.assertEqual(  # TODO: maybe assertItemsEqual?
+        self.assertEqual(  # TODO: maybe assertItemsEqual?  # NOQA: T000
             set(p[0] for p in getPermissions()),
             set(api.user.get_permissions().keys())
         )

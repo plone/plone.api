@@ -109,12 +109,17 @@ Read-Only mode
 
 To know if your Zope / Plone instance is running on a read-only ZODB connection use :meth:`api.env.read_only_mode`.
 
+**Use-Case:**
+If you run a ZRS or RelStorage cluster with active replication where all replicas are read-only be default.
+You could check if your instance is connected to a read only ZODB or a writeable ZODB.
+Therefore you could adjust the UI to prevent create, delete or update pages are shown.
+
 .. code-block:: python
 
     from plone import api
 
-    in_test_mode = api.env.read_only_mode()
-    if in_test_mode:
+    is_read_only = api.env.read_only_mode()
+    if is_read_only:
         pass  # do something
 
 
