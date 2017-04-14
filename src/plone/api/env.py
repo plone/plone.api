@@ -201,6 +201,17 @@ def test_mode():
     return IS_TEST
 
 
+def read_only_mode():
+    """Returns True if you are running the zope instance on an read only ZODB.
+
+    :Example: :ref:`env_read_only_mode_example`
+    """
+    conn = Globals.DB.open()
+    isReadOnly = conn.isReadOnly()
+    conn.close()
+    return isReadOnly
+
+
 def plone_version():
     """Return Plone version number.
 

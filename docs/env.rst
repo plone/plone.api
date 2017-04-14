@@ -102,6 +102,22 @@ To know if your Plone instance is running in a test runner, use :meth:`api.env.t
         pass  # do something
 
 
+.. _env_read_only_mode_example:
+
+Read-Only mode
+==============
+
+To know if your Zope / Plone instance is running on a read-only ZODB connection use :meth:`api.env.read_only_mode`.
+
+.. code-block:: python
+
+    from plone import api
+
+    in_test_mode = api.env.read_only_mode()
+    if in_test_mode:
+        pass  # do something
+
+
 .. _env_plone_version_example:
 
 Plone version
