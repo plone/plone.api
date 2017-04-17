@@ -265,6 +265,17 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(second_page.id, 'test-document-1')
         self.assertEqual(second_page.portal_type, 'Document')
 
+    def test_create_raises_unauthorized(self):
+        from AccessControl import Unauthorized
+        with api.env.adopt_roles('Manager'):
+            folder = api.content.create(
+                type='Folder', id='restricted_folder', container=self.portal)
+
+        with self.assertRaises(Unauthorized):
+            with api.env.adopt_roles('Member'):
+                api.content.create(
+                    type='Document', id='doc', container=folder)
+
     def test_create_raises_unicodedecodeerror(self):
         """Test that the create method raises UnicodeDecodeErrors correctly."""
         site = getGlobalSiteManager()
