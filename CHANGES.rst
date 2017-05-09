@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add disable_acquire_local_roles and enable_acquire_local_roles to api.content
+  [MrTango]
 
 Bug fixes:
 

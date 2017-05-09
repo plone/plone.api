@@ -934,6 +934,34 @@ class TestPloneApiContent(unittest.TestCase):
             'internally_published',
         )
 
+    def test_diable_acquire_local_roles(self):
+        """ Test disabling local roles acquisition.
+        """
+        # This should fail because an content item is mandatory
+        from plone.api.exc import MissingParameterError
+        with self.assertRaises(MissingParameterError):
+            api.content.disable_acquire_local_roles()
+
+        api.content.disable_acquire_local_roles(obj=self.blog)
+        blog_ac_flag = getattr(self.blog, '__ac_local_roles_block__', None)
+        self.assertTrue(blog_ac_flag)
+
+    def test_enable_acquire_local_roles(self):
+        """ Test enabling local roles acquisition.
+        """
+        # This should fail because an content item is mandatory
+        from plone.api.exc import MissingParameterError
+        with self.assertRaises(MissingParameterError):
+            api.content.enable_acquire_local_roles()
+
+        # As __ac_local_roles_block__ is None by default, we have to set it,
+        # before we can test the enabling method.
+        self.blog.__ac_local_roles_block__ = 1
+
+        api.content.enable_acquire_local_roles(obj=self.blog)
+        blog_ac_flag = getattr(self.blog, '__ac_local_roles_block__', None)
+        self.assertFalse(blog_ac_flag)
+
     def test_get_view_constraints(self):
         """Test the constraints for deleting content."""
         from plone.api.exc import MissingParameterError
