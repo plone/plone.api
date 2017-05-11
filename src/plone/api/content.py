@@ -486,26 +486,26 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
 
 
 @required_parameters('obj')
-def disable_acquire_local_roles(obj=None):
+def disable_roles_acquisition(obj=None):
     """Disable acquisition of local roles on given obj.
     Set __ac_local_roles_block__ = 1 on obj.
 
     :param obj: [required] Context object to block the acquisition on.
     :type obj: Content object
-    :Example: :ref:`content_disable_acquire_local_roles_example`
+    :Example: :ref:`content_disable_roles_acquisition_example`
     """
     plone_utils = portal.get_tool('plone_utils')
     plone_utils.acquireLocalRoles(obj, status=0)
 
 
 @required_parameters('obj')
-def enable_acquire_local_roles(obj=None):
+def enable_roles_acquisition(obj=None):
     """Enable acquisition of local roles on given obj.
     Set __ac_local_roles_block__ = 0 on obj.
 
     :param obj: [required] Context object to enable the acquisition on.
     :type obj: Content object
-    :Example: :ref:`content_enable_acquire_local_roles_example`
+    :Example: :ref:`content_enable_roles_acquisition_example`
     """
     plone_utils = portal.get_tool('plone_utils')
     plone_utils.acquireLocalRoles(obj, status=1)
