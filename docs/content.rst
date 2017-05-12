@@ -462,6 +462,47 @@ These arguments can be saved to your transition using custom workflow variables 
 
 .. invisible-code-block: python
 
+.. _content_disable_roles_acquisition_example:
+
+Disable local roles acquisition
+===============================
+
+To disable the acquisition of local roles for an object, use the :meth:`api.content.disable_roles_acquisition` method.
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    api.content.disable_roles_acquisition(obj=portal['about'])
+
+.. invisible-code-block: python
+
+    ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
+    self.assertTrue(ac_flag)
+
+.. _content_enable_roles_acquisition_example:
+
+Enable local roles acquisition
+==============================
+
+To enable the acquisition of local roles for an object, use the :meth:`api.content.enable_roles_acquisition` method.
+
+.. code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    api.content.enable_roles_acquisition(obj=portal['about'])
+
+.. invisible-code-block: python
+
+    # As __ac_local_roles_block__ is None by default, we have to set it,
+    # before we can test the enabling method.
+    portal['about'].__ac_local_roles_block__ = 1
+
+    api.content.enable_roles_acquisition(obj=portal['about'])
+    ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
+    self.assertFalse(ac_flag)
+
 .. _content_get_view_example:
 
 Get view
