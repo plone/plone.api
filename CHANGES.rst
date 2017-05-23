@@ -4,10 +4,6 @@ Changelog
 1.7 (unreleased)
 ----------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Add disable_roles_acquisition and enable_roles_acquisition to api.content
