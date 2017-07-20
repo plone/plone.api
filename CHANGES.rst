@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- added tox.ini and code convention definitions in setup.py and .editorconfig so that they could be enforced
+  [loechel]
 
 Bug fixes:
 
