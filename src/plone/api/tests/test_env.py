@@ -402,6 +402,12 @@ class TestPloneApiEnv(unittest.TestCase):
         from plone.api.env import test_mode
         self.assertEqual(test_mode(), True)
 
+    def test_read_only_mode(self):
+        """Test that read_only_mode() returns False
+        as we have a write enabled ZODB."""
+        from plone.api.env import read_only_mode
+        self.assertFalse(read_only_mode())
+
     def test_plone_version(self):
         """Tests that plone_version() returns Plone version."""
         from plone.api.env import plone_version

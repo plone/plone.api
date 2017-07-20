@@ -13,6 +13,7 @@ from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
 
+import Globals
 import traceback
 
 
@@ -199,6 +200,20 @@ def test_mode():
                 break
 
     return IS_TEST
+
+
+def read_only_mode():
+    """Returns True if you are running the zope instance on an read only ZODB.
+
+    :Example: :ref:`env_read_only_mode_example`
+    """
+    isReadOnly = True
+    try:
+        conn = Globals.DB.open()
+        isReadOnly = conn.isReadOnly()
+    finally:
+        conn.close()
+    return isReadOnly
 
 
 def plone_version():
