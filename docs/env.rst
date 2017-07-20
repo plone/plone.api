@@ -119,8 +119,8 @@ Therefore you could adjust the UI to prevent create, delete or update pages are 
     from plone import api
 
     is_read_only = api.env.read_only_mode()
-        if is_read_only:
-                  pass  # do something
+    if is_read_only:
+        pass  # do something
 
 
 .. _env_plone_version_example:

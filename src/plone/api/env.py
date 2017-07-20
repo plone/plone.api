@@ -203,8 +203,9 @@ def test_mode():
 
 
 def read_only_mode():
-    """Returns True if you are running the zope instance on an read only ZODB.
+    """Check if the Zope instance is running on a read-only ZODB.
 
+    :returns: bool isReadOnly True if ZODB is read-only
     :Example: :ref:`env_read_only_mode_example`
     """
     isReadOnly = True
