@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add method to check if ZODB is in read-only mode.
+  [loechel]
 
 Bug fixes:
 
