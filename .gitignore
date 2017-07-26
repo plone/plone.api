@@ -1,5 +1,5 @@
 *.mo
-*.pyc
+*.py[cod]
 *~
 /.Python
 /.coverage
@@ -21,3 +21,7 @@
 /share/
 /src/plone.api.egg-info/
 /var/
+/reports/
+/pip-selfcheck.json
+/_build/
+/.tox/
