@@ -50,6 +50,14 @@ First let's look at 'system' libraries and applications that are normally instal
 Python tools
 ------------
 
+.. todo::
+
+    Update this description:
+
+    * add tox and propably pip.
+    * easy_install should be removed.
+    * question if virtualenv should be used, as tox also replaces this step.
+
 Then you'll also need to install some Python specific tools:
 
 * easy_install - the Python packaging system (download http://peak.telecommunity.com/dist/ez_setup.py and run ``sudo python2.7 ez_setup.py``.
@@ -101,6 +109,10 @@ Use ``git rebase --interactive`` to squash all commits that you think are unnece
 
 Creating and using the development environment
 ==============================================
+
+.. todo::
+
+    Update this section as it seams out of date, there is no Makefile so this description makes no sense anymore.
 
 Go to your projects folder and download the lastest `plone.api` code:
 
@@ -259,4 +271,3 @@ The documentation may span multiple lines.
         #: Description of the class variable which spans over
         #: multiple lines
         FOO = 1
-
