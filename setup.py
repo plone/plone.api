@@ -41,14 +41,6 @@ setup(
         'zope.globalrequest',
     ],
     extras_require={
-        'develop': [
-            'Sphinx',
-            'coverage',
-            'flake8',
-            'jarn.mkrelease',
-            'manuel',
-            'zest.releaser',
-        ],
         'test': [
             'Products.CMFPlone',
             'manuel',
