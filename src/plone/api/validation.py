@@ -19,7 +19,8 @@ def _get_arg_spec(func, validator_args):
         raise ValueError(
             'Validator for {0} refers to parameters '
             'that are not part of the function signature: {1}'.format(
-                func.__name__, ', '.join(extra_args))
+                func.__name__, ', '.join(extra_args),
+            ),
         )
 
     return signature_args
@@ -64,7 +65,8 @@ def required_parameters(*required_params):
             if len(missing):
                 raise MissingParameterError(
                     'Missing required parameter(s): {0}'.format(
-                        ', '.join(missing))
+                        ', '.join(missing),
+                    ),
                 )
 
             return f(*args, **kwargs)
@@ -94,7 +96,8 @@ def mutually_exclusive_parameters(*exclusive_params):
             if len(clashes) > 1:
                 raise InvalidParameterError(
                     'These parameters are mutually exclusive: {0}.'.format(
-                        ', '.join(supplied_args))
+                        ', '.join(supplied_args),
+                    ),
                 )
 
             return f(*args, **kwargs)
@@ -125,7 +128,7 @@ def at_least_one_of(*candidate_params):
             if len(candidates) < 1:
                 raise MissingParameterError(
                     'At least one of these parameters must be '
-                    'supplied: {0}.'.format(', '.join(candidate_params))
+                    'supplied: {0}.'.format(', '.join(candidate_params)),
                 )
 
             return f(*args, **kwargs)

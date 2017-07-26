@@ -31,7 +31,7 @@ try:
 except pkg_resources.DistributionNotFound:
     logger.warning(
         'plone.registry is not installed. get_registry_record and '
-        'set_registry_record will be unavailable.'
+        'set_registry_record will be unavailable.',
     )
 
 try:
@@ -81,7 +81,7 @@ def get():
     raise CannotGetPortalError(
         'Unable to get the portal object. More info on '
         'http://docs.plone.org/develop/plone.api/docs/api/exceptions.html'
-        '#plone.api.exc.CannotGetPortalError'
+        '#plone.api.exc.CannotGetPortalError',
     )
 
 
@@ -128,13 +128,18 @@ def get_tool(name=None):
         raise InvalidParameterError(
             "Cannot find a tool with name '{0}'.\n"
             'Available tools are:\n'
-            '{1}'.format(name, '\n'.join(tools))
+            '{1}'.format(name, '\n'.join(tools)),
         )
 
 
 @required_parameters('recipient', 'subject', 'body')
-def send_email(sender=None, recipient=None, subject=None, body=None,
-               immediate=False):
+def send_email(
+    sender=None,
+    recipient=None,
+    subject=None,
+    body=None,
+    immediate=False,
+):
     """Send an email.
 
     :param sender: Email sender, 'from' field. If not set, the portal default
@@ -196,7 +201,7 @@ def send_email(sender=None, recipient=None, subject=None, body=None,
         sender,
         subject=subject,
         charset=encoding,
-        immediate=immediate
+        immediate=immediate,
     )
 
 
@@ -286,7 +291,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
             u'The interface parameter has to derive from '
-            u'zope.interface.Interface'
+            u'zope.interface.Interface',
         )
 
     registry = getUtility(IRegistry)
@@ -308,7 +313,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
             '{2}'.format(
                 name,
                 interface.__identifier__,
-                '\n'.join(records)
+                '\n'.join(records),
             )
         )
         raise InvalidParameterError(msg)
@@ -353,7 +358,7 @@ def set_registry_record(name=None, value=None, interface=None):
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
             u'The interface parameter has to derive from '
-            u'zope.interface.Interface'
+            u'zope.interface.Interface',
         )
 
     registry = getUtility(IRegistry)
@@ -376,8 +381,8 @@ def set_registry_record(name=None, value=None, interface=None):
                 u'instead of {2}'.format(
                     name,
                     str(field_type.__class__),
-                    type(value)
-                )
+                    type(value),
+                ),
             )
 
     elif isinstance(name, str):
@@ -400,7 +405,8 @@ def get_default_language():
     except ImportError:
         portal = get()
         return portal.portal_properties.site_properties.getProperty(
-            'default_language', None)
+            'default_language', None,
+        )
     else:
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILanguageSchema, prefix='plone')
@@ -444,5 +450,5 @@ def translate(msgid, domain='plone', lang=None):
     return translation_service.utranslate(
         msgid=msgid,
         domain=domain,
-        target_language=lang
+        target_language=lang,
     )

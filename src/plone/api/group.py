@@ -17,7 +17,7 @@ def create(
     title=None,
     description=None,
     roles=[],
-    groups=[]
+    groups=[],
 ):
     """Create a group.
 
@@ -41,7 +41,7 @@ def create(
     group_tool.addGroup(
         groupname, roles, groups,
         title=title,
-        description=description
+        description=description,
     )
     return group_tool.getGroupById(groupname)
 

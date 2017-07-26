@@ -60,7 +60,7 @@ setup(
         ],
         'archetypes': [
             'Products.Archetypes',
-        ]
+        ],
     },
     classifiers=[
         'Environment :: Web Environment',

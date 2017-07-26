@@ -79,7 +79,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username='chuck',
             password='secret',
-            properties={'email': 'chuck@norris.org'}
+            properties={'email': 'chuck@norris.org'},
         )
 
         self.assertEqual(user.getProperty('email'), 'chuck@norris.org')
@@ -92,7 +92,7 @@ class TestPloneApiUser(unittest.TestCase):
 
         user = api.user.create(
             email='chuck@norris.org',
-            password='secret'
+            password='secret',
         )
 
         self.assertEqual(user.getUserName(), 'chuck@norris.org')
@@ -138,7 +138,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertEqual(
             api.user.get_roles(user=user),
-            ['Member', 'Authenticated', ]
+            ['Member', 'Authenticated', ],
         )
 
     def test_create_specified_roles(self):
@@ -147,11 +147,11 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             email='chuck@norris.org',
             password='secret',
-            roles=['Reviewer', 'Editor']
+            roles=['Reviewer', 'Editor'],
         )
         self.assertEqual(
             api.user.get_roles(user=user),
-            ['Reviewer', 'Authenticated', 'Editor']
+            ['Reviewer', 'Authenticated', 'Editor'],
         )
 
     def test_create_no_roles(self):
@@ -160,11 +160,11 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             email='chuck@norris.org',
             password='secret',
-            roles=[]
+            roles=[],
         )
         self.assertEqual(
             api.user.get_roles(user=user),
-            ['Authenticated', ]
+            ['Authenticated', ],
         )
 
     def test_get_constraints(self):
@@ -248,7 +248,7 @@ class TestPloneApiUser(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             api.user.delete(
                 username='chuck@norris.org',
-                user=mock.Mock()
+                user=mock.Mock(),
             )
 
         api.user.create(email='chuck@norris.org', password='secret')
@@ -260,12 +260,18 @@ class TestPloneApiUser(unittest.TestCase):
     def test_delete_username(self):
         """test whether the user has been deleted."""
 
-        api.user.create(username='unwanted', password='secret',
-                        email='unwanted@example.org')
+        api.user.create(
+            username='unwanted',
+            password='secret',
+            email='unwanted@example.org',
+        )
         api.user.delete(username='unwanted')
 
-        user = api.user.create(username='steven', password='secret',
-                               email='steven@example.org')
+        user = api.user.create(
+            username='steven',
+            password='secret',
+            email='steven@example.org',
+        )
         api.user.delete(user=user)
 
     def test_is_anonymous(self):
@@ -282,7 +288,7 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             email='chuck@norris.org',
             password='secret',
-            roles=ROLES
+            roles=ROLES,
         )
         ROLES = set(ROLES + ['Authenticated'])
         self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
@@ -294,7 +300,7 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             email='chuck@norris.org',
             password='secret',
-            roles=ROLES
+            roles=ROLES,
         )
         ROLES = set(ROLES + ['Authenticated'])
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
@@ -306,14 +312,14 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             email='chuck@norris.org',
             password='secret',
-            roles=ROLES
+            roles=ROLES,
         )
 
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError):
             api.user.get_roles(
                 username='chuck',
-                user=user
+                user=user,
             )
 
     def test_get_roles_no_parameters(self):
@@ -325,7 +331,7 @@ class TestPloneApiUser(unittest.TestCase):
         """Test get_permissions passing no parameters."""
         self.assertEqual(  # TODO: maybe assertItemsEqual?
             set(p[0] for p in getPermissions()),
-            set(api.user.get_permissions().keys())
+            set(api.user.get_permissions().keys()),
         )
 
     def test_get_roles_nonexistant_user(self):
@@ -340,7 +346,7 @@ class TestPloneApiUser(unittest.TestCase):
         with api.env.adopt_user(user=nobody):
             self.assertEqual(
                 api.user.get_roles(),
-                ('Anonymous', )
+                ('Anonymous', ),
             )
 
     def test_get_roles_in_context(self):
@@ -366,7 +372,8 @@ class TestPloneApiUser(unittest.TestCase):
         )
         api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
         self.assertIn(
-            'Editor', api.user.get_roles(username='chuck', obj=document))
+            'Editor', api.user.get_roles(username='chuck', obj=document),
+        )
 
     def test_get_roles_local_only(self):
         """Test get local roles for a user on an object"""
@@ -436,7 +443,8 @@ class TestPloneApiUser(unittest.TestCase):
             ['Editor'],
         )
         api.group.grant_roles(
-            groupname='foo', roles=['Contributor'], obj=document)
+            groupname='foo', roles=['Contributor'], obj=document,
+        )
         self.assertEqual(
             ['Contributor'],
             api.user.get_roles(username='chuck', obj=document, inherit=False),
@@ -449,14 +457,14 @@ class TestPloneApiUser(unittest.TestCase):
             username='chuck',
             email='chuck@norris.org',
             password='secret',
-            roles=[]
+            roles=[],
         )
 
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError):
             api.user.get_permissions(
                 username='chuck',
-                user=user
+                user=user,
             )
 
         PERMISSIONS = {
@@ -469,11 +477,11 @@ class TestPloneApiUser(unittest.TestCase):
         for k, v in PERMISSIONS.items():
             self.assertEqual(
                 v,
-                api.user.get_permissions(username='chuck').get(k, None)
+                api.user.get_permissions(username='chuck').get(k, None),
             )
             self.assertEqual(
                 v,
-                api.user.get_permissions(user=user).get(k, None)
+                api.user.get_permissions(user=user).get(k, None),
             )
 
     def test_get_permissions_nonexistant_user(self):
@@ -515,14 +523,20 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         for k, v in PERMISSIONS.items():
-            self.assertEqual(v,
-                             api.user.get_permissions(
-                                 username='chuck',
-                                 obj=folder).get(k, None))
-            self.assertEqual(v,
-                             api.user.get_permissions(
-                                 user=user,
-                                 obj=folder).get(k, None))
+            self.assertEqual(
+                v,
+                api.user.get_permissions(
+                    username='chuck',
+                    obj=folder,
+                ).get(k, None),
+            )
+            self.assertEqual(
+                v,
+                api.user.get_permissions(
+                    user=user,
+                    obj=folder,
+                ).get(k, None),
+            )
 
     def test_has_permission_context(self):
         """Test has_permission on some context."""
@@ -551,15 +565,19 @@ class TestPloneApiUser(unittest.TestCase):
         )
         api.content.transition(obj=folder, transition='publish')
 
-        self.assertTrue(api.user.has_permission(
-            'View',
-            user=user,
-            obj=folder)
+        self.assertTrue(
+            api.user.has_permission(
+                'View',
+                user=user,
+                obj=folder,
+            ),
         )
-        self.assertFalse(api.user.has_permission(
-            'Modify portal content',
-            user=user,
-            obj=folder)
+        self.assertFalse(
+            api.user.has_permission(
+                'Modify portal content',
+                user=user,
+                obj=folder,
+            ),
         )
 
     def test_grant_roles(self):
@@ -655,10 +673,12 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
         self.assertEqual(
             ROLES,
-            set(api.user.get_roles(username='chuck', inherit=False)))
+            set(api.user.get_roles(username='chuck', inherit=False)),
+        )
         self.assertEqual(
             ROLES,
-            set(api.user.get_roles(user=user, inherit=False)))
+            set(api.user.get_roles(user=user, inherit=False)),
+        )
 
     def test_revoke_roles_username_and_user(self):
         """Test revoke roles passing username and user."""
@@ -707,7 +727,7 @@ class TestPloneApiUser(unittest.TestCase):
         ROLES = set(['Anonymous', ])
         self.assertEqual(
             ROLES,
-            set(api.user.get_roles(username='Anonymous User'))
+            set(api.user.get_roles(username='Anonymous User')),
         )
 
     def test_revoke_roles_no_user(self):
@@ -855,7 +875,8 @@ class TestPloneApiUser(unittest.TestCase):
 
         # Assign a local role
         api.user.grant_roles(
-            username='chuck', roles=['Contributor'], obj=folder)
+            username='chuck', roles=['Contributor'], obj=folder,
+        )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=folder),
             ['Member', 'Authenticated', 'Contributor', 'Reviewer'],
@@ -911,7 +932,8 @@ class TestPloneApiUser(unittest.TestCase):
         # cleanup
         gsm = getGlobalSiteManager()
         gsm.unregisterAdapter(
-            factory=LocalRoleProvider, provided=ILocalRoleProvider)
+            factory=LocalRoleProvider, provided=ILocalRoleProvider,
+        )
 
     def test_revoke_roles_in_context(self):
         """Test revoke roles."""
@@ -984,21 +1006,27 @@ class TestPloneApiUser(unittest.TestCase):
             set(api.user.get_roles(username='chuck', obj=folder)),
         )
         self.assertEqual(
-            ROLES, set(api.user.get_roles(user=user, obj=folder)))
+            ROLES, set(api.user.get_roles(user=user, obj=folder)),
+        )
         self.assertEqual(
-            ROLES, set(api.user.get_roles(username='chuck', obj=document)))
+            ROLES, set(api.user.get_roles(username='chuck', obj=document)),
+        )
         self.assertEqual(
-            ROLES, set(api.user.get_roles(user=user, obj=document)))
+            ROLES, set(api.user.get_roles(user=user, obj=document)),
+        )
         self.assertEqual(
             [],
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
         )
         self.assertEqual(
             [],
-            api.user.get_roles(user=user, obj=folder, inherit=False))
+            api.user.get_roles(user=user, obj=folder, inherit=False),
+        )
         self.assertEqual(
             [],
-            api.user.get_roles(username='chuck', obj=document, inherit=False))
+            api.user.get_roles(username='chuck', obj=document, inherit=False),
+        )
         self.assertEqual(
             [],
-            api.user.get_roles(user=user, obj=document, inherit=False))
+            api.user.get_roles(user=user, obj=document, inherit=False),
+        )

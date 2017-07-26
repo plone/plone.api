@@ -34,12 +34,12 @@ class IMyRegistrySettings(Interface):
 
     field_one = schema.TextLine(
         title=u'something',
-        description=u'something else'
+        description=u'something else',
     )
 
     field_two = schema.TextLine(
         title=u'something',
-        description=u'something else'
+        description=u'something else',
     )
 
 
@@ -69,16 +69,18 @@ class TestPloneApiPortal(unittest.TestCase):
         self.mailhost = portal.get_tool('MailHost')
         if HAS_PLONE5:
             portal.set_registry_record(
-                'plone.email_from_name', u'Portal Owner'
+                'plone.email_from_name',
+                u'Portal Owner',
             )
             portal.set_registry_record(
                 'plone.email_from_address',
-                'sender@example.org'
+                'sender@example.org',
             )
         else:
             self.portal._updateProperty('email_from_name', 'Portal Owner')
             self.portal._updateProperty(
-                'email_from_address', 'sender@example.org'
+                'email_from_address',
+                'sender@example.org',
             )
 
     def _set_localization_date_format(self):
@@ -123,7 +125,10 @@ class TestPloneApiPortal(unittest.TestCase):
         still returns the portal.
         """
         a_site = content.create(
-            container=self.portal, type='Folder', title='A Site')
+            container=self.portal,
+            type='Folder',
+            title='A Site',
+        )
         a_site.setSiteManager(LocalSiteManager(a_site))
 
         setSite(a_site)
@@ -157,7 +162,9 @@ class TestPloneApiPortal(unittest.TestCase):
 
         self.assertTrue(
             str(cm.exception).startswith(
-                "Cannot find a tool with name 'portal_foo'"))
+                "Cannot find a tool with name 'portal_foo'",
+            ),
+        )
 
         # A selection of portal tools which should exist in all plone versions
         should_be_theres = (
@@ -277,7 +284,7 @@ class TestPloneApiPortal(unittest.TestCase):
 
     @unittest.skipIf(
         HAS_PLONE5,
-        'Plone 4 uses portal_properties for mail settings'
+        'Plone 4 uses portal_properties for mail settings',
     )
     def test_send_email_with_config_in_portal_properties(self):
         """Test mail-setting being stored in portal_properties.
@@ -297,17 +304,21 @@ class TestPloneApiPortal(unittest.TestCase):
 
     @unittest.skipUnless(
         HAS_PLONE5,
-        'Plone 5 uses the registry for mail settings'
+        'Plone 5 uses the registry for mail settings',
     )
     def test_send_email_with_config_in_registry(self):
         """Test mail-setting being stored in registry
         """
         self.mailhost.reset()
 
-        portal.set_registry_record('plone.email_from_address',
-                                   'reg@example.org')  # ASCII
-        portal.set_registry_record('plone.email_from_name',
-                                   u'Registry')  # TextLine
+        portal.set_registry_record(
+            'plone.email_from_address',
+            'reg@example.org',
+        )  # ASCII
+        portal.set_registry_record(
+            'plone.email_from_name',
+            u'Registry',
+        )  # TextLine
         portal.send_email(
             recipient='bob@plone.org',
             subject='Trappist',
@@ -337,7 +348,7 @@ class TestPloneApiPortal(unittest.TestCase):
                 recipient='bob@plone.org',
                 sender='noreply@plone.org',
                 subject='Trappist',
-                body=u'One for you Bob!'
+                body=u'One for you Bob!',
             )
 
         # PrintingMailHost enabled
@@ -483,9 +494,11 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test that existing registry records are returned correctly."""
         registry = getUtility(IRegistry)
         registry.records['plone.api.norris_power'] = Record(
-            field.TextLine(title=u"Chuck Norris' Power"))
+            field.TextLine(title=u"Chuck Norris' Power"),
+        )
         registry.records['plone.api.unset'] = Record(
-            field.TextLine(title=u'An unset field'))
+            field.TextLine(title=u'An unset field'),
+        )
         registry['plone.api.norris_power'] = u'infinite'
 
         self.assertEqual(
@@ -553,7 +566,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(
             portal.get_registry_record(
                 'field_one',
-                interface=IMyRegistrySettings
+                interface=IMyRegistrySettings,
             ),
             None,
         )
@@ -564,7 +577,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             portal.get_registry_record(
                 'something',
-                interface=ImNotAnInterface
+                interface=ImNotAnInterface,
             )
 
     def test_get_invalid_interface_for_registry_record_msg(self):
@@ -575,7 +588,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_registry_record(
                 'something',
-                interface=ImNotAnInterface
+                interface=ImNotAnInterface,
             )
         exc_str = str(cm.exception)
 
@@ -593,7 +606,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             portal.get_registry_record(
                 'non_existing_field',
-                interface=IMyRegistrySettings
+                interface=IMyRegistrySettings,
             )
 
     def test_get_invalid_record_in_interface_for_registry_record_msg(self):
@@ -607,7 +620,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_registry_record(
                 'non_existing_field',
-                interface=IMyRegistrySettings
+                interface=IMyRegistrySettings,
             )
         exc_str = str(cm.exception)
 
@@ -629,23 +642,24 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.get_registry_record(
                 'non_existing_field',
                 interface=IMyRegistrySettings,
-                default=1
+                default=1,
             ),
-            1
+            1,
         )
         self.assertEqual(
             portal.get_registry_record(
                 'something',
-                default=2
+                default=2,
             ),
-            2
+            2,
         )
 
     def test_set_valid_registry_record(self):
         """Test that setting a valid registry record succeeds."""
         registry = getUtility(IRegistry)
         registry.records['plone.api.plone_power'] = Record(
-            field.TextLine(title=u"Plone's Power"))
+            field.TextLine(title=u"Plone's Power"),
+        )
         portal.set_registry_record('plone.api.plone_power', u'awesome')
         self.assertEqual(registry['plone.api.plone_power'], u'awesome')
 
@@ -675,7 +689,8 @@ class TestPloneApiPortal(unittest.TestCase):
         """
         registry = getUtility(IRegistry)
         registry.records['plone.api.plone_power'] = Record(
-            field.TextLine(title=u"Plone's Power"))
+            field.TextLine(title=u"Plone's Power"),
+        )
 
         from plone.api.exc import MissingParameterError
         with self.assertRaises(MissingParameterError):
@@ -701,14 +716,14 @@ class TestPloneApiPortal(unittest.TestCase):
         portal.set_registry_record(
             'field_one',
             text,
-            interface=IMyRegistrySettings
+            interface=IMyRegistrySettings,
         )
         self.assertEqual(
             portal.get_registry_record(
                 'field_one',
-                interface=IMyRegistrySettings
+                interface=IMyRegistrySettings,
             ),
-            text
+            text,
         )
 
     def test_set_registry_record_on_invalid_interface(self):
@@ -718,7 +733,7 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.set_registry_record(
                 'something',
                 'value',
-                interface=ImNotAnInterface
+                interface=ImNotAnInterface,
             )
 
     def test_set_registry_record_on_invalid_interface_msg(self):
@@ -730,7 +745,7 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.set_registry_record(
                 'something',
                 'value',
-                interface=ImNotAnInterface
+                interface=ImNotAnInterface,
             )
         exc_str = str(cm.exception)
 
@@ -749,7 +764,7 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.set_registry_record(
                 'non_existing_field',
                 'value',
-                interface=IMyRegistrySettings
+                interface=IMyRegistrySettings,
             )
 
     def test_set_invalid_registry_record_from_interface_msg(self):
@@ -764,7 +779,7 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.set_registry_record(
                 'non_existing_field',
                 'value',
-                interface=IMyRegistrySettings
+                interface=IMyRegistrySettings,
             )
         exc_str = str(cm.exception)
 
@@ -786,7 +801,7 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.set_registry_record(
                 'field_one',
                 'value',
-                interface=IMyRegistrySettings
+                interface=IMyRegistrySettings,
             )
 
     def test_set_invalid_value_on_registry_record_from_interface_msg(self):
@@ -801,13 +816,13 @@ class TestPloneApiPortal(unittest.TestCase):
             portal.set_registry_record(
                 'field_one',
                 'value',
-                interface=IMyRegistrySettings
+                interface=IMyRegistrySettings,
             )
         exc_str = str(cm.exception)
 
         # Check if there is an error message.
         self.assertTrue(
-            exc_str.startswith('The value parameter for the field')
+            exc_str.startswith('The value parameter for the field'),
         )
         self.assertTrue(exc_str.find(' needs to be ') != -1)
         self.assertTrue(exc_str.find('TextLine') != -1)
@@ -827,15 +842,17 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(
             portal.translate(
                 'A workflow action triggers a workflow transition on an '
-                'object.', lang='es'
+                'object.',
+                lang='es',
             ),
             u'Una acción de flujo de trabajo dispara una transición de '
-            'flujo de trabajo en un objeto.'
+            'flujo de trabajo en un objeto.',
         )
         self.assertEqual(
             portal.translate(
                 'month_apr',
                 domain='plonelocales',
-                lang='fr'),
-            u'Avril'
+                lang='fr',
+            ),
+            u'Avril',
         )

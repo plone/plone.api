@@ -75,7 +75,7 @@ def setUp(self):  # pragma: no cover
 
 
 def DocFileSuite(
-    testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING
+    testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING,
 ):
     """Returns a test suite configured with a test layer.
 
@@ -101,7 +101,7 @@ def DocFileSuite(
             m,
             testfile,
             setUp=setUp,
-            globs=dict(layer=layer)
+            globs=dict(layer=layer),
         ),
         layer=layer,
     )

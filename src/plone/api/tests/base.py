@@ -58,6 +58,10 @@ class PloneApiLayer(PloneSandboxLayer):
 
 FIXTURE = PloneApiLayer()
 INTEGRATION_TESTING = IntegrationTesting(
-    bases=(FIXTURE,), name='PloneApiLayer:Integration')
+    bases=(FIXTURE, ),
+    name='PloneApiLayer:Integration',
+)
 FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(FIXTURE,), name='PloneApiLayer:Functional')
+    bases=(FIXTURE, ),
+    name='PloneApiLayer:Functional',
+)

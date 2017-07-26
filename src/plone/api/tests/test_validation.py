@@ -51,7 +51,7 @@ class TestPloneAPIValidation(unittest.TestCase):
             _func = mutually_exclusive_parameters(
                 'arg1',
                 'wibble',
-                'wobble'
+                'wobble',
             )
             _func(undecorated_func)
 
@@ -66,7 +66,8 @@ class TestPloneAPIValidation(unittest.TestCase):
 
         # test that keyword args are recognised correctly
         result = _gsa(
-            signature, (), {'arg1': 'foo', 'arg2': 'wibble'})
+            signature, (), {'arg1': 'foo', 'arg2': 'wibble'},
+        )
         self.assertEqual(set(result), set(('arg1', 'arg2')))
 
         # test that a mixture of args are recognised correctly
@@ -75,12 +76,14 @@ class TestPloneAPIValidation(unittest.TestCase):
 
         # test that None-valued positional args are ignored
         result = _gsa(
-            signature, ('foo', None), {})
+            signature, ('foo', None), {},
+        )
         self.assertEqual(set(result), set(('arg1',)))
 
         # test that None-valued keyword args are ignored
         result = _gsa(
-            signature, (), {'arg1': None, 'arg2': 'wibble'})
+            signature, (), {'arg1': None, 'arg2': 'wibble', },
+        )
         self.assertEqual(set(result), set(('arg2',)))
 
     def test_single_keyword_arg_provided(self):

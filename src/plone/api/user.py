@@ -24,7 +24,7 @@ def create(
     username=None,
     password=None,
     roles=('Member', ),
-    properties=None
+    properties=None,
 ):
     """Create a user.
 
@@ -69,7 +69,7 @@ def create(
     if not use_email_as_username and not username:
         raise InvalidParameterError(
             'The portal is configured to use username '
-            'that is not email so you need to pass a username.'
+            'that is not email so you need to pass a username.',
         )
 
     registration = portal.get_tool('portal_registration')
@@ -87,7 +87,7 @@ def create(
         user_id,
         password,
         roles,
-        properties=properties
+        properties=properties,
     )
     return get(username=user_id)
 
@@ -124,7 +124,7 @@ def get(userid=None, username=None):
     return get_member_by_login_name(
         portal.get(),
         username,
-        raise_exceptions=False
+        raise_exceptions=False,
     )
 
 
@@ -301,7 +301,7 @@ def get_permissions(username=None, user=None, obj=None):
         permissions = (p[0] for p in getPermissions())
         for permission in permissions:
             result[permission] = bool(
-                portal_membership.checkPermission(permission, obj)
+                portal_membership.checkPermission(permission, obj),
             )
 
     return result
