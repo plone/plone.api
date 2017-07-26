@@ -10,6 +10,9 @@ Breaking changes:
 
 New features:
 
+- Add method to check if ZODB is in read-only mode.
+  [loechel]
+
 - added tox.ini and code convention definitions in setup.py and .editorconfig so that they could be enforced
   [loechel]
 
