@@ -2,11 +2,11 @@
 *.py[cod]
 *~
 /.Python
-/.coverage
+/.coverage*
 /.installed.cfg
 /bin/
 /build/
-/coverage
+/coverage*
 /develop-eggs/
 /dist/
 /docs/Makefile
