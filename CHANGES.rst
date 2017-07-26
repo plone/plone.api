@@ -18,7 +18,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fixes Tests and code convention son this repository.
+  [loechel]
 
 
 1.7 (2017-05-23)
