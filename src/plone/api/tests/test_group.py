@@ -532,12 +532,12 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         # Add the editor-role as global role
         api.group.grant_roles(groupname='foo', roles=['Editor'])
-        self.assertEqual(
+        self.assertItemsEqual(
             ['Authenticated', 'Editor'],
             api.group.get_roles(groupname='foo'),
         )
         # local_roles plus global_roles
-        self.assertEqual(
+        self.assertItemsEqual(
             ['Authenticated', 'Editor'],
             api.group.get_roles(groupname='foo', obj=folder),
         )
@@ -551,7 +551,7 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.grant_roles(
             groupname='foo', roles=['Contributor'], obj=folder,
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             ['Contributor'],
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
         )
@@ -656,12 +656,12 @@ class TestPloneApiGroup(unittest.TestCase):
         )
 
         # The adapter role in in the local roles but not persistent
-        self.assertEqual(
+        self.assertItemsEqual(
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
             ['Contributor', 'Reviewer'],
         )
         local_roles = getattr(folder, '__ac_local_roles__', {})
-        self.assertEqual(
+        self.assertItemsEqual(
             local_roles.get('foo'),
             ['Contributor'],
         )

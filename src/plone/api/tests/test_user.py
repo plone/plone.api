@@ -475,11 +475,11 @@ class TestPloneApiUser(unittest.TestCase):
         }
 
         for k, v in PERMISSIONS.items():
-            self.assertItemsEqual(
+            self.assertEqual(
                 v,
                 api.user.get_permissions(username='chuck').get(k, None),
             )
-            self.assertItemsEqual(
+            self.assertEqual(
                 v,
                 api.user.get_permissions(user=user).get(k, None),
             )

@@ -142,9 +142,11 @@ Groups may be filtered by member. By passing the ``username`` parameter,
 
 .. invisible-code-block: python
 
-    self.assertEqual(groups[0].id, 'Reviewers')
-    self.assertEqual(groups[1].id, 'AuthenticatedUsers')
-    self.assertEqual(groups[2].id, 'staff')
+    group_list = [g.id for g in groups]
+    self.assertItemsEqual(
+        group_list,
+        ['Reviewers', 'AuthenticatedUsers', 'staff'],
+    )
 
 You can also pass the user directly to :meth:`api.group.get_groups`:
 
@@ -154,9 +156,11 @@ You can also pass the user directly to :meth:`api.group.get_groups`:
 
 .. invisible-code-block: python
 
-    self.assertEqual(groups[0].id, 'Reviewers')
-    self.assertEqual(groups[1].id, 'AuthenticatedUsers')
-    self.assertEqual(groups[2].id, 'staff')
+    group_list = [g.id for g in groups]
+    self.assertItemsEqual(
+        group_list,
+        ['Reviewers', 'AuthenticatedUsers', 'staff'],
+    )
 
 Get group members
 -----------------
