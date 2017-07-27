@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.portal."""
 
-from DateTime import DateTime
 from datetime import date
 from datetime import datetime
+from DateTime import DateTime
 from email import message_from_string
 from pkg_resources import parse_version
 from plone.api import content

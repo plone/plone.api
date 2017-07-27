@@ -149,7 +149,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=['Reviewer', 'Editor'],
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             api.user.get_roles(user=user),
             ['Reviewer', 'Authenticated', 'Editor'],
         )
@@ -162,7 +162,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=[],
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             api.user.get_roles(user=user),
             ['Authenticated', ],
         )
@@ -425,27 +425,27 @@ class TestPloneApiUser(unittest.TestCase):
             id='document_one',
             title='Document One',
         )
-        self.assertEqual(
-            sorted(api.user.get_roles(username='chuck', obj=document)),
-            sorted(['Member', 'Reviewer', 'Authenticated']),
+        self.assertItemsEqual(
+            api.user.get_roles(username='chuck', obj=document),
+            ['Member', 'Reviewer', 'Authenticated'],
         )
         api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
-        self.assertEqual(
-            sorted(api.user.get_roles(username='chuck', obj=document)),
-            sorted(['Member', 'Reviewer', 'Authenticated', 'Editor']),
+        self.assertItemsEqual(
+            api.user.get_roles(username='chuck', obj=document),
+            ['Member', 'Reviewer', 'Authenticated', 'Editor'],
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
             [],
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
             ['Editor'],
         )
         api.group.grant_roles(
             groupname='foo', roles=['Contributor'], obj=document,
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             ['Contributor'],
             api.user.get_roles(username='chuck', obj=document, inherit=False),
         )
@@ -475,11 +475,11 @@ class TestPloneApiUser(unittest.TestCase):
         }
 
         for k, v in PERMISSIONS.items():
-            self.assertEqual(
+            self.assertItemsEqual(
                 v,
                 api.user.get_permissions(username='chuck').get(k, None),
             )
-            self.assertEqual(
+            self.assertItemsEqual(
                 v,
                 api.user.get_permissions(user=user).get(k, None),
             )
