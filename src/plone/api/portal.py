@@ -126,9 +126,9 @@ def get_tool(name=None):
                 tools.append(id)
 
         raise InvalidParameterError(
-            "Cannot find a tool with name '{0}'.\n"
+            "Cannot find a tool with name '{name}'.\n"
             'Available tools are:\n'
-            '{1}'.format(name, '\n'.join(tools)),
+            '{tools}'.format(name=name, tools='\n'.join(tools)),
         )
 
 
@@ -308,12 +308,13 @@ def get_registry_record(name=None, interface=None, default=MISSING):
         # Show all records on the interface.
         records = [key for key in interface.names()]
         msg = (
-            "Cannot find a record with name '{0}' on interface {1}.\n"
+            "Cannot find a record with name '{name}'"
+            " on interface {identifier}.\n"
             'Did you mean?\n'
-            '{2}'.format(
-                name,
-                interface.__identifier__,
-                '\n'.join(records),
+            '{records}'.format(
+                name=name,
+                identifier=interface.__identifier__,
+                records='\n'.join(records),
             )
         )
         raise InvalidParameterError(msg)
@@ -327,14 +328,14 @@ def get_registry_record(name=None, interface=None, default=MISSING):
     # Show all records that 'look like' name.
     # We don't dump the whole list, because it 1500+ items.
     msg = (
-        "Cannot find a record with name '{0}'".format(name)
+        "Cannot find a record with name '{name}'".format(name=name)
     )
     records = [key for key in registry.records.keys() if name in key]
     if records:
         msg = (
-            '{0}\n'
+            '{message}\n'
             'Did you mean?:\n'
-            '{1}'.format(msg, '\n'.join(records))
+            '{records}'.format(message=msg, records='\n'.join(records))
         )
     raise InvalidParameterError(msg)
 
@@ -369,19 +370,22 @@ def set_registry_record(name=None, value=None, interface=None):
 
         from zope.schema._bootstrapinterfaces import WrongType
         try:
-            registry['{0}.{1}'.format(interface.__identifier__, name)] = value
+            registry['{identifier}.{name}'.format(
+                identifier=interface.__identifier__,
+                name=name
+            )] = value
         except WrongType:
             field_type = [
-                f[1]
-                for f in interface.namesAndDescriptions()
-                if f[0] == 'field_one'
+                field[1]
+                for field in interface.namesAndDescriptions()
+                if field[0] == 'field_one'
             ][0]
             raise InvalidParameterError(
-                u'The value parameter for the field {0} needs to be {1}'
-                u'instead of {2}'.format(
-                    name,
-                    str(field_type.__class__),
-                    type(value),
+                u'The value parameter for the field {name} needs to be '
+                u'{of_class} instead of {of_type}'.format(
+                    name=name,
+                    of_class=str(field_type.__class__),
+                    of_type=type(value),
                 ),
             )
 

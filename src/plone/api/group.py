@@ -39,7 +39,9 @@ def create(
     """
     group_tool = portal.get_tool('portal_groups')
     group_tool.addGroup(
-        groupname, roles, groups,
+        groupname,
+        roles,
+        groups,
         title=title,
         description=description,
     )
@@ -241,8 +243,8 @@ def get_roles(groupname=None, group=None, obj=None, inherit=True):
         pas = portal.get_tool('acl_users')
         for _, lrmanager in pas.plugins.listPlugins(ILocalRolesPlugin):
             for adapter in lrmanager._getAdapters(obj):
-                for pid in principal_ids:
-                    roles.update(adapter.getRoles(pid))
+                for principal_id in principal_ids:
+                    roles.update(adapter.getRoles(principal_id))
         return list(roles)
 
 
@@ -278,10 +280,11 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         # only roles persistent on the object, not from other providers
         actual_roles = obj.get_local_roles_for_userid(group_id)
 
-    if actual_roles.count('Anonymous'):
-        actual_roles.remove('Anonymous')
-    if actual_roles.count('Authenticated'):
-        actual_roles.remove('Authenticated')
+    actual_roles = [
+        role
+        for role in actual_roles
+        if role not in ['Anonymous', 'Authenticated']
+    ]
 
     roles = list(set(actual_roles) | set(roles))
     portal_groups = portal.get_tool('portal_groups')
@@ -322,10 +325,12 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
         actual_roles = get_roles(groupname=group_id)
     else:
         actual_roles = get_roles(groupname=group_id, obj=obj, inherit=False)
-    if actual_roles.count('Anonymous'):
-        actual_roles.remove('Anonymous')
-    if actual_roles.count('Authenticated'):
-        actual_roles.remove('Authenticated')
+
+    actual_roles = [
+        role
+        for role in actual_roles
+        if role not in ['Anonymous', 'Authenticated']
+    ]
 
     roles = list(set(actual_roles) - set(roles))
     portal_groups = portal.get_tool('portal_groups')

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# flake8: noqa
+# flake8: NOQA: S401
+
 from plone.api import content
 from plone.api import env
 from plone.api import group

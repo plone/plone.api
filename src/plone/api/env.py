@@ -3,6 +3,7 @@ from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from App.config import getConfiguration
+from contextlib import closing
 from contextlib import contextmanager
 from pkg_resources import get_distribution
 from plone.api import portal
@@ -115,12 +116,12 @@ def _adopt_roles(roles):
     # If the stack is empty, the default security policy gets used.
     overriding_context = _GlobalRoleOverridingContext(roles)
 
-    sm = getSecurityManager()
-    sm.addContext(overriding_context)
+    security_manager = getSecurityManager()
+    security_manager.addContext(overriding_context)
 
     yield
 
-    sm.removeContext(overriding_context)
+    security_manager.removeContext(overriding_context)
 
 
 class _GlobalRoleOverridingContext(object):
@@ -208,13 +209,8 @@ def read_only_mode():
     :returns: bool isReadOnly True if ZODB is read-only
     :Example: :ref:`env_read_only_mode_example`
     """
-    isReadOnly = True
-    try:
-        conn = Globals.DB.open()
-        isReadOnly = conn.isReadOnly()
-    finally:
-        conn.close()
-    return isReadOnly
+    with closing(Globals.DB.open()) as connection:
+        return connection.isReadOnly()
 
 
 def plone_version():

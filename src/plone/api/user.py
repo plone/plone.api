@@ -60,7 +60,8 @@ def create(
 
     try:
         use_email_as_username = portal.get_registry_record(
-            'plone.use_email_as_login')
+            'plone.use_email_as_login',
+        )
     except InvalidParameterError:
         site = portal.get()
         props = site.portal_properties
@@ -78,7 +79,7 @@ def create(
     # Generate a random 8-char password
     if not password:
         chars = string.ascii_letters + string.digits
-        password = ''.join(random.choice(chars) for x in range(8))
+        password = ''.join(random.choice(chars) for char in range(8))
 
     properties.update(username=user_id)
     properties.update(email=email)
@@ -250,12 +251,12 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
             plone_user = user.getUser()
             principal_ids = list(plone_user.getGroups())
             principal_ids.insert(0, plone_user.getId())
-            roles = set([])
+            roles = set()
             pas = portal.get_tool('acl_users')
             for _, lrmanager in pas.plugins.listPlugins(ILocalRolesPlugin):
                 for adapter in lrmanager._getAdapters(obj):
-                    for pid in principal_ids:
-                        roles.update(adapter.getRoles(pid))
+                    for principal_id in principal_ids:
+                        roles.update(adapter.getRoles(principal_id))
             return list(roles)
     else:
         return user.getRoles()
@@ -298,7 +299,7 @@ def get_permissions(username=None, user=None, obj=None):
     result = {}
     with context:
         portal_membership = portal.get_tool('portal_membership')
-        permissions = (p[0] for p in getPermissions())
+        permissions = (permission[0] for permission in getPermissions())
         for permission in permissions:
             result[permission] = bool(
                 portal_membership.checkPermission(permission, obj),
@@ -420,23 +421,23 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     if user is None:
         raise InvalidParameterError('User could not be found')
 
-    if isinstance(roles, tuple):
-        roles = list(roles)
+    roles = set(roles)
 
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise InvalidParameterError
+
     inherit = True
     if obj is not None:
         # if obj, get only a list of local roles, without inherited ones
         inherit = False
 
-    actual_roles = list(get_roles(user=user, obj=obj, inherit=inherit))
-    if actual_roles.count('Anonymous'):
-        actual_roles.remove('Anonymous')
-    if actual_roles.count('Authenticated'):
-        actual_roles.remove('Authenticated')
+    actual_roles = set([
+        role
+        for role in get_roles(user=user, obj=obj, inherit=inherit)
+        if role not in ['Anonymous', 'Authenticated']
+    ])
 
-    roles = list(set(actual_roles) - set(roles))
+    roles = list(actual_roles - roles)
 
     if obj is None:
         user.setSecurityProfile(roles=roles)

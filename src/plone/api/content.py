@@ -94,10 +94,14 @@ def create(
         types = [fti.getId() for fti in container.allowedContentTypes()]
 
         raise InvalidParameterError(
-            "Cannot add a '{0}' object to the container.\n"
+            "Cannot add a '{obj_type}' object to the container.\n"
             'Allowed types are:\n'
-            '{1}\n'
-            '{2}'.format(type, '\n'.join(sorted(types)), e.message),
+            '{allowed_types}\n'
+            '{message}'.format(
+                obj_type=type,
+                allowed_types='\n'.join(sorted(types)),
+                message=e.message,
+            ),
         )
 
     content = container[content_id]
@@ -143,8 +147,11 @@ def get(path=None, UID=None):
     if path:
         site = portal.get()
         site_absolute_path = '/'.join(site.getPhysicalPath())
-        if not path.startswith('{0}'.format(site_absolute_path)):
-            path = '{0}{1}'.format(site_absolute_path, path)
+        if not path.startswith('{path}'.format(path=site_absolute_path)):
+            path = '{site_path}{relative_path}'.format(
+                site_path=site_absolute_path,
+                relative_path=path,
+            )
 
         try:
             return site.restrictedTraverse(path)
@@ -349,6 +356,7 @@ def _find_path(maps, path, current_state, start_state):
     # transitions. i.e an initial state you are not able to return to.
     if current_state not in maps:
         return
+
     for new_transition, from_states in maps[current_state]:
         next_path = _copy(path)
         if new_transition in path:
@@ -388,9 +396,9 @@ def _wf_transitions_for(workflow, from_state, to_state):
     """
     exit_state_maps = {}
     for state in workflow.states.objectValues():
-        for t in state.getTransitions():
-            exit_state_maps.setdefault(t, [])
-            exit_state_maps[t].append(state.getId())
+        for transition in state.getTransitions():
+            exit_state_maps.setdefault(transition, [])
+            exit_state_maps[transition].append(state.getId())
 
     transition_maps = {}
     for transition in workflow.transitions.objectValues():
@@ -544,9 +552,12 @@ def get_view(name=None, context=None, request=None):
     # Raise an error if the requested view is not available.
     if name not in available_view_names:
         raise InvalidParameterError(
-            "Cannot find a view with name '{0}'.\n"
+            "Cannot find a view with name '{name}'.\n"
             'Available views are:\n'
-            '{1}'.format(name, '\n'.join(sorted(available_view_names))),
+            '{views}'.format(
+                name=name,
+                views='\n'.join(sorted(available_view_names)),
+            ),
         )
     return getMultiAdapter((context, request), name=name)
 
