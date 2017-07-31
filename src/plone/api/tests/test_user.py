@@ -609,6 +609,14 @@ class TestPloneApiUser(unittest.TestCase):
             ),
         )
 
+        self.assertTrue(
+            api.user.has_permission(
+                'View',
+                user=None,
+                obj=folder,
+            ),
+        )
+
     def test_grant_roles(self):
         """Test granting a couple of roles."""
 
@@ -655,6 +663,10 @@ class TestPloneApiUser(unittest.TestCase):
         from plone.api.exc import MissingParameterError
         with self.assertRaises(MissingParameterError):
             api.user.grant_roles(username=user)
+
+        from plone.api.exc import InvalidParameterError
+        with self.assertRaises(InvalidParameterError):
+            api.user.grant_roles(username='chuck', roles=('Authenticated'))
 
     def test_grant_roles_anonymous(self):
         """Test granting Anonymous role."""
@@ -764,6 +776,17 @@ class TestPloneApiUser(unittest.TestCase):
         from plone.api.exc import MissingParameterError
         with self.assertRaises(MissingParameterError):
             api.user.revoke_roles()
+
+    def test_revoke_roles_username(self):
+        """Test revoke roles for username."""
+        api.user.create(
+            username='chuck',
+            email='chuck@norris.org',
+            password='secret',
+        )
+        from plone.api.exc import InvalidParameterError
+        with self.assertRaises(InvalidParameterError):
+            api.user.revoke_roles(username='chuck', roles=['Authenticated', ])
 
     @unittest.skip('Getting the Anonymous user does not work like this.')
     def test_revoke_roles_from_anonymous(self):
