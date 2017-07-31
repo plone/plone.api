@@ -118,9 +118,8 @@ def test_suite():
         try:
             doctests.append(DocFileSuite(os.path.join(path, filename)))
         except IOError:
-            logger.warning('test_doctest.py skipping {file}'.format(
-                    file=filename,
-                )
+            logger.warning(
+                'test_doctest.py skipping {file}'.format(file=filename),
             )
 
     return unittest.TestSuite(doctests)
