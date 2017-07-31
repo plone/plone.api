@@ -260,7 +260,7 @@ def show_message(message=None, request=None, type='info'):
     :param message: [required] Message to show.
     :type message: string
     :param request: [required] Request.
-    :type request: TODO: hm?
+    :type request: HTTPRequest
     :param type: Message type. Possible values: 'info', 'warn', 'error'
     :type type: string
     :raises:
@@ -308,8 +308,8 @@ def get_registry_record(name=None, interface=None, default=MISSING):
         # Show all records on the interface.
         records = [key for key in interface.names()]
         msg = (
-            "Cannot find a record with name '{name}'"
-            " on interface {identifier}.\n"
+            'Cannot find a record with name "{name}"'
+            ' on interface {identifier}.\n'
             'Did you mean?\n'
             '{records}'.format(
                 name=name,
@@ -370,10 +370,7 @@ def set_registry_record(name=None, value=None, interface=None):
 
         from zope.schema._bootstrapinterfaces import WrongType
         try:
-            registry['{identifier}.{name}'.format(
-                identifier=interface.__identifier__,
-                name=name
-            )] = value
+            registry[interface.__identifier__ + '.' + name] = value
         except WrongType:
             field_type = [
                 field[1]

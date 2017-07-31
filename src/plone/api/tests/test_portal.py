@@ -77,7 +77,10 @@ class TestPloneApiPortal(unittest.TestCase):
                 'sender@example.org',
             )
         else:
-            self.portal._updateProperty('email_from_name', 'Portal Owner')
+            self.portal._updateProperty(
+                'email_from_name',
+                'Portal Owner',
+            )
             self.portal._updateProperty(
                 'email_from_address',
                 'sender@example.org',

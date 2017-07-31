@@ -50,7 +50,7 @@ def create(
     id=None,
     title=None,
     safe_id=False,
-    **kwargs
+    **kwargs  # NOQA: C816
 ):
     """Create a new content item.
 

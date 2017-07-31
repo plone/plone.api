@@ -136,9 +136,9 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-        self.assertEqual(
-            sorted(api.user.get_roles(user=user)),
-            sorted(['Member', 'Authenticated', ]),
+        self.assertItemsEqual(
+            api.user.get_roles(user=user),
+            ['Member', 'Authenticated', ],
         )
 
     def test_create_specified_roles(self):
@@ -187,7 +187,10 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_current(self):
         """Test getting the currently logged-in user."""
-        self.assertEqual(api.user.get_current().getUserName(), TEST_USER_NAME)
+        self.assertEqual(
+            api.user.get_current().getUserName(),
+            TEST_USER_NAME,
+        )
 
     def test_get_all_users(self):
         """Test getting all users."""
@@ -198,7 +201,10 @@ class TestPloneApiUser(unittest.TestCase):
         )
         users = [user.getUserName() for user in api.user.get_users()]
 
-        self.assertEqual(users, ['chuck', TEST_USER_NAME])
+        self.assertItemsEqual(
+            users,
+            ['chuck', TEST_USER_NAME],
+        )
 
     def test_get_groups_users(self):
         """Test getting all users of a certain group."""
@@ -283,15 +289,18 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_roles_username(self):
         """Test get roles passing a username."""
-        ROLES = ['Reviewer', 'Editor']
+        ROLES = ['Reviewer', 'Editor', ]
         api.user.create(
             username='chuck',
             email='chuck@norris.org',
             password='secret',
             roles=ROLES,
         )
-        ROLES = set(ROLES + ['Authenticated'])
-        self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
+
+        self.assertItemsEqual(
+            ROLES + ['Authenticated'],
+            api.user.get_roles(username='chuck'),
+        )
 
     def test_get_roles_user(self):
         """Test get roles passing a user."""
@@ -302,8 +311,11 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=ROLES,
         )
-        ROLES = set(ROLES + ['Authenticated'])
-        self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
+
+        self.assertItemsEqual(
+            ROLES + ['Authenticated'],
+            api.user.get_roles(user=user),
+        )
 
     def test_get_roles_username_and_user(self):
         """Test get roles passing username and user."""
@@ -324,14 +336,16 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_roles_no_parameters(self):
         """Test get roles without any parameters."""
-        ROLES = set(['Manager', 'Authenticated'])
-        self.assertEqual(ROLES, set(api.user.get_roles()))
+        self.assertItemsEqual(
+            ['Manager', 'Authenticated'],
+            api.user.get_roles(),
+        )
 
     def test_get_permissions_no_parameters(self):
         """Test get_permissions passing no parameters."""
-        self.assertEqual(  # TODO: maybe assertItemsEqual?
-            set(p[0] for p in getPermissions()),
-            set(api.user.get_permissions().keys()),
+        self.assertItemsEqual(
+            [p[0] for p in getPermissions()],
+            api.user.get_permissions().keys(),
         )
 
     def test_get_roles_nonexistant_user(self):
@@ -370,9 +384,14 @@ class TestPloneApiUser(unittest.TestCase):
             id='document_one',
             title='Document One',
         )
-        api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
+        api.user.grant_roles(
+            username='chuck',
+            roles=['Editor'],
+            obj=folder,
+        )
         self.assertIn(
-            'Editor', api.user.get_roles(username='chuck', obj=document),
+            'Editor',
+            api.user.get_roles(username='chuck', obj=document),
         )
 
     def test_get_roles_local_only(self):
@@ -396,7 +415,11 @@ class TestPloneApiUser(unittest.TestCase):
             id='document_one',
             title='Document One',
         )
-        api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
+        api.user.grant_roles(
+            username='chuck',
+            roles=['Editor'],
+            obj=folder,
+        )
         self.assertNotIn(
             'Editor',
             api.user.get_roles(username='chuck', obj=document, inherit=False),
@@ -429,7 +452,11 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.get_roles(username='chuck', obj=document),
             ['Member', 'Reviewer', 'Authenticated'],
         )
-        api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
+        api.user.grant_roles(
+            username='chuck',
+            roles=['Editor'],
+            obj=folder,
+        )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document),
             ['Member', 'Reviewer', 'Authenticated', 'Editor'],
@@ -443,7 +470,9 @@ class TestPloneApiUser(unittest.TestCase):
             ['Editor'],
         )
         api.group.grant_roles(
-            groupname='foo', roles=['Contributor'], obj=document,
+            groupname='foo',
+            roles=['Contributor'],
+            obj=document,
         )
         self.assertItemsEqual(
             ['Contributor'],
@@ -598,11 +627,21 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertIn('Contributor', api.user.get_roles(user=user))
 
         api.user.grant_roles(username='chuck', roles=['Reader', 'Reader'])
-        ROLES = set(
-            ('Editor', 'Contributor', 'Reader', 'Authenticated', 'Member'),
+        ROLES = [
+            'Editor',
+            'Contributor',
+            'Reader',
+            'Authenticated',
+            'Member',
+        ]
+        self.assertItemsEqual(
+            ROLES,
+            api.user.get_roles(username='chuck'),
         )
-        self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
-        self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
+        self.assertItemsEqual(
+            ROLES,
+            api.user.get_roles(user=user),
+        )
 
     def test_grant_roles_username_and_user(self):
         """Test grant roles passing username and user."""
@@ -660,24 +699,30 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
 
-        api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'])
-        api.user.revoke_roles(username='chuck', roles=['Reviewer'])
+        api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor', ])
+        api.user.revoke_roles(username='chuck', roles=['Reviewer', ])
         self.assertNotIn('Reviewer', api.user.get_roles(username='chuck'))
         self.assertNotIn('Reviewer', api.user.get_roles(user=user))
         self.assertIn('Editor', api.user.get_roles(username='chuck'))
         self.assertIn('Editor', api.user.get_roles(user=user))
 
         api.user.revoke_roles(username='chuck', roles=('Editor',))
-        ROLES = set(('Authenticated', 'Member'))
-        self.assertEqual(ROLES, set(api.user.get_roles(username='chuck')))
-        self.assertEqual(ROLES, set(api.user.get_roles(user=user)))
-        self.assertEqual(
+        ROLES = ['Authenticated', 'Member', ]
+        self.assertItemsEqual(
             ROLES,
-            set(api.user.get_roles(username='chuck', inherit=False)),
+            api.user.get_roles(username='chuck'),
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             ROLES,
-            set(api.user.get_roles(user=user, inherit=False)),
+            api.user.get_roles(user=user),
+        )
+        self.assertItemsEqual(
+            ROLES,
+            api.user.get_roles(username='chuck', inherit=False),
+        )
+        self.assertItemsEqual(
+            ROLES,
+            api.user.get_roles(user=user, inherit=False),
         )
 
     def test_revoke_roles_username_and_user(self):
@@ -723,11 +768,14 @@ class TestPloneApiUser(unittest.TestCase):
     @unittest.skip('Getting the Anonymous user does not work like this.')
     def test_revoke_roles_from_anonymous(self):
         """Test revoking roles from an Anonymous user."""
-        api.user.revoke_roles(username='Anonymous User', roles=['Reviewer'])
-        ROLES = set(['Anonymous', ])
-        self.assertEqual(
+        api.user.revoke_roles(
+            username='Anonymous User',
+            roles=['Reviewer'],
+        )
+        ROLES = ['Anonymous', ]
+        self.assertItemsEqual(
             ROLES,
-            set(api.user.get_roles(username='Anonymous User')),
+            api.user.get_roles(username='Anonymous User'),
         )
 
     def test_revoke_roles_no_user(self):
@@ -762,7 +810,11 @@ class TestPloneApiUser(unittest.TestCase):
             title='Document One',
         )
 
-        api.user.grant_roles(username='chuck', roles=['Editor'], obj=folder)
+        api.user.grant_roles(
+            username='chuck',
+            roles=['Editor'],
+            obj=folder,
+        )
         self.assertIn(
             'Editor',
             api.user.get_roles(username='chuck', obj=folder),
@@ -779,7 +831,10 @@ class TestPloneApiUser(unittest.TestCase):
             'Editor',
             api.user.get_roles(username='chuck', obj=document),
         )
-        self.assertIn('Editor', api.user.get_roles(user=user, obj=document))
+        self.assertIn(
+            'Editor',
+            api.user.get_roles(user=user, obj=document),
+        )
 
         api.user.grant_roles(
             username='chuck',
@@ -803,22 +858,22 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.get_roles(user=user, obj=document),
         )
 
-        ROLES = set(('Editor', 'Contributor', 'Authenticated', 'Member'))
+        ROLES = ['Editor', 'Contributor', 'Authenticated', 'Member', ]
         self.assertItemsEqual(
             ROLES,
-            set(api.user.get_roles(username='chuck', obj=folder)),
+            api.user.get_roles(username='chuck', obj=folder),
         )
         self.assertItemsEqual(
             ROLES,
-            set(api.user.get_roles(user=user, obj=folder)),
+            api.user.get_roles(user=user, obj=folder),
         )
         self.assertItemsEqual(
             ROLES,
-            set(api.user.get_roles(username='chuck', obj=document)),
+            api.user.get_roles(username='chuck', obj=document),
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             ROLES,
-            set(api.user.get_roles(user=user, obj=document)),
+            api.user.get_roles(user=user, obj=document),
         )
 
     def test_grant_roles_disregards_adapter(self):
@@ -878,7 +933,9 @@ class TestPloneApiUser(unittest.TestCase):
 
         # Assign a local role
         api.user.grant_roles(
-            username='chuck', roles=['Contributor'], obj=folder,
+            username='chuck',
+            roles=['Contributor'],
+            obj=folder,
         )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=folder),
@@ -888,7 +945,7 @@ class TestPloneApiUser(unittest.TestCase):
         # The adapter role is in in the local roles but not persistent
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
-            ['Contributor', 'Reviewer'],
+            ['Contributor', 'Reviewer', ],
         )
         local_roles = getattr(folder, '__ac_local_roles__', {})
         self.assertEqual(
@@ -902,34 +959,50 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document),
-            ['Member', 'Authenticated', 'Contributor', 'Reviewer'],
+            ['Member', 'Authenticated', 'Contributor', 'Reviewer', ],
         )
 
         # add a group and test mix of group and adapter and user-roles
         api.group.create('foo')
-        api.group.grant_roles(groupname='foo', roles=['Contributor'], obj=document)  # noqa
+        api.group.grant_roles(
+            groupname='foo',
+            roles=['Contributor'],
+            obj=document,
+        )
         api.group.add_user(groupname='foo', username='chuck')
 
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
-            ['Contributor', 'Reviewer'],
+            ['Contributor', 'Reviewer', ],
         )
         api.group.grant_roles(groupname='foo', roles=['Manager'], obj=folder)
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
-            ['Contributor', 'Reviewer'],
+            ['Contributor', 'Reviewer', ],
         )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document),
-            ['Contributor', 'Reviewer', 'Manager', 'Authenticated', 'Member'],
+            [
+                'Contributor',
+                'Reviewer',
+                'Manager',
+                'Authenticated',
+                'Member',
+            ],
         )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=folder),
-            ['Contributor', 'Reviewer', 'Manager', 'Authenticated', 'Member'],
+            [
+                'Contributor',
+                'Reviewer',
+                'Manager',
+                'Authenticated',
+                'Member',
+            ],
         )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
-            ['Contributor', 'Reviewer', 'Manager'],
+            ['Contributor', 'Reviewer', 'Manager', ],
         )
 
         # cleanup
@@ -1003,33 +1076,36 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertNotIn('Editor', api.user.get_roles(user=user, obj=document))
 
-        ROLES = set(('Authenticated', 'Member'))
-        self.assertEqual(
+        ROLES = ['Authenticated', 'Member', ]
+        self.assertItemsEqual(
             ROLES,
-            set(api.user.get_roles(username='chuck', obj=folder)),
+            api.user.get_roles(username='chuck', obj=folder),
         )
-        self.assertEqual(
-            ROLES, set(api.user.get_roles(user=user, obj=folder)),
+        self.assertItemsEqual(
+            ROLES,
+            api.user.get_roles(user=user, obj=folder),
         )
-        self.assertEqual(
-            ROLES, set(api.user.get_roles(username='chuck', obj=document)),
+        self.assertItemsEqual(
+            ROLES,
+            api.user.get_roles(username='chuck', obj=document),
         )
-        self.assertEqual(
-            ROLES, set(api.user.get_roles(user=user, obj=document)),
+        self.assertItemsEqual(
+            ROLES,
+            api.user.get_roles(user=user, obj=document),
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             [],
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             [],
             api.user.get_roles(user=user, obj=folder, inherit=False),
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             [],
             api.user.get_roles(username='chuck', obj=document, inherit=False),
         )
-        self.assertEqual(
+        self.assertItemsEqual(
             [],
             api.user.get_roles(user=user, obj=document, inherit=False),
         )

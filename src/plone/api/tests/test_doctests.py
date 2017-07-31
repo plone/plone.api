@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Boilerplate for doctest functional tests."""
+
 from logging import getLogger
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_INTEGRATION_TESTING
@@ -117,6 +118,9 @@ def test_suite():
         try:
             doctests.append(DocFileSuite(os.path.join(path, filename)))
         except IOError:
-            logger.warning('test_doctest.py skipping {0}'.format(filename))
+            logger.warning('test_doctest.py skipping {file}'.format(
+                    file=filename,
+                )
+            )
 
     return unittest.TestSuite(doctests)

@@ -143,6 +143,20 @@ class TestPloneApiEnv(unittest.TestCase):
             ])
         self.test_test_defaults()
 
+    def test_adopt_manager_string_role(self):
+        """Test that we can adopt the Manager role temporarily."""
+        with api.env.adopt_roles(roles='Manager'):
+            self.should_allow([
+                'public_method',
+                'pp_method',
+                'qq_method',
+                'rr_method',
+            ])
+            self.should_forbid([
+                'private_method',
+            ])
+        self.test_test_defaults()
+
     def test_adopt_fewers_role(self):
         """Test that we can adopt a non-Manager role temporarily."""
         with api.env.adopt_roles(roles=['Member']):
