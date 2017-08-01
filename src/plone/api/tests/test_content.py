@@ -179,12 +179,12 @@ class TestPloneApiContent(unittest.TestCase):
         ENABLED = 1
         if getattr(aq_base(folder), 'setConstrainTypesMode', None):  # AT
             folder.setConstrainTypesMode(ENABLED)
-            folder.setLocallyAllowedTypes(('News Item',))
+            folder.setLocallyAllowedTypes(('News Item', ))
         else:  # DX
             from Products.CMFPlone.interfaces import ISelectableConstrainTypes
             constraints = ISelectableConstrainTypes(folder)
             constraints.setConstrainTypesMode(ENABLED)
-            constraints.setLocallyAllowedTypes(('News Item',))
+            constraints.setLocallyAllowedTypes(('News Item', ))
 
         with self.assertRaises(InvalidParameterError):
             api.content.create(
@@ -496,9 +496,9 @@ class TestPloneApiContent(unittest.TestCase):
         def recordEvent(event):
             firedEvents.append(event.__class__)
 
-        sm.registerHandler(recordEvent, (IObjectWillBeMovedEvent,))
-        sm.registerHandler(recordEvent, (IObjectMovedEvent,))
-        sm.registerHandler(recordEvent, (IObjectModifiedEvent,))
+        sm.registerHandler(recordEvent, (IObjectWillBeMovedEvent, ))
+        sm.registerHandler(recordEvent, (IObjectMovedEvent, ))
+        sm.registerHandler(recordEvent, (IObjectModifiedEvent, ))
 
         # Rename contact
         nucontact = api.content.rename(obj=self.contact, new_id='nu-contact')
@@ -514,9 +514,9 @@ class TestPloneApiContent(unittest.TestCase):
                 ContainerModifiedEvent,
             ],
         )
-        sm.unregisterHandler(recordEvent, (IObjectWillBeMovedEvent,))
-        sm.unregisterHandler(recordEvent, (IObjectMovedEvent,))
-        sm.unregisterHandler(recordEvent, (IObjectModifiedEvent,))
+        sm.unregisterHandler(recordEvent, (IObjectWillBeMovedEvent, ))
+        sm.unregisterHandler(recordEvent, (IObjectMovedEvent, ))
+        sm.unregisterHandler(recordEvent, (IObjectModifiedEvent, ))
 
         # Test with safe_id option when moving content
         api.content.create(
@@ -660,14 +660,23 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Create a second folder named bargains
         bargains = api.content.create(
-            type='Folder', id='bargains', container=self.portal,
+            type='Folder',
+            id='bargains',
+            container=self.portal,
         )
 
         # Create a bargain inside the bargains folder with the id="item"
         bargain = api.content.create(
-            container=bargains, type='Document', id='item',
+            type='Document',
+            id='item',
+            container=bargains,
         )
-        api.content.copy(source=item, target=bargains, id='item', safe_id=True)
+        api.content.copy(
+            source=item,
+            target=bargains,
+            id='item',
+            safe_id=True,
+        )
 
         assert container['bargains']['item-1']
         assert container['bargains']['item']
@@ -1002,7 +1011,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.maxDiff = None  # to see assert diff
         self.assertMultiLineEqual(
             str(cm.exception),
-            "Invalid transition 'foo'.\n"
+            'Invalid transition "foo".\n'
             'Valid transitions are:\n'
             'reject\n'
             'retract',
