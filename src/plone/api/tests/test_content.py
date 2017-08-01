@@ -1011,7 +1011,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.maxDiff = None  # to see assert diff
         self.assertMultiLineEqual(
             str(cm.exception),
-            'Invalid transition "foo".\n'
+            "Invalid transition 'foo'.\n"
             'Valid transitions are:\n'
             'reject\n'
             'retract',
