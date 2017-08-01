@@ -50,7 +50,7 @@ def create(
     id=None,
     title=None,
     safe_id=False,
-    **kwargs
+    **kwargs  # NOQA: C816
 ):
     """Create a new content item.
 
@@ -94,10 +94,14 @@ def create(
         types = [fti.getId() for fti in container.allowedContentTypes()]
 
         raise InvalidParameterError(
-            "Cannot add a '{0}' object to the container.\n"
+            "Cannot add a '{obj_type}' object to the container.\n"
             'Allowed types are:\n'
-            '{1}\n'
-            '{2}'.format(type, '\n'.join(sorted(types)), e.message)
+            '{allowed_types}\n'
+            '{message}'.format(
+                obj_type=type,
+                allowed_types='\n'.join(sorted(types)),
+                message=e.message,
+            ),
         )
 
     content = container[content_id]
@@ -143,8 +147,11 @@ def get(path=None, UID=None):
     if path:
         site = portal.get()
         site_absolute_path = '/'.join(site.getPhysicalPath())
-        if not path.startswith('{0}'.format(site_absolute_path)):
-            path = '{0}{1}'.format(site_absolute_path, path)
+        if not path.startswith('{path}'.format(path=site_absolute_path)):
+            path = '{site_path}{relative_path}'.format(
+                site_path=site_absolute_path,
+                relative_path=path,
+            )
 
         try:
             return site.restrictedTraverse(path)
@@ -187,7 +194,7 @@ def move(source=None, target=None, id=None, safe_id=False):
     # If no target is given the object is probably renamed
     if target and source.aq_parent is not target:
             target.manage_pasteObjects(
-                source.aq_parent.manage_cutObjects(source_id)
+                source.aq_parent.manage_cutObjects(source_id),
             )
     else:
         target = source.aq_parent
@@ -256,7 +263,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
         target = source.aq_parent
 
     copy_info = target.manage_pasteObjects(
-        source.aq_parent.manage_copyObjects(source_id)
+        source.aq_parent.manage_copyObjects(source_id),
     )
 
     new_id = copy_info[0]['new_id']
@@ -296,13 +303,14 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
         linkintegrity_view = get_view(
             name='delete_confirmation_info',
             context=site,
-            request=site.REQUEST)
+            request=site.REQUEST,
+        )
 
         # look for breaches and manually raise a exception
         breaches = linkintegrity_view.get_breaches(objects)
         if breaches:
             raise LinkIntegrityNotificationException(
-                'Linkintegrity-breaches: {0}'.format(breaches)
+                'Linkintegrity-breaches: {0}'.format(breaches),
             )
 
     for obj_ in objects:
@@ -348,6 +356,7 @@ def _find_path(maps, path, current_state, start_state):
     # transitions. i.e an initial state you are not able to return to.
     if current_state not in maps:
         return
+
     for new_transition, from_states in maps[current_state]:
         next_path = _copy(path)
         if new_transition in path:
@@ -387,14 +396,15 @@ def _wf_transitions_for(workflow, from_state, to_state):
     """
     exit_state_maps = {}
     for state in workflow.states.objectValues():
-        for t in state.getTransitions():
-            exit_state_maps.setdefault(t, [])
-            exit_state_maps[t].append(state.getId())
+        for transition in state.getTransitions():
+            exit_state_maps.setdefault(transition, [])
+            exit_state_maps[transition].append(state.getId())
 
     transition_maps = {}
     for transition in workflow.transitions.objectValues():
         value = (transition.getId(), exit_state_maps.get(
-            transition.getId(), []))
+            transition.getId(), [],),
+        )
         if transition.new_state_id not in transition_maps:
             transition_maps[transition.new_state_id] = [value]
         else:
@@ -472,7 +482,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
             raise InvalidParameterError(
                 "Invalid transition '{0}'.\n"
                 'Valid transitions are:\n'
-                '{1}'.format(transition, '\n'.join(sorted(transitions)))
+                '{1}'.format(transition, '\n'.join(sorted(transitions))),
             )
     else:
         _transition_to(obj, workflow, to_state, **kwargs)
@@ -481,7 +491,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
                 'Could not find workflow to set state to {0} on {1}'.format(
                     to_state,
                     obj,
-                )
+                ),
             )
 
 
@@ -542,9 +552,12 @@ def get_view(name=None, context=None, request=None):
     # Raise an error if the requested view is not available.
     if name not in available_view_names:
         raise InvalidParameterError(
-            "Cannot find a view with name '{0}'.\n"
+            "Cannot find a view with name '{name}'.\n"
             'Available views are:\n'
-            '{1}'.format(name, '\n'.join(sorted(available_view_names)))
+            '{views}'.format(
+                name=name,
+                views='\n'.join(sorted(available_view_names)),
+            ),
         )
     return getMultiAdapter((context, request), name=name)
 

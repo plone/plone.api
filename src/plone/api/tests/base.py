@@ -23,7 +23,7 @@ else:
 
 class PloneApiLayer(PloneSandboxLayer):
 
-    defaultBases = (PLONE_FIXTURE,)
+    defaultBases = (PLONE_FIXTURE, )
 
     def setUpZope(self, app, configurationContext):
         """Prepare Zope instance by loading appropriate ZCMLs."""
@@ -58,6 +58,10 @@ class PloneApiLayer(PloneSandboxLayer):
 
 FIXTURE = PloneApiLayer()
 INTEGRATION_TESTING = IntegrationTesting(
-    bases=(FIXTURE,), name='PloneApiLayer:Integration')
+    bases=(FIXTURE, ),
+    name='PloneApiLayer:Integration',
+)
 FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(FIXTURE,), name='PloneApiLayer:Functional')
+    bases=(FIXTURE, ),
+    name='PloneApiLayer:Functional',
+)

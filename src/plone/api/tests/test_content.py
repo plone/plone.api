@@ -8,7 +8,7 @@ from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
 from plone.api.content import NEW_LINKINTEGRITY
 from plone.api.tests.base import INTEGRATION_TESTING
-from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # noqa
+from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # NOQA: E501
 from plone.app.textfield import RichTextValue
 from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer import indexer
@@ -61,26 +61,53 @@ class TestPloneApiContent(unittest.TestCase):
         self.portal = self.layer['portal']
 
         self.blog = api.content.create(
-            type='Link', id='blog', container=self.portal)
+            type='Link',
+            id='blog',
+            container=self.portal,
+        )
         self.about = api.content.create(
-            type='Folder', id='about', container=self.portal)
+            type='Folder',
+            id='about',
+            container=self.portal,
+        )
         self.events = api.content.create(
-            type='Folder', id='events', container=self.portal)
+            type='Folder',
+            id='events',
+            container=self.portal,
+        )
 
         self.team = api.content.create(
-            container=self.about, type='Document', id='team')
+            container=self.about,
+            type='Document',
+            id='team',
+        )
         self.contact = api.content.create(
-            container=self.about, type='Document', id='contact')
+            container=self.about,
+            type='Document',
+            id='contact',
+        )
 
         self.training = api.content.create(
-            container=self.events, type='Event', id='training')
+            container=self.events,
+            type='Event',
+            id='training',
+        )
         self.conference = api.content.create(
-            container=self.events, type='Event', id='conference')
+            container=self.events,
+            type='Event',
+            id='conference',
+        )
         self.sprint = api.content.create(
-            container=self.events, type='Event', id='sprint')
+            container=self.events,
+            type='Event',
+            id='sprint',
+        )
 
         self.image = api.content.create(
-            container=self.portal, type='Image', id='image')
+            container=self.portal,
+            type='Image',
+            id='image',
+        )
 
     def test_create_constraints(self):
         """Test the constraints when creating content."""
@@ -109,7 +136,8 @@ class TestPloneApiContent(unittest.TestCase):
         # Check the constraints for id and title parameters
         with self.assertRaises(MissingParameterError):
             api.content.create(
-                container=container, type='Document'
+                container=container,
+                type='Document',
             )
 
         # Check the constraints for allowed types in the container
@@ -128,38 +156,41 @@ class TestPloneApiContent(unittest.TestCase):
             api.content.create(
                 container=container,
                 type='foo',
-                id='test-foo'
+                id='test-foo',
             )
 
         # Check if the underlying error message is included
         # in the InvalidParameterError message
         self.assertIn(
             'No such content type: foo',
-            cm.exception.message
+            cm.exception.message,
         )
 
         # Check the constraints for allowed types in the container
         # Create a folder
         folder = api.content.create(
-            container=container, type='Folder', id='test-folder')
+            container=container,
+            type='Folder',
+            id='test-folder',
+        )
         assert folder
 
         # Constraint the allowed types
         ENABLED = 1
         if getattr(aq_base(folder), 'setConstrainTypesMode', None):  # AT
             folder.setConstrainTypesMode(ENABLED)
-            folder.setLocallyAllowedTypes(('News Item',))
+            folder.setLocallyAllowedTypes(('News Item', ))
         else:  # DX
             from Products.CMFPlone.interfaces import ISelectableConstrainTypes
             constraints = ISelectableConstrainTypes(folder)
             constraints.setConstrainTypesMode(ENABLED)
-            constraints.setLocallyAllowedTypes(('News Item',))
+            constraints.setLocallyAllowedTypes(('News Item', ))
 
         with self.assertRaises(InvalidParameterError):
             api.content.create(
                 container=folder,
                 type='Document',
-                id='test-doc'
+                id='test-doc',
             )
 
     def test_create_dexterity(self):
@@ -171,14 +202,20 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Create a folder
         folder = api.content.create(
-            container=container, type='Dexterity Folder', id='test-folder')
+            container=container,
+            type='Dexterity Folder',
+            id='test-folder',
+        )
         assert folder
         self.assertEqual(folder.id, 'test-folder')
         self.assertEqual(folder.portal_type, 'Dexterity Folder')
 
         # Create an item
         page = api.content.create(
-            container=folder, type='Dexterity Item', id='test-item')
+            container=folder,
+            type='Dexterity Item',
+            id='test-item',
+        )
         assert page
         self.assertEqual(page.id, 'test-item')
         self.assertEqual(page.portal_type, 'Dexterity Item')
@@ -187,7 +224,7 @@ class TestPloneApiContent(unittest.TestCase):
         page = api.content.create(
             container=folder,
             type='Dexterity Item',
-            title='Test id generated'
+            title='Test id generated',
         )
         assert page
         self.assertEqual(page.id, 'test-id-generated')
@@ -212,21 +249,30 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Create a folder
         folder = api.content.create(
-            container=container, type='Folder', id='test-folder')
+            container=container,
+            type='Folder',
+            id='test-folder',
+        )
         assert folder
         self.assertEqual(folder.id, 'test-folder')
         self.assertEqual(folder.portal_type, 'Folder')
 
         # Create a document
         page = api.content.create(
-            container=folder, type='Document', id='test-document')
+            container=folder,
+            type='Document',
+            id='test-document',
+        )
         assert page
         self.assertEqual(page.id, 'test-document')
         self.assertEqual(page.portal_type, 'Document')
 
         # Create a document with a title and without an id
         page = api.content.create(
-            container=folder, type='Document', title='Test id generated')
+            container=folder,
+            type='Document',
+            title='Test id generated',
+        )
         assert page
         self.assertEqual(page.id, 'test-id-generated')
         self.assertEqual(page.Title(), 'Test id generated')
@@ -274,8 +320,13 @@ class TestPloneApiContent(unittest.TestCase):
         # during content reindexing
         @indexer(IContentish, IZCatalog)
         def force_unicode_error(object):
-            raise UnicodeDecodeError('ascii', 'x', 1, 5,
-                                     unicode_exception_message)
+            raise UnicodeDecodeError(
+                'ascii',
+                'x',
+                1,
+                5,
+                unicode_exception_message,
+            )
 
         site.registerAdapter(factory=force_unicode_error, name='Title')
 
@@ -286,7 +337,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         with self.assertRaises(UnicodeDecodeError) as ude:
             api.content.create(
-                type='Folder', id='test-unicode-folder',
+                type='Folder',
+                id='test-unicode-folder',
                 container=self.portal,
             )
 
@@ -301,7 +353,7 @@ class TestPloneApiContent(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             api.content.get(
                 path='/',
-                UID='dummy'
+                UID='dummy',
             )
 
         # Either a path or UID must be given
@@ -326,7 +378,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test getting the team document by path that has portal id included
         team_by_path = api.content.get(
-            '/{0}/about/team'.format(self.portal.getId()))
+            '/{0}/about/team'.format(self.portal.getId()),
+        )
         self.assertEqual(self.team, team_by_path)
 
         # Test getting an non-existing item by path and UID
@@ -372,16 +425,19 @@ class TestPloneApiContent(unittest.TestCase):
 
         # When moving objects we can change the id
         team = container['team']
-        ourteam = api.content.move(source=team,
-                                   target=self.about,
-                                   id='our-team')
+        ourteam = api.content.move(
+            source=team,
+            target=self.about,
+            id='our-team',
+        )
         assert (container['about']['our-team'] and
                 container['about']['our-team'] == ourteam)
         assert 'team' not in container.keys()
 
         # Test with safe_id option when moving content
         api.content.create(
-            container=self.about, type='Link', id='link-to-blog')
+            container=self.about, type='Link', id='link-to-blog',
+        )
         linktoblog1 = api.content.move(
             source=self.blog,
             target=self.about,
@@ -396,10 +452,14 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(self.conference.id, 'conference-renamed')
 
         # Move folderish object
-        about = api.content.move(source=container.about,
-                                 target=container.events)
-        assert (container['events']['about'] and
-                container['events']['about'] == about)
+        about = api.content.move(
+            source=container.about,
+            target=container.events,
+        )
+        assert (
+            container['events']['about'] and
+            container['events']['about'] == about
+        )
 
     def test_move_no_move_if_target_is_source_parent(self):
         """Test that trying to move an object to its parent is a noop"""
@@ -436,9 +496,9 @@ class TestPloneApiContent(unittest.TestCase):
         def recordEvent(event):
             firedEvents.append(event.__class__)
 
-        sm.registerHandler(recordEvent, (IObjectWillBeMovedEvent,))
-        sm.registerHandler(recordEvent, (IObjectMovedEvent,))
-        sm.registerHandler(recordEvent, (IObjectModifiedEvent,))
+        sm.registerHandler(recordEvent, (IObjectWillBeMovedEvent, ))
+        sm.registerHandler(recordEvent, (IObjectMovedEvent, ))
+        sm.registerHandler(recordEvent, (IObjectModifiedEvent, ))
 
         # Rename contact
         nucontact = api.content.rename(obj=self.contact, new_id='nu-contact')
@@ -446,18 +506,22 @@ class TestPloneApiContent(unittest.TestCase):
                 container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
 
-        self.assertItemsEqual(firedEvents, [
-            ObjectMovedEvent,
-            ObjectWillBeMovedEvent,
-            ContainerModifiedEvent
-        ])
-        sm.unregisterHandler(recordEvent, (IObjectWillBeMovedEvent,))
-        sm.unregisterHandler(recordEvent, (IObjectMovedEvent,))
-        sm.unregisterHandler(recordEvent, (IObjectModifiedEvent,))
+        self.assertItemsEqual(
+            firedEvents,
+            [
+                ObjectMovedEvent,
+                ObjectWillBeMovedEvent,
+                ContainerModifiedEvent,
+            ],
+        )
+        sm.unregisterHandler(recordEvent, (IObjectWillBeMovedEvent, ))
+        sm.unregisterHandler(recordEvent, (IObjectMovedEvent, ))
+        sm.unregisterHandler(recordEvent, (IObjectModifiedEvent, ))
 
         # Test with safe_id option when moving content
         api.content.create(
-            container=self.about, type='Link', id='link-to-blog')
+            container=self.about, type='Link', id='link-to-blog',
+        )
         linktoblog1 = api.content.rename(
             obj=container['about']['link-to-blog'],
             new_id='link-to-blog',
@@ -469,7 +533,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Rename to existing id
         api.content.create(
-            container=self.about, type='Link', id='link-to-blog')
+            container=self.about, type='Link', id='link-to-blog',
+        )
 
         with self.assertRaises(CopyError):
             api.content.rename(
@@ -495,7 +560,7 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.rename(
             obj=events,
             new_id='about',
-            safe_id=True
+            safe_id=True,
         )
 
         assert self.portal['about']
@@ -530,11 +595,15 @@ class TestPloneApiContent(unittest.TestCase):
         )  # old content still available
 
         # When copying objects we can change the id
-        ourteam = api.content.copy(source=self.team,
-                                   target=self.about,
-                                   id='our-team')
-        assert (container['about']['our-team'] and
-                container['about']['our-team'] == ourteam)
+        ourteam = api.content.copy(
+            source=self.team,
+            target=self.about,
+            id='our-team',
+        )
+        assert(
+            container['about']['our-team'] and
+            container['about']['our-team'] == ourteam
+        )
 
         # When copying whithout target parameter should take source parent
         api.content.copy(source=self.team, id='our-team-no-target')
@@ -542,7 +611,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test the safe_id option when moving content
         api.content.create(
-            container=self.about, type='Link', id='link-to-blog')
+            container=self.about, type='Link', id='link-to-blog',
+        )
 
         linktoblog1 = api.content.copy(
             source=self.blog,
@@ -550,25 +620,33 @@ class TestPloneApiContent(unittest.TestCase):
             id='link-to-blog',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1'] and
-                container['about']['link-to-blog-1'] == linktoblog1)
+        assert(
+            container['about']['link-to-blog-1'] and
+            container['about']['link-to-blog-1'] == linktoblog1
+        )
 
         # Copy folderish content under target
-        about = api.content.copy(source=container.about,
-                                 target=container.events)
-        assert (container['events']['about'] and
-                container['events']['about'] == about)
+        about = api.content.copy(
+            source=container.about,
+            target=container.events,
+        )
+        assert(
+            container['events']['about'] and
+            container['events']['about'] == about
+        )
 
         # When copying with safe_id=True, the prior created item should not be
         # renamed, and the copied item should have a sane postfix
 
         # Create a products folder
         products = api.content.create(
-            type='Folder', id='products', container=self.portal)
+            type='Folder', id='products', container=self.portal,
+        )
 
         # Create a item inside the products folder
         item = api.content.create(
-            container=products, type='Document', id='item')
+            container=products, type='Document', id='item',
+        )
 
         api.content.copy(source=item, id='item', safe_id=True)
 
@@ -582,12 +660,23 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Create a second folder named bargains
         bargains = api.content.create(
-            type='Folder', id='bargains', container=self.portal)
+            type='Folder',
+            id='bargains',
+            container=self.portal,
+        )
 
         # Create a bargain inside the bargains folder with the id="item"
         bargain = api.content.create(
-            container=bargains, type='Document', id='item')
-        api.content.copy(source=item, target=bargains, id='item', safe_id=True)
+            type='Document',
+            id='item',
+            container=bargains,
+        )
+        api.content.copy(
+            source=item,
+            target=bargains,
+            id='item',
+            safe_id=True,
+        )
 
         assert container['bargains']['item-1']
         assert container['bargains']['item']
@@ -634,8 +723,12 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.copy(source=container['about'], target=container)
         api.content.copy(source=container['about'], target=container['events'])
 
-        api.content.delete(objects=[container['copy_of_about'],
-                                    container['events']['about']])
+        api.content.delete(
+            objects=[
+                container['copy_of_about'],
+                container['events']['about'],
+            ],
+        )
         self.assertNotIn('copy_of_about', container)
         self.assertNotIn('about', container['events'])
 
@@ -686,7 +779,8 @@ class TestPloneApiContent(unittest.TestCase):
         # Delete linked pages
         api.content.delete(
             objects=[self.blog, self.contact],
-            check_linkintegrity=False)
+            check_linkintegrity=False,
+        )
         self.assertNotIn('contact', self.portal['about'].keys())
         self.assertNotIn('blog', self.portal.keys())
 
@@ -750,16 +844,22 @@ class TestPloneApiContent(unittest.TestCase):
 
         # But at least one valid index does.
         documents = api.content.find(
-            invalid_index='henk', portal_type='Document')
+            invalid_index='henk',
+            portal_type='Document',
+        )
         self.assertEqual(len(documents), 2)
 
     def test_find_context(self):
         # Find documents in context
         documents = api.content.find(
-            context=self.portal.about, portal_type='Document')
+            context=self.portal.about,
+            portal_type='Document',
+        )
         self.assertEqual(len(documents), 2)
         documents = api.content.find(
-            context=self.portal.events, portal_type='Document')
+            context=self.portal.events,
+            portal_type='Document',
+        )
         self.assertEqual(len(documents), 0)
 
     def test_find_depth(self):
@@ -771,24 +871,36 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Limit search depth with explicit context
         documents = api.content.find(
-            context=self.portal.about, depth=1, portal_type='Document')
+            context=self.portal.about,
+            depth=1,
+            portal_type='Document',
+        )
         self.assertEqual(len(documents), 2)
         documents = api.content.find(
-            context=self.portal.about, depth=0, portal_type='Document')
+            context=self.portal.about,
+            depth=0,
+            portal_type='Document',
+        )
         self.assertEqual(len(documents), 0)
 
         # Limit search depth with explicit path
         documents = api.content.find(
             path='/'.join(self.portal.about.getPhysicalPath()),
-            depth=1, portal_type='Document')
+            depth=1,
+            portal_type='Document',
+        )
         self.assertEqual(len(documents), 2)
         documents = api.content.find(
             path='/'.join(self.portal.about.getPhysicalPath()),
-            depth=0, portal_type='Document')
+            depth=0,
+            portal_type='Document',
+        )
         self.assertEqual(len(documents), 0)
         documents = api.content.find(
             path='/'.join(self.portal.events.getPhysicalPath()),
-            depth=1, portal_type='Document')
+            depth=1,
+            portal_type='Document',
+        )
         self.assertEqual(len(documents), 0)
 
     def test_find_interface(self):
@@ -808,14 +920,14 @@ class TestPloneApiContent(unittest.TestCase):
 
         query = {
             'portal_type': 'Document',
-            'path': {'query': path, 'depth': 2}
+            'path': {'query': path, 'depth': 2},
         }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 2)
 
         query = {
             'portal_type': 'Document',
-            'path': {'query': path, 'depth': 0}
+            'path': {'query': path, 'depth': 0},
         }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 0)
@@ -824,7 +936,7 @@ class TestPloneApiContent(unittest.TestCase):
         query = {
             'depth': 2,
             'portal_type': 'Document',
-            'path': {'query': path}
+            'path': {'query': path},
         }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 2)
@@ -833,7 +945,7 @@ class TestPloneApiContent(unittest.TestCase):
         query = {
             'depth': 2,
             'portal_type': 'Document',
-            'path': {'query': path}
+            'path': {'query': path},
         }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 0)
@@ -893,7 +1005,8 @@ class TestPloneApiContent(unittest.TestCase):
         # This should fail because the transition doesn't exist
         with self.assertRaises(InvalidParameterError) as cm:
             api.content.transition(
-                transition='foo', obj=self.blog)
+                transition='foo', obj=self.blog,
+            )
 
         self.maxDiff = None  # to see assert diff
         self.assertMultiLineEqual(
@@ -901,14 +1014,14 @@ class TestPloneApiContent(unittest.TestCase):
             "Invalid transition 'foo'.\n"
             'Valid transitions are:\n'
             'reject\n'
-            'retract'
+            'retract',
         )
 
         # change the workflow of a document so that there is no transition
         # that goes directly from one state to another
         portal_workflow = api.portal.get_tool('portal_workflow')
         portal_workflow._chains_by_type['File'] = tuple(
-            ['intranet_workflow']
+            ['intranet_workflow'],
         )
         test_file = api.content.create(
             container=api.portal.get(),
@@ -1057,7 +1170,7 @@ class TestPloneApiContent(unittest.TestCase):
             api.content.get_view(
                 name='foo',
                 context=self.blog,
-                request=request
+                request=request,
             )
 
         self.maxDiff = None  # to see assert diff
@@ -1065,8 +1178,8 @@ class TestPloneApiContent(unittest.TestCase):
             str(cm.exception).startswith(
                 "Cannot find a view with name 'foo'.\n"
                 'Available views are:\n'
-                '\n'
-            )
+                '\n',
+            ),
         )
 
         # This is just a sampling of views that should be present.

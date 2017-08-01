@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Boilerplate for doctest functional tests."""
+
 from logging import getLogger
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_INTEGRATION_TESTING
@@ -75,7 +76,7 @@ def setUp(self):  # pragma: no cover
 
 
 def DocFileSuite(
-    testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING
+    testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING,
 ):
     """Returns a test suite configured with a test layer.
 
@@ -101,7 +102,7 @@ def DocFileSuite(
             m,
             testfile,
             setUp=setUp,
-            globs=dict(layer=layer)
+            globs=dict(layer=layer),
         ),
         layer=layer,
     )
@@ -117,6 +118,8 @@ def test_suite():
         try:
             doctests.append(DocFileSuite(os.path.join(path, filename)))
         except IOError:
-            logger.warning('test_doctest.py skipping {0}'.format(filename))
+            logger.warning(
+                'test_doctest.py skipping {file}'.format(file=filename),
+            )
 
     return unittest.TestSuite(doctests)

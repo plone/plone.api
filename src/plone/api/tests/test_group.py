@@ -25,7 +25,8 @@ class TestPloneApiGroup(unittest.TestCase):
         self.portal = self.layer['portal']
         self.group_tool = getToolByName(self.portal, 'portal_groups')
         self.portal_membership = getToolByName(
-            self.portal, 'portal_membership')
+            self.portal, 'portal_membership',
+        )
 
     def test_create_constraints(self):
         """Test the constraints for creating a group."""
@@ -211,7 +212,7 @@ class TestPloneApiGroup(unittest.TestCase):
             api.group.add_user(
                 groupname='staff',
                 username='staff',
-                user=mock.Mock()
+                user=mock.Mock(),
             )
 
     def test_add_user_with_nonexistant_group(self):
@@ -480,17 +481,27 @@ class TestPloneApiGroup(unittest.TestCase):
         ROLES = set(['Editor', 'Contributor'])
         self.assertEqual(
             ROLES,
-            set(api.group.get_roles(
-                groupname='foo', obj=folder, inherit=False)),
+            set(
+                api.group.get_roles(
+                    groupname='foo',
+                    obj=folder,
+                    inherit=False,
+                ),
+            ),
         )
         self.assertEqual(
             ROLES,
-            set(api.group.get_roles(group=group, obj=folder, inherit=False)),
+            set(api.group.get_roles(group=group, obj=folder, inherit=False,)),
         )
         self.assertEqual(
             set([]),
-            set(api.group.get_roles(
-                groupname='foo', obj=document, inherit=False)),
+            set(
+                api.group.get_roles(
+                    groupname='foo',
+                    obj=document,
+                    inherit=False,
+                ),
+            ),
         )
         self.assertEqual(
             set([]),
@@ -521,12 +532,12 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         # Add the editor-role as global role
         api.group.grant_roles(groupname='foo', roles=['Editor'])
-        self.assertEqual(
+        self.assertItemsEqual(
             ['Authenticated', 'Editor'],
             api.group.get_roles(groupname='foo'),
         )
         # local_roles plus global_roles
-        self.assertEqual(
+        self.assertItemsEqual(
             ['Authenticated', 'Editor'],
             api.group.get_roles(groupname='foo', obj=folder),
         )
@@ -538,8 +549,9 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # The Contributor-role is added
         api.group.grant_roles(
-            groupname='foo', roles=['Contributor'], obj=folder)
-        self.assertEqual(
+            groupname='foo', roles=['Contributor'], obj=folder,
+        )
+        self.assertItemsEqual(
             ['Contributor'],
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
         )
@@ -551,22 +563,41 @@ class TestPloneApiGroup(unittest.TestCase):
         # no only-local roles
         self.assertEqual(
             set([]),
-            set(api.group.get_roles(groupname='foo', obj=document, inherit=False)),  # noqa
+            set(
+                api.group.get_roles(
+                    groupname='foo',
+                    obj=document,
+                    inherit=False,
+                ),
+            ),
         )
         api.group.grant_roles(
-            groupname='foo', roles=['Contributor'], obj=document)
+            groupname='foo', roles=['Contributor'], obj=document,
+        )
         # one only-local role
         self.assertEqual(
             set(['Contributor']),
-            set(api.group.get_roles(groupname='foo', obj=document, inherit=False)),  # noqa
+            set(
+                api.group.get_roles(
+                    groupname='foo',
+                    obj=document,
+                    inherit=False,
+                ),
+            ),
+
         )
 
         # The Editor-role is added even though it is already a global role
         api.group.grant_roles(groupname='foo', roles=['Editor'], obj=folder)
         self.assertEqual(
             set(['Contributor', 'Editor']),
-            set(api.group.get_roles(
-                groupname='foo', obj=folder, inherit=False)),
+            set(
+                api.group.get_roles(
+                    groupname='foo',
+                    obj=folder,
+                    inherit=False,
+                ),
+            ),
         )
 
     def test_local_roles_disregard_adapter(self):
@@ -617,26 +648,28 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # Assign a local role
         api.group.grant_roles(
-            groupname='foo', roles=['Contributor'], obj=folder)
+            groupname='foo', roles=['Contributor'], obj=folder,
+        )
         self.assertItemsEqual(
             api.group.get_roles(groupname='foo', obj=folder),
             ['Authenticated', 'Contributor', 'Reviewer'],
         )
 
         # The adapter role in in the local roles but not persistent
-        self.assertEqual(
+        self.assertItemsEqual(
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
             ['Contributor', 'Reviewer'],
         )
         local_roles = getattr(folder, '__ac_local_roles__', {})
-        self.assertEqual(
+        self.assertItemsEqual(
             local_roles.get('foo'),
             ['Contributor'],
         )
         # cleanup
         gsm = getGlobalSiteManager()
         gsm.unregisterAdapter(
-            factory=LocalRoleProvider, provided=ILocalRoleProvider)
+            factory=LocalRoleProvider, provided=ILocalRoleProvider,
+        )
 
     def test_revoke_roles_in_context(self):
         """Test revoke roles."""
