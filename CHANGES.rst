@@ -4,10 +4,6 @@ Changelog
 1.7.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Add method to check if ZODB is in read-only mode.
