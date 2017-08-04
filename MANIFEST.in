@@ -1,4 +1,5 @@
 include *.rst LICENSE
+include tox.ini
 
 # Ignore most of the docs directory.
 prune docs
