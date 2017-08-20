@@ -14,7 +14,13 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Let ``zope.i18n`` do the language negotiation for our ``translate`` function.
+  Our ``get_current_translation`` does not always give the correct one, especially with combined languages:
+  ``nl-be`` (Belgian/Flemish) should fall back to ``nl`` (Dutch).
+  The correct negotiated language can also differ per translation domain, which we do not account for.
+  ``zope.i18n`` does that better.
+  Fixes `issue 379 <https://github.com/plone/plone.api/issues/379>`_.
+  [maurits]
 
 
 1.8 (2017-08-05)

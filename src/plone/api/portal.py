@@ -445,11 +445,12 @@ def translate(msgid, domain='plone', lang=None):
     :Example: :ref:`portal_translate_example`
     """
     translation_service = get_tool('translation_service')
-    if not lang:
-        lang = get_current_language()
-
-    return translation_service.utranslate(
-        msgid=msgid,
-        domain=domain,
-        target_language=lang,
-    )
+    query = {
+        'msgid': msgid,
+        'domain': domain,
+        'target_language': lang,
+    }
+    if lang is None:
+        # Pass the request, so zope.i18n.translate can negotiate the language.
+        query['context'] = getRequest()
+    return translation_service.utranslate(**query)
