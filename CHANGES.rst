@@ -14,9 +14,6 @@ New features:
 
 Bug fixes:
 
-- remove outdated README statement re: 80/20
-  [tkimnguyen]
-  
 - *add item here*
 
 
