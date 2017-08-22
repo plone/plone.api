@@ -13,7 +13,7 @@ A simple API, built for humans wishing to develop with Plone.
 
 The intention is
 
-* to cover 20% of the tasks any Plone developer does 80% of the time,
+* to cover as much as possible the tasks carried out by a Plone developer
 * to provide clear API methods for Plone functionality which may be confusing or difficult to access,
 * keeping everything in one place,
 * staying introspectable and discoverable, important aspects of being Pythonic.
