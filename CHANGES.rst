@@ -22,6 +22,8 @@ Bug fixes:
   Fixes `issue 379 <https://github.com/plone/plone.api/issues/379>`_.
   [maurits]
 
+- Fix use of Globals.DB which was removed in Zope4 (Fix https://github.com/plone/plone.api/issues/385)
+  [pbauer]
 
 1.8 (2017-08-05)
 ----------------
