@@ -14,8 +14,8 @@ from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
 
-import Zope2
 import traceback
+import Zope2
 
 
 IS_TEST = None
