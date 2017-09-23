@@ -735,7 +735,6 @@ class TestPloneApiContent(unittest.TestCase):
     def test_delete_no_objs(self):
         # Check that we allow passing in an empty list of objects.
         api.content.delete(obj=None, objects=[])
-        api.content.delete(obj=None, objects=None)
 
     def test_delete_ignore_linkintegrity(self):
         """Test deleting a content item with a link pointed at it."""
