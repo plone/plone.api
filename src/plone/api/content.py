@@ -193,9 +193,9 @@ def move(source=None, target=None, id=None, safe_id=False):
 
     # If no target is given the object is probably renamed
     if target and source.aq_parent is not target:
-            target.manage_pasteObjects(
-                source.aq_parent.manage_cutObjects(source_id),
-            )
+        target.manage_pasteObjects(
+            source.aq_parent.manage_cutObjects(source_id),
+        )
     else:
         target = source.aq_parent
 
@@ -296,7 +296,11 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
 
     :Example: :ref:`content_delete_example`
     """
-    objects = objects or [obj]
+    objects = [obj] if obj else objects
+
+    # Return early if we have no objects to delete.
+    if not objects:
+        return
 
     if check_linkintegrity and NEW_LINKINTEGRITY:
         site = portal.get()
