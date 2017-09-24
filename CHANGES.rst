@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Don't rename an object when the id already is the target id. Refs #361.
+  [jaroel]
+
 - Let ``zope.i18n`` do the language negotiation for our ``translate`` function.
   Our ``get_current_translation`` does not always give the correct one, especially with combined languages:
   ``nl-be`` (Belgian/Flemish) should fall back to ``nl`` (Dutch).

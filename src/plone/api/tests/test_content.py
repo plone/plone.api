@@ -550,6 +550,9 @@ class TestPloneApiContent(unittest.TestCase):
                 container['about']['link-to-blog-1-1'] == linktoblog11)
         assert 'link-to-blog' not in container.keys()
 
+    def test_rename_same_id(self):
+        api.content.rename(obj=self.contact, new_id=self.contact.getId())
+
     def test_rename_same_folder(self):
         # When renaming a folderish item with safe_id=True, and there is
         # already an existing folderish item with that id, it should choose

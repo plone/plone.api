@@ -193,9 +193,9 @@ def move(source=None, target=None, id=None, safe_id=False):
 
     # If no target is given the object is probably renamed
     if target and source.aq_parent is not target:
-            target.manage_pasteObjects(
-                source.aq_parent.manage_cutObjects(source_id),
-            )
+        target.manage_pasteObjects(
+            source.aq_parent.manage_cutObjects(source_id),
+        )
     else:
         target = source.aq_parent
 
@@ -227,7 +227,8 @@ def rename(obj=None, new_id=None, safe_id=False):
         chooser = INameChooser(container)
         new_id = chooser.chooseName(new_id, obj)
 
-    container.manage_renameObject(obj_id, new_id)
+    if obj_id != new_id:
+        container.manage_renameObject(obj_id, new_id)
     return container[new_id]
 
 
