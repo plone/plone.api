@@ -732,6 +732,10 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertNotIn('copy_of_about', container)
         self.assertNotIn('about', container['events'])
 
+    def test_delete_no_objs(self):
+        # Check that we allow passing in an empty list of objects.
+        api.content.delete(obj=None, objects=[])
+
     def test_delete_ignore_linkintegrity(self):
         """Test deleting a content item with a link pointed at it."""
         self._set_text(self.team, '<a href="contact">contact</a>')
