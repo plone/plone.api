@@ -227,7 +227,8 @@ def rename(obj=None, new_id=None, safe_id=False):
         chooser = INameChooser(container)
         new_id = chooser.chooseName(new_id, obj)
 
-    container.manage_renameObject(obj_id, new_id)
+    if obj_id != new_id:
+        container.manage_renameObject(obj_id, new_id)
     return container[new_id]
 
 

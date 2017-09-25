@@ -14,7 +14,12 @@ New features:
 
 Bug fixes:
 
-- Change content.delete to allow both obj=None and objects=[] or objects=None. Fixes #383
+- Don't rename an object when the id already is the target id.
+  Fixes `issue 361 <https://github.com/plone/plone.api/issues/361>`_.
+  [jaroel]
+
+- Change content.delete to allow both obj=None and objects=[] or objects=None.
+  Fixes `issue 383 <https://github.com/plone/plone.api/issues/383>`_.
   [jaroel]
 
 - Let ``zope.i18n`` do the language negotiation for our ``translate`` function.
