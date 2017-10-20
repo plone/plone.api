@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Change api.group.get_groups to work with CMF master.
+  [jaroel]
 
 
 1.8.1 (2017-10-17)
