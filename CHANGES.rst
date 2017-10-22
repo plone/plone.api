@@ -14,6 +14,11 @@ New features:
 
 Bug fixes:
 
+- Fix test in Zope4,
+  where ``Products.PlonePAS.tools.memberdata.MemberData`` is an adapter now.
+  It can't be proofed to be equal when fetched twice.
+  [jensens]
+
 - Change api.group.get_groups to work with CMF master.
   [jaroel]
 
