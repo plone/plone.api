@@ -182,8 +182,7 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-
-        self.assertEqual(api.user.get('chuck'), user)
+        self.assertEqual(api.user.get('chuck').id, user.id)
 
     def test_get_current(self):
         """Test getting the currently logged-in user."""
