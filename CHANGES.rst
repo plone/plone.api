@@ -22,6 +22,8 @@ Bug fixes:
 - Change api.group.get_groups to work with CMF master.
   [jaroel]
 
+- Added six to deal with Python 2 / 3 compatibility.
+  [rudaporto]
 
 1.8.1 (2017-10-17)
 ------------------
