@@ -4,14 +4,6 @@ Changelog
 1.8.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix test in Zope4,
