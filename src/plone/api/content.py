@@ -110,7 +110,9 @@ def create(
     if IBaseObject.providedBy(content):
         # Will finish Archetypes content item creation process,
         # rename-after-creation and such
-        content.processForm(values=kwargs)
+        # Passing values as an empty dict so values set by invokeFactory
+        # don't get overridden.
+        content.processForm(values={})
 
     if not id or (safe_id and id):
         # Create a new id from title
