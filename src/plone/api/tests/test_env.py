@@ -21,6 +21,12 @@ role_mapping = (
     ('rrr', ('Manager')),
 )
 
+# Version of Zope and Plone should be something like
+# 'X.Y' or 'X.Y.Z' or 'X.Y.Z.A'
+# It could also include a package status id (Alpha, Beta or RC).
+# When run against coredev, we may have a .devN suffix as well.
+version_regexp = '^(\d+(\.\d+){1,3})(a\d+|b\d+|rc\d+)?(\.dev\d)?$'
+
 
 class HasProtectedMethods(SimpleItem):
 
@@ -426,24 +432,13 @@ class TestPloneApiEnv(unittest.TestCase):
         """Tests that plone_version() returns Plone version."""
         from plone.api.env import plone_version
         self.assertTrue(isinstance(plone_version(), str))
-        # version should be something like 'X.Y' or 'X.Y.Z'
-        # it could also include a package status id (Alpha, Beta or RC)
-        # When run against coredev, we may have a .devN suffix as well.
-        self.assertRegexpMatches(
-            plone_version(),
-            '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?(\.dev\d)?$',
-        )
+        self.assertRegexpMatches(plone_version(), version_regexp)
 
     def test_zope_version(self):
         """Tests that zope_version() returns Zope version."""
         from plone.api.env import zope_version
         self.assertTrue(isinstance(zope_version(), str))
-        # version should be something like 'X.Y' or 'X.Y.Z'
-        # it could also include a package status id (Alpha, Beta or RC)
-        self.assertRegexpMatches(
-            zope_version(),
-            '^(\d+\.\d+|\d+\.\d+\.\d+)(a\d+|b\d+|rc\d+)?(\.dev\d)?$',
-        )
+        self.assertRegexpMatches(zope_version(), version_regexp)
 
     def test_adopt_user_different_username(self):
         user = api.user.get(userid=TEST_USER_ID)

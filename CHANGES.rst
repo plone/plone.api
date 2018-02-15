@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fixed regular expression in test for Plone version.  [maurits]
 
 
 1.8.2 (2018-01-17)
