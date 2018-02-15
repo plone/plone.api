@@ -2,8 +2,8 @@
 """Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
-from datetime import datetime as dtime
 from datetime import date
+from datetime import datetime as dtime
 from email.utils import formataddr
 from email.utils import parseaddr
 from logging import getLogger
