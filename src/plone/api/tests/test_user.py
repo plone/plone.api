@@ -138,7 +138,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertItemsEqual(
             api.user.get_roles(user=user),
-            ['Member', 'Authenticated', ],
+            ['Member', 'Authenticated'],
         )
 
     def test_create_specified_roles(self):
@@ -164,7 +164,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertItemsEqual(
             api.user.get_roles(user=user),
-            ['Authenticated', ],
+            ['Authenticated'],
         )
 
     def test_get_constraints(self):
@@ -288,7 +288,7 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_roles_username(self):
         """Test get roles passing a username."""
-        ROLES = ['Reviewer', 'Editor', ]
+        ROLES = ['Reviewer', 'Editor']
         api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -710,15 +710,15 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
 
-        api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor', ])
-        api.user.revoke_roles(username='chuck', roles=['Reviewer', ])
+        api.user.grant_roles(username='chuck', roles=['Reviewer', 'Editor'])
+        api.user.revoke_roles(username='chuck', roles=['Reviewer'])
         self.assertNotIn('Reviewer', api.user.get_roles(username='chuck'))
         self.assertNotIn('Reviewer', api.user.get_roles(user=user))
         self.assertIn('Editor', api.user.get_roles(username='chuck'))
         self.assertIn('Editor', api.user.get_roles(user=user))
 
-        api.user.revoke_roles(username='chuck', roles=('Editor',))
-        ROLES = ['Authenticated', 'Member', ]
+        api.user.revoke_roles(username='chuck', roles=('Editor'))
+        ROLES = ['Authenticated', 'Member']
         self.assertItemsEqual(
             ROLES,
             api.user.get_roles(username='chuck'),
@@ -785,7 +785,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
         from plone.api.exc import InvalidParameterError
         with self.assertRaises(InvalidParameterError):
-            api.user.revoke_roles(username='chuck', roles=['Authenticated', ])
+            api.user.revoke_roles(username='chuck', roles=['Authenticated'])
 
     @unittest.skip('Getting the Anonymous user does not work like this.')
     def test_revoke_roles_from_anonymous(self):
@@ -794,7 +794,7 @@ class TestPloneApiUser(unittest.TestCase):
             username='Anonymous User',
             roles=['Reviewer'],
         )
-        ROLES = ['Anonymous', ]
+        ROLES = ['Anonymous']
         self.assertItemsEqual(
             ROLES,
             api.user.get_roles(username='Anonymous User'),
@@ -880,7 +880,7 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.get_roles(user=user, obj=document),
         )
 
-        ROLES = ['Editor', 'Contributor', 'Authenticated', 'Member', ]
+        ROLES = ['Editor', 'Contributor', 'Authenticated', 'Member']
         self.assertItemsEqual(
             ROLES,
             api.user.get_roles(username='chuck', obj=folder),
@@ -967,7 +967,7 @@ class TestPloneApiUser(unittest.TestCase):
         # The adapter role is in in the local roles but not persistent
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
-            ['Contributor', 'Reviewer', ],
+            ['Contributor', 'Reviewer'],
         )
         local_roles = getattr(folder, '__ac_local_roles__', {})
         self.assertEqual(
@@ -981,7 +981,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document),
-            ['Member', 'Authenticated', 'Contributor', 'Reviewer', ],
+            ['Member', 'Authenticated', 'Contributor', 'Reviewer'],
         )
 
         # add a group and test mix of group and adapter and user-roles
@@ -995,12 +995,12 @@ class TestPloneApiUser(unittest.TestCase):
 
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
-            ['Contributor', 'Reviewer', ],
+            ['Contributor', 'Reviewer'],
         )
         api.group.grant_roles(groupname='foo', roles=['Manager'], obj=folder)
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
-            ['Contributor', 'Reviewer', ],
+            ['Contributor', 'Reviewer'],
         )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=document),
@@ -1024,7 +1024,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertItemsEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
-            ['Contributor', 'Reviewer', 'Manager', ],
+            ['Contributor', 'Reviewer', 'Manager'],
         )
 
         # cleanup
@@ -1098,7 +1098,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertNotIn('Editor', api.user.get_roles(user=user, obj=document))
 
-        ROLES = ['Authenticated', 'Member', ]
+        ROLES = ['Authenticated', 'Member']
         self.assertItemsEqual(
             ROLES,
             api.user.get_roles(username='chuck', obj=folder),
