@@ -717,7 +717,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertIn('Editor', api.user.get_roles(username='chuck'))
         self.assertIn('Editor', api.user.get_roles(user=user))
 
-        api.user.revoke_roles(username='chuck', roles=('Editor'))
+        api.user.revoke_roles(username='chuck', roles=('Editor',))
         ROLES = ['Authenticated', 'Member']
         self.assertItemsEqual(
             ROLES,
