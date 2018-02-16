@@ -3,7 +3,6 @@
 
 from datetime import date
 from datetime import datetime
-from DateTime import DateTime
 from email import message_from_string
 from pkg_resources import parse_version
 from plone.api import content
@@ -23,6 +22,7 @@ from zope.component.hooks import setSite
 from zope.interface import Interface
 from zope.site import LocalSiteManager
 
+import DateTime
 import mock
 import unittest
 
@@ -386,19 +386,19 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # tests
         result = portal.get_localized_time(
-            datetime=DateTime(1999, 12, 31, 23, 59),
+            datetime=DateTime.DateTime(1999, 12, 31, 23, 59),
             long_format=True,
         )
         self.assertEqual(result, 'Dec 31, 1999 11:59 PM')
 
         result = portal.get_localized_time(
-            datetime=DateTime(1999, 12, 31, 23, 59),
+            datetime=DateTime.DateTime(1999, 12, 31, 23, 59),
             time_only=True,
         )
         self.assertEqual(result, '11:59 PM')
 
         result = portal.get_localized_time(
-            datetime=DateTime(1999, 12, 31, 23, 59),
+            datetime=DateTime.DateTime(1999, 12, 31, 23, 59),
         )
         self.assertEqual(result, 'Dec 31, 1999')
 
