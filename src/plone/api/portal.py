@@ -2,8 +2,6 @@
 """Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
-from datetime import datetime as dtime
-from datetime import date
 from email.utils import formataddr
 from email.utils import parseaddr
 from logging import getLogger
@@ -20,6 +18,7 @@ from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.interface.interfaces import IInterface
 
+import datetime as dtime
 import pkg_resources
 import six
 
@@ -239,10 +238,10 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
     request = getRequest()
 
     # isinstance won't work because of date -> datetime inheritance
-    if type(datetime) is date:
+    if type(datetime) is dtime.date:
         if time_only:
             return ''
-        datetime = dtime(datetime.year, datetime.month, datetime.day)
+        datetime = dtime.datetime(datetime.year, datetime.month, datetime.day)
         long_format = False
 
     return tool.ulocalized_time(

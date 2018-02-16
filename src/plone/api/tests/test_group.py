@@ -67,8 +67,8 @@ class TestPloneApiGroup(unittest.TestCase):
 
         ham_group = api.group.create(
             groupname='ham',
-            roles=['Editor', ],
-            groups=['Reviewer', ],
+            roles=['Editor'],
+            groups=['Reviewer'],
         )
         group = self.group_tool.getGroupById('ham')
         self.assertEqual(ham_group, group)
@@ -491,7 +491,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         self.assertEqual(
             ROLES,
-            set(api.group.get_roles(group=group, obj=folder, inherit=False,)),
+            set(api.group.get_roles(group=group, obj=folder, inherit=False)),
         )
         self.assertEqual(
             set([]),
@@ -749,7 +749,7 @@ class TestPloneApiGroup(unittest.TestCase):
             api.group.get_roles(group=group, obj=document),
         )
 
-        ROLES = set(['Authenticated', ])
+        ROLES = set(['Authenticated'])
         self.assertEqual(
             ROLES,
             set(api.group.get_roles(groupname='ploneboat', obj=folder)),

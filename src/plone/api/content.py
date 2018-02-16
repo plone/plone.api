@@ -407,8 +407,9 @@ def _wf_transitions_for(workflow, from_state, to_state):
 
     transition_maps = {}
     for transition in workflow.transitions.objectValues():
-        value = (transition.getId(), exit_state_maps.get(
-            transition.getId(), [],),
+        value = (
+            transition.getId(),
+            exit_state_maps.get(transition.getId(), []),
         )
         if transition.new_state_id not in transition_maps:
             transition_maps[transition.new_state_id] = [value]

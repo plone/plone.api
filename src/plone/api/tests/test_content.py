@@ -748,7 +748,8 @@ class TestPloneApiContent(unittest.TestCase):
 
     @unittest.skipIf(
         HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
-        'This test only makes sense with Archetypes or new Linkintegrity.')
+        'This test only makes sense with Archetypes or new Linkintegrity.',
+    )
     def test_delete_check_linkintegrity(self):
         """Test deleting a content item with a link pointed at it."""
         self._set_text(self.team, '<a href="contact">contact</a>')
@@ -762,7 +763,8 @@ class TestPloneApiContent(unittest.TestCase):
 
     @unittest.skipIf(
         HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
-        'This test only makes sense with Archetypes or new Linkintegrity.')
+        'This test only makes sense with Archetypes or new Linkintegrity.',
+    )
     def test_delete_multiple_check_linkintegrity(self):
         """Test deleting multiple item with linkintegrity-breaches."""
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
@@ -778,7 +780,8 @@ class TestPloneApiContent(unittest.TestCase):
 
     @unittest.skipIf(
         HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
-        'This test only makes sense with Archetypes or new Linkintegrity.')
+        'This test only makes sense with Archetypes or new Linkintegrity.',
+    )
     def test_delete_multiple_ignore_linkintegrity(self):
         """Test deleting multiple items ignoring linkintegrity-breaches."""
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
@@ -793,7 +796,8 @@ class TestPloneApiContent(unittest.TestCase):
 
     @unittest.skipIf(
         HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
-        'This test only makes sense with Archetypes or new Linkintegrity.')
+        'This test only makes sense with Archetypes or new Linkintegrity.',
+    )
     def test_delete_with_internal_breaches(self):
         """Test deleting multiple with internal linkintegrity breaches."""
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
@@ -809,7 +813,9 @@ class TestPloneApiContent(unittest.TestCase):
             self.assertIn('training', self.portal['events'].keys())
 
     @unittest.skipUnless(
-        NEW_LINKINTEGRITY, 'Only new Linkintegrity resolves internal breaches')
+        NEW_LINKINTEGRITY,
+        'Only new Linkintegrity resolves internal breaches',
+    )
     def test_delete_with_resolved_internal_breaches(self):
         """Test deleting multiple with internal linkintegrity breaches."""
         self._set_text(self.team, '<a href="../about/contact">contact</a>')

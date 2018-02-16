@@ -14,6 +14,8 @@ New features:
 
 Bug fixes:
 
+- Improved code quality according to isort and flake8.  [maurits]
+
 - Fixed regular expression in test for Plone version.  [maurits]
 
 
