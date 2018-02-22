@@ -4,14 +4,6 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Improved code quality according to isort and flake8.  [maurits]
