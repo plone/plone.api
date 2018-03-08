@@ -112,7 +112,7 @@ def create(
         # rename-after-creation and such
         # Passing values as an empty dict so values set by invokeFactory
         # don't get overridden.
-        content.processForm(values={})
+        content.processForm(values={None: None})
 
     if not id or (safe_id and id):
         # Create a new id from title
