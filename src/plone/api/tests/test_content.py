@@ -345,6 +345,43 @@ class TestPloneApiContent(unittest.TestCase):
         # check that the exception is the one we raised
         self.assertEqual(ude.exception.reason, unicode_exception_message)
 
+    def test_create_at_with_title_in_request(self):
+        """ Test that content gets created with the correct title, even if
+            request.form['title'] already exists and has a different value.
+            This can occur, for example, when adding a Plone with an enabled
+            product that creates a site structure. In that case, the 'title'
+            would be that of the portal.
+            Only AT content types are affected, due to content.processForm.
+        """
+        leaked_title = 'This should not be set on content items'
+        self.layer['request'].form['title'] = leaked_title
+
+        container = self.portal
+
+        # Create a folder
+        folder = api.content.create(
+            container=container,
+            type='Folder',
+            id='test-folder',
+            title='Test folder'
+        )
+        assert folder
+        self.assertEqual(folder.id, 'test-folder')
+        self.assertEqual(folder.title, 'Test folder')
+        self.assertEqual(folder.portal_type, 'Folder')
+
+        # Create a document
+        page = api.content.create(
+            container=folder,
+            type='Document',
+            id='test-document',
+            title='Test document',
+        )
+        assert page
+        self.assertEqual(page.id, 'test-document')
+        self.assertEqual(page.title, 'Test document')
+        self.assertEqual(page.portal_type, 'Document')
+
     def test_get_constraints(self):
         """Test the constraints when content is fetched with get."""
 
