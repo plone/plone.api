@@ -363,7 +363,7 @@ class TestPloneApiContent(unittest.TestCase):
             container=container,
             type='Folder',
             id='test-folder',
-            title='Test folder'
+            title='Test folder',
         )
         assert folder
         self.assertEqual(folder.id, 'test-folder')
