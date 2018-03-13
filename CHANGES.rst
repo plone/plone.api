@@ -14,7 +14,11 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Call ``processForm`` with ``{None: None}`` dict as values.
+  This prevents ``processForm`` using ``REQUEST.form`` and overwriting 
+  values already set by ``invokeFactory``.
+  Fixes `issue 99 <https://github.com/plone/plone.api/issues/99>`_.
+  [david-batranu]
 
 
 1.8.3 (2018-02-23)
