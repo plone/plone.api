@@ -362,25 +362,19 @@ class TestPloneApiContent(unittest.TestCase):
         folder = api.content.create(
             container=container,
             type='Folder',
-            id='test-folder',
             title='Test folder',
         )
-        assert folder
-        self.assertEqual(folder.id, 'test-folder')
+
         self.assertEqual(folder.title, 'Test folder')
-        self.assertEqual(folder.portal_type, 'Folder')
 
         # Create a document
         page = api.content.create(
             container=folder,
             type='Document',
-            id='test-document',
             title='Test document',
         )
-        assert page
-        self.assertEqual(page.id, 'test-document')
+
         self.assertEqual(page.title, 'Test document')
-        self.assertEqual(page.portal_type, 'Document')
 
     def test_get_constraints(self):
         """Test the constraints when content is fetched with get."""
