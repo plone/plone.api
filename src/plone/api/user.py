@@ -2,6 +2,7 @@
 """Module that provides functionality for user manipulation."""
 
 from AccessControl.Permission import getPermissions
+from AccessControl.SecurityManagement import getSecurityManager
 from contextlib import contextmanager
 from plone.api import env
 from plone.api import portal
@@ -296,15 +297,10 @@ def get_permissions(username=None, user=None, obj=None):
     else:
         context = env.adopt_user(username, user)
 
-    result = {}
     with context:
-        portal_membership = portal.get_tool('portal_membership')
-        permissions = (permission[0] for permission in getPermissions())
-        for permission in permissions:
-            result[permission] = bool(
-                portal_membership.checkPermission(permission, obj),
-            )
-
+        sm = getSecurityManager()
+        pms = (record[0] for record in getPermissions())
+        result = {pm: bool(sm.checkPermission(pm, obj)) for pm in pms}
     return result
 
 
@@ -340,8 +336,7 @@ def has_permission(permission, username=None, user=None, obj=None):
         context = env.adopt_user(username, user)
 
     with context:
-        portal_membership = portal.get_tool('portal_membership')
-        return bool(portal_membership.checkPermission(permission, obj))
+        return bool(getSecurityManager().checkPermission(permission, obj))
 
 
 @required_parameters('roles')

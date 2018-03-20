@@ -15,10 +15,17 @@ New features:
 Bug fixes:
 
 - Call ``processForm`` with ``{None: None}`` dict as values.
-  This prevents ``processForm`` using ``REQUEST.form`` and overwriting 
+  This prevents ``processForm`` using ``REQUEST.form`` and overwriting
   values already set by ``invokeFactory``.
   Fixes `issue 99 <https://github.com/plone/plone.api/issues/99>`_.
   [david-batranu]
+
+- Simplification/minor speedup:
+  Permissions checks now directly use AccessControl.
+  Technical its now exact the same as before.
+  Before a tool lookup was needed, calling a utility function, calling AccessControl.
+  [jensens]
+
 
 
 1.8.3 (2018-02-23)
