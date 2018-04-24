@@ -4,14 +4,6 @@ Changelog
 1.8.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Call ``processForm`` with ``{None: None}`` dict as values.
