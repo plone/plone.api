@@ -100,7 +100,7 @@ def create(
             '{message}'.format(
                 obj_type=type,
                 allowed_types='\n'.join(sorted(types)),
-                message=e.message,
+                message=e.args[0],
             ),
         )
 

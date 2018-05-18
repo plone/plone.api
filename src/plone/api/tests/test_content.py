@@ -163,7 +163,7 @@ class TestPloneApiContent(unittest.TestCase):
         # in the InvalidParameterError message
         self.assertIn(
             'No such content type: foo',
-            cm.exception.message,
+            cm.exception.args[0],
         )
 
         # Check the constraints for allowed types in the container
@@ -322,7 +322,7 @@ class TestPloneApiContent(unittest.TestCase):
         def force_unicode_error(object):
             raise UnicodeDecodeError(
                 'ascii',
-                'x',
+                b'x',
                 1,
                 5,
                 unicode_exception_message,
@@ -594,7 +594,7 @@ class TestPloneApiContent(unittest.TestCase):
                 container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
 
-        self.assertItemsEqual(
+        self.assertCountEqual(
             firedEvents,
             [
                 ObjectMovedEvent,
@@ -917,7 +917,7 @@ class TestPloneApiContent(unittest.TestCase):
     def _set_text(self, obj, text):
         if IDexterityContent.providedBy(obj):
             # Dexterity
-            obj.text = RichTextValue(text)
+            obj.text = RichTextValue(text, 'text/html', 'text/x-html-safe')
         else:
             # Archetypes
             obj.setText(text, mimetype='text/html')

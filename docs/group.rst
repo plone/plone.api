@@ -143,7 +143,7 @@ Groups may be filtered by member. By passing the ``username`` parameter,
 .. invisible-code-block: python
 
     group_list = [g.id for g in groups]
-    self.assertItemsEqual(
+    self.assertCountEqual(
         group_list,
         ['Reviewers', 'AuthenticatedUsers', 'staff'],
     )
@@ -157,7 +157,7 @@ You can also pass the user directly to :meth:`api.group.get_groups`:
 .. invisible-code-block: python
 
     group_list = [g.id for g in groups]
-    self.assertItemsEqual(
+    self.assertCountEqual(
         group_list,
         ['Reviewers', 'AuthenticatedUsers', 'staff'],
     )

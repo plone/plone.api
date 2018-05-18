@@ -95,7 +95,7 @@ def get_groups(username=None, user=None):
             groups = group_tool.getGroupsForPrincipal(user)
         except AttributeError as e:
             # Anonymous users from the Zope acl_users folder will fail on this
-            if 'portal_groups' in e.message:
+            if 'portal_groups' in e.args[0]:
                 return[]
             raise
 

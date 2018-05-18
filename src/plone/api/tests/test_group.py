@@ -13,6 +13,7 @@ from zope.interface import Interface
 
 import mock
 import unittest
+import six
 
 
 class TestPloneApiGroup(unittest.TestCase):
@@ -532,12 +533,12 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         # Add the editor-role as global role
         api.group.grant_roles(groupname='foo', roles=['Editor'])
-        self.assertItemsEqual(
+        self.assertCountEqual(
             ['Authenticated', 'Editor'],
             api.group.get_roles(groupname='foo'),
         )
         # local_roles plus global_roles
-        self.assertItemsEqual(
+        self.assertCountEqual(
             ['Authenticated', 'Editor'],
             api.group.get_roles(groupname='foo', obj=folder),
         )
@@ -551,7 +552,7 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.grant_roles(
             groupname='foo', roles=['Contributor'], obj=folder,
         )
-        self.assertItemsEqual(
+        self.assertCountEqual(
             ['Contributor'],
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
         )
@@ -636,12 +637,12 @@ class TestPloneApiGroup(unittest.TestCase):
         provideAdapter(LocalRoleProvider)
 
         # the adapter-role is added for get_role
-        self.assertItemsEqual(
+        self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder),
             ['Authenticated', 'Reviewer'],
         )
 
-        self.assertItemsEqual(
+        self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
             ['Reviewer'],
         )
@@ -650,18 +651,18 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.grant_roles(
             groupname='foo', roles=['Contributor'], obj=folder,
         )
-        self.assertItemsEqual(
+        self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder),
             ['Authenticated', 'Contributor', 'Reviewer'],
         )
 
         # The adapter role in in the local roles but not persistent
-        self.assertItemsEqual(
+        self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
             ['Contributor', 'Reviewer'],
         )
         local_roles = getattr(folder, '__ac_local_roles__', {})
-        self.assertItemsEqual(
+        self.assertCountEqual(
             local_roles.get('foo'),
             ['Contributor'],
         )
