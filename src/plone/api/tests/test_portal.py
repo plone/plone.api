@@ -803,7 +803,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             portal.set_registry_record(
                 'field_one',
-                'value',
+                b'value',
                 interface=IMyRegistrySettings,
             )
 
@@ -818,7 +818,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError) as cm:
             portal.set_registry_record(
                 'field_one',
-                'value',
+                b'value',
                 interface=IMyRegistrySettings,
             )
         exc_str = str(cm.exception)
