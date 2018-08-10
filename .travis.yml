@@ -1,47 +1,40 @@
 language: python
+python: 2.7
 sudo: false
 cache:
   pip: true
   directories:
-    - $HOME/buildout-cache
+  - $HOME/.pylint.d
+  - eggs
 
 global:
   - secure: "nTXMNU2aYbCtvKD74PndF8Xm2h6IvsxPjr6vj45AxjXmaB7Wf5oGi/4b6ObV\nexBtUQkFnc+M0ThGyUznOCPi3YxcbTzsyhQYhHUtmtw/6QRyYgo4E0GLDItU\n37Ff6wpxl3NMMJTvpi6SOVUvIJUl3+cs+4bkMkS48RSFGg2rGmo="  # Coveralls.io token
+env:
+  matrix:
+  - PLONE_VERSION=4.3
+  - PLONE_VERSION=5.0
+  - PLONE_VERSION=5.1
 matrix:
   fast_finish: true
-  include:
-      # pyXX-plone_sunburst,pyXX-plone_barceloneta
-      - python: "2.7"
-        env: TOXENV=py27-plone-4.3
-      - python: "2.7"
-        env: TOXENV=py27-plone-5.0
-      - python: "2.7"
-        env: TOXENV=py27-plone-5.1
-      - python: "2.7"
-        env: TOXENV=isort,flake8,docs,
 
 before_install:
-    - mkdir -p $HOME/buildout-cache/{downloads,eggs,extends}
-    - mkdir $HOME/.buildout
-    - echo "[buildout]" > $HOME/.buildout/default.cfg
-    - echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
-    - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-    - echo "extends-cache = $HOME/buildout-cache/extends" >> $HOME/.buildout/default.cfg
-    - echo "abi-tag-eggs = true" >> $HOME/.buildout/default.cfg
+- cp plone-$PLONE_VERSION.x.cfg buildout.cfg
 
 install:
-  - travis_retry pip install -U setuptools==33.1.1 tox coveralls coverage
-
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- python bootstrap.py --setuptools-version=$(curl -s https://raw.githubusercontent.com/plone/buildout.coredev/$PLONE_VERSION/requirements.txt | grep setuptools)
+- bin/buildout annotate
+- bin/buildout
 
 script:
-    - travis_retry tox
+- bin/code-analysis
+- bin/test
+- bin/pylint --py3k --disable=no-absolute-import src/plone/api || true
 
 after_success:
-    - coverage combine
-    - coveralls
+- pip install coverage
+- coverage run bin/test
+- pip install coveralls
+- coveralls
 
 notifications:
   irc:

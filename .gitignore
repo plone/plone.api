@@ -2,7 +2,6 @@
 *.py[cod]
 *~
 /.Python
-/.coverage*
 /.installed.cfg
 /bin/
 /build/
