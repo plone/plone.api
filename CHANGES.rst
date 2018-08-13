@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Removed allow-hosts from base.cfg, so we can use the new pypi warehouse.
+  Refs https://github.com/plone/plone.api/issues/403
+  [jaroel]
 
 
 1.8.4 (2018-04-24)
