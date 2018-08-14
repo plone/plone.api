@@ -13,7 +13,6 @@ from zope.interface import Interface
 
 import mock
 import unittest
-import six
 
 
 class TestPloneApiGroup(unittest.TestCase):
