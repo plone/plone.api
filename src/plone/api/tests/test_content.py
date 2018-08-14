@@ -376,6 +376,22 @@ class TestPloneApiContent(unittest.TestCase):
 
         self.assertEqual(page.title, 'Test document')
 
+    @unittest.skipIf(HAS_PACONTENTYPES, 'Archetypes only')
+    def test_create_at_collection(self):
+        """Test create at Collecition."""
+        collection = api.content.create(
+            container=self.portal,
+            type='Collection',
+            title='Mandelbrot set',
+            description='Image gallery of a zoom sequence',
+            query=[{
+                'i': 'Type',
+                'o': 'plone.app.querystring.operation.string.is',
+                'v': ['Image'],
+            }],
+        )
+        self.assertEqual(collection.Title(), 'Mandelbrot set')
+
     def test_get_constraints(self):
         """Test the constraints when content is fetched with get."""
 
