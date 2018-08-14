@@ -17,6 +17,9 @@ Bug fixes:
 - Removed allow-hosts from base.cfg, so we can use the new pypi warehouse.
   Refs https://github.com/plone/plone.api/issues/403
   [jaroel]
+  
+- fix typos in doc strings
+  [tkimnguyen]
 
 
 1.8.4 (2018-04-24)

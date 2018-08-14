@@ -154,7 +154,7 @@ def get_users(groupname=None, group=None):
     :param group: Group of which to return users.
         If set, only return users that are member of this group.
     :type group: GroupData object
-    :returns: All users (optionlly filtered by group)
+    :returns: All users (optionally filtered by group)
     :rtype: List of MemberData objects
     :Example: :ref:`user_get_all_users_example`,
         :ref:`user_get_groups_users_example`
@@ -306,7 +306,7 @@ def get_permissions(username=None, user=None, obj=None):
 
 @mutually_exclusive_parameters('username', 'user')
 def has_permission(permission, username=None, user=None, obj=None):
-    """Check whether this user has the given permssion.
+    """Check whether this user has the given permission.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
     can either set one or the other, but not both. if ``username`` and
