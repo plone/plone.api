@@ -21,7 +21,7 @@ Bug fixes:
 - fix typos in doc strings
   [tkimnguyen]
 
-- Fix falining AT Collection creation when using api.content.create.
+- Fix failing AT Collection creation when using api.content.create.
   [gbastien]
 
 
