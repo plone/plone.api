@@ -376,9 +376,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         self.assertEqual(page.title, 'Test document')
 
-    @unittest.skipIf(HAS_PACONTENTYPES, 'Archetypes only')
-    def test_create_at_collection(self):
-        """Test create at Collecition."""
+    def test_create_collection(self):
+        """Test create a Collection."""
         collection = api.content.create(
             container=self.portal,
             type='Collection',
