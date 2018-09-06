@@ -376,6 +376,62 @@ class TestPloneApiContent(unittest.TestCase):
 
         self.assertEqual(page.title, 'Test document')
 
+    @unittest.skipIf(HAS_PACONTENTYPES, 'Archetypes only')
+    def test_create_at_collection(self):
+        """Test create at Collecition."""
+        collection = api.content.create(
+            container=self.portal,
+            type='Collection',
+            title='Mandelbrot set',
+            description='Image gallery of a zoom sequence',
+            query=[{
+                'i': 'Type',
+                'o': 'plone.app.querystring.operation.string.is',
+                'v': ['Image'],
+            }],
+        )
+        self.assertEqual(collection.Title(), 'Mandelbrot set')
+
+    @unittest.skipIf(HAS_PACONTENTYPES, 'Archetypes only')
+    def test_create_at_event(self):
+        """https://github.com/plone/plone.api/issues/364"""
+        from DateTime import DateTime
+        today = DateTime()
+        tomorrow = today + 1
+        event = api.content.create(
+            container=self.portal,
+            type='Event',
+            title=u'My event',
+            startDate=today,
+            endDate=tomorrow,
+        )
+        self.assertEqual(event.startDate, today)
+        self.assertEqual(event.endDate, tomorrow)
+        results = api.content.find(Title=u'My event')
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].start, today)
+        self.assertEqual(results[0].end, tomorrow)
+
+    @unittest.skipUnless(HAS_PACONTENTYPES, 'Dexterity only')
+    def test_create_dx_event(self):
+        """https://github.com/plone/plone.app.contenttypes/issues/465"""
+        import datetime
+        today = datetime.datetime.now()
+        tomorrow = today + datetime.timedelta(days=1)
+        event = api.content.create(
+            container=self.portal,
+            type='Event',
+            title=u'My event',
+            start=today,
+            end=tomorrow,
+        )
+        self.assertEqual(event.start, today)
+        self.assertEqual(event.end, tomorrow)
+        results = api.content.find(Title=u'My event')
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].start, today)
+        self.assertEqual(results[0].end, tomorrow)
+
     def test_get_constraints(self):
         """Test the constraints when content is fetched with get."""
 

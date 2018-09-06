@@ -112,8 +112,8 @@ def create(
         # rename-after-creation and such
         # Passing values as a dict with None values so values set by
         # invokeFactory don't get overridden.
-        # None: None is required so that bool(values) is True.
-        content.processForm(values={None: None})
+        # '': '' is required so that bool(values) is True.
+        content.processForm(values={'': ''})
 
     if not id or (safe_id and id):
         # Create a new id from title
