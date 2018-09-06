@@ -384,11 +384,13 @@ class TestPloneApiContent(unittest.TestCase):
             type='Collection',
             title='Mandelbrot set',
             description='Image gallery of a zoom sequence',
-            query=[{
-                'i': 'Type',
-                'o': 'plone.app.querystring.operation.string.is',
-                'v': ['Image'],
-            }],
+            query=[
+                {
+                 'i': 'Type',
+                 'o': 'plone.app.querystring.operation.string.is',
+                 'v': ['Image'],
+                },
+            ],
         )
         self.assertEqual(collection.Title(), 'Mandelbrot set')
 
