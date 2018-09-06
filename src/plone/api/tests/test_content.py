@@ -415,7 +415,7 @@ class TestPloneApiContent(unittest.TestCase):
 
     @unittest.skipUnless(HAS_PACONTENTYPES, 'Dexterity only')
     def test_create_dx_event(self):
-        """ """
+        """Test create a DX event."""
         import datetime
         today = datetime.datetime.now()
         tomorrow = today + datetime.timedelta(days=1)
