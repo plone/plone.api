@@ -4,14 +4,6 @@ Changelog
 1.8.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Removed allow-hosts from base.cfg, so we can use the new pypi warehouse.
