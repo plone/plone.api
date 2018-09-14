@@ -21,6 +21,9 @@ Bug fixes:
 - fix typos in doc strings
   [tkimnguyen]
 
+- Fix failing AT Collection creation when using api.content.create.
+  [gbastien]
+
 
 1.8.4 (2018-04-24)
 ------------------
