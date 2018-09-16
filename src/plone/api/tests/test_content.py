@@ -28,6 +28,7 @@ from zope.lifecycleevent import ObjectMovedEvent
 
 import mock
 import pkg_resources
+import six
 import unittest
 
 
@@ -594,7 +595,11 @@ class TestPloneApiContent(unittest.TestCase):
                 container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
 
-        self.assertCountEqual(
+        if six.PY2:
+            assertCountEqual = self.assertItemsEqual
+        else:
+            assertCountEqual = self.assertCountEqual
+        assertCountEqual(
             firedEvents,
             [
                 ObjectMovedEvent,
