@@ -83,7 +83,7 @@ To know if your Zope instance is running in debug mode, use :meth:`api.env.debug
 
     in_debug_mode = api.env.debug_mode()
     if in_debug_mode:
-        print 'Zope is in debug mode'
+        print('Zope is in debug mode')
 
 
 .. _env_test_mode_example:

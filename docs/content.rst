@@ -367,7 +367,7 @@ If deleting content would result in broken links you will get a `LinkIntegrityNo
     from zope.lifecycleevent import modified
     api.content.copy(source=portal['training'], target=portal, safe_id=True)
     api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
-    portal['about']['team'].text = RichTextValue('<a href="../copy_of_training">contact</a>')
+    portal['about']['team'].text = RichTextValue('<a href="../copy_of_training">contact</a>', 'text/html', 'text/x-html-safe')
     modified(portal['about']['team'])
 
 .. code-block:: python

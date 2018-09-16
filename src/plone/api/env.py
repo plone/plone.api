@@ -14,6 +14,7 @@ from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
 
+import six
 import traceback
 import Zope2
 
@@ -92,7 +93,7 @@ def adopt_roles(roles=None):
     :type roles: list of strings
     :Example: :ref:`env_adopt_roles_example`
     """
-    if isinstance(roles, basestring):
+    if isinstance(roles, six.string_types):
         roles = [roles]
 
     if not roles:
