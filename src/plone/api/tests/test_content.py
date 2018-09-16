@@ -164,7 +164,7 @@ class TestPloneApiContent(unittest.TestCase):
         # in the InvalidParameterError message
         self.assertIn(
             'No such content type: foo',
-            cm.exception.args[0],
+            str(cm.exception),
         )
 
         # Check the constraints for allowed types in the container
