@@ -4,18 +4,10 @@ Changelog
 1.9.0 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Python 2/3 support.
   [pbauer]
-
-Bug fixes:
-
-- *add item here*
 
 
 1.8.5 (2018-09-14)
