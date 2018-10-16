@@ -798,10 +798,8 @@ class TestPloneApiGroup(unittest.TestCase):
             roles=['Reviewer', 'Editor'],
             obj=document,
         )
-        document.manage_setLocalRoles(
-            'AuthenticatedUsers', ('Reader',))
+        document.manage_setLocalRoles('AuthenticatedUsers', ('Reader',))
         self.assertNotIn(
             'Reader',
-            api.group.get_roles(
-                groupname='ploneboat', inherit=False, obj=document),
+            api.group.get_roles(groupname='ploneboat', inherit=False, obj=document),  # noqa: E501
         )
