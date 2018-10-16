@@ -216,6 +216,8 @@ def get_roles(groupname=None, group=None, obj=None, inherit=True):
     :type group: GroupData object
     :param obj: If obj is set then return local roles on this context.
     :type obj: content object
+    :param inherit: Show only local roles if False
+    :type inherit: boolean
     :raises:
         ValueError
     :Example: :ref:`group_get_roles_example`
@@ -239,17 +241,12 @@ def get_roles(groupname=None, group=None, obj=None, inherit=True):
     else:
         # get only the local roles on a object
         # same as above we use the PloneUser version of getRolesInContext.
-        # Include roles inherited from being the member of a group
-        # and from adapters granting local roles
-        plone_user = super(group.__class__, group)
-        principal_ids = list(plone_user.getGroups())
-        principal_ids.insert(0, plone_user.getId())
+        # Include roles from adapters granting local roles
         roles = set([])
         pas = portal.get_tool('acl_users')
         for _, lrmanager in pas.plugins.listPlugins(ILocalRolesPlugin):
             for adapter in lrmanager._getAdapters(obj):
-                for principal_id in principal_ids:
-                    roles.update(adapter.getRoles(principal_id))
+                roles.update(adapter.getRoles(group_id))
         return list(roles)
 
 
