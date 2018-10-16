@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Show only local roles when inherit=False.
+  [tschorr]
 
 
 1.9.0 (2018-09-27)
@@ -34,7 +35,7 @@ Bug fixes:
 - Removed allow-hosts from base.cfg, so we can use the new pypi warehouse.
   Refs https://github.com/plone/plone.api/issues/403
   [jaroel]
-  
+
 - fix typos in doc strings
   [tkimnguyen]
 
