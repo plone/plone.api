@@ -802,5 +802,6 @@ class TestPloneApiGroup(unittest.TestCase):
             'AuthenticatedUsers', ('Reader',))
         self.assertNotIn(
             'Reader',
-            api.group.get_roles(groupname='ploneboat', inherit=False, obj=document)
+            api.group.get_roles(
+                groupname='ploneboat', inherit=False, obj=document),
         )
