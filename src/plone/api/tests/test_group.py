@@ -775,3 +775,31 @@ class TestPloneApiGroup(unittest.TestCase):
             ROLES,
             set(api.group.get_roles(group=group, obj=document)),
         )
+
+    def test_local_roles_no_inheritance(self):
+        """Test possibility to disregard roles
+        for inherited groups."""
+        api.group.create(groupname='ploneboat')
+        portal = api.portal.get()
+        folder = api.content.create(
+            container=portal,
+            type='Folder',
+            id='folder_one',
+            title='Folder One',
+        )
+        document = api.content.create(
+            container=folder,
+            type='Document',
+            id='document_one',
+            title='Document One',
+        )
+        api.group.grant_roles(
+            groupname='ploneboat',
+            roles=['Reviewer', 'Editor'],
+            obj=document,
+        )
+        document.manage_setLocalRoles('AuthenticatedUsers', ('Reader',))
+        self.assertNotIn(
+            'Reader',
+            api.group.get_roles(groupname='ploneboat', inherit=False, obj=document),  # noqa: E501
+        )
