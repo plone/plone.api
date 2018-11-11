@@ -17,6 +17,9 @@ Bug fixes:
 - Show only local roles when inherit=False.
   [tschorr]
 
+- Avoid a deprecation warning.
+  [gforcada]
+
 
 1.9.0 (2018-09-27)
 ------------------

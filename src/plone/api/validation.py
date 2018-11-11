@@ -12,7 +12,11 @@ def _get_arg_spec(func, validator_args):
     """Get the arguments specified in the function spec
     and check that the decorator doesn't refer to non-existant args.
     """
-    signature_args, _, _, _ = inspect.getargspec(func)
+    try:
+        signature_args, _, _, _ = inspect.getfullargspec(func)
+    except AttributeError:
+        # Support PY2
+        signature_args, _, _, _ = inspect.getargspec(func)
 
     extra_args = set(validator_args) - set(signature_args)
     if extra_args:
