@@ -4,14 +4,6 @@ Changelog
 1.9.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Show only local roles when inherit=False.
