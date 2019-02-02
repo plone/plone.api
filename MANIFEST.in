@@ -10,3 +10,6 @@ include docs/*.rst
 graft src
 
 global-exclude *.pyc
+include pyproject.toml
+recursive-exclude news *
+exclude news
