@@ -503,8 +503,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Move contact to the same folder (basically a rename)
         nucontact = api.content.move(source=self.contact, id='nu-contact')
-        assert (container['about']['nu-contact'] and
-                container['about']['nu-contact'] == nucontact)
+        assert (container['about']['nu-contact']
+            and container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
 
         # Move team page to portal root
@@ -519,8 +519,8 @@ class TestPloneApiContent(unittest.TestCase):
             target=self.about,
             id='our-team',
         )
-        assert (container['about']['our-team'] and
-                container['about']['our-team'] == ourteam)
+        assert (container['about']['our-team']
+            and container['about']['our-team'] == ourteam)
         assert 'team' not in container.keys()
 
         # Test with safe_id option when moving content
@@ -533,8 +533,8 @@ class TestPloneApiContent(unittest.TestCase):
             id='link-to-blog',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1'] and
-                container['about']['link-to-blog-1'] == linktoblog1)
+        assert (container['about']['link-to-blog-1']
+            and container['about']['link-to-blog-1'] == linktoblog1)
         assert 'link-to-blog' not in container.keys()
 
         api.content.move(source=self.conference, id='conference-renamed')
@@ -546,8 +546,8 @@ class TestPloneApiContent(unittest.TestCase):
             target=container.events,
         )
         assert (
-            container['events']['about'] and
-            container['events']['about'] == about
+            container['events']['about']
+            and container['events']['about'] == about
         )
 
     def test_move_no_move_if_target_is_source_parent(self):
@@ -591,8 +591,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Rename contact
         nucontact = api.content.rename(obj=self.contact, new_id='nu-contact')
-        assert (container['about']['nu-contact'] and
-                container['about']['nu-contact'] == nucontact)
+        assert (container['about']['nu-contact']
+            and container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
 
         if six.PY2:
@@ -620,8 +620,8 @@ class TestPloneApiContent(unittest.TestCase):
             new_id='link-to-blog',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1'] and
-                container['about']['link-to-blog-1'] == linktoblog1)
+        assert (container['about']['link-to-blog-1']
+            and container['about']['link-to-blog-1'] == linktoblog1)
         assert 'link-to-blog' not in container.keys()
 
         # Rename to existing id
@@ -639,8 +639,8 @@ class TestPloneApiContent(unittest.TestCase):
             new_id='link-to-blog-1',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1-1'] and
-                container['about']['link-to-blog-1-1'] == linktoblog11)
+        assert (container['about']['link-to-blog-1-1']
+            and container['about']['link-to-blog-1-1'] == linktoblog11)
         assert 'link-to-blog' not in container.keys()
 
     def test_rename_same_id(self):
@@ -686,8 +686,8 @@ class TestPloneApiContent(unittest.TestCase):
         team = api.content.copy(source=self.team, target=container)
         assert container['team'] and container['team'] == team
         assert (
-            container['about']['team'] and
-            container['about']['team'] != team
+            container['about']['team']
+            and container['about']['team'] != team
         )  # old content still available
 
         # When copying objects we can change the id
@@ -697,8 +697,8 @@ class TestPloneApiContent(unittest.TestCase):
             id='our-team',
         )
         assert(
-            container['about']['our-team'] and
-            container['about']['our-team'] == ourteam
+            container['about']['our-team']
+            and container['about']['our-team'] == ourteam
         )
 
         # When copying whithout target parameter should take source parent
@@ -717,8 +717,8 @@ class TestPloneApiContent(unittest.TestCase):
             safe_id=True,
         )
         assert(
-            container['about']['link-to-blog-1'] and
-            container['about']['link-to-blog-1'] == linktoblog1
+            container['about']['link-to-blog-1']
+            and container['about']['link-to-blog-1'] == linktoblog1
         )
 
         # Copy folderish content under target
@@ -727,8 +727,8 @@ class TestPloneApiContent(unittest.TestCase):
             target=container.events,
         )
         assert(
-            container['events']['about'] and
-            container['events']['about'] == about
+            container['events']['about']
+            and container['events']['about'] == about
         )
 
         # When copying with safe_id=True, the prior created item should not be

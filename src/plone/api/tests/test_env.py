@@ -25,7 +25,7 @@ role_mapping = (
 # 'X.Y' or 'X.Y.Z' or 'X.Y.Z.A'
 # It could also include a package status id (Alpha, Beta or RC).
 # When run against coredev, we may have a .devN suffix as well.
-version_regexp = '^(\d+(\.\d+){1,3})(a\d+|b\d+|rc\d+)?(\.dev\d)?$'
+version_regexp = r'^(\d+(\.\d+){1,3})(a\d+|b\d+|rc\d+)?(\.dev\d)?$'
 
 
 class HasProtectedMethods(SimpleItem):
