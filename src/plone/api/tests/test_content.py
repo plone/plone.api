@@ -22,7 +22,7 @@ from zExceptions import BadRequest
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.container.contained import ContainerModifiedEvent
-from zope.interface import directlyProvides
+from zope.interface import alsoProvides
 from zope.lifecycleevent import IObjectModifiedEvent
 from zope.lifecycleevent import IObjectMovedEvent
 from zope.lifecycleevent import modified
@@ -1025,7 +1025,7 @@ class TestPloneApiContent(unittest.TestCase):
     def test_find_interface_dict(self):
         # Find documents by interface combined with 'and'
 
-        directlyProvides(self.portal.events, INavigationRoot)
+        alsoProvides(self.portal.events, INavigationRoot)
         self.portal.events.reindexObject(idxs=['object_provides'])
 
         # standard catalog query using identifiers
