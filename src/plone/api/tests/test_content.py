@@ -1033,7 +1033,8 @@ class TestPloneApiContent(unittest.TestCase):
             object_provides={
                 'query': [
                     IContentish.__identifier__,
-                    INavigationRoot.__identifier__],
+                    INavigationRoot.__identifier__,
+                ],
                 'operator': 'and',
             },
         )
@@ -1091,28 +1092,40 @@ class TestPloneApiContent(unittest.TestCase):
         # single interface
         self.assertDictEqual(
             parse(IContentish),
-            {'query': [IContentish.__identifier__],
-             'operator': 'or'},
+            {
+                'query': [IContentish.__identifier__],
+                'operator': 'or',
+            },
         )
         # single identifier
         self.assertDictEqual(
             parse(IContentish.__identifier__),
-            {'query': [IContentish.__identifier__],
-             'operator': 'or'},
+            {
+                'query': [IContentish.__identifier__],
+                'operator': 'or',
+            },
         )
         # multiple interfaces/identifiers (mixed as list)
         self.assertDictEqual(
             parse([INavigationRoot, IContentish.__identifier__]),
-            {'query': [INavigationRoot.__identifier__,
-                       IContentish.__identifier__],
-             'operator': 'or'},
+            {
+                'query': [
+                    INavigationRoot.__identifier__,
+                    IContentish.__identifier__,
+                ],
+                'operator': 'or',
+            },
         )
         # multiple interfaces/identifiers (mixed as tuple)
         self.assertDictEqual(
             parse((INavigationRoot, IContentish.__identifier__)),
-            {'query': [INavigationRoot.__identifier__,
-                       IContentish.__identifier__],
-             'operator': 'or'},
+            {
+                'query': [
+                    INavigationRoot.__identifier__,
+                    IContentish.__identifier__,
+                ],
+                'operator': 'or',
+            },
         )
         # full blown query - interfaces/identifiers mixed
         self.assertDictEqual(
