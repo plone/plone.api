@@ -1084,6 +1084,51 @@ class TestPloneApiContent(unittest.TestCase):
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 0)
 
+    def test_find_parse_object_provides_query(self):
+
+        parse = api.content._parse_object_provides_query
+
+        # single interface
+        self.assertDictEqual(
+            parse(IContentish),
+            {'query': [IContentish.__identifier__],
+             'operator': 'or'},
+        )
+        # single identifier
+        self.assertDictEqual(
+            parse(IContentish.__identifier__),
+            {'query': [IContentish.__identifier__],
+             'operator': 'or'},
+        )
+        # multiple interfaces/identifiers (mixed as list)
+        self.assertDictEqual(
+            parse([INavigationRoot, IContentish.__identifier__]),
+            {'query': [INavigationRoot.__identifier__,
+                       IContentish.__identifier__],
+             'operator': 'or'},
+        )
+        # multiple interfaces/identifiers (mixed as tuple)
+        self.assertDictEqual(
+            parse((INavigationRoot, IContentish.__identifier__)),
+            {'query': [INavigationRoot.__identifier__,
+                       IContentish.__identifier__],
+             'operator': 'or'},
+        )
+        # full blown query - interfaces/identifiers mixed
+        self.assertDictEqual(
+            parse({
+                'query': [INavigationRoot, IContentish.__identifier__],
+                'operator': 'and',
+            }),
+            {
+                'query': [
+                    INavigationRoot.__identifier__,
+                    IContentish.__identifier__
+                ],
+                'operator': 'and',
+            },
+        )
+
     def test_get_state(self):
         """Test retrieving the workflow state of a content item."""
 
