@@ -668,14 +668,22 @@ def find(context=None, depth=None, **kwargs):
     if context is not None:
         query['path']['query'] = '/'.join(context.getPhysicalPath())
 
-    # Convert interfaces to their identifiers
+    # Convert interfaces to their identifiers and also allow to query
+    # multiple values using {'query:[], 'operator':'and|or'}
     object_provides = query.get('object_provides', [])
     if object_provides:
-        if not isinstance(object_provides, (list, tuple)):
-            object_provides = [object_provides]
-        query['object_provides'] = [
-            getattr(x, '__identifier__', x) for x in object_provides
-        ]
+        operator = 'or'
+        ifaces = object_provides
+        if isinstance(object_provides, dict):
+             operator = object_provides.get('operator', operator)
+             ifaces = object_provides.get('query', [])
+        elif not isinstance(object_provides, (list, tuple)):
+            ifaces = [object_provides]
+
+        query['object_provides'] = {
+            'query': [getattr(x, '__identifier__', x) for x in ifaces],
+            'operator': operator
+        }
 
     # Make sure we don't dump the whole catalog.
     catalog = portal.get_tool('portal_catalog')

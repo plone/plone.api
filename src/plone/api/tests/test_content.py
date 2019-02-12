@@ -8,6 +8,7 @@ from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
 from plone.api.content import NEW_LINKINTEGRITY
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # NOQA: E501
 from plone.app.textfield import RichTextValue
 from plone.dexterity.interfaces import IDexterityContent
@@ -21,6 +22,7 @@ from zExceptions import BadRequest
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.container.contained import ContainerModifiedEvent
+from zope.interface import directlyProvides
 from zope.lifecycleevent import IObjectModifiedEvent
 from zope.lifecycleevent import IObjectMovedEvent
 from zope.lifecycleevent import modified
@@ -1019,6 +1021,32 @@ class TestPloneApiContent(unittest.TestCase):
         by_interface = [x.getObject() for x in brains]
 
         self.assertEqual(by_identifier, by_interface)
+
+    def test_find_interface_dict(self):
+        # Find documents by interface combined with 'and'
+
+        directlyProvides(self.portal.events, INavigationRoot)
+        self.portal.events.reindexObject(idxs=['object_provides'])
+
+        # standard catalog query using identifiers
+        brains = api.content.find(
+            object_provides={
+                'query': [
+                    IContentish.__identifier__,
+                    INavigationRoot.__identifier__],
+                'operator': 'and'
+            }
+        )
+        self.assertEqual(len(brains), 1)
+
+        # plone.api query using interfaces
+        brains = api.content.find(
+            object_provides={
+                'query': [IContentish, INavigationRoot],
+                'operator': 'and'
+            }
+        )
+        self.assertEqual(len(brains), 1)
 
     def test_find_dict(self):
         # Pass arguments using dict
