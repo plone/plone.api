@@ -1034,8 +1034,8 @@ class TestPloneApiContent(unittest.TestCase):
                 'query': [
                     IContentish.__identifier__,
                     INavigationRoot.__identifier__],
-                'operator': 'and'
-            }
+                'operator': 'and',
+            },
         )
         self.assertEqual(len(brains), 1)
 
@@ -1043,8 +1043,8 @@ class TestPloneApiContent(unittest.TestCase):
         brains = api.content.find(
             object_provides={
                 'query': [IContentish, INavigationRoot],
-                'operator': 'and'
-            }
+                'operator': 'and',
+            },
         )
         self.assertEqual(len(brains), 1)
 

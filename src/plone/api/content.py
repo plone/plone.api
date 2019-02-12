@@ -675,14 +675,14 @@ def find(context=None, depth=None, **kwargs):
         operator = 'or'
         ifaces = object_provides
         if isinstance(object_provides, dict):
-             operator = object_provides.get('operator', operator)
-             ifaces = object_provides.get('query', [])
+            operator = object_provides.get('operator', operator)
+            ifaces = object_provides.get('query', [])
         elif not isinstance(object_provides, (list, tuple)):
             ifaces = [object_provides]
 
         query['object_provides'] = {
             'query': [getattr(x, '__identifier__', x) for x in ifaces],
-            'operator': operator
+            'operator': operator,
         }
 
     # Make sure we don't dump the whole catalog.
