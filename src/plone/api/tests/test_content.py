@@ -1123,7 +1123,7 @@ class TestPloneApiContent(unittest.TestCase):
             {
                 'query': [
                     INavigationRoot.__identifier__,
-                    IContentish.__identifier__
+                    IContentish.__identifier__,
                 ],
                 'operator': 'and',
             },
