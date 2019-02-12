@@ -1,2 +1,2 @@
-- Fix querying `object_provides` for multiple interfaces using 'and' operator
-  [fRiSi]
+Fix querying `object_provides` for multiple interfaces using 'and' operator.
+[fRiSi]
