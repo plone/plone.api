@@ -42,13 +42,13 @@ except ImportError:
 if not PrintingMailHost:
     PRINTINGMAILHOST_ENABLED = False
 elif (
-    PrintingMailHost.ENABLED is not None and
-    PrintingMailHost.ENABLED.lower() in PrintingMailHost.TRUISMS
+    PrintingMailHost.ENABLED is not None
+    and PrintingMailHost.ENABLED.lower() in PrintingMailHost.TRUISMS
 ):
     PRINTINGMAILHOST_ENABLED = True
 elif (
-    PrintingMailHost.ENABLED is None and
-    PrintingMailHost.DevelopmentMode is True
+    PrintingMailHost.ENABLED is None
+    and PrintingMailHost.DevelopmentMode is True
 ):
     PRINTINGMAILHOST_ENABLED = True
 else:
