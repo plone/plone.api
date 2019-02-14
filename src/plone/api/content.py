@@ -586,6 +586,28 @@ def get_uuid(obj=None):
     return IUUID(obj)
 
 
+def _parse_object_provides_query(query):
+    """Create a query for the object_provides index.
+
+    :param query: [required]
+    :type query: Single (or list of) Interface or Identifier or a KeywordIndex
+        query for multiple values
+        (eg. `{'query': [Iface1, Iface2], 'operator': 'or'}`)
+    """
+    operator = 'or'
+    ifaces = query
+    if isinstance(query, dict):
+        operator = query.get('operator', operator)
+        ifaces = query.get('query', [])
+    elif not isinstance(query, (list, tuple)):
+        ifaces = [query]
+
+    return {
+        'query': [getattr(x, '__identifier__', x) for x in ifaces],
+        'operator': operator,
+    }
+
+
 def find(context=None, depth=None, **kwargs):
     """Find content in the portal.
 
@@ -631,10 +653,17 @@ def find(context=None, depth=None, **kwargs):
     >>> find(path={'query': '/plone/about/team', 'depth': 1})
 
     The `object_provides` index/argument allows Interface objects as well as
-    identifiers.
+    identifiers. It also supports querying multiple interfaces combined with
+    `and` or `or`.
     >>> find(object_provides=IATDocument)
     - or -
     >>> find(object_provides=IATDocument.__identifier__)
+    - or -
+    >>> find(object_provides={
+    ...     'query': [IATFolder, INavigationRoot],
+    ...     'operator': 'and',
+    ... })
+
 
     An empty resultset is returned if no valid indexes are queried.
     >>> len(find())
@@ -668,14 +697,11 @@ def find(context=None, depth=None, **kwargs):
     if context is not None:
         query['path']['query'] = '/'.join(context.getPhysicalPath())
 
-    # Convert interfaces to their identifiers
-    object_provides = query.get('object_provides', [])
-    if object_provides:
-        if not isinstance(object_provides, (list, tuple)):
-            object_provides = [object_provides]
-        query['object_provides'] = [
-            getattr(x, '__identifier__', x) for x in object_provides
-        ]
+    # Convert interfaces to their identifiers and also allow to query
+    # multiple values using {'query:[], 'operator':'and|or'}
+    obj_provides = query.get('object_provides', [])
+    if obj_provides:
+        query['object_provides'] = _parse_object_provides_query(obj_provides)
 
     # Make sure we don't dump the whole catalog.
     catalog = portal.get_tool('portal_catalog')

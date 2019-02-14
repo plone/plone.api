@@ -32,10 +32,10 @@ else:
     HAS_PA_CONTENTTYPES = True
 
 FLAGS = (
-    doctest.NORMALIZE_WHITESPACE |
-    doctest.ELLIPSIS |
-    doctest.REPORT_NDIFF |
-    doctest.REPORT_ONLY_FIRST_FAILURE
+    doctest.NORMALIZE_WHITESPACE
+    | doctest.ELLIPSIS
+    | doctest.REPORT_NDIFF
+    | doctest.REPORT_ONLY_FIRST_FAILURE
 )
 
 CHECKER = renormalizing.RENormalizing([

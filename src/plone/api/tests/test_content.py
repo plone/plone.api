@@ -8,6 +8,7 @@ from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
 from plone.api.content import NEW_LINKINTEGRITY
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # NOQA: E501
 from plone.app.textfield import RichTextValue
 from plone.dexterity.interfaces import IDexterityContent
@@ -21,6 +22,7 @@ from zExceptions import BadRequest
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.container.contained import ContainerModifiedEvent
+from zope.interface import alsoProvides
 from zope.lifecycleevent import IObjectModifiedEvent
 from zope.lifecycleevent import IObjectMovedEvent
 from zope.lifecycleevent import modified
@@ -503,8 +505,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Move contact to the same folder (basically a rename)
         nucontact = api.content.move(source=self.contact, id='nu-contact')
-        assert (container['about']['nu-contact'] and
-                container['about']['nu-contact'] == nucontact)
+        assert (container['about']['nu-contact']
+                and container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
 
         # Move team page to portal root
@@ -519,8 +521,8 @@ class TestPloneApiContent(unittest.TestCase):
             target=self.about,
             id='our-team',
         )
-        assert (container['about']['our-team'] and
-                container['about']['our-team'] == ourteam)
+        assert (container['about']['our-team']
+                and container['about']['our-team'] == ourteam)
         assert 'team' not in container.keys()
 
         # Test with safe_id option when moving content
@@ -533,8 +535,8 @@ class TestPloneApiContent(unittest.TestCase):
             id='link-to-blog',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1'] and
-                container['about']['link-to-blog-1'] == linktoblog1)
+        assert (container['about']['link-to-blog-1']
+                and container['about']['link-to-blog-1'] == linktoblog1)
         assert 'link-to-blog' not in container.keys()
 
         api.content.move(source=self.conference, id='conference-renamed')
@@ -546,8 +548,8 @@ class TestPloneApiContent(unittest.TestCase):
             target=container.events,
         )
         assert (
-            container['events']['about'] and
-            container['events']['about'] == about
+            container['events']['about']
+            and container['events']['about'] == about
         )
 
     def test_move_no_move_if_target_is_source_parent(self):
@@ -591,8 +593,8 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Rename contact
         nucontact = api.content.rename(obj=self.contact, new_id='nu-contact')
-        assert (container['about']['nu-contact'] and
-                container['about']['nu-contact'] == nucontact)
+        assert (container['about']['nu-contact']
+                and container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
 
         if six.PY2:
@@ -620,8 +622,8 @@ class TestPloneApiContent(unittest.TestCase):
             new_id='link-to-blog',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1'] and
-                container['about']['link-to-blog-1'] == linktoblog1)
+        assert (container['about']['link-to-blog-1']
+                and container['about']['link-to-blog-1'] == linktoblog1)
         assert 'link-to-blog' not in container.keys()
 
         # Rename to existing id
@@ -639,8 +641,8 @@ class TestPloneApiContent(unittest.TestCase):
             new_id='link-to-blog-1',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1-1'] and
-                container['about']['link-to-blog-1-1'] == linktoblog11)
+        assert (container['about']['link-to-blog-1-1']
+                and container['about']['link-to-blog-1-1'] == linktoblog11)
         assert 'link-to-blog' not in container.keys()
 
     def test_rename_same_id(self):
@@ -686,8 +688,8 @@ class TestPloneApiContent(unittest.TestCase):
         team = api.content.copy(source=self.team, target=container)
         assert container['team'] and container['team'] == team
         assert (
-            container['about']['team'] and
-            container['about']['team'] != team
+            container['about']['team']
+            and container['about']['team'] != team
         )  # old content still available
 
         # When copying objects we can change the id
@@ -697,8 +699,8 @@ class TestPloneApiContent(unittest.TestCase):
             id='our-team',
         )
         assert(
-            container['about']['our-team'] and
-            container['about']['our-team'] == ourteam
+            container['about']['our-team']
+            and container['about']['our-team'] == ourteam
         )
 
         # When copying whithout target parameter should take source parent
@@ -717,8 +719,8 @@ class TestPloneApiContent(unittest.TestCase):
             safe_id=True,
         )
         assert(
-            container['about']['link-to-blog-1'] and
-            container['about']['link-to-blog-1'] == linktoblog1
+            container['about']['link-to-blog-1']
+            and container['about']['link-to-blog-1'] == linktoblog1
         )
 
         # Copy folderish content under target
@@ -727,8 +729,8 @@ class TestPloneApiContent(unittest.TestCase):
             target=container.events,
         )
         assert(
-            container['events']['about'] and
-            container['events']['about'] == about
+            container['events']['about']
+            and container['events']['about'] == about
         )
 
         # When copying with safe_id=True, the prior created item should not be
@@ -1020,6 +1022,33 @@ class TestPloneApiContent(unittest.TestCase):
 
         self.assertEqual(by_identifier, by_interface)
 
+    def test_find_interface_dict(self):
+        # Find documents by interface combined with 'and'
+
+        alsoProvides(self.portal.events, INavigationRoot)
+        self.portal.events.reindexObject(idxs=['object_provides'])
+
+        # standard catalog query using identifiers
+        brains = api.content.find(
+            object_provides={
+                'query': [
+                    IContentish.__identifier__,
+                    INavigationRoot.__identifier__,
+                ],
+                'operator': 'and',
+            },
+        )
+        self.assertEqual(len(brains), 1)
+
+        # plone.api query using interfaces
+        brains = api.content.find(
+            object_provides={
+                'query': [IContentish, INavigationRoot],
+                'operator': 'and',
+            },
+        )
+        self.assertEqual(len(brains), 1)
+
     def test_find_dict(self):
         # Pass arguments using dict
         path = '/'.join(self.portal.about.getPhysicalPath())
@@ -1055,6 +1084,63 @@ class TestPloneApiContent(unittest.TestCase):
         }
         documents = api.content.find(**query)
         self.assertEqual(len(documents), 0)
+
+    def test_find_parse_object_provides_query(self):
+
+        parse = api.content._parse_object_provides_query
+
+        # single interface
+        self.assertDictEqual(
+            parse(IContentish),
+            {
+                'query': [IContentish.__identifier__],
+                'operator': 'or',
+            },
+        )
+        # single identifier
+        self.assertDictEqual(
+            parse(IContentish.__identifier__),
+            {
+                'query': [IContentish.__identifier__],
+                'operator': 'or',
+            },
+        )
+        # multiple interfaces/identifiers (mixed as list)
+        self.assertDictEqual(
+            parse([INavigationRoot, IContentish.__identifier__]),
+            {
+                'query': [
+                    INavigationRoot.__identifier__,
+                    IContentish.__identifier__,
+                ],
+                'operator': 'or',
+            },
+        )
+        # multiple interfaces/identifiers (mixed as tuple)
+        self.assertDictEqual(
+            parse((INavigationRoot, IContentish.__identifier__)),
+            {
+                'query': [
+                    INavigationRoot.__identifier__,
+                    IContentish.__identifier__,
+                ],
+                'operator': 'or',
+            },
+        )
+        # full blown query - interfaces/identifiers mixed
+        self.assertDictEqual(
+            parse({
+                'query': [INavigationRoot, IContentish.__identifier__],
+                'operator': 'and',
+            }),
+            {
+                'query': [
+                    INavigationRoot.__identifier__,
+                    IContentish.__identifier__,
+                ],
+                'operator': 'and',
+            },
+        )
 
     def test_get_state(self):
         """Test retrieving the workflow state of a content item."""
