@@ -8,6 +8,21 @@ Changelog
 
 .. towncrier release notes start
 
+1.9.2 (2019-03-04)
+------------------
+
+No significant changes.
+
+
+1.9.2 (2019-03-04)
+------------------
+
+Bug fixes:
+
+
+- Fix querying ``object_provides`` for multiple interfaces using 'and'
+  operator. [fRiSi] (#426)
+
 
 1.9.1 (2018-11-20)
 ------------------
