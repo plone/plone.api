@@ -8,11 +8,6 @@ Changelog
 
 .. towncrier release notes start
 
-1.9.2 (2019-03-04)
-------------------
-
-No significant changes.
-
 
 1.9.2 (2019-03-04)
 ------------------
