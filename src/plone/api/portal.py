@@ -297,7 +297,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
     registry = getUtility(IRegistry)
 
     if interface is not None:
-        records = registry.forInterface(interface)
+        records = registry.forInterface(interface, check=False)
         _marker = object()
         if getattr(records, name, _marker) != _marker:
             return registry['{0}.{1}'.format(interface.__identifier__, name)]
