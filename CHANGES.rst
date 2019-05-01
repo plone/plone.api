@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+1.10.0 (2019-05-01)
+-------------------
+
+New features:
+
+
+- Gracefully handle missing registry records on an interface.
+   [gforcada] (#428)
+
 
 1.9.2 (2019-03-04)
 ------------------
