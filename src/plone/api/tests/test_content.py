@@ -113,6 +113,23 @@ class TestPloneApiContent(unittest.TestCase):
             id='image',
         )
 
+    def verify_initids(self):
+        """Test that the intids are in order"""
+        try:
+            from zope.intid.interfaces import IIntIds
+        except ImportError:
+            # IntId are not a thing in Plone 4.3
+            return
+        from zope.component import getUtility
+        intids = getUtility(IIntIds)
+        broken_keys = [
+            key for key in intids.ids
+            if not self.portal.unrestrictedTraverse(key.path, None)
+        ]
+        obsolete_paths = [key.path for key in broken_keys]
+        self.assertListEqual(obsolete_paths, [])
+
+
     def test_create_constraints(self):
         """Test the constraints when creating content."""
         from plone.api.exc import InvalidParameterError
@@ -242,6 +259,7 @@ class TestPloneApiContent(unittest.TestCase):
                 type='Dexterity Item',
                 id='test-item',
             )
+        self.verify_initids()
 
     def test_create_content(self):
         """Test create content"""
@@ -289,6 +307,7 @@ class TestPloneApiContent(unittest.TestCase):
                 type='Document',
                 id='test-document',
             )
+        self.verify_initids()
 
     def test_create_with_safe_id(self):
         """Test the content creating with safe_id mode."""
@@ -552,6 +571,7 @@ class TestPloneApiContent(unittest.TestCase):
             container['events']['about']
             and container['events']['about'] == about
         )
+        self.verify_initids()
 
     def test_move_no_move_if_target_is_source_parent(self):
         """Test that trying to move an object to its parent is a noop"""
