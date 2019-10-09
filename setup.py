@@ -56,6 +56,7 @@ setup(
         ],
     },
     classifiers=[
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Plone',
         'Framework :: Plone :: 4.3',
