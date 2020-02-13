@@ -92,7 +92,7 @@ class TestPloneApiEnv(unittest.TestCase):
         api.user.create(
             username='boss',
             email='important_person@example.com',
-            password='123',
+            password='123456',
             roles=('Member', 'VIP'),
         )
 
