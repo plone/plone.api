@@ -619,55 +619,6 @@ def find(context=None, depth=None, **kwargs):
     :rtype: List
     :Example: :ref:`content_find_example`
 
-    Find works alike catalog(). Indexes are passing in as arguments with the
-    search query as the values.
-
-    Specify indexes as arguments:
-    >>> find(portal_type='Document')
-
-    or combinations of indexes.
-    >>> find(portal_type='Document', SearchableText='Team')
-
-
-    Differences to using the catalog directly are:
-
-    The context argument allows passing in an context object, instead
-    of path='/'.join(context.getPhysicalPath().
-
-    >>> find(context=context)
-    - or -
-    >>> find(context=context, portal_type='Document')
-
-    Specifing the search depth is supported using the `depth` argument.
-    >>> find(depth=1)
-
-    Using `depth` needs a context for it's path. If no context and no
-    path is passed, the portal root is used.
-    >>> find(context=portal, depth=1, portal_type='Document')
-    - or -
-    >>> find(depth=1, path='/plone/folder', portal_type='Document')
-    - or -
-    >>> find(depth=1, portal_type='Document')
-
-    The path can be queried directly, too:
-    >>> find(path={'query': '/plone/about/team', 'depth': 1})
-
-    The `object_provides` index/argument allows Interface objects as well as
-    identifiers. It also supports querying multiple interfaces combined with
-    `and` or `or`.
-    >>> find(object_provides=IATDocument)
-    - or -
-    >>> find(object_provides=IATDocument.__identifier__)
-    - or -
-    >>> find(object_provides={
-    ...     'query': [IATFolder, INavigationRoot],
-    ...     'operator': 'and',
-    ... })
-
-
-    An empty resultset is returned if no valid indexes are queried.
-    >>> len(find())
-    >>> 0
     """
     query = {}
     query.update(**kwargs)
