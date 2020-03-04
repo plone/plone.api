@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+1.10.1 (2020-03-04)
+-------------------
+
+Bug fixes:
+
+
+- Remove deprecation warnings [ale-rt] (#432)
+- In tests, use stronger password.
+  [maurits] (#436)
+- Removed duplicate and failing inline doctest for content.find.
+  [maurits] (#437)
+
+
 1.10.0 (2019-05-01)
 -------------------
 
