@@ -402,16 +402,21 @@ def get_default_language():
     :Example: :ref:`portal_get_default_language_example`
     """
     try:
-        from Products.CMFPlone.interfaces import ILanguageSchema
-    except ImportError:
-        portal = get()
-        return portal.portal_properties.site_properties.getProperty(
-            'default_language', None,
-        )
-    else:
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ILanguageSchema, prefix='plone')
-        return settings.default_language
+        # Plone 5.2+
+        from plone.i18n.interfaces import ILanguageSchema
+    except ImportError:  # pragma: no cover
+        try:
+            # Plone 5.0/5.1
+            from Products.CMFPlone.interfaces import ILanguageSchema
+        except ImportError:
+            # Plone 4.3
+            portal = get()
+            return portal.portal_properties.site_properties.getProperty(
+                'default_language', None,
+            )
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(ILanguageSchema, prefix='plone')
+    return settings.default_language
 
 
 def get_current_language(context=None):
