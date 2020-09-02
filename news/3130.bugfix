@@ -1,0 +1,2 @@
+Fixed deprecation warning for ``CMFPlone.interfaces.ILanguageSchema``.
+[maurits]
