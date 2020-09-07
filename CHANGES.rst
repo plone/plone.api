@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+1.10.3 (2020-09-07)
+-------------------
+
+Bug fixes:
+
+
+- Fixed deprecation warning for ``CMFPlone.interfaces.ILanguageSchema``.
+  [maurits] (#3130)
+
+
 1.10.2 (2020-04-20)
 -------------------
 
