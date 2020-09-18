@@ -218,8 +218,13 @@ To send an e-mail use :meth:`api.portal.send_email`:
 
     self.assertEqual(len(mailhost.messages), 1)
 
-    from email import message_from_string
-    msg = message_from_string(mailhost.messages[0])
+    try:
+        # Python 3
+        from email import message_from_bytes
+    except ImportError:
+        # Python 2
+        from email import message_from_string as message_from_bytes
+    msg = message_from_bytes(mailhost.messages[0])
     self.assertEqual(msg['To'], 'bob@plone.org')
     self.assertEqual(msg['From'], 'noreply@plone.org')
     self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
@@ -256,7 +261,7 @@ Python's standard `email module <https://docs.python.org/2.7/library/email.messa
 
     self.assertEqual(len(mailhost.messages), 2)
 
-    msg = message_from_string(mailhost.messages[1])
+    msg = message_from_bytes(mailhost.messages[1])
     payloads = msg.get_payload()
     self.assertEqual(len(payloads), 2)
     self.assertEqual(msg['Reply-To'], 'community@plone.org')
