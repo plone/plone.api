@@ -25,6 +25,7 @@ import DateTime
 import mock
 import unittest
 
+
 try:
     # Python 3
     from email import message_from_bytes
