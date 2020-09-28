@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+1.10.4 (2020-09-28)
+-------------------
+
+Bug fixes:
+
+
+- Fixed test failures on Python 3 with Products.MailHost 4.10.
+  [maurits] (#3178)
+
+
 1.10.3 (2020-09-07)
 -------------------
 
