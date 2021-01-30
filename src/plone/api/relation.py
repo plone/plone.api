@@ -183,24 +183,25 @@ def _get_intid(obj):
         # The object has not been added to the ZODB yet
         return
 
+
 def get(source=None, target=None, relationship="",
         unrestricted=False, as_dict=False):
-    """Get specific relations or backrelations for a content object
+    """Get specific relations given a source/target and/or relationship
 
     Copied from collective.relationhelpers get_relations.
-    We may want to have these keyword arguments instead:
-    source=None, target=None, relationship=""
     """
-    # No longer needed since you can query by relationship alone
-    # if not IDexterityContent.providedBy(obj):
-    #     logger.info(u'{} is no dexterity content'.format(obj))
-    #     return
+    if source is not None and not IDexterityContent.providedBy(source):
+        raise InvalidParameterError('{} is no dexterity content'.format(source))
+
+    if target is not None and not IDexterityContent.providedBy(target):
+        raise InvalidParameterError('{} is no dexterity content'.format(target))
+
+    if relationship is not None and not isinstance(relationship, six.string_types):
+        raise InvalidParameterError('{} is no string'.format(relationship))
 
     intids = getUtility(IIntIds)
-    to_id = intids.getId(target)
-    from_id = intids.getId(source)
-    from_attribute = relationship
     relation_catalog = getUtility(ICatalog)
+    query = {}
     results = []
 
     if as_dict:
@@ -212,11 +213,12 @@ def get(source=None, target=None, relationship="",
     if not unrestricted:
         checkPermission = getSecurityManager().checkPermission
 
-    query = {
-        'from_attribute': from_attribute,
-        'from_id': from_id,
-        'to_id': to_id,
-    }
+    if source is not None:
+        query['from_id'] = intids.getId(source)
+    if target is not None:
+        query['to_id'] = intids.getId(target)
+    if relationship is not None:
+        query['from_attribute'] = relationship
 
     for relation in relation_catalog.findRelations(query):
         if relation.isBroken():
