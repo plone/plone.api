@@ -8,6 +8,10 @@ from collections import Counter
 from collections import defaultdict
 from five.intid.intid import addIntIdSubscriber
 from plone import api
+from plone.api.exc import InvalidParameterError
+from plone.api.validation import at_least_one_of
+from plone.api.validation import mutually_exclusive_parameters
+from plone.api.validation import required_parameters
 from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
 from plone.app.iterate.dexterity.relation import StagingRelationValue
 from plone.app.linkintegrity.handlers import modifiedContent
@@ -34,6 +38,7 @@ from zope.lifecycleevent import modified
 
 import json
 import logging
+import six
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +54,8 @@ def _get_field_and_schema_for_fieldname(field_id, fti):
             return (field, schema)
 
 
-def create(source=None, target=None, relationship=""):
+@required_parameters('source', 'target', 'relationship')
+def create(source=None, target=None, relationship=None):
     """Create a relation from source to target using zc.relation
 
     For RelationChoice or RelationList it will add the relation as attribute.
@@ -58,12 +64,13 @@ def create(source=None, target=None, relationship=""):
     Copied from collective.relationhelpers link_objects.
     """
     if not IDexterityContent.providedBy(source):
-        logger.info(u'{} is no dexterity content'.format(source.portal_type))
-        return
+        raise InvalidParameterError('{} is no dexterity content'.format(source))
 
     if not IDexterityContent.providedBy(target):
-        logger.info(u'{} is no dexterity content'.format(target.portal_type))
-        return
+        raise InvalidParameterError('{} is no dexterity content'.format(target))
+
+    if not isinstance(relationship, six.string_types):
+        raise InvalidParameterError('{} is no string'.format(relationship))
 
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
