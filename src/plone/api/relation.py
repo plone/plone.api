@@ -12,8 +12,6 @@ from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
-from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
-from plone.app.iterate.dexterity.relation import StagingRelationValue
 from plone.app.linkintegrity.handlers import modifiedContent
 from plone.app.linkintegrity.utils import referencedRelationship
 from plone.app.relationfield.event import update_behavior_relations
@@ -39,6 +37,13 @@ from zope.lifecycleevent import modified
 import json
 import logging
 import six
+
+try:
+    from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
+    from plone.app.iterate.dexterity.relation import StagingRelationValue
+except ImportError:
+    ITERATE_RELATION_NAME = None
+    StagingRelationValue = None
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +99,7 @@ def create(source=None, target=None, relationship=None):
         modifiedContent(source, None)
         return
 
-    if from_attribute == ITERATE_RELATION_NAME:
+    if ITERATE_RELATION_NAME is not None and from_attribute == ITERATE_RELATION_NAME:
         # Iterate relations use a subclass of RelationValue
         relation = StagingRelationValue(to_id)
         event._setRelation(source, ITERATE_RELATION_NAME, relation)
