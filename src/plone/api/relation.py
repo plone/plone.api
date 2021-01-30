@@ -7,7 +7,6 @@ from AccessControl.SecurityManagement import getSecurityManager
 from collections import Counter
 from collections import defaultdict
 from five.intid.intid import addIntIdSubscriber
-from plone import api
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
