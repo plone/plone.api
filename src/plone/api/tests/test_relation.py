@@ -170,3 +170,21 @@ class TestPloneApiRelation(unittest.TestCase):
                 target=self.blog,
                 relationship=42,
             )
+
+    def test_create_relation(self):
+        """Test creating a relation."""
+        # Check that there are no relations at first for the two objects we will test.
+        self.assertEqual(len(api.relation.get(self.about)), 0)
+        self.assertEqual(len(api.relation.get(self.blog, backrels=True)), 0)
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        self.assertEqual(len(api.relation.get(self.about)), 1)
+        self.assertEqual(len(api.relation.get(self.blog, backrels=True)), 1)
+        self.assertEqual(api.relation.get(self.about)[0], self.blog)
+        self.assertEqual(api.relation.get(self.blog, backrels=True)[0], self.about)
+        # The relation goes one way.
+        self.assertEqual(len(api.relation.get(self.about, backrels=True)), 0)
+        self.assertEqual(len(api.relation.get(self.blog)), 0)
