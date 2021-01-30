@@ -153,74 +153,59 @@ def _get_intid(obj):
         # The object has not been added to the ZODB yet
         return
 
-
-def get(obj, attribute=None, backrels=False, restricted=True, as_dict=False):
+def get(source=None, target=None, relationship="",
+        unrestricted=False, as_dict=False):
     """Get specific relations or backrelations for a content object
 
     Copied from collective.relationhelpers get_relations.
     We may want to have these keyword arguments instead:
     source=None, target=None, relationship=""
     """
-    if not IDexterityContent.providedBy(obj):
-        logger.info(u'{} is no dexterity content'.format(obj))
-        return
+    # No longer needed since you can query by relationship alone
+    # if not IDexterityContent.providedBy(obj):
+    #     logger.info(u'{} is no dexterity content'.format(obj))
+    #     return
 
+    intids = getUtility(IIntIds)
+    to_id = intids.getId(target)
+    from_id = intids.getId(source)
+    from_attribute = relationship
+    relation_catalog = getUtility(ICatalog)
     results = []
+
     if as_dict:
         results = defaultdict(list)
-    int_id = _get_intid(obj)
-    if not int_id:
-        return results
 
-    relation_catalog = getUtility(ICatalog)
     if not relation_catalog:
         return results
 
-    query = {}
-    if backrels:
-        query['to_id'] = int_id
-    else:
-        query['from_id'] = int_id
-
-    if restricted:
+    if not unrestricted:
         checkPermission = getSecurityManager().checkPermission
 
-    if attribute and isinstance(attribute, (list, tuple)):
-        # The relation-catalog does not support queries for multiple from_attributes
-        # We make multiple queries to support this use-case.
-        relations = []
-        for from_attribute in attribute:
-            query['from_attribute'] = from_attribute
-            relations.extend(relation_catalog.findRelations(query))
-    elif attribute:
-        # query with one attribute
-        query['from_attribute'] = attribute
-        relations = relation_catalog.findRelations(query)
-    else:
-        # query without constraint on a attribute
-        relations = relation_catalog.findRelations(query)
+    query = {
+        'from_attribute': from_attribute,
+        'from_id': from_id,
+        'to_id': to_id,
+    }
 
-    for relation in relations:
+    for relation in relation_catalog.findRelations(query):
         if relation.isBroken():
             continue
 
-        if backrels:
-            obj = relation.from_object
-        else:
-            obj = relation.to_object
+        if not unrestricted:
+            source_obj = relation.from_object
+            target_obj = relation.to_object
 
-        if as_dict:
-            if restricted:
-                if checkPermission('View', obj):
-                    results[relation.from_attribute].append(obj)
+            if checkPermission('View', source_obj) and checkPermission('View', target_obj):
+                if as_dict:
+                    results[relation.__hash__].append(relation)
                 else:
-                    results[relation.from_attribute].append(None)
+                    results.append(relation)
             else:
-                results[relation.from_attribute].append(obj)
+                continue
         else:
-            if restricted:
-                if checkPermission('View', obj):
-                    results.append(obj)
+            if as_dict:
+                results[relation.__hash__].append(relation)
             else:
-                results.append(obj)
+                results.append(relation)
     return results
