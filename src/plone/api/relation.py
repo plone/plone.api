@@ -136,9 +136,35 @@ def create(source=None, target=None, relationship=None):
         from_attribute, source.absolute_url(), target.absolute_url()))
 
 
+# @at_least_one_of('source', 'target', 'relationship')
 def delete(source=None, target=None, relationship=""):
-    """Delete relation or relations."""
-    pass
+    """Delete relation or relations.
+
+    If you do not specify any parameters, we delete all relations.
+
+    TODO: do we want to remove RelationValues from content objects?
+    """
+    if source is not None and not IDexterityContent.providedBy(source):
+        raise InvalidParameterError('{} is no dexterity content'.format(source))
+
+    if target is not None and not IDexterityContent.providedBy(target):
+        raise InvalidParameterError('{} is no dexterity content'.format(target))
+
+    if relationship is not None and not isinstance(relationship, six.string_types):
+        raise InvalidParameterError('{} is no string'.format(relationship))
+
+    query = {}
+    relation_catalog = getUtility(ICatalog)
+    intids = getUtility(IIntIds)
+    if source is not None:
+        query['from_id'] = intids.getId(source)
+    if target is not None:
+        query['to_id'] = intids.getId(target)
+    if relationship is not None:
+        query['from_attribute'] = relationship
+    # If the query is empty, we could do relation_catalog.clear().
+    for rel in relation_catalog.findRelations(query):
+        relation_catalog.unindex(rel)
 
 
 def _get_intid(obj):
