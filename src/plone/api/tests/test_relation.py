@@ -188,3 +188,36 @@ class TestPloneApiRelation(unittest.TestCase):
         # The relation goes one way.
         self.assertEqual(len(api.relation.get(self.about, backrels=True)), 0)
         self.assertEqual(len(api.relation.get(self.blog)), 0)
+
+    def test_delete_constraints(self):
+        """Test the constraints when deleting relations."""
+        from plone.api.exc import InvalidParameterError
+
+        # If source is given, it must be dexterity.
+        app = self.layer["app"]
+        app.portal_type = "ZopeRoot"
+        with self.assertRaises(InvalidParameterError):
+            api.relation.delete(source=app)
+
+        # If target is given, it must be dexterity.
+        with self.assertRaises(InvalidParameterError):
+            api.relation.delete(target=app)
+
+        # If relationship is given, it must be a string.
+        with self.assertRaises(InvalidParameterError):
+            api.relation.delete(relationship=42)
+
+    def test_delete_relation(self):
+        """Test deleting a relation."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.delete(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        self.assertEqual(len(api.relation.get(self.about)), 0)
+        self.assertEqual(len(api.relation.get(self.blog, backrels=True)), 0)
