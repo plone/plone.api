@@ -10,7 +10,6 @@ global:
 matrix:
   fast_finish: true
   include:
-      # pyXX-plone_sunburst,pyXX-plone_barceloneta
       - python: "3.9"
         env: TOXENV=isort,lint,docs,
       - python: "2.7"
@@ -35,7 +34,7 @@ matrix:
         env: TOXENV=py37-plone-5.2
       - python: "3.8"
         env: TOXENV=py38-plone-5.2
-      - python: "9.9"
+      - python: "3.9"
         env: TOXENV=py39-plone-5.2
 
 before_install:
@@ -48,7 +47,7 @@ before_install:
     - echo "abi-tag-eggs = true" >> $HOME/.buildout/default.cfg
 
 install:
-  - travis_retry pip install -U setuptools==33.1.1 tox coveralls coverage
+  - travis_retry pip install -U pip tox coveralls coverage
 
 before_script:
   - export DISPLAY=:99.0
