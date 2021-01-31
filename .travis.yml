@@ -11,7 +11,9 @@ matrix:
   fast_finish: true
   include:
       - python: "3.9"
-        env: TOXENV=isort,lint,docs,
+        env: TOXENV=isort,lint
+      - python: "3.9"
+        env: TOXENV=docs
       - python: "2.7"
         env: TOXENV=py27-plone-4.3
       - python: "2.7"
