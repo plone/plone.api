@@ -36,6 +36,7 @@ Delete relation
 
     api.relation.delete(source=source, target=target, relationship="friend")
 
+In order to delete relation(s), you must provide either the ``source``, ``target`` or ``relationship``.
 
 Get relations
 =============
