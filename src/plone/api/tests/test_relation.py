@@ -219,3 +219,51 @@ class TestPloneApiRelation(unittest.TestCase):
         )
         relations = api.relation.get(source=self.about, target=self.blog, relationship="link")
         self.assertEqual(len(relations), 0)
+
+
+    def test_get_constraints(self):
+        """Test the constraints when getting relations."""
+        from plone.api.exc import InvalidParameterError
+
+        # If source is given, it must be dexterity.
+        app = self.layer["app"]
+        app.portal_type = "ZopeRoot"
+        with self.assertRaises(InvalidParameterError):
+            api.relation.get(source=app)
+
+        # If target is given, it must be dexterity.
+        with self.assertRaises(InvalidParameterError):
+            api.relation.get(target=app)
+
+        # If relationship is given, it must be a string.
+        with self.assertRaises(InvalidParameterError):
+            api.relation.get(relationship=42)
+
+    def test_get_relation(self):
+        """Test getting a relation."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.create(
+            source=self.events,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.create(
+            source=self.about.team,
+            target=self.events,
+            relationship='team',
+        )
+        api.relation.create(
+            source=self.events,
+            target=self.portal.image,
+            relationship='link',
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 1)
+        self.assertEqual(len(api.relation.get(target=self.blog)), 2)
+        self.assertEqual(len(api.relation.get(relationship="link")), 3)
+
+        self.assertEqual(len(api.relation.get(source=self.events)), 2)
+        self.assertEqual(len(api.relation.get(relationship="team")), 1)

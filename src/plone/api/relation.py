@@ -230,14 +230,14 @@ def get(source=None, target=None, relationship=None,
 
             if checkPermission('View', source_obj) and checkPermission('View', target_obj):
                 if as_dict:
-                    results[relation.__hash__()].append(relation)
+                    results[relation.from_attribute].append(relation)
                 else:
                     results.append(relation)
             else:
                 continue
         else:
             if as_dict:
-                results[relation.__hash__()].append(relation)
+                results[relation.from_attribute].append(relation)
             else:
                 results.append(relation)
     return results
