@@ -1,32 +1,8 @@
 # -*- coding: utf-8 -*-
 """Tests for plone.api.content."""
 
-from Acquisition import aq_base
-from OFS.CopySupport import CopyError
-from OFS.event import ObjectWillBeMovedEvent
-from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
-from plone.api.content import NEW_LINKINTEGRITY
 from plone.api.tests.base import INTEGRATION_TESTING
-from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # NOQA: E501
-from plone.app.textfield import RichTextValue
-from plone.dexterity.interfaces import IDexterityContent
-from plone.indexer import indexer
-from plone.uuid.interfaces import IMutableUUID
-from plone.uuid.interfaces import IUUIDGenerator
-from Products.CMFCore.interfaces import IContentish
-from Products.CMFCore.WorkflowCore import WorkflowException
-from Products.ZCatalog.interfaces import IZCatalog
-from zExceptions import BadRequest
-from zope.component import getGlobalSiteManager
-from zope.component import getUtility
-from zope.container.contained import ContainerModifiedEvent
-from zope.interface import alsoProvides
-from zope.lifecycleevent import IObjectModifiedEvent
-from zope.lifecycleevent import IObjectMovedEvent
-from zope.lifecycleevent import modified
-from zope.lifecycleevent import ObjectMovedEvent
 
 import mock
 import pkg_resources
