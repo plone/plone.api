@@ -42,7 +42,6 @@ except ImportError:
     from plone.app.linkintegrity.handlers import referencedRelationship
 
 
-
 logger = logging.getLogger(__name__)
 
 
