@@ -184,7 +184,7 @@ def _get_intid(obj):
         return
 
 
-def get(source=None, target=None, relationship="",
+def get(source=None, target=None, relationship=None,
         unrestricted=False, as_dict=False):
     """Get specific relations given a source/target and/or relationship
 
@@ -230,14 +230,14 @@ def get(source=None, target=None, relationship="",
 
             if checkPermission('View', source_obj) and checkPermission('View', target_obj):
                 if as_dict:
-                    results[relation.__hash__].append(relation)
+                    results[relation.__hash__()].append(relation)
                 else:
                     results.append(relation)
             else:
                 continue
         else:
             if as_dict:
-                results[relation.__hash__].append(relation)
+                results[relation.__hash__()].append(relation)
             else:
                 results.append(relation)
     return results
