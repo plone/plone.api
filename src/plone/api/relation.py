@@ -4,30 +4,21 @@
 Heavily inspired by collective.relationhelpers.
 """
 from AccessControl.SecurityManagement import getSecurityManager
-from collections import Counter
 from collections import defaultdict
-from five.intid.intid import addIntIdSubscriber
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
-from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from plone.app.linkintegrity.handlers import modifiedContent
 from plone.app.linkintegrity.utils import referencedRelationship
-from plone.app.relationfield.event import update_behavior_relations
-from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.interfaces import IDexterityContent
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import iterSchemataForType
-from Products.CMFCore.interfaces import IContentish
-from Products.Five.browser import BrowserView
 from z3c.relationfield import event
 from z3c.relationfield import RelationValue
-from z3c.relationfield.event import updateRelations
 from z3c.relationfield.schema import Relation
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zc.relation.interfaces import ICatalog
-from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.intid.interfaces import IIntIds
@@ -171,24 +162,12 @@ def delete(source=None, target=None, relationship=""):
         relation_catalog.unindex(rel)
 
 
-def _get_intid(obj):
-    """Intid from intid-catalog"""
-    intids = queryUtility(IIntIds)
-    if intids is None:
-        return
-    # check that the object has an intid, otherwise there's nothing to be done
-    try:
-        return intids.getId(obj)
-    except KeyError:  # noqa
-        # The object has not been added to the ZODB yet
-        return
-
-
+@at_least_one_of('source', 'target', 'relationship')
 def get(source=None, target=None, relationship=None,
         unrestricted=False, as_dict=False):
-    """Get specific relations given a source/target and/or relationship
+    """Get specific relations given a source/target/relationship
 
-    Copied from collective.relationhelpers get_relations.
+    Copied and modified from collective.relationhelpers get_relations.
     """
     if source is not None and not IDexterityContent.providedBy(source):
         raise InvalidParameterError('{} is no dexterity content'.format(source))
@@ -228,7 +207,8 @@ def get(source=None, target=None, relationship=None,
             source_obj = relation.from_object
             target_obj = relation.to_object
 
-            if checkPermission('View', source_obj) and checkPermission('View', target_obj):
+            if checkPermission('View', source_obj) and checkPermission('View',
+                    target_obj):
                 if as_dict:
                     results[relation.from_attribute].append(relation)
                 else:

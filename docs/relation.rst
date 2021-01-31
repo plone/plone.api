@@ -42,13 +42,15 @@ Get relations
 
 .. code-block:: python
 
-    api.relation.get(source=source, target=target, relationship="friend")
+    api.relation.get(source=source, target=target, relationship="friend", unrestricted=False, as_dict=False)
 
-You must provide either source or target.
-Both is fine too.
+You must provide either source, target or relationship, ``unrestricted`` and ``as_dict`` are optional.
 
-If source, target and relationship are all given, returns a single item.
-Otherwise returns a list.
+Use the ``as_dict`` parameter if you want the result to be returned as a dictionary.
+Use the ``unrestricted`` parameter if you want to bypass the View permission check.
+
+By default it returns a list.
+If source, target and relationship are all given, returns a list with a single item.
 
 To get back relations, so relations pointing to an item, use:
 
