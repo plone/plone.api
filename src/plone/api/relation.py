@@ -8,8 +8,6 @@ from collections import defaultdict
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import required_parameters
-from plone.app.linkintegrity.handlers import modifiedContent
-from plone.app.linkintegrity.utils import referencedRelationship
 from plone.dexterity.interfaces import IDexterityContent
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import iterSchemataForType
@@ -31,9 +29,19 @@ import six
 try:
     from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
     from plone.app.iterate.dexterity.relation import StagingRelationValue
+
+    # Plone 4 import error
+    from plone.app.linkintegrity.handlers import modifiedContent
+    from plone.app.linkintegrity.utils import referencedRelationship
 except ImportError:
     ITERATE_RELATION_NAME = None
     StagingRelationValue = None
+
+    # Plone 4 corrected paths
+    from plone.app.linkintegrity.handlers import modifiedDexterity as modifiedContent
+    from plone.app.linkintegrity.handlers import referencedRelationship
+
+
 
 logger = logging.getLogger(__name__)
 
@@ -132,7 +140,7 @@ def create(source=None, target=None, relationship=None):
 
 
 # @at_least_one_of('source', 'target', 'relationship')
-def delete(source=None, target=None, relationship=""):
+def delete(source=None, target=None, relationship=None):
     """Delete relation or relations.
 
     If you do not specify any parameters, we delete all relations.
