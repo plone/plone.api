@@ -47,7 +47,8 @@ Get relations
 You must provide either source, target or relationship, ``unrestricted`` and ``as_dict`` are optional.
 
 Use the ``as_dict`` parameter if you want the result to be returned as a dictionary.
-Use the ``unrestricted`` parameter if you want to bypass the View permission check.
+
+Use the ``unrestricted`` parameter if you want to bypass the View permission check on the relation objects(to/from_object).
 
 By default it returns a list.
 If source, target and relationship are all given, returns a list with a single item.
