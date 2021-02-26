@@ -5,7 +5,10 @@ from Acquisition import aq_base
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
+from pkg_resources import parse_version
 from plone import api
+from plone.api import env
+from plone.api.content import _parse_object_provides_query
 from plone.api.content import NEW_LINKINTEGRITY
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -40,6 +43,9 @@ except pkg_resources.DistributionNotFound:
     HAS_PACONTENTYPES = False
 else:
     HAS_PACONTENTYPES = True
+
+
+HAS_PLONE51 = parse_version(env.plone_version()) >= parse_version('5.1')
 
 
 class TestPloneApiContent(unittest.TestCase):
@@ -1048,6 +1054,78 @@ class TestPloneApiContent(unittest.TestCase):
             },
         )
         self.assertEqual(len(brains), 1)
+
+    @unittest.skipUnless(
+        HAS_PLONE51,
+        'Negative queries only available since Products.ZCatalog 3.0a1 or Plone 5.1',
+    )
+    def test_find_interface_dict__include_not_query(self):
+        """Check if not query in object_provides is functional.
+        """
+
+        brains_all = api.content.find(
+            object_provides={'query': IContentish.__identifier__},
+        )
+
+        alsoProvides(self.portal.events, INavigationRoot)
+        self.portal.events.reindexObject(idxs=['object_provides'])
+
+        brains = api.content.find(
+            object_provides={
+                'query': IContentish.__identifier__,
+                'not': INavigationRoot.__identifier__
+            },
+        )
+
+        self.assertEqual(len(brains_all) - len(brains), 1)
+
+    def test_find_interface_dict__all_options(self):
+        """ Check for all options in a object_provides query are correctly
+        transformed.
+        """
+        parser = _parse_object_provides_query
+
+        self.assertDictEqual(
+            parser({'query': IContentish}),
+            {'query': [IContentish.__identifier__], 'operator': 'or'},
+        )
+
+        self.assertDictEqual(
+            parser(
+                {
+                    'query': [IContentish, INavigationRoot.__identifier__],
+                    'operator': 'and'
+                }
+            ),
+            {
+                'query': [IContentish.__identifier__, INavigationRoot.__identifier__],
+                'operator': 'and'
+            },
+        )
+
+        self.assertDictEqual(
+            parser({'not': IContentish}),
+            {'not': [IContentish.__identifier__]},
+        )
+
+        self.assertDictEqual(
+            parser({'not': [IContentish, INavigationRoot.__identifier__]}),
+            {'not': [IContentish.__identifier__, INavigationRoot.__identifier__]},
+        )
+
+        self.assertDictEqual(
+            parser({'not': IContentish}),
+            {'not': [IContentish.__identifier__]},
+        )
+
+        self.assertDictEqual(
+            parser({'query': IContentish, 'operator': 'and', 'not': INavigationRoot}),
+            {
+                'query': [IContentish.__identifier__],
+                'operator': 'and',
+                'not': [INavigationRoot.__identifier__],
+            },
+        )
 
     def test_find_dict(self):
         # Pass arguments using dict
