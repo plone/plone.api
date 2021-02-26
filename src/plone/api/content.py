@@ -594,18 +594,35 @@ def _parse_object_provides_query(query):
         query for multiple values
         (eg. `{'query': [Iface1, Iface2], 'operator': 'or'}`)
     """
-    operator = 'or'
     ifaces = query
-    if isinstance(query, dict):
-        operator = query.get('operator', operator)
-        ifaces = query.get('query', [])
-    elif not isinstance(query, (list, tuple)):
-        ifaces = [query]
+    operator = 'or'
+    query_not = []
 
-    return {
-        'query': [getattr(x, '__identifier__', x) for x in ifaces],
-        'operator': operator,
-    }
+    if isinstance(query, dict):
+        ifaces = query.get('query', [])
+        operator = query.get('operator', operator)
+        query_not = query.get('not', [])
+        # KeywordIndex also supports "range",
+        # but that's not useful for querying object_provides
+
+    if not isinstance(ifaces, (list, tuple)):
+        ifaces = [ifaces]
+    ifaces = [getattr(x, '__identifier__', x) for x in ifaces]
+
+    if not isinstance(query_not, (list, tuple)):
+        query_not = [query_not]
+    query_not = [getattr(x, '__identifier__', x) for x in query_not]
+
+    result = {}
+
+    if ifaces:
+        result['query'] = ifaces
+        result['operator'] = operator
+
+    if query_not:
+        result['not'] = query_not
+
+    return result
 
 
 def find(context=None, depth=None, **kwargs):
