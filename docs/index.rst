@@ -41,6 +41,7 @@ Narrative documentation
     about.rst
     portal.rst
     content.rst
+    context.rst
     user.rst
     group.rst
     env.rst
