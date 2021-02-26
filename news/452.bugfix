@@ -1,3 +1,0 @@
-Fix plone.api.content.find to respect object_provides "not" queries.
-Fixes: #451
-[thet]
