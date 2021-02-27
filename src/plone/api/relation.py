@@ -133,11 +133,12 @@ def create(source=None, target=None, relationship=None):
         from_attribute, source.absolute_url(), target.absolute_url()))
 
 
-# @at_least_one_of('source', 'target', 'relationship')
-def delete(source=None, target=None, relationship=None):
+@at_least_one_of('source', 'target', 'relationship', 'delete_all')
+def delete(source=None, target=None, relationship=None, delete_all=False):
     """Delete relation or relations.
 
-    If you do not specify any parameters, we delete all relations.
+    If you specify 'delete_all=True' and none of the other parameters,
+    we delete all relations.
 
     TODO: do we want to remove RelationValues from content objects?
     """
@@ -150,6 +151,9 @@ def delete(source=None, target=None, relationship=None):
     if relationship is not None and not isinstance(relationship, six.string_types):
         raise InvalidParameterError('{} is no string'.format(relationship))
 
+    if delete_all and (source or target or relationship is not None):
+        raise InvalidParameterError('When you use delete_all, you must not specify any other parameters')
+
     query = {}
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
@@ -159,7 +163,9 @@ def delete(source=None, target=None, relationship=None):
         query['to_id'] = intids.getId(target)
     if relationship is not None:
         query['from_attribute'] = relationship
-    # If the query is empty, we could do relation_catalog.clear().
+    if not query:
+        relation_catalog.clear()
+        return
     for rel in relation_catalog.findRelations(query):
         relation_catalog.unindex(rel)
 

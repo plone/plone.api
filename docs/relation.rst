@@ -34,11 +34,50 @@ To create a relation between source object and target object, use :meth:`api.rel
 Delete relation
 ===============
 
+Delete one specific relationship:
+
 .. code-block:: python
 
     api.relation.delete(source=source, target=target, relationship="friend")
 
-In order to delete relation(s), you must provide either the ``source``, ``target`` or ``relationship``.
+You can delete all relations by explicitly asking:
+
+.. code-block:: python
+
+    api.relation.delete(delete_all=True)
+
+In all other cases, in order to delete relation(s), you must provide either ``source``, ``target`` or ``relationship``.
+You can mix and match.
+
+Delete all relations from source to any target:
+
+.. code-block:: python
+
+    api.relation.delete(source=source)
+
+Delete all relations from any source to this target:
+
+.. code-block:: python
+
+    api.relation.delete(target=target)
+
+Delete relations with name "friend" from source to any target:
+
+.. code-block:: python
+
+    api.relation.delete(source=source, relationship="friend")
+
+Delete relations with name "uncle" from any source to this target:
+
+.. code-block:: python
+
+    api.relation.delete(target=target, relationship="uncle")
+
+Delete relations with name "enemy" from any source to any target:
+
+.. code-block:: python
+
+    api.relation.delete(relationship="enemy")
 
 Get relations
 =============
