@@ -45,6 +45,7 @@ setup(
             'manuel',
             'mock',
             'plone.app.dexterity',
+            'plone.app.intid',
             'plone.app.testing',
             'plone.indexer',
             'plone.registry',

@@ -8,8 +8,8 @@ from collections import defaultdict
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import required_parameters
-from plone.dexterity.interfaces import IDexterityContent
 from plone.dexterity.utils import iterSchemataForType
+from Products.CMFPlone.utils import base_hasattr
 from z3c.relationfield import event
 from z3c.relationfield import RelationValue
 from z3c.relationfield.schema import Relation
@@ -59,16 +59,19 @@ def _get_field_and_schema_for_fieldname(field_id, portal_type):
 def create(source=None, target=None, relationship=None):
     """Create a relation from source to target using zc.relation
 
-    For RelationChoice or RelationList it will add the relation as attribute.
+    If source is dexterity content, and the relationship name is the same
+    as a field name, and this field is a RelationChoice/RelationList/Relation,
+    we will add the relation as attribute.
+
     Other relations will only be added to the relation-catalog.
 
-    Copied from collective.relationhelpers link_objects.
+    Adapted from collective.relationhelpers link_objects.
     """
-    if not IDexterityContent.providedBy(source):
-        raise InvalidParameterError('{} is no dexterity content'.format(source))
+    if source is not None and not base_hasattr(source, 'portal_type'):
+        raise InvalidParameterError('{} has no portal_type'.format(source))
 
-    if not IDexterityContent.providedBy(target):
-        raise InvalidParameterError('{} is no dexterity content'.format(target))
+    if target is not None and not base_hasattr(target, 'portal_type'):
+        raise InvalidParameterError('{} has no portal_type'.format(target))
 
     if not isinstance(relationship, six.string_types):
         raise InvalidParameterError('{} is no string'.format(relationship))
@@ -101,11 +104,13 @@ def create(source=None, target=None, relationship=None):
         event._setRelation(source, ITERATE_RELATION_NAME, relation)
         return
 
+    # This can only get a field from a dexterity item.
     field_and_schema = _get_field_and_schema_for_fieldname(from_attribute, source.portal_type)
 
     if field_and_schema is None:
-        # The relationship is not the name of a field. Only create a relation.
-        logger.info(u'No field. Setting relation {} from {} to {}'.format(
+        # The relationship is not the name of a dexterity field.
+        # Only create a relation.
+        logger.debug(u'No dexterity field. Setting relation {} from {} to {}'.format(
             source.absolute_url(), target.absolute_url(), relationship))
         event._setRelation(source, from_attribute, RelationValue(to_id))
         return
@@ -152,11 +157,11 @@ def delete(source=None, target=None, relationship=None, delete_all=False):
 
     TODO: do we want to remove RelationValues from content objects?
     """
-    if source is not None and not IDexterityContent.providedBy(source):
-        raise InvalidParameterError('{} is no dexterity content'.format(source))
+    if source is not None and not base_hasattr(source, 'portal_type'):
+        raise InvalidParameterError('{} has no portal_type'.format(source))
 
-    if target is not None and not IDexterityContent.providedBy(target):
-        raise InvalidParameterError('{} is no dexterity content'.format(target))
+    if target is not None and not base_hasattr(target, 'portal_type'):
+        raise InvalidParameterError('{} has no portal_type'.format(target))
 
     if relationship is not None and not isinstance(relationship, six.string_types):
         raise InvalidParameterError('{} is no string'.format(relationship))
@@ -187,11 +192,11 @@ def get(source=None, target=None, relationship=None,
 
     Copied and modified from collective.relationhelpers get_relations.
     """
-    if source is not None and not IDexterityContent.providedBy(source):
-        raise InvalidParameterError('{} is no dexterity content'.format(source))
+    if source is not None and not base_hasattr(source, 'portal_type'):
+        raise InvalidParameterError('{} has no portal_type'.format(source))
 
-    if target is not None and not IDexterityContent.providedBy(target):
-        raise InvalidParameterError('{} is no dexterity content'.format(target))
+    if target is not None and not base_hasattr(target, 'portal_type'):
+        raise InvalidParameterError('{} has no portal_type'.format(target))
 
     if relationship is not None and not isinstance(relationship, six.string_types):
         raise InvalidParameterError('{} is no string'.format(relationship))

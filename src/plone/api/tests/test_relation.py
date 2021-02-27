@@ -121,9 +121,8 @@ class TestPloneApiRelation(unittest.TestCase):
                 target=self.blog,
             )
 
-        # We require a dexterity source
+        # We require a source with portal_type
         app = self.layer["app"]
-        app.portal_type = "ZopeRoot"
         with self.assertRaises(InvalidParameterError):
             api.relation.create(
                 source=app,
@@ -131,7 +130,7 @@ class TestPloneApiRelation(unittest.TestCase):
                 relationship='link',
             )
 
-        # We require a dexterity target
+        # We require a target with portal_type
         with self.assertRaises(InvalidParameterError):
             api.relation.create(
                 source=self.about,
@@ -167,13 +166,12 @@ class TestPloneApiRelation(unittest.TestCase):
         """Test the constraints when deleting relations."""
         from plone.api.exc import InvalidParameterError
 
-        # If source is given, it must be dexterity.
+        # If source is given, it must have a portal_type.
         app = self.layer["app"]
-        app.portal_type = "ZopeRoot"
         with self.assertRaises(InvalidParameterError):
             api.relation.delete(source=app)
 
-        # If target is given, it must be dexterity.
+        # If target is given, it must have a portal_type.
         with self.assertRaises(InvalidParameterError):
             api.relation.delete(target=app)
 
@@ -201,13 +199,12 @@ class TestPloneApiRelation(unittest.TestCase):
         """Test the constraints when getting relations."""
         from plone.api.exc import InvalidParameterError
 
-        # If source is given, it must be dexterity.
+        # If source is given, it must have a portal_type.
         app = self.layer["app"]
-        app.portal_type = "ZopeRoot"
         with self.assertRaises(InvalidParameterError):
             api.relation.get(source=app)
 
-        # If target is given, it must be dexterity.
+        # If target is given, it must have a portal_type.
         with self.assertRaises(InvalidParameterError):
             api.relation.get(target=app)
 

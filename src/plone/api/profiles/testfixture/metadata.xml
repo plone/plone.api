@@ -3,5 +3,6 @@
   <version>1</version>
   <dependencies>
     <dependency>profile-plone.app.dexterity:default</dependency>
+    <dependency>profile-plone.app.intid:default</dependency>
   </dependencies>
 </metadata>
