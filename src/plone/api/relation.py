@@ -60,7 +60,7 @@ def create(source=None, target=None, relationship=None):
     """Create a relation from source to target using zc.relation
 
     For RelationChoice or RelationList it will add the relation as attribute.
-    Other relations they will only be added to the relation-catalog.
+    Other relations will only be added to the relation-catalog.
 
     Copied from collective.relationhelpers link_objects.
     """
@@ -110,7 +110,7 @@ def create(source=None, target=None, relationship=None):
         event._setRelation(source, from_attribute, RelationValue(to_id))
         return
 
-    field, schema = field_and_schema
+    field, _schema = field_and_schema
 
     if isinstance(field, RelationList):
         logger.info('Add relation to relationlist {} from {} to {}'.format(
@@ -128,9 +128,19 @@ def create(source=None, target=None, relationship=None):
         modified(source)
         return
 
-    # We should never end up here!
-    logger.info('Warning: Unexpected relation {} from {} to {}'.format(
-        from_attribute, source.absolute_url(), target.absolute_url()))
+    # If we end up here, someone is making a relationship that
+    # has the same name as a non-relation field.
+    # This can be harmless coincidence, and this could be an error,
+    # indicating that the field is of the wrong type.
+    # Let's create the relationship and log a warning.
+    event._setRelation(source, from_attribute, RelationValue(to_id))
+    logger.warning(
+        'Created relation {} on an item that has a field with the same name '
+        'which is not a relation field. Is this what you wanted? '
+        'Relation points from {} to {}'.format(
+            from_attribute, source.absolute_url(), target.absolute_url()
+        )
+    )
 
 
 @at_least_one_of('source', 'target', 'relationship', 'delete_all')
