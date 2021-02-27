@@ -45,14 +45,15 @@ Get relations
 
     api.relation.get(source=source, target=target, relationship="friend", unrestricted=False, as_dict=False)
 
-You must provide either source, target or relationship, ``unrestricted`` and ``as_dict`` are optional.
+You must provide either source, target or relationship, or a combination of those.
+``unrestricted`` and ``as_dict`` are optional.
 
-Use the ``as_dict`` parameter if you want the result to be returned as a dictionary.
+By default the result is a list of objects.
+If you set ``as_dict=True`` it will return a dictionary with the names of the relations as keys and lists of objects as values.
 
-Use the ``unrestricted`` parameter if you want to bypass the View permission check on the relation objects(to/from_object).
-
-By default it returns a list.
-If source, target and relationship are all given, returns a list with a single item.
+By default the View permission is checked on the relation objects.
+You only get objects that you are allowed to see.
+Use the ``unrestricted`` parameter if you want to bypass this check.
 
 To get back relations, so relations pointing to an item, use:
 
