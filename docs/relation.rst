@@ -15,6 +15,8 @@ Relations
 
 Note: the relations code only works for Dexterity content, not for Archetypes.
 
+To use the relations code, you should include `plone.api[relations]` in the dependencies of your project.
+
 .. _relation_create_example:
 
 Create relation

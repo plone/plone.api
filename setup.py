@@ -48,6 +48,7 @@ setup(
             'plone.app.testing',
             'plone.indexer',
             'plone.registry',
+            'z3c.relationfield',
         ],
     },
     classifiers=[
