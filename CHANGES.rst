@@ -8,6 +8,48 @@ Changelog
 
 .. towncrier release notes start
 
+1.10.4 (2020-09-28)
+-------------------
+
+Bug fixes:
+
+
+- Fixed test failures on Python 3 with Products.MailHost 4.10.
+  [maurits] (#3178)
+
+
+1.10.3 (2020-09-07)
+-------------------
+
+Bug fixes:
+
+
+- Fixed deprecation warning for ``CMFPlone.interfaces.ILanguageSchema``.
+  [maurits] (#3130)
+
+
+1.10.2 (2020-04-20)
+-------------------
+
+Bug fixes:
+
+
+- Minor packaging updates. (#1)
+
+
+1.10.1 (2020-03-04)
+-------------------
+
+Bug fixes:
+
+
+- Remove deprecation warnings [ale-rt] (#432)
+- In tests, use stronger password.
+  [maurits] (#436)
+- Removed duplicate and failing inline doctest for content.find.
+  [maurits] (#437)
+
+
 1.10.0 (2019-05-01)
 -------------------
 

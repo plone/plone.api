@@ -3,7 +3,6 @@
 
 from datetime import date
 from datetime import datetime
-from email import message_from_string
 from pkg_resources import parse_version
 from plone.api import content
 from plone.api import env
@@ -25,6 +24,14 @@ from zope.site import LocalSiteManager
 import DateTime
 import mock
 import unittest
+
+
+try:
+    # Python 3
+    from email import message_from_bytes
+except ImportError:
+    # Python 2
+    from email import message_from_string as message_from_bytes
 
 
 HAS_PLONE5 = parse_version(env.plone_version()) >= parse_version('5.0b2')
@@ -228,7 +235,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
         self.assertEqual(len(self.mailhost.messages), 1)
-        msg = message_from_string(self.mailhost.messages[0])
+        msg = message_from_bytes(self.mailhost.messages[0])
         self.assertEqual(msg['To'], 'bob@plone.org')
         self.assertEqual(msg['From'], 'noreply@plone.org')
         self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
@@ -243,7 +250,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
         self.assertEqual(len(self.mailhost.messages), 1)
-        msg = message_from_string(self.mailhost.messages[0])
+        msg = message_from_bytes(self.mailhost.messages[0])
         self.assertEqual(msg['From'], 'Portal Owner <sender@example.org>')
 
     def test_send_email_without_configured_mailhost(self):
@@ -302,7 +309,7 @@ class TestPloneApiPortal(unittest.TestCase):
             body=u'One for you Bob!',
         )
         self.assertEqual(len(self.mailhost.messages), 1)
-        msg = message_from_string(self.mailhost.messages[0])
+        msg = message_from_bytes(self.mailhost.messages[0])
         self.assertEqual(msg['From'], 'Properties <prop@example.org>')
 
     @unittest.skipUnless(
@@ -328,7 +335,7 @@ class TestPloneApiPortal(unittest.TestCase):
             body=u'One for you Bob!',
         )
         self.assertEqual(len(self.mailhost.messages), 1)
-        msg = message_from_string(self.mailhost.messages[0])
+        msg = message_from_bytes(self.mailhost.messages[0])
         self.assertEqual(msg['From'], 'Registry <reg@example.org>')
 
     def test_send_email_with_printingmailhost(self):
