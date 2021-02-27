@@ -9,7 +9,6 @@ from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import required_parameters
 from plone.dexterity.interfaces import IDexterityContent
-from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import iterSchemataForType
 from z3c.relationfield import event
 from z3c.relationfield import RelationValue
@@ -45,12 +44,12 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-def _get_field_and_schema_for_fieldname(field_id, fti):
-    """Get field and its schema from a fti.
+def _get_field_and_schema_for_fieldname(field_id, portal_type):
+    """Get field and its schema from a portal_type.
     """
     # Turn form.widgets.IDublinCore.title into title
     field_id = field_id.split('.')[-1]
-    for schema in iterSchemataForType(fti):
+    for schema in iterSchemataForType(portal_type):
         field = schema.get(field_id, None)
         if field is not None:
             return (field, schema)
@@ -102,11 +101,7 @@ def create(source=None, target=None, relationship=None):
         event._setRelation(source, ITERATE_RELATION_NAME, relation)
         return
 
-    fti = queryUtility(IDexterityFTI, name=source.portal_type)
-    if not fti:
-        logger.info(u'{} is no dexterity content'.format(source.portal_type))
-        return
-    field_and_schema = _get_field_and_schema_for_fieldname(from_attribute, fti)
+    field_and_schema = _get_field_and_schema_for_fieldname(from_attribute, source.portal_type)
 
     if field_and_schema is None:
         # The relationship is not the name of a field. Only create a relation.
