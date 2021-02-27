@@ -15,19 +15,7 @@ matrix:
       - python: "3.9"
         env: TOXENV=docs
       - python: "2.7"
-        env: TOXENV=py27-plone-4.3
-      - python: "2.7"
-        env: TOXENV=py27-plone-5.0
-      - python: "2.7"
-        env: TOXENV=py27-plone-5.1
-      - python: "2.7"
         env: TOXENV=py27-plone-5.2
-      - python: "2.7"
-        env: TOXENV=py27-plone-4.3-archetypes
-      - python: "2.7"
-        env: TOXENV=py27-plone-5.0-archetypes
-      - python: "2.7"
-        env: TOXENV=py27-plone-5.1-archetypes
       - python: "2.7"
         env: TOXENV=py27-plone-5.2-archetypes
       - python: "3.6"
