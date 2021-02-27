@@ -13,6 +13,8 @@
 Relations
 =========
 
+Note: the relations code only works for Dexterity content, not for Archetypes.
+
 .. _relation_create_example:
 
 Create relation
