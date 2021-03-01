@@ -10,9 +10,9 @@ global:
 matrix:
   fast_finish: true
   include:
-      - python: "3.9"
+      - python: "3.8"
         env: TOXENV=isort,lint
-      - python: "3.9"
+      - python: "3.8"
         env: TOXENV=docs
       - python: "2.7"
         env: TOXENV=py27-plone-5.2
