@@ -24,8 +24,6 @@ matrix:
         env: TOXENV=py37-plone-5.2
       - python: "3.8"
         env: TOXENV=py38-plone-5.2
-      - python: "3.9"
-        env: TOXENV=py39-plone-5.2
 
 before_install:
     - mkdir -p $HOME/buildout-cache/{downloads,eggs,extends}
