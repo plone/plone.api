@@ -149,14 +149,18 @@ class TestPloneApiRelation(unittest.TestCase):
     def test_create_relation(self):
         """Test creating a relation."""
         # Check that there are no relations at first for the two objects we will test.
-        relations = api.relation.get(source=self.about, target=self.blog, relationship="link")
+        relations = api.relation.get(
+            source=self.about, target=self.blog, relationship="link"
+        )
         self.assertEqual(len(relations), 0)
         api.relation.create(
             source=self.about,
             target=self.blog,
             relationship='link',
         )
-        relations = api.relation.get(source=self.about, target=self.blog, relationship="link")
+        relations = api.relation.get(
+            source=self.about, target=self.blog, relationship="link"
+        )
         self.assertEqual(len(relations), 1)
         relation = relations[0]
         self.assertEqual(relation.from_object, self.about)
@@ -191,9 +195,10 @@ class TestPloneApiRelation(unittest.TestCase):
             target=self.blog,
             relationship='link',
         )
-        relations = api.relation.get(source=self.about, target=self.blog, relationship="link")
+        relations = api.relation.get(
+            source=self.about, target=self.blog, relationship="link"
+        )
         self.assertEqual(len(relations), 0)
-
 
     def test_get_constraints(self):
         """Test the constraints when getting relations."""

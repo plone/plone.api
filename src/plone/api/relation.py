@@ -37,7 +37,9 @@ except ImportError:
     StagingRelationValue = None
 
     # Plone 4 corrected paths
-    from plone.app.linkintegrity.handlers import modifiedDexterity as modifiedContent
+    from plone.app.linkintegrity.handlers import (
+        modifiedDexterity as modifiedContent,
+    )
     from plone.app.linkintegrity.handlers import referencedRelationship
 
 
@@ -45,8 +47,7 @@ logger = logging.getLogger(__name__)
 
 
 def _get_field_and_schema_for_fieldname(field_id, portal_type):
-    """Get field and its schema from a portal_type.
-    """
+    """Get field and its schema from a portal_type."""
     # Turn form.widgets.IDublinCore.title into title
     field_id = field_id.split('.')[-1]
     for schema in iterSchemataForType(portal_type):
@@ -98,28 +99,39 @@ def create(source=None, target=None, relationship=None):
         modifiedContent(source, None)
         return
 
-    if ITERATE_RELATION_NAME is not None and from_attribute == ITERATE_RELATION_NAME:
+    if (
+        ITERATE_RELATION_NAME is not None
+        and from_attribute == ITERATE_RELATION_NAME
+    ):
         # Iterate relations use a subclass of RelationValue
         relation = StagingRelationValue(to_id)
         event._setRelation(source, ITERATE_RELATION_NAME, relation)
         return
 
     # This can only get a field from a dexterity item.
-    field_and_schema = _get_field_and_schema_for_fieldname(from_attribute, source.portal_type)
+    field_and_schema = _get_field_and_schema_for_fieldname(
+        from_attribute, source.portal_type
+    )
 
     if field_and_schema is None:
         # The relationship is not the name of a dexterity field.
         # Only create a relation.
-        logger.debug(u'No dexterity field. Setting relation {} from {} to {}'.format(
-            source.absolute_url(), target.absolute_url(), relationship))
+        logger.debug(
+            u'No dexterity field. Setting relation {} from {} to {}'.format(
+                source.absolute_url(), target.absolute_url(), relationship
+            )
+        )
         event._setRelation(source, from_attribute, RelationValue(to_id))
         return
 
     field, _schema = field_and_schema
 
     if isinstance(field, RelationList):
-        logger.info('Add relation to relationlist {} from {} to {}'.format(
-            from_attribute, source.absolute_url(), target.absolute_url()))
+        logger.info(
+            'Add relation to relationlist {} from {} to {}'.format(
+                from_attribute, source.absolute_url(), target.absolute_url()
+            )
+        )
         existing_relations = getattr(source, from_attribute, [])
         existing_relations.append(RelationValue(to_id))
         setattr(source, from_attribute, existing_relations)
@@ -127,8 +139,11 @@ def create(source=None, target=None, relationship=None):
         return
 
     elif isinstance(field, (Relation, RelationChoice)):
-        logger.info('Add relation {} from {} to {}'.format(
-            from_attribute, source.absolute_url(), target.absolute_url()))
+        logger.info(
+            'Add relation {} from {} to {}'.format(
+                from_attribute, source.absolute_url(), target.absolute_url()
+            )
+        )
         setattr(source, from_attribute, RelationValue(to_id))
         modified(source)
         return
@@ -163,11 +178,15 @@ def delete(source=None, target=None, relationship=None, delete_all=False):
     if target is not None and not base_hasattr(target, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(target))
 
-    if relationship is not None and not isinstance(relationship, six.string_types):
+    if relationship is not None and not isinstance(
+        relationship, six.string_types
+    ):
         raise InvalidParameterError('{} is no string'.format(relationship))
 
     if delete_all and (source or target or relationship is not None):
-        raise InvalidParameterError('When you use delete_all, you must not specify any other parameters')
+        raise InvalidParameterError(
+            'When you use delete_all, you must not specify any other parameters'
+        )
 
     query = {}
     relation_catalog = getUtility(ICatalog)
@@ -186,8 +205,13 @@ def delete(source=None, target=None, relationship=None, delete_all=False):
 
 
 @at_least_one_of('source', 'target', 'relationship')
-def get(source=None, target=None, relationship=None,
-        unrestricted=False, as_dict=False):
+def get(
+    source=None,
+    target=None,
+    relationship=None,
+    unrestricted=False,
+    as_dict=False,
+):
     """Get specific relations given a source/target/relationship
 
     Copied and modified from collective.relationhelpers get_relations.
@@ -198,7 +222,9 @@ def get(source=None, target=None, relationship=None,
     if target is not None and not base_hasattr(target, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(target))
 
-    if relationship is not None and not isinstance(relationship, six.string_types):
+    if relationship is not None and not isinstance(
+        relationship, six.string_types
+    ):
         raise InvalidParameterError('{} is no string'.format(relationship))
 
     intids = getUtility(IIntIds)
@@ -230,8 +256,9 @@ def get(source=None, target=None, relationship=None,
             source_obj = relation.from_object
             target_obj = relation.to_object
 
-            if checkPermission('View', source_obj) and checkPermission('View',
-                    target_obj):
+            if checkPermission('View', source_obj) and checkPermission(
+                'View', target_obj
+            ):
                 if as_dict:
                     results[relation.from_attribute].append(relation)
                 else:
