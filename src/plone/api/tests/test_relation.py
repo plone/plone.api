@@ -4,18 +4,7 @@
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 
-import mock
-import pkg_resources
-import six
 import unittest
-
-
-try:
-    pkg_resources.get_distribution('plone.app.contenttypes')
-except pkg_resources.DistributionNotFound:
-    HAS_PACONTENTYPES = False
-else:
-    HAS_PACONTENTYPES = True
 
 
 class TestPloneApiRelation(unittest.TestCase):
@@ -122,7 +111,7 @@ class TestPloneApiRelation(unittest.TestCase):
             )
 
         # We require a source with portal_type
-        app = self.layer["app"]
+        app = self.layer['app']
         with self.assertRaises(InvalidParameterError):
             api.relation.create(
                 source=app,
@@ -148,9 +137,12 @@ class TestPloneApiRelation(unittest.TestCase):
 
     def test_create_relation(self):
         """Test creating a relation."""
-        # Check that there are no relations at first for the two objects we will test.
+        # Check that there are no relations at first
+        # for the two objects we will test.
         relations = api.relation.get(
-            source=self.about, target=self.blog, relationship="link"
+            source=self.about,
+            target=self.blog,
+            relationship='link',
         )
         self.assertEqual(len(relations), 0)
         api.relation.create(
@@ -159,7 +151,9 @@ class TestPloneApiRelation(unittest.TestCase):
             relationship='link',
         )
         relations = api.relation.get(
-            source=self.about, target=self.blog, relationship="link"
+            source=self.about,
+            target=self.blog,
+            relationship='link',
         )
         self.assertEqual(len(relations), 1)
         relation = relations[0]
@@ -171,7 +165,7 @@ class TestPloneApiRelation(unittest.TestCase):
         from plone.api.exc import InvalidParameterError
 
         # If source is given, it must have a portal_type.
-        app = self.layer["app"]
+        app = self.layer['app']
         with self.assertRaises(InvalidParameterError):
             api.relation.delete(source=app)
 
@@ -196,7 +190,9 @@ class TestPloneApiRelation(unittest.TestCase):
             relationship='link',
         )
         relations = api.relation.get(
-            source=self.about, target=self.blog, relationship="link"
+            source=self.about,
+            target=self.blog,
+            relationship='link',
         )
         self.assertEqual(len(relations), 0)
 
@@ -205,7 +201,7 @@ class TestPloneApiRelation(unittest.TestCase):
         from plone.api.exc import InvalidParameterError
 
         # If source is given, it must have a portal_type.
-        app = self.layer["app"]
+        app = self.layer['app']
         with self.assertRaises(InvalidParameterError):
             api.relation.get(source=app)
 
@@ -241,7 +237,7 @@ class TestPloneApiRelation(unittest.TestCase):
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 1)
         self.assertEqual(len(api.relation.get(target=self.blog)), 2)
-        self.assertEqual(len(api.relation.get(relationship="link")), 3)
+        self.assertEqual(len(api.relation.get(relationship='link')), 3)
 
         self.assertEqual(len(api.relation.get(source=self.events)), 2)
-        self.assertEqual(len(api.relation.get(relationship="team")), 1)
+        self.assertEqual(len(api.relation.get(relationship='team')), 1)

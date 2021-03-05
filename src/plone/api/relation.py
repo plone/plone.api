@@ -21,11 +21,9 @@ from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zc.relation.interfaces import ICatalog
 from zope.component import getUtility
-from zope.component import queryUtility
 from zope.intid.interfaces import IIntIds
 from zope.lifecycleevent import modified
 
-import json
 import logging
 import six
 
@@ -56,13 +54,13 @@ def create(source=None, target=None, relationship=None):
     Adapted from collective.relationhelpers link_objects.
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(source))
+        raise InvalidParameterError('{0} has no portal_type'.format(source))
 
     if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(target))
+        raise InvalidParameterError('{0} has no portal_type'.format(target))
 
     if not isinstance(relationship, six.string_types):
-        raise InvalidParameterError('{} is no string'.format(relationship))
+        raise InvalidParameterError('{0} is no string'.format(relationship))
 
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
@@ -97,16 +95,18 @@ def create(source=None, target=None, relationship=None):
 
     # This can only get a field from a dexterity item.
     field_and_schema = _get_field_and_schema_for_fieldname(
-        from_attribute, source.portal_type
+        from_attribute,
+        source.portal_type,
     )
 
     if field_and_schema is None:
         # The relationship is not the name of a dexterity field.
         # Only create a relation.
         logger.debug(
-            u'No dexterity field. Setting relation {} from {} to {}'.format(
-                source.absolute_url(), target.absolute_url(), relationship
-            )
+            u'No dexterity field. Setting relation %s from %s to %s',
+            source.absolute_url(),
+            target.absolute_url(),
+            relationship,
         )
         event._setRelation(source, from_attribute, RelationValue(to_id))
         return
@@ -115,9 +115,10 @@ def create(source=None, target=None, relationship=None):
 
     if isinstance(field, RelationList):
         logger.info(
-            'Add relation to relationlist {} from {} to {}'.format(
-                from_attribute, source.absolute_url(), target.absolute_url()
-            )
+            'Add relation to relationlist %s from %s to %s',
+            from_attribute,
+            source.absolute_url(),
+            target.absolute_url(),
         )
         existing_relations = getattr(source, from_attribute, [])
         existing_relations.append(RelationValue(to_id))
@@ -127,9 +128,10 @@ def create(source=None, target=None, relationship=None):
 
     elif isinstance(field, (Relation, RelationChoice)):
         logger.info(
-            'Add relation {} from {} to {}'.format(
-                from_attribute, source.absolute_url(), target.absolute_url()
-            )
+            'Add relation %s from %s to %s',
+            from_attribute,
+            source.absolute_url(),
+            target.absolute_url(),
         )
         setattr(source, from_attribute, RelationValue(to_id))
         modified(source)
@@ -142,11 +144,12 @@ def create(source=None, target=None, relationship=None):
     # Let's create the relationship and log a warning.
     event._setRelation(source, from_attribute, RelationValue(to_id))
     logger.warning(
-        'Created relation {} on an item that has a field with the same name '
+        'Created relation %s on an item that has a field with the same name '
         'which is not a relation field. Is this what you wanted? '
-        'Relation points from {} to {}'.format(
-            from_attribute, source.absolute_url(), target.absolute_url()
-        )
+        'Relation points from %s to %s',
+        from_attribute,
+        source.absolute_url(),
+        target.absolute_url(),
     )
 
 
@@ -160,19 +163,20 @@ def delete(source=None, target=None, relationship=None, delete_all=False):
     TODO: do we want to remove RelationValues from content objects?
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(source))
+        raise InvalidParameterError('{0} has no portal_type'.format(source))
 
     if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(target))
+        raise InvalidParameterError('{0} has no portal_type'.format(target))
 
     if relationship is not None and not isinstance(
-        relationship, six.string_types
+        relationship,
+        six.string_types,
     ):
-        raise InvalidParameterError('{} is no string'.format(relationship))
+        raise InvalidParameterError('{0} is no string'.format(relationship))
 
     if delete_all and (source or target or relationship is not None):
         raise InvalidParameterError(
-            'When you use delete_all, you must not specify any other parameters'
+            'When you use delete_all, you must not use any other parameters.',
         )
 
     query = {}
@@ -204,15 +208,16 @@ def get(
     Copied and modified from collective.relationhelpers get_relations.
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(source))
+        raise InvalidParameterError('{0} has no portal_type'.format(source))
 
     if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(target))
+        raise InvalidParameterError('{0} has no portal_type'.format(target))
 
     if relationship is not None and not isinstance(
-        relationship, six.string_types
+        relationship,
+        six.string_types,
     ):
-        raise InvalidParameterError('{} is no string'.format(relationship))
+        raise InvalidParameterError('{0} is no string'.format(relationship))
 
     intids = getUtility(IIntIds)
     relation_catalog = getUtility(ICatalog)
@@ -244,7 +249,8 @@ def get(
             target_obj = relation.to_object
 
             if checkPermission('View', source_obj) and checkPermission(
-                'View', target_obj
+                'View',
+                target_obj,
             ):
                 if as_dict:
                     results[relation.from_attribute].append(relation)
