@@ -8,6 +8,10 @@ from collections import defaultdict
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import required_parameters
+from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
+from plone.app.iterate.dexterity.relation import StagingRelationValue
+from plone.app.linkintegrity.handlers import modifiedContent
+from plone.app.linkintegrity.utils import referencedRelationship
 from plone.dexterity.utils import iterSchemataForType
 from Products.CMFPlone.utils import base_hasattr
 from z3c.relationfield import event
@@ -24,23 +28,6 @@ from zope.lifecycleevent import modified
 import json
 import logging
 import six
-
-try:
-    from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
-    from plone.app.iterate.dexterity.relation import StagingRelationValue
-
-    # Plone 4 import error
-    from plone.app.linkintegrity.handlers import modifiedContent
-    from plone.app.linkintegrity.utils import referencedRelationship
-except ImportError:
-    ITERATE_RELATION_NAME = None
-    StagingRelationValue = None
-
-    # Plone 4 corrected paths
-    from plone.app.linkintegrity.handlers import (
-        modifiedDexterity as modifiedContent,
-    )
-    from plone.app.linkintegrity.handlers import referencedRelationship
 
 
 logger = logging.getLogger(__name__)
