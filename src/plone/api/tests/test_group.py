@@ -153,6 +153,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_get_groups_anonymous(self):
         from AccessControl.users import nobody
+
         # In test the anonymous user is aq wrapped in /plone/acl_users
         # > self.portal.acl_users in api.user.get_current().aq_chain
         # >>> True

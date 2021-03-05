@@ -410,8 +410,8 @@ class TestPloneApiEnv(unittest.TestCase):
     def test_debug_mode(self):
         """Tests that the retured value is the same as
         getConfiguration.debug_mode."""
-        from plone.api.env import debug_mode
         from App.config import getConfiguration
+        from plone.api.env import debug_mode
         getConfiguration().debug_mode = True
         self.assertEqual(debug_mode(), True)
         getConfiguration().debug_mode = False
