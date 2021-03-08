@@ -1064,7 +1064,7 @@ class TestPloneApiContent(unittest.TestCase):
         brains = api.content.find(
             object_provides={
                 'query': IContentish.__identifier__,
-                'not': INavigationRoot.__identifier__
+                'not': INavigationRoot.__identifier__,
             },
         )
 
@@ -1085,12 +1085,12 @@ class TestPloneApiContent(unittest.TestCase):
             parser(
                 {
                     'query': [IContentish, INavigationRoot.__identifier__],
-                    'operator': 'and'
-                }
+                    'operator': 'and',
+                },
             ),
             {
                 'query': [IContentish.__identifier__, INavigationRoot.__identifier__],
-                'operator': 'and'
+                'operator': 'and',
             },
         )
 
