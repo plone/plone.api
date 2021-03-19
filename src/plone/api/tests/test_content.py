@@ -115,12 +115,9 @@ class TestPloneApiContent(unittest.TestCase):
 
     def verify_intids(self):
         """Test that the intids are in order"""
-        try:
-            from zope.intid.interfaces import IIntIds
-        except ImportError:
-            # IntId are not a thing in Plone 4.3
-            return
         from zope.component import getUtility
+        from zope.intid.interfaces import IIntIds
+
         intids = getUtility(IIntIds)
         broken_keys = [
             key for key in intids.ids
