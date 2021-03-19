@@ -126,6 +126,14 @@ class TestPloneApiContent(unittest.TestCase):
         obsolete_paths = [key.path for key in broken_keys]
         self.assertListEqual(obsolete_paths, [])
 
+        # Objects used as keys with a hash can behave strangely.
+        # I have seen this go wrong in a production site.
+        weird_keys = [
+            key for key in intids.ids
+            if key not in intids.ids
+        ]
+        weird_paths = [key.path for key in weird_keys]
+        self.assertListEqual(weird_paths, [])
 
     def test_create_constraints(self):
         """Test the constraints when creating content."""
