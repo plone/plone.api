@@ -113,6 +113,28 @@ class TestPloneApiContent(unittest.TestCase):
             id='image',
         )
 
+    def verify_intids(self):
+        """Test that the intids are in order"""
+        from zope.component import getUtility
+        from zope.intid.interfaces import IIntIds
+
+        intids = getUtility(IIntIds)
+        broken_keys = [
+            key for key in intids.ids
+            if not self.portal.unrestrictedTraverse(key.path, None)
+        ]
+        obsolete_paths = [key.path for key in broken_keys]
+        self.assertListEqual(obsolete_paths, [])
+
+        # Objects used as keys with a hash can behave strangely.
+        # I have seen this go wrong in a production site.
+        weird_keys = [
+            key for key in intids.ids
+            if key not in intids.ids
+        ]
+        weird_paths = [key.path for key in weird_keys]
+        self.assertListEqual(weird_paths, [])
+
     def test_create_constraints(self):
         """Test the constraints when creating content."""
         from plone.api.exc import InvalidParameterError
@@ -242,6 +264,7 @@ class TestPloneApiContent(unittest.TestCase):
                 type='Dexterity Item',
                 id='test-item',
             )
+        self.verify_intids()
 
     def test_create_content(self):
         """Test create content"""
@@ -289,6 +312,7 @@ class TestPloneApiContent(unittest.TestCase):
                 type='Document',
                 id='test-document',
             )
+        self.verify_intids()
 
     def test_create_with_safe_id(self):
         """Test the content creating with safe_id mode."""
@@ -552,6 +576,7 @@ class TestPloneApiContent(unittest.TestCase):
             container['events']['about']
             and container['events']['about'] == about
         )
+        self.verify_intids()
 
     def test_move_no_move_if_target_is_source_parent(self):
         """Test that trying to move an object to its parent is a noop"""
