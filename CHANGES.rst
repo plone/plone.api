@@ -8,6 +8,32 @@ Changelog
 
 .. towncrier release notes start
 
+1.11.0 (2021-06-30)
+-------------------
+
+New features:
+
+
+- Drop support for Plone 4.3, 5.0, 5.1, add support for 6.0.
+  The code might still work, but it is no longer tested.
+  You can use releases in the 1.10 series on the older versions.
+  [maurits] (#431)
+
+
+Bug fixes:
+
+
+- Add tests to verify that the intids utility is correct after moving content.
+  [ale-rt, maurits] (#430)
+- Improve tox.ini so that plone.api could be tested locally.
+  Add all tests to travis-ci config.
+  Add .editorconfig file to plone.api to help enforce coding conventions
+  [loechel] (#448)
+- Fix plone.api.content.find to respect object_provides "not" queries.
+  Fixes: #451
+  [thet] (#452)
+
+
 1.10.4 (2020-09-28)
 -------------------
 
