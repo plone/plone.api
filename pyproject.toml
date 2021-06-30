@@ -1,5 +1,4 @@
 [tool.towncrier]
-package = "plone.api"
 filename = "CHANGES.rst"
 directory = "news/"
 title_format = "{version} ({project_date})"
