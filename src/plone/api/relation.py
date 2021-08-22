@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module that provides functionality for relations.
 
 Heavily inspired by collective.relationhelpers.
@@ -25,7 +24,6 @@ from zope.intid.interfaces import IIntIds
 from zope.lifecycleevent import modified
 
 import logging
-import six
 
 
 logger = logging.getLogger(__name__)
@@ -54,13 +52,13 @@ def create(source=None, target=None, relationship=None):
     Adapted from collective.relationhelpers link_objects.
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{0} has no portal_type'.format(source))
+        raise InvalidParameterError('{} has no portal_type'.format(source))
 
     if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{0} has no portal_type'.format(target))
+        raise InvalidParameterError('{} has no portal_type'.format(target))
 
-    if not isinstance(relationship, six.string_types):
-        raise InvalidParameterError('{0} is no string'.format(relationship))
+    if not isinstance(relationship, str):
+        raise InvalidParameterError('{} is no string'.format(relationship))
 
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
@@ -103,7 +101,7 @@ def create(source=None, target=None, relationship=None):
         # The relationship is not the name of a dexterity field.
         # Only create a relation.
         logger.debug(
-            u'No dexterity field. Setting relation %s from %s to %s',
+            'No dexterity field. Setting relation %s from %s to %s',
             source.absolute_url(),
             target.absolute_url(),
             relationship,
@@ -163,16 +161,16 @@ def delete(source=None, target=None, relationship=None, delete_all=False):
     TODO: do we want to remove RelationValues from content objects?
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{0} has no portal_type'.format(source))
+        raise InvalidParameterError('{} has no portal_type'.format(source))
 
     if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{0} has no portal_type'.format(target))
+        raise InvalidParameterError('{} has no portal_type'.format(target))
 
     if relationship is not None and not isinstance(
         relationship,
-        six.string_types,
+        str,
     ):
-        raise InvalidParameterError('{0} is no string'.format(relationship))
+        raise InvalidParameterError('{} is no string'.format(relationship))
 
     if delete_all and (source or target or relationship is not None):
         raise InvalidParameterError(
@@ -208,16 +206,16 @@ def get(
     Copied and modified from collective.relationhelpers get_relations.
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{0} has no portal_type'.format(source))
+        raise InvalidParameterError('{} has no portal_type'.format(source))
 
     if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{0} has no portal_type'.format(target))
+        raise InvalidParameterError('{} has no portal_type'.format(target))
 
     if relationship is not None and not isinstance(
         relationship,
-        six.string_types,
+        str,
     ):
-        raise InvalidParameterError('{0} is no string'.format(relationship))
+        raise InvalidParameterError('{} is no string'.format(relationship))
 
     intids = getUtility(IIntIds)
     relation_catalog = getUtility(ICatalog)
