@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for plone.api.content."""
 
 from Acquisition import aq_base
@@ -28,7 +27,7 @@ from zope.lifecycleevent import IObjectMovedEvent
 from zope.lifecycleevent import modified
 from zope.lifecycleevent import ObjectMovedEvent
 
-import mock
+from unittest import mock
 import pkg_resources
 import unittest
 
@@ -444,7 +443,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test getting the team document by path that has portal id included
         team_by_path = api.content.get(
-            '/{0}/about/team'.format(self.portal.getId()),
+            '/{}/about/team'.format(self.portal.getId()),
         )
         self.assertEqual(self.team, team_by_path)
 

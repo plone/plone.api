@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Decorators for validating parameters"""
 
 from decorator import decorator

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
@@ -124,7 +123,7 @@ def _adopt_roles(roles):
     security_manager.removeContext(overriding_context)
 
 
-class _GlobalRoleOverridingContext(object):
+class _GlobalRoleOverridingContext:
     # ZopeSecurityPolicy will use security_context._proxy_roles in place of
     # the roles that would normally be active, provided that it happens to
     # consider the security_context object to be relevant.

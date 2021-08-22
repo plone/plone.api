@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module that provides functionality for group manipulation."""
 
 from plone.api import portal
@@ -242,7 +241,7 @@ def get_roles(groupname=None, group=None, obj=None, inherit=True):
         # get only the local roles on a object
         # same as above we use the PloneUser version of getRolesInContext.
         # Include roles from adapters granting local roles
-        roles = set([])
+        roles = set()
         pas = portal.get_tool('acl_users')
         for _, lrmanager in pas.plugins.listPlugins(ILocalRolesPlugin):
             for adapter in lrmanager._getAdapters(obj):

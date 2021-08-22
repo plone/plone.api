@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module that provides functionality for content manipulation."""
 
 from copy import copy as _copy
@@ -291,7 +290,7 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
         breaches = linkintegrity_view.get_breaches(objects)
         if breaches:
             raise LinkIntegrityNotificationException(
-                'Linkintegrity-breaches: {0}'.format(breaches),
+                'Linkintegrity-breaches: {}'.format(breaches),
             )
 
     for obj_ in objects:
@@ -453,15 +452,15 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
             ]
 
             raise InvalidParameterError(
-                "Invalid transition '{0}'.\n"
+                "Invalid transition '{}'.\n"
                 'Valid transitions are:\n'
-                '{1}'.format(transition, '\n'.join(sorted(transitions))),
+                '{}'.format(transition, '\n'.join(sorted(transitions))),
             )
     else:
         _transition_to(obj, workflow, to_state, **kwargs)
         if workflow.getInfoFor(obj, 'review_state') != to_state:
             raise InvalidParameterError(
-                'Could not find workflow to set state to {0} on {1}'.format(
+                'Could not find workflow to set state to {} on {}'.format(
                     to_state,
                     obj,
                 ),

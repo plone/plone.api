@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Base module for unittesting."""
 
 from plone.app.testing import FunctionalTesting

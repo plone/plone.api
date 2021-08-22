@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
@@ -269,12 +268,12 @@ def get_registry_record(name=None, interface=None, default=MISSING):
     :Example: :ref:`portal_get_registry_record_example`
     """
     if not isinstance(name, str):
-        raise InvalidParameterError(u"The 'name' parameter has to be a string")
+        raise InvalidParameterError("The 'name' parameter has to be a string")
 
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
-            u'The interface parameter has to derive from '
-            u'zope.interface.Interface',
+            'The interface parameter has to derive from '
+            'zope.interface.Interface',
         )
 
     registry = getUtility(IRegistry)
@@ -283,7 +282,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
         records = registry.forInterface(interface, check=False)
         _marker = object()
         if getattr(records, name, _marker) != _marker:
-            return registry['{0}.{1}'.format(interface.__identifier__, name)]
+            return registry['{}.{}'.format(interface.__identifier__, name)]
 
         if default is not MISSING:
             return default
@@ -337,12 +336,12 @@ def set_registry_record(name=None, value=None, interface=None):
     :Example: :ref:`portal_set_registry_record_example`
     """
     if not isinstance(name, str):
-        raise InvalidParameterError(u"The parameter 'name' has to be a string")
+        raise InvalidParameterError("The parameter 'name' has to be a string")
 
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
-            u'The interface parameter has to derive from '
-            u'zope.interface.Interface',
+            'The interface parameter has to derive from '
+            'zope.interface.Interface',
         )
 
     registry = getUtility(IRegistry)
@@ -361,8 +360,8 @@ def set_registry_record(name=None, value=None, interface=None):
                 if field[0] == 'field_one'
             ][0]
             raise InvalidParameterError(
-                u'The value parameter for the field {name} needs to be '
-                u'{of_class} instead of {of_type}'.format(
+                'The value parameter for the field {name} needs to be '
+                '{of_class} instead of {of_type}'.format(
                     name=name,
                     of_class=str(field_type.__class__),
                     of_type=type(value),

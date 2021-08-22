@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for plone.api.roles."""
 
 from AccessControl import Unauthorized

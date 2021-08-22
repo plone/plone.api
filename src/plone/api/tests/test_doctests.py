@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Boilerplate for doctest functional tests."""
 
 from logging import getLogger
@@ -117,7 +116,7 @@ def test_suite():
     for filename in os.listdir(docs_path):
         try:
             doctests.append(DocFileSuite(os.path.join(path, filename)))
-        except IOError:
+        except OSError:
             logger.warning(
                 'test_doctest.py skipping {file}'.format(file=filename),
             )

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for plone.api.user."""
 
 from AccessControl.Permission import getPermissions
@@ -15,7 +14,7 @@ from zope.component import provideAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 
-import mock
+from unittest import mock
 import unittest
 
 
@@ -931,7 +930,7 @@ class TestPloneApiUser(unittest.TestCase):
         # throw in a adapter granting the reviewer-roles
         @adapter(Interface)
         @implementer(ILocalRoleProvider)
-        class LocalRoleProvider(object):
+        class LocalRoleProvider:
 
             def __init__(self, context):
                 self.context = context

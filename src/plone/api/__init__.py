@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # flake8: NOQA: S401
 
 from plone.api import content

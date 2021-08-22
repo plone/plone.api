@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module that provides functionality for user manipulation."""
 
 from AccessControl.Permission import getPermissions
@@ -418,11 +417,11 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
         # if obj, get only a list of local roles, without inherited ones
         inherit = False
 
-    actual_roles = set([
+    actual_roles = {
         role
         for role in get_roles(user=user, obj=obj, inherit=inherit)
         if role not in ['Anonymous', 'Authenticated']
-    ])
+    }
 
     roles = list(actual_roles - roles)
 

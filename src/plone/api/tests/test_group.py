@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for plone.api.group."""
 
 from borg.localrole.interfaces import ILocalRoleProvider
@@ -11,7 +10,7 @@ from zope.component import provideAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 
-import mock
+from unittest import mock
 import unittest
 
 
@@ -360,7 +359,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn('Contributor', api.group.get_roles(group=group))
 
         api.group.grant_roles(groupname='foo', roles=['Reader', 'Reader'])
-        ROLES = set(['Editor', 'Contributor', 'Reader', 'Authenticated'])
+        ROLES = {'Editor', 'Contributor', 'Reader', 'Authenticated'}
         self.assertEqual(ROLES, set(api.group.get_roles(groupname='foo')))
         self.assertEqual(ROLES, set(api.group.get_roles(group=group)))
 
@@ -405,7 +404,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn('Editor', api.group.get_roles(group=group))
 
         api.group.revoke_roles(groupname='bar', roles=['Editor'])
-        ROLES = set(['Authenticated'])
+        ROLES = {'Authenticated'}
         self.assertEqual(ROLES, set(api.group.get_roles(groupname='bar')))
         self.assertEqual(ROLES, set(api.group.get_roles(group=group)))
 
@@ -462,7 +461,7 @@ class TestPloneApiGroup(unittest.TestCase):
             api.group.get_roles(group=group, obj=document),
         )
 
-        ROLES = set(['Editor', 'Contributor', 'Authenticated'])
+        ROLES = {'Editor', 'Contributor', 'Authenticated'}
         self.assertEqual(
             ROLES,
             set(api.group.get_roles(groupname='foo', obj=folder)),
@@ -479,7 +478,7 @@ class TestPloneApiGroup(unittest.TestCase):
             ROLES,
             set(api.group.get_roles(group=group, obj=document)),
         )
-        ROLES = set(['Editor', 'Contributor'])
+        ROLES = {'Editor', 'Contributor'}
         self.assertEqual(
             ROLES,
             set(
@@ -495,7 +494,7 @@ class TestPloneApiGroup(unittest.TestCase):
             set(api.group.get_roles(group=group, obj=folder, inherit=False)),
         )
         self.assertEqual(
-            set([]),
+            set(),
             set(
                 api.group.get_roles(
                     groupname='foo',
@@ -505,7 +504,7 @@ class TestPloneApiGroup(unittest.TestCase):
             ),
         )
         self.assertEqual(
-            set([]),
+            set(),
             set(api.group.get_roles(group=group, obj=document, inherit=False)),
         )
 
@@ -557,12 +556,12 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         # local_roles plus global_roles
         self.assertEqual(
-            set(['Authenticated', 'Editor', 'Contributor']),
+            {'Authenticated', 'Editor', 'Contributor'},
             set(api.group.get_roles(groupname='foo', obj=document)),
         )
         # no only-local roles
         self.assertEqual(
-            set([]),
+            set(),
             set(
                 api.group.get_roles(
                     groupname='foo',
@@ -576,7 +575,7 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         # one only-local role
         self.assertEqual(
-            set(['Contributor']),
+            {'Contributor'},
             set(
                 api.group.get_roles(
                     groupname='foo',
@@ -590,7 +589,7 @@ class TestPloneApiGroup(unittest.TestCase):
         # The Editor-role is added even though it is already a global role
         api.group.grant_roles(groupname='foo', roles=['Editor'], obj=folder)
         self.assertEqual(
-            set(['Contributor', 'Editor']),
+            {'Contributor', 'Editor'},
             set(
                 api.group.get_roles(
                     groupname='foo',
@@ -624,7 +623,7 @@ class TestPloneApiGroup(unittest.TestCase):
         # throw in a adapter granting the reviewer-roles
         @adapter(Interface)
         @implementer(ILocalRoleProvider)
-        class LocalRoleProvider(object):
+        class LocalRoleProvider:
 
             def __init__(self, context):
                 self.context = context
@@ -748,7 +747,7 @@ class TestPloneApiGroup(unittest.TestCase):
             api.group.get_roles(group=group, obj=document),
         )
 
-        ROLES = set(['Authenticated'])
+        ROLES = {'Authenticated'}
         self.assertEqual(
             ROLES,
             set(api.group.get_roles(groupname='ploneboat', obj=folder)),
