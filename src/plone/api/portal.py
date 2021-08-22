@@ -9,6 +9,7 @@ from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import required_parameters
 from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
@@ -24,15 +25,6 @@ import six
 
 
 logger = getLogger('plone.api.portal')
-
-try:
-    pkg_resources.get_distribution('plone.registry')
-    from plone.registry.interfaces import IRegistry
-except pkg_resources.DistributionNotFound:
-    logger.warning(
-        'plone.registry is not installed. get_registry_record and '
-        'set_registry_record will be unavailable.',
-    )
 
 try:
     from Products import PrintingMailHost
@@ -171,19 +163,11 @@ def send_email(
         if ctrlOverview.mailhost_warning():
             raise ValueError('MailHost is not configured.')
 
-    try:
-        encoding = get_registry_record('plone.email_charset')
-    except InvalidParameterError:
-        encoding = portal.getProperty('email_charset', 'utf-8')
+    encoding = get_registry_record('plone.email_charset')
 
     if not sender:
-        try:
-            from_address = get_registry_record('plone.email_from_address')
-            from_name = get_registry_record('plone.email_from_name')
-        except InvalidParameterError:
-            # Before Plone 5.0b2 these were stored in portal_properties
-            from_address = portal.getProperty('email_from_address', '')
-            from_name = portal.getProperty('email_from_name', '')
+        from_address = get_registry_record('plone.email_from_address')
+        from_name = get_registry_record('plone.email_from_name')
         sender = formataddr((from_name, from_address))
         if parseaddr(sender)[1] != from_address:
             # formataddr probably got confused by special characters.
@@ -401,19 +385,7 @@ def get_default_language():
     :rtype: string
     :Example: :ref:`portal_get_default_language_example`
     """
-    try:
-        # Plone 5.2+
-        from plone.i18n.interfaces import ILanguageSchema
-    except ImportError:  # pragma: no cover
-        try:
-            # Plone 5.0/5.1
-            from Products.CMFPlone.interfaces import ILanguageSchema
-        except ImportError:
-            # Plone 4.3
-            portal = get()
-            return portal.portal_properties.site_properties.getProperty(
-                'default_language', None,
-            )
+    from plone.i18n.interfaces import ILanguageSchema
     registry = getUtility(IRegistry)
     settings = registry.forInterface(ILanguageSchema, prefix='plone')
     return settings.default_language

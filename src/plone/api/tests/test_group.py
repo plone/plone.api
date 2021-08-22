@@ -512,11 +512,6 @@ class TestPloneApiGroup(unittest.TestCase):
 
     def test_local_roles_without_inheritance(self):
         """Test granting and getting local_roles."""
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-
         api.group.create(groupname='foo')
 
         portal = api.portal.get()
@@ -538,12 +533,12 @@ class TestPloneApiGroup(unittest.TestCase):
         )
         # Add the editor-role as global role
         api.group.grant_roles(groupname='foo', roles=['Editor'])
-        assertCountEqual(
+        self.assertCountEqual(
             ['Authenticated', 'Editor'],
             api.group.get_roles(groupname='foo'),
         )
         # local_roles plus global_roles
-        assertCountEqual(
+        self.assertCountEqual(
             ['Authenticated', 'Editor'],
             api.group.get_roles(groupname='foo', obj=folder),
         )
@@ -557,7 +552,7 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.grant_roles(
             groupname='foo', roles=['Contributor'], obj=folder,
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ['Contributor'],
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
         )
@@ -609,11 +604,6 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_local_roles_disregard_adapter(self):
         """Test that borg.localrole-adpaters are not copied when granting
         local roles."""
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-
         portal = api.portal.get()
         folder = api.content.create(
             container=portal,
@@ -646,12 +636,12 @@ class TestPloneApiGroup(unittest.TestCase):
         provideAdapter(LocalRoleProvider)
 
         # the adapter-role is added for get_role
-        assertCountEqual(
+        self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder),
             ['Authenticated', 'Reviewer'],
         )
 
-        assertCountEqual(
+        self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
             ['Reviewer'],
         )
@@ -660,18 +650,18 @@ class TestPloneApiGroup(unittest.TestCase):
         api.group.grant_roles(
             groupname='foo', roles=['Contributor'], obj=folder,
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder),
             ['Authenticated', 'Contributor', 'Reviewer'],
         )
 
         # The adapter role in in the local roles but not persistent
-        assertCountEqual(
+        self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder, inherit=False),
             ['Contributor', 'Reviewer'],
         )
         local_roles = getattr(folder, '__ac_local_roles__', {})
-        assertCountEqual(
+        self.assertCountEqual(
             local_roles.get('foo'),
             ['Contributor'],
         )

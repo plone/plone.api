@@ -292,30 +292,6 @@ class TestPloneApiPortal(unittest.TestCase):
             body=u'One for you Bob!',
         )
 
-    @unittest.skipIf(
-        HAS_PLONE5,
-        'Plone 4 uses portal_properties for mail settings',
-    )
-    def test_send_email_with_config_in_portal_properties(self):
-        """Test mail-setting being stored in portal_properties.
-        Before Plone 5.0b2 the settings were stored in portal_properties.
-        """
-        self.portal._updateProperty('email_from_name', 'Properties')
-        self.portal._updateProperty('email_from_address', 'prop@example.org')
-        self.mailhost.reset()
-        portal.send_email(
-            recipient='bob@plone.org',
-            subject='Trappist',
-            body=u'One for you Bob!',
-        )
-        self.assertEqual(len(self.mailhost.messages), 1)
-        msg = message_from_bytes(self.mailhost.messages[0])
-        self.assertEqual(msg['From'], 'Properties <prop@example.org>')
-
-    @unittest.skipUnless(
-        HAS_PLONE5,
-        'Plone 5 uses the registry for mail settings',
-    )
     def test_send_email_with_config_in_registry(self):
         """Test mail-setting being stored in registry
         """
