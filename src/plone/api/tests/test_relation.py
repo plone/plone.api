@@ -6,6 +6,8 @@ from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing import setRoles
 from z3c.relationfield import RelationValue
+from zc.relation.interfaces import ICatalog
+from zope.component import getUtility
 
 import unittest
 
@@ -163,6 +165,27 @@ class TestPloneApiRelation(unittest.TestCase):
         self.assertEqual(relation.from_object, self.about)
         self.assertEqual(relation.to_object, self.blog)
 
+        # create relation that uses a field
+        self.assertEqual(self.about.relatedItems, [])
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='relatedItems',
+        )
+        self.assertEqual(len(self.about.relatedItems), 1)
+        self.assertIsInstance(self.about.relatedItems[0], RelationValue)
+
+        # create relation with a fieldname that is no relationfield
+        self.assertEqual(self.about.description, '')
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='description',
+        )
+        self.assertEqual(self.about.description, '')
+        self.assertEqual(len(api.relation.get(source=self.about, target=self.blog)), 3)
+
+
     def test_delete_constraints(self):
         """Test the constraints when deleting relations."""
         from plone.api.exc import InvalidParameterError
@@ -198,6 +221,80 @@ class TestPloneApiRelation(unittest.TestCase):
             relationship='link',
         )
         self.assertEqual(len(relations), 0)
+
+    def test_delete_fieldrelation(self):
+        """Test deleting a relation that uses a relationlistfield."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='relatedItems',
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 2)
+        self.assertIsInstance(self.about.relatedItems[0], RelationValue)
+
+        api.relation.delete(
+            source=self.about,
+            target=self.blog,
+            relationship='relatedItems',
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 1)
+        self.assertEqual(len(self.about.relatedItems), 0)
+
+    def test_delete_one_fieldrelation(self):
+        """Test deleting a relation from a relationlistfield retains the others."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='relatedItems',
+        )
+        api.relation.create(
+            source=self.about,
+            target=self.events,
+            relationship='relatedItems',
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 3)
+        self.assertIsInstance(self.about.relatedItems[0], RelationValue)
+
+        api.relation.delete(
+            source=self.about,
+            target=self.blog,
+            relationship='relatedItems',
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 2)
+        self.assertEqual(len(self.about.relatedItems), 1)
+
+    def test_deleted_relation_is_purged(self):
+        """Test that relations that have the name of a non-relation-field are purged."""
+        relation_catalog = getUtility(ICatalog)
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='description',
+        )
+        self.assertEqual(self.about.description, '')
+        self.assertEqual(len(api.relation.get(source=self.about)), 1)
+        rels = relation_catalog.findRelations({'from_attribute': 'description'})
+        self.assertEqual(len([i for i in rels]), 1)
+
+        api.relation.delete(
+            source=self.about,
+            target=self.blog,
+            relationship='description',
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 0)
+        self.assertEqual(self.about.description, '')
+        rels = relation_catalog.findRelations({'from_attribute': 'description'})
+        self.assertEqual(len([i for i in rels]), 0)
 
     def test_get_constraints(self):
         """Test the constraints when getting relations."""
