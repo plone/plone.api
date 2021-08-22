@@ -151,14 +151,9 @@ def create(source=None, target=None, relationship=None):
     )
 
 
-@at_least_one_of('source', 'target', 'relationship', 'delete_all')
-def delete(source=None, target=None, relationship=None, delete_all=False):
+@at_least_one_of('source', 'target', 'relationship')
+def delete(source=None, target=None, relationship=None):
     """Delete relation or relations.
-
-    If you specify 'delete_all=True' and none of the other parameters,
-    we delete all relations.
-
-    TODO: do we want to remove RelationValues from content objects?
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(source))
@@ -172,11 +167,6 @@ def delete(source=None, target=None, relationship=None, delete_all=False):
     ):
         raise InvalidParameterError('{} is no string'.format(relationship))
 
-    if delete_all and (source or target or relationship is not None):
-        raise InvalidParameterError(
-            'When you use delete_all, you must not use any other parameters.',
-        )
-
     query = {}
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
@@ -186,12 +176,44 @@ def delete(source=None, target=None, relationship=None, delete_all=False):
         query['to_id'] = intids.getId(target)
     if relationship is not None:
         query['from_attribute'] = relationship
-    if not query:
-        relation_catalog.clear()
-        return
     for rel in relation_catalog.findRelations(query):
-        relation_catalog.unindex(rel)
+        source = rel.from_object
+        from_attribute = rel.from_attribute
+        field_and_schema = _get_field_and_schema_for_fieldname(
+            from_attribute,
+            source.portal_type,
+        )
+        if field_and_schema is None:
+            # The relationship is not the name of a dexterity field.
+            # Only purge relation from relation-catalog.
+            relation_catalog.unindex(rel)
+            return
 
+        target = rel.to_object
+        field, _schema = field_and_schema
+        if isinstance(field, RelationList):
+            logger.info(
+                'Remove relation from %s to %s from relationlist %s',
+                source.absolute_url(),
+                target.absolute_url(),
+                from_attribute,
+            )
+            existing = getattr(source, from_attribute, [])
+            updated_relations = [i for i in existing if i.to_object != target]
+            setattr(source, from_attribute, updated_relations)
+            modified(source)
+
+        elif isinstance(field, (Relation, RelationChoice)):
+            logger.info(
+                'Remove relation %s from %s to %s',
+                from_attribute,
+                source.absolute_url(),
+                target.absolute_url(),
+            )
+            delattr(source, from_attribute)
+            modified(source)
+        # unindex in case something went wrong with the automatic unindex
+        relation_catalog.unindex(rel)
 
 @at_least_one_of('source', 'target', 'relationship')
 def get(
