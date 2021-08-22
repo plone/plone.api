@@ -2,6 +2,10 @@
 
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import logout
+from plone.app.testing import setRoles
+from z3c.relationfield import RelationValue
 
 import unittest
 
@@ -235,8 +239,88 @@ class TestPloneApiRelation(unittest.TestCase):
             relationship='link',
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 1)
+        self.assertIsInstance(api.relation.get(source=self.about), list)
+        self.assertIsInstance(api.relation.get(source=self.about)[0], RelationValue)
+
         self.assertEqual(len(api.relation.get(target=self.blog)), 2)
         self.assertEqual(len(api.relation.get(relationship='link')), 3)
 
+        self.assertEqual(len(api.relation.get(source=self.about, relationship='link')), 1)
+        self.assertEqual(len(api.relation.get(source=self.about, target=self.events)), 0)
+        self.assertEqual(len(api.relation.get(source=self.about, target=self.blog)), 1)
+
         self.assertEqual(len(api.relation.get(source=self.events)), 2)
         self.assertEqual(len(api.relation.get(relationship='team')), 1)
+
+    def test_get_relation_as_dict(self):
+        """Test getting relations as dicts"""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.create(
+            source=self.events,
+            target=self.blog,
+            relationship='bloglink',
+        )
+        self.assertEqual(len(api.relation.get(relationship='link', as_dict=True)['link']), 1)
+        rels = api.relation.get(target=self.blog, as_dict=True)
+        self.assertEqual(len(rels['link']), 1)
+        self.assertEqual(len(rels['bloglink']), 1)
+
+    def test_get_broken_relation(self):
+        """Test that broken relations are ignored."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.create(
+            source=self.events,
+            target=self.portal.image,
+            relationship='link',
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 1)
+        self.assertEqual(len(api.relation.get(relationship='link')), 2)
+
+        # break a relation
+        self.portal._delObject('blog')
+
+        self.assertEqual(len(api.relation.get(source=self.about)), 0)
+        self.assertEqual(len(api.relation.get(relationship='link')), 1)
+
+    def test_restricted_relation(self):
+        """Test that rels between inaccessible items are ignored."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.create(
+            source=self.events,
+            target=self.blog,
+            relationship='link',
+        )
+        api.relation.create(
+            source=self.about.team,
+            target=self.events,
+            relationship='team',
+        )
+        api.relation.create(
+            source=self.events,
+            target=self.portal.image,
+            relationship='link',
+        )
+        api.content.transition(self.events, to_state='published')
+        api.content.transition(self.blog, to_state='published')
+        self.assertEqual(len(api.relation.get(relationship='link')), 3)
+
+        # Switch user
+        api.user.create(email='bob@plone.org', username='bob')
+        setRoles(self.portal, 'bob', ['Member'])
+        logout()
+        login(self.portal, 'bob')
+
+        self.assertEqual(len(api.relation.get(relationship='link')), 2)
+        self.assertEqual(len(api.relation.get(relationship='link', unrestricted=True)), 3)
