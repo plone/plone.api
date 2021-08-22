@@ -12,7 +12,6 @@ from zope.interface import implementer
 from zope.interface import Interface
 
 import mock
-import six
 import unittest
 
 

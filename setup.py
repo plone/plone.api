@@ -38,7 +38,6 @@ setup(
         'plone.app.linkintegrity',
         'plone.uuid',
         'setuptools',
-        'six',
         'zope.globalrequest',
     ],
     extras_require={

@@ -21,7 +21,6 @@ from zope.interface.interfaces import IInterface
 
 import datetime as dtime
 import pkg_resources
-import six
 
 
 logger = getLogger('plone.api.portal')
@@ -175,7 +174,7 @@ def send_email(
 
     # If the mail headers are not properly encoded we need to extract
     # them and let MailHost manage the encoding.
-    if isinstance(body, six.text_type):
+    if isinstance(body, str):
         body = body.encode(encoding)
 
     host = get_tool('MailHost')
@@ -418,7 +417,7 @@ def translate(msgid, domain='plone', lang=None):
     :param lang: target language
     :type lang: string
     :returns: translated message
-    :rtype: six.text_type
+    :rtype: str
     :Example: :ref:`portal_translate_example`
     """
     translation_service = get_tool('translation_service')

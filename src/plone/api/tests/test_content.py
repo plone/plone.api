@@ -30,7 +30,6 @@ from zope.lifecycleevent import ObjectMovedEvent
 
 import mock
 import pkg_resources
-import six
 import unittest
 
 
