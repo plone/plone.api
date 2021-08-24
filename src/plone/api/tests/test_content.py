@@ -410,6 +410,25 @@ class TestPloneApiContent(unittest.TestCase):
         )
         self.assertEqual(collection.Title(), 'Mandelbrot set')
 
+    def test_create_event(self):
+        """Test create a event."""
+        import datetime
+        today = datetime.datetime.now()
+        tomorrow = today + datetime.timedelta(days=1)
+        event = api.content.create(
+            container=self.portal,
+            type='Event',
+            title='My event',
+            start=today,
+            end=tomorrow,
+        )
+        self.assertEqual(event.start, today)
+        self.assertEqual(event.end, tomorrow)
+        results = api.content.find(Title='My event')
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].start, today)
+        self.assertEqual(results[0].end, tomorrow)
+
     def test_get_constraints(self):
         """Test the constraints when content is fetched with get."""
 
