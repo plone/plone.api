@@ -14,6 +14,7 @@ from plone.registry.record import Record
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
+from unittest import mock
 from zope import schema
 from zope.component import getUtility
 from zope.component.hooks import setSite
@@ -21,7 +22,6 @@ from zope.interface import Interface
 from zope.site import LocalSiteManager
 
 import DateTime
-from unittest import mock
 import unittest
 
 

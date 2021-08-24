@@ -17,6 +17,7 @@ from plone.uuid.interfaces import IUUIDGenerator
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.ZCatalog.interfaces import IZCatalog
+from unittest import mock
 from zExceptions import BadRequest
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
@@ -27,7 +28,6 @@ from zope.lifecycleevent import IObjectMovedEvent
 from zope.lifecycleevent import modified
 from zope.lifecycleevent import ObjectMovedEvent
 
-from unittest import mock
 import pkg_resources
 import unittest
 
