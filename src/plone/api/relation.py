@@ -39,17 +39,104 @@ def _get_field_and_schema_for_fieldname(field_id, portal_type):
             return (field, schema)
 
 
+@at_least_one_of('source', 'target', 'relationship')
+def get(
+    source=None,
+    target=None,
+    relationship=None,
+    unrestricted=False,
+    as_dict=False,
+):
+    """Get specific relations given a source/target/relationship
+
+    :param source: Object that the relations originate from.
+    :type source: Content object
+    :param target: Object that the relations point to.
+    :type target: Content object
+    :param relationship: Relationship name.
+    :type id: string
+    :param unrestricted: If true bypass permission-check on source and target.
+    :type id: boolean
+    :param as_dict: If true, return a dictionary with the relationship
+        name as keys.
+    :type id: bool
+    :returns: A list of relations
+    :rtype: List of RelationValue objects
+
+    :Example: :ref:`relation_get_example`
+    """
+    if source is not None and not base_hasattr(source, 'portal_type'):
+        raise InvalidParameterError('{} has no portal_type'.format(source))
+
+    if target is not None and not base_hasattr(target, 'portal_type'):
+        raise InvalidParameterError('{} has no portal_type'.format(target))
+
+    if relationship is not None and not isinstance(
+        relationship,
+        str,
+    ):
+        raise InvalidParameterError('{} is no string'.format(relationship))
+
+    intids = getUtility(IIntIds)
+    relation_catalog = getUtility(ICatalog)
+    query = {}
+    results = []
+
+    if as_dict:
+        results = defaultdict(list)
+
+    if not relation_catalog:
+        return results
+
+    if not unrestricted:
+        checkPermission = getSecurityManager().checkPermission
+
+    if source is not None:
+        query['from_id'] = intids.getId(source)
+    if target is not None:
+        query['to_id'] = intids.getId(target)
+    if relationship is not None:
+        query['from_attribute'] = relationship
+
+    for relation in relation_catalog.findRelations(query):
+        if relation.isBroken():
+            continue
+
+        if not unrestricted:
+            source_obj = relation.from_object
+            target_obj = relation.to_object
+
+            if checkPermission('View', source_obj) and checkPermission(
+                'View',
+                target_obj,
+            ):
+                if as_dict:
+                    results[relation.from_attribute].append(relation)
+                else:
+                    results.append(relation)
+            else:
+                continue
+        else:
+            if as_dict:
+                results[relation.from_attribute].append(relation)
+            else:
+                results.append(relation)
+    return results
+
+
 @required_parameters('source', 'target', 'relationship')
 def create(source=None, target=None, relationship=None):
     """Create a relation from source to target using zc.relation
 
-    If source is dexterity content, and the relationship name is the same
-    as a field name, and this field is a RelationChoice/RelationList/Relation,
-    we will add the relation as attribute.
-
-    Other relations will only be added to the relation-catalog.
-
-    Adapted from collective.relationhelpers link_objects.
+    :param source: [required] Object that the relation will originate from.
+    :type source: Content object
+    :param target: [required] Object that the relation will point to.
+    :type target: Content object
+    :param relationship: [required] Relationship name. If that name is the same
+    as a field name and this field is a RelationChoice/RelationList we will
+    update the field-value accordingly.
+    :type id: string
+    :Example: :ref:`relation_create_example`
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(source))
@@ -154,6 +241,16 @@ def create(source=None, target=None, relationship=None):
 @at_least_one_of('source', 'target', 'relationship')
 def delete(source=None, target=None, relationship=None):
     """Delete relation or relations.
+
+    :param source: Object that the relation originates from.
+    :type source: Content object
+    :param target: Object that the relation points to.
+    :type target: Content object
+    :param relationship: Relationship name. If that name is the same
+        as a field name and this field is a RelationChoice/RelationList we
+        will delete/update the field-value accordingly.
+    :type id: string
+    :Example: :ref:`relation_delete_example`
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(source))
@@ -214,73 +311,3 @@ def delete(source=None, target=None, relationship=None):
             modified(source)
         # unindex in case something went wrong with the automatic unindex
         relation_catalog.unindex(rel)
-
-@at_least_one_of('source', 'target', 'relationship')
-def get(
-    source=None,
-    target=None,
-    relationship=None,
-    unrestricted=False,
-    as_dict=False,
-):
-    """Get specific relations given a source/target/relationship
-
-    Copied and modified from collective.relationhelpers get_relations.
-    """
-    if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(source))
-
-    if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(target))
-
-    if relationship is not None and not isinstance(
-        relationship,
-        str,
-    ):
-        raise InvalidParameterError('{} is no string'.format(relationship))
-
-    intids = getUtility(IIntIds)
-    relation_catalog = getUtility(ICatalog)
-    query = {}
-    results = []
-
-    if as_dict:
-        results = defaultdict(list)
-
-    if not relation_catalog:
-        return results
-
-    if not unrestricted:
-        checkPermission = getSecurityManager().checkPermission
-
-    if source is not None:
-        query['from_id'] = intids.getId(source)
-    if target is not None:
-        query['to_id'] = intids.getId(target)
-    if relationship is not None:
-        query['from_attribute'] = relationship
-
-    for relation in relation_catalog.findRelations(query):
-        if relation.isBroken():
-            continue
-
-        if not unrestricted:
-            source_obj = relation.from_object
-            target_obj = relation.to_object
-
-            if checkPermission('View', source_obj) and checkPermission(
-                'View',
-                target_obj,
-            ):
-                if as_dict:
-                    results[relation.from_attribute].append(relation)
-                else:
-                    results.append(relation)
-            else:
-                continue
-        else:
-            if as_dict:
-                results[relation.from_attribute].append(relation)
-            else:
-                results.append(relation)
-    return results
