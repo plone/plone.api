@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module that provides functionality for content manipulation."""
 
 from copy import copy as _copy
@@ -22,22 +21,6 @@ from zope.interface import providedBy
 
 import random
 import transaction
-
-
-try:
-    get_distribution('Products.Archetypes')
-except DistributionNotFound:
-    class IBaseObject(Interface):
-        """Fake Products.Archetypes.interfaces.base.IBaseObject"""
-else:
-    from Products.Archetypes.interfaces.base import IBaseObject
-
-# Old linkintegrity (Plone <= 5.0b4) or new (Plone > 5.0b4)
-linkintegrity_version = get_distribution('plone.app.linkintegrity').version
-if parse_version(linkintegrity_version) >= parse_version('3.0.dev0'):
-    NEW_LINKINTEGRITY = True
-else:
-    NEW_LINKINTEGRITY = False
 
 _marker = []
 
@@ -105,16 +88,6 @@ def create(
         )
 
     content = container[content_id]
-
-    # Archetypes specific code
-    if IBaseObject.providedBy(content):
-        # Will finish Archetypes content item creation process,
-        # rename-after-creation and such
-        # Passing values as a dict with None values so values set by
-        # invokeFactory don't get overridden.
-        # '': '' is required so that bool(values) is True.
-        content.processForm(values={'': ''})
-
     if not id or (safe_id and id):
         # Create a new id from title
         chooser = INameChooser(container)
@@ -306,32 +279,22 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
     if not objects:
         return
 
-    if check_linkintegrity and NEW_LINKINTEGRITY:
+    if check_linkintegrity:
         site = portal.get()
         linkintegrity_view = get_view(
             name='delete_confirmation_info',
             context=site,
             request=site.REQUEST,
         )
-
         # look for breaches and manually raise a exception
         breaches = linkintegrity_view.get_breaches(objects)
         if breaches:
             raise LinkIntegrityNotificationException(
-                'Linkintegrity-breaches: {0}'.format(breaches),
+                'Linkintegrity-breaches: {}'.format(breaches),
             )
 
     for obj_ in objects:
-        if not check_linkintegrity and not NEW_LINKINTEGRITY:
-            # old style ignoring breaches:
-            # we have to explicitly ignore the exception
-            try:
-                obj_.aq_parent.manage_delObjects([obj_.getId()])
-            except LinkIntegrityNotificationException:
-                pass
-        else:
-            # All other cases
-            obj_.aq_parent.manage_delObjects([obj_.getId()])
+        obj_.aq_parent.manage_delObjects([obj_.getId()])
 
 
 @required_parameters('obj')
@@ -489,15 +452,15 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
             ]
 
             raise InvalidParameterError(
-                "Invalid transition '{0}'.\n"
+                "Invalid transition '{}'.\n"
                 'Valid transitions are:\n'
-                '{1}'.format(transition, '\n'.join(sorted(transitions))),
+                '{}'.format(transition, '\n'.join(sorted(transitions))),
             )
     else:
         _transition_to(obj, workflow, to_state, **kwargs)
         if workflow.getInfoFor(obj, 'review_state') != to_state:
             raise InvalidParameterError(
-                'Could not find workflow to set state to {0} on {1}'.format(
+                'Could not find workflow to set state to {} on {}'.format(
                     to_state,
                     obj,
                 ),

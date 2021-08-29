@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for plone.api.validation."""
 
 from plone.api.tests.base import INTEGRATION_TESTING
@@ -64,7 +63,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         result = _gsa(signature, ('foo', 'wibble'), {})
         self.assertEqual(
             set(result),
-            set(('arg1', 'arg2')),
+            {'arg1', 'arg2'},
         )
 
         # test that keyword args are recognised correctly
@@ -78,7 +77,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         )
         self.assertEqual(
             set(result),
-            set(('arg1', 'arg2')),
+            {'arg1', 'arg2'},
         )
 
         # test that a mixture of args are recognised correctly
@@ -89,7 +88,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         )
         self.assertEqual(
             set(result),
-            set(('arg1', 'arg2')),
+            {'arg1', 'arg2'},
         )
 
         # test that None-valued positional args are ignored
@@ -100,7 +99,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         )
         self.assertEqual(
             set(result),
-            set(('arg1',)),
+            {'arg1'},
         )
 
         # test that None-valued keyword args are ignored
@@ -114,7 +113,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         )
         self.assertEqual(
             set(result),
-            set(('arg2',)),
+            {'arg2'},
         )
 
     def test_single_keyword_arg_provided(self):

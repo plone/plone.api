@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for plone.api.portal."""
 
 from datetime import date
@@ -15,6 +14,7 @@ from plone.registry.record import Record
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
+from unittest import mock
 from zope import schema
 from zope.component import getUtility
 from zope.component.hooks import setSite
@@ -22,7 +22,6 @@ from zope.interface import Interface
 from zope.site import LocalSiteManager
 
 import DateTime
-import mock
 import unittest
 
 
@@ -40,17 +39,17 @@ HAS_PLONE5 = parse_version(env.plone_version()) >= parse_version('5.0b2')
 class IMyRegistrySettings(Interface):
 
     field_one = schema.TextLine(
-        title=u'something',
-        description=u'something else',
+        title='something',
+        description='something else',
     )
 
     field_two = schema.TextLine(
-        title=u'something',
-        description=u'something else',
+        title='something',
+        description='something else',
     )
 
 
-class ImNotAnInterface(object):
+class ImNotAnInterface:
     pass
 
 
@@ -77,7 +76,7 @@ class TestPloneApiPortal(unittest.TestCase):
         if HAS_PLONE5:
             portal.set_registry_record(
                 'plone.email_from_name',
-                u'Portal Owner',
+                'Portal Owner',
             )
             portal.set_registry_record(
                 'plone.email_from_address',
@@ -231,7 +230,7 @@ class TestPloneApiPortal(unittest.TestCase):
             recipient='bob@plone.org',
             sender='noreply@plone.org',
             subject='Trappist',
-            body=u'One for you Bob!',
+            body='One for you Bob!',
         )
 
         self.assertEqual(len(self.mailhost.messages), 1)
@@ -239,14 +238,14 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(msg['To'], 'bob@plone.org')
         self.assertEqual(msg['From'], 'noreply@plone.org')
         self.assertEqual(msg['Subject'], '=?utf-8?q?Trappist?=')
-        self.assertEqual(msg.get_payload(), u'One for you Bob!')
+        self.assertEqual(msg.get_payload(), 'One for you Bob!')
         self.mailhost.reset()
 
         # When no sender is set, we take the portal properties.
         portal.send_email(
             recipient='bob@plone.org',
             subject='Trappist',
-            body=u'One for you Bob!',
+            body='One for you Bob!',
         )
 
         self.assertEqual(len(self.mailhost.messages), 1)
@@ -269,7 +268,7 @@ class TestPloneApiPortal(unittest.TestCase):
                 recipient='bob@plone.org',
                 sender='noreply@plone.org',
                 subject='Trappist',
-                body=u'One for you Bob!',
+                body='One for you Bob!',
             )
 
         if HAS_PLONE5:
@@ -289,33 +288,9 @@ class TestPloneApiPortal(unittest.TestCase):
         portal.send_email(
             recipient='bob@plone.org',
             subject='Trappist',
-            body=u'One for you Bob!',
+            body='One for you Bob!',
         )
 
-    @unittest.skipIf(
-        HAS_PLONE5,
-        'Plone 4 uses portal_properties for mail settings',
-    )
-    def test_send_email_with_config_in_portal_properties(self):
-        """Test mail-setting being stored in portal_properties.
-        Before Plone 5.0b2 the settings were stored in portal_properties.
-        """
-        self.portal._updateProperty('email_from_name', 'Properties')
-        self.portal._updateProperty('email_from_address', 'prop@example.org')
-        self.mailhost.reset()
-        portal.send_email(
-            recipient='bob@plone.org',
-            subject='Trappist',
-            body=u'One for you Bob!',
-        )
-        self.assertEqual(len(self.mailhost.messages), 1)
-        msg = message_from_bytes(self.mailhost.messages[0])
-        self.assertEqual(msg['From'], 'Properties <prop@example.org>')
-
-    @unittest.skipUnless(
-        HAS_PLONE5,
-        'Plone 5 uses the registry for mail settings',
-    )
     def test_send_email_with_config_in_registry(self):
         """Test mail-setting being stored in registry
         """
@@ -327,12 +302,12 @@ class TestPloneApiPortal(unittest.TestCase):
         )  # ASCII
         portal.set_registry_record(
             'plone.email_from_name',
-            u'Registry',
+            'Registry',
         )  # TextLine
         portal.send_email(
             recipient='bob@plone.org',
             subject='Trappist',
-            body=u'One for you Bob!',
+            body='One for you Bob!',
         )
         self.assertEqual(len(self.mailhost.messages), 1)
         msg = message_from_bytes(self.mailhost.messages[0])
@@ -358,7 +333,7 @@ class TestPloneApiPortal(unittest.TestCase):
                 recipient='bob@plone.org',
                 sender='noreply@plone.org',
                 subject='Trappist',
-                body=u'One for you Bob!',
+                body='One for you Bob!',
             )
 
         # PrintingMailHost enabled
@@ -367,7 +342,7 @@ class TestPloneApiPortal(unittest.TestCase):
             recipient='bob@plone.org',
             sender='noreply@plone.org',
             subject='Trappist',
-            body=u'One for you Bob!',
+            body='One for you Bob!',
         )
 
         # Prevents sideeffects in other tests.
@@ -504,16 +479,16 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test that existing registry records are returned correctly."""
         registry = getUtility(IRegistry)
         registry.records['plone.api.norris_power'] = Record(
-            field.TextLine(title=u"Chuck Norris' Power"),
+            field.TextLine(title="Chuck Norris' Power"),
         )
         registry.records['plone.api.unset'] = Record(
-            field.TextLine(title=u'An unset field'),
+            field.TextLine(title='An unset field'),
         )
-        registry['plone.api.norris_power'] = u'infinite'
+        registry['plone.api.norris_power'] = 'infinite'
 
         self.assertEqual(
             portal.get_registry_record('plone.api.norris_power'),
-            u'infinite',
+            'infinite',
         )
 
         self.assertEqual(
@@ -668,10 +643,10 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test that setting a valid registry record succeeds."""
         registry = getUtility(IRegistry)
         registry.records['plone.api.plone_power'] = Record(
-            field.TextLine(title=u"Plone's Power"),
+            field.TextLine(title="Plone's Power"),
         )
-        portal.set_registry_record('plone.api.plone_power', u'awesome')
-        self.assertEqual(registry['plone.api.plone_power'], u'awesome')
+        portal.set_registry_record('plone.api.plone_power', 'awesome')
+        self.assertEqual(registry['plone.api.plone_power'], 'awesome')
 
     def test_set_missing_param_registry_record(self):
         """Test that when set_registry_record is called without
@@ -689,7 +664,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             portal.set_registry_record(
                 name='nonexistent.sharepoint.power',
-                value=u'Zero',
+                value='Zero',
             )
 
     def test_set_no_value_param_for_existing_record(self):
@@ -699,7 +674,7 @@ class TestPloneApiPortal(unittest.TestCase):
         """
         registry = getUtility(IRegistry)
         registry.records['plone.api.plone_power'] = Record(
-            field.TextLine(title=u"Plone's Power"),
+            field.TextLine(title="Plone's Power"),
         )
 
         from plone.api.exc import MissingParameterError
@@ -714,7 +689,7 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             portal.set_registry_record(
                 name=['foo', 'bar'],
-                value=u'baz',
+                value='baz',
             )
 
     def test_set_registry_record_from_interface(self):
@@ -722,7 +697,7 @@ class TestPloneApiPortal(unittest.TestCase):
         registry = getUtility(IRegistry)
         registry.registerInterface(IMyRegistrySettings)
 
-        text = u'random text'
+        text = 'random text'
         portal.set_registry_record(
             'field_one',
             text,
@@ -855,7 +830,7 @@ class TestPloneApiPortal(unittest.TestCase):
                 'object.',
                 lang='es',
             ),
-            u'Una acción de flujo de trabajo dispara una transición de '
+            'Una acción de flujo de trabajo dispara una transición de '
             'flujo de trabajo en un objeto.',
         )
         self.assertEqual(
@@ -864,5 +839,5 @@ class TestPloneApiPortal(unittest.TestCase):
                 domain='plonelocales',
                 lang='fr',
             ),
-            u'Avril',
+            'Avril',
         )

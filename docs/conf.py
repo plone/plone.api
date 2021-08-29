@@ -1,7 +1,7 @@
 # sphinx configuration
 
-project = u'plone.api'
-copyright = u'2012, Plone Foundation'
+project = 'plone.api'
+copyright = '2012, Plone Foundation'
 
 extensions = [
     'sphinx.ext.doctest',
@@ -21,8 +21,8 @@ language = 'en'
 latex_documents = [(
     'index',
     'ploneapi.tex',
-    u'plone.api Documentation',
-    u'', 'manual'
+    'plone.api Documentation',
+    '', 'manual'
 ), ]
 
 from pkg_resources import get_distribution
@@ -31,7 +31,7 @@ version = release = get_distribution(project).version
 import sys
 
 
-class Mock(object):
+class Mock:
     def __init__(self, *args, **kwargs):
         pass
 

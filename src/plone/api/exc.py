@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Exceptions raised by plone.api methods."""
 
 

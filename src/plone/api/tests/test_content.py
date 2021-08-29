@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for plone.api.content."""
 
 from Acquisition import aq_base
@@ -7,7 +6,6 @@ from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
 from plone.api.content import _parse_object_provides_query
-from plone.api.content import NEW_LINKINTEGRITY
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # NOQA: E501
@@ -19,6 +17,7 @@ from plone.uuid.interfaces import IUUIDGenerator
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.ZCatalog.interfaces import IZCatalog
+from unittest import mock
 from zExceptions import BadRequest
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
@@ -29,18 +28,8 @@ from zope.lifecycleevent import IObjectMovedEvent
 from zope.lifecycleevent import modified
 from zope.lifecycleevent import ObjectMovedEvent
 
-import mock
 import pkg_resources
-import six
 import unittest
-
-
-try:
-    pkg_resources.get_distribution('plone.app.contenttypes')
-except pkg_resources.DistributionNotFound:
-    HAS_PACONTENTYPES = False
-else:
-    HAS_PACONTENTYPES = True
 
 
 class TestPloneApiContent(unittest.TestCase):
@@ -421,42 +410,21 @@ class TestPloneApiContent(unittest.TestCase):
         )
         self.assertEqual(collection.Title(), 'Mandelbrot set')
 
-    @unittest.skipIf(HAS_PACONTENTYPES, 'Archetypes only')
-    def test_create_at_event(self):
-        """https://github.com/plone/plone.api/issues/364"""
-        from DateTime import DateTime
-        today = DateTime()
-        tomorrow = today + 1
-        event = api.content.create(
-            container=self.portal,
-            type='Event',
-            title=u'My event',
-            startDate=today,
-            endDate=tomorrow,
-        )
-        self.assertEqual(event.startDate, today)
-        self.assertEqual(event.endDate, tomorrow)
-        results = api.content.find(Title=u'My event')
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].start, today)
-        self.assertEqual(results[0].end, tomorrow)
-
-    @unittest.skipUnless(HAS_PACONTENTYPES, 'Dexterity only')
-    def test_create_dx_event(self):
-        """Test create a DX event."""
+    def test_create_event(self):
+        """Test create a event."""
         import datetime
         today = datetime.datetime.now()
         tomorrow = today + datetime.timedelta(days=1)
         event = api.content.create(
             container=self.portal,
             type='Event',
-            title=u'My event',
+            title='My event',
             start=today,
             end=tomorrow,
         )
         self.assertEqual(event.start, today)
         self.assertEqual(event.end, tomorrow)
-        results = api.content.find(Title=u'My event')
+        results = api.content.find(Title='My event')
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].start, today)
         self.assertEqual(results[0].end, tomorrow)
@@ -494,7 +462,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test getting the team document by path that has portal id included
         team_by_path = api.content.get(
-            '/{0}/about/team'.format(self.portal.getId()),
+            '/{}/about/team'.format(self.portal.getId()),
         )
         self.assertEqual(self.team, team_by_path)
 
@@ -623,11 +591,7 @@ class TestPloneApiContent(unittest.TestCase):
                 and container['about']['nu-contact'] == nucontact)
         assert 'contact' not in container['about'].keys()
 
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             firedEvents,
             [
                 ObjectMovedEvent,
@@ -867,25 +831,14 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.delete(self.contact, check_linkintegrity=False)
         self.assertNotIn('contact', self.portal['about'].keys())
 
-    @unittest.skipIf(
-        HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
-        'This test only makes sense with Archetypes or new Linkintegrity.',
-    )
     def test_delete_check_linkintegrity(self):
         """Test deleting a content item with a link pointed at it."""
         self._set_text(self.team, '<a href="contact">contact</a>')
         # Delete the contact page
         with self.assertRaises(LinkIntegrityNotificationException):
             api.content.delete(self.contact)
-        if NEW_LINKINTEGRITY:
-            # In the old implementation of linkintegrity the items are
-            # still gone during this request.
-            self.assertIn('contact', self.portal['about'].keys())
+        self.assertIn('contact', self.portal['about'].keys())
 
-    @unittest.skipIf(
-        HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
-        'This test only makes sense with Archetypes or new Linkintegrity.',
-    )
     def test_delete_multiple_check_linkintegrity(self):
         """Test deleting multiple item with linkintegrity-breaches."""
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
@@ -893,16 +846,9 @@ class TestPloneApiContent(unittest.TestCase):
         # Delete the contact page
         with self.assertRaises(LinkIntegrityNotificationException):
             api.content.delete(objects=[self.blog, self.contact])
-        if NEW_LINKINTEGRITY:
-            # In the old implementation of linkintegrity the items are
-            # still gone during this request.
-            self.assertIn('contact', self.portal['about'].keys())
-            self.assertIn('blog', self.portal.keys())
+        self.assertIn('contact', self.portal['about'].keys())
+        self.assertIn('blog', self.portal.keys())
 
-    @unittest.skipIf(
-        HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
-        'This test only makes sense with Archetypes or new Linkintegrity.',
-    )
     def test_delete_multiple_ignore_linkintegrity(self):
         """Test deleting multiple items ignoring linkintegrity-breaches."""
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
@@ -915,10 +861,6 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertNotIn('contact', self.portal['about'].keys())
         self.assertNotIn('blog', self.portal.keys())
 
-    @unittest.skipIf(
-        HAS_PACONTENTYPES and not NEW_LINKINTEGRITY,
-        'This test only makes sense with Archetypes or new Linkintegrity.',
-    )
     def test_delete_with_internal_breaches(self):
         """Test deleting multiple with internal linkintegrity breaches."""
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
@@ -926,17 +868,10 @@ class TestPloneApiContent(unittest.TestCase):
         # Deleting pages with unresolved breaches throws an exception
         with self.assertRaises(LinkIntegrityNotificationException):
             api.content.delete(objects=[self.blog, self.about])
-        if NEW_LINKINTEGRITY:
-            # In the old implementation of linkintegrity the items are
-            # still gone during this request.
-            self.assertIn('about', self.portal.keys())
-            self.assertIn('blog', self.portal.keys())
-            self.assertIn('training', self.portal['events'].keys())
+        self.assertIn('about', self.portal.keys())
+        self.assertIn('blog', self.portal.keys())
+        self.assertIn('training', self.portal['events'].keys())
 
-    @unittest.skipUnless(
-        NEW_LINKINTEGRITY,
-        'Only new Linkintegrity resolves internal breaches',
-    )
     def test_delete_with_resolved_internal_breaches(self):
         """Test deleting multiple with internal linkintegrity breaches."""
         self._set_text(self.team, '<a href="../about/contact">contact</a>')
@@ -948,12 +883,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertNotIn('training', self.portal['events'].keys())
 
     def _set_text(self, obj, text):
-        if IDexterityContent.providedBy(obj):
-            # Dexterity
-            obj.text = RichTextValue(text, 'text/html', 'text/x-html-safe')
-        else:
-            # Archetypes
-            obj.setText(text, mimetype='text/html')
+        obj.text = RichTextValue(text, 'text/html', 'text/x-html-safe')
         modified(obj)
 
     def test_find(self):
@@ -1436,16 +1366,6 @@ class TestPloneApiContent(unittest.TestCase):
         uuid2 = api.content.get_uuid(item)
         self.assertEqual(uuid1, uuid2)
         self.assertIsInstance(uuid2, str)
-
-        if not HAS_PACONTENTYPES:
-            container.invokeFactory('Document', 'test-archetype')
-            document = container['test-archetype']
-            uuid1 = generator()
-            document._setUID(uuid1)
-
-            uuid2 = api.content.get_uuid(document)
-            self.assertEqual(uuid1, uuid2)
-            self.assertIsInstance(uuid2, str)
 
     def test_get_view_view_not_found(self):
         """Test that error msg lists available views if a view is not found."""

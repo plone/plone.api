@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for plone.api.user."""
 
 from AccessControl.Permission import getPermissions
@@ -8,14 +7,14 @@ from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.registry.interfaces import IRegistry
 from zope.component import adapter
 from zope.component import getGlobalSiteManager
 from zope.component import provideAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 
-import mock
-import six
+from unittest import mock
 import unittest
 
 
@@ -137,11 +136,7 @@ class TestPloneApiUser(unittest.TestCase):
             email='chuck@norris.org',
             password='secret',
         )
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(user=user),
             ['Member', 'Authenticated'],
         )
@@ -154,12 +149,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=['Reviewer', 'Editor'],
         )
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(user=user),
             ['Reviewer', 'Authenticated', 'Editor'],
         )
@@ -172,11 +162,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=[],
         )
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(user=user),
             ['Authenticated'],
         )
@@ -213,11 +199,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
         users = [user.getUserName() for user in api.user.get_users()]
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             users,
             ['chuck', TEST_USER_NAME],
         )
@@ -312,11 +294,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=ROLES,
         )
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES + ['Authenticated'],
             api.user.get_roles(username='chuck'),
         )
@@ -330,11 +308,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
             roles=ROLES,
         )
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES + ['Authenticated'],
             api.user.get_roles(user=user),
         )
@@ -358,22 +332,14 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_roles_no_parameters(self):
         """Test get roles without any parameters."""
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             ['Manager', 'Authenticated'],
             api.user.get_roles(),
         )
 
     def test_get_permissions_no_parameters(self):
         """Test get_permissions passing no parameters."""
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             [p[0] for p in getPermissions()],
             api.user.get_permissions().keys(),
         )
@@ -464,10 +430,6 @@ class TestPloneApiUser(unittest.TestCase):
         )
         api.group.create('foo', roles=['Reviewer'])
         api.group.add_user(groupname='foo', username='chuck')
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
 
         portal = api.portal.get()
         folder = api.content.create(
@@ -482,7 +444,7 @@ class TestPloneApiUser(unittest.TestCase):
             id='document_one',
             title='Document One',
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=document),
             ['Member', 'Reviewer', 'Authenticated'],
         )
@@ -491,15 +453,15 @@ class TestPloneApiUser(unittest.TestCase):
             roles=['Editor'],
             obj=folder,
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=document),
             ['Member', 'Reviewer', 'Authenticated', 'Editor'],
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
             [],
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
             ['Editor'],
         )
@@ -508,7 +470,7 @@ class TestPloneApiUser(unittest.TestCase):
             roles=['Contributor'],
             obj=document,
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ['Contributor'],
             api.user.get_roles(username='chuck', obj=document, inherit=False),
         )
@@ -676,15 +638,11 @@ class TestPloneApiUser(unittest.TestCase):
             'Authenticated',
             'Member',
         ]
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(username='chuck'),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(user=user),
         )
@@ -758,24 +716,20 @@ class TestPloneApiUser(unittest.TestCase):
 
         api.user.revoke_roles(username='chuck', roles=('Editor',))
         ROLES = ['Authenticated', 'Member']
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
 
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(username='chuck'),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(user=user),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(username='chuck', inherit=False),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(user=user, inherit=False),
         )
@@ -885,11 +839,7 @@ class TestPloneApiUser(unittest.TestCase):
             'Editor',
             api.user.get_roles(username='chuck', obj=folder),
         )
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             ['Editor'],
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
         )
@@ -929,19 +879,19 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         ROLES = ['Editor', 'Contributor', 'Authenticated', 'Member']
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(username='chuck', obj=folder),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(user=user, obj=folder),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(username='chuck', obj=document),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(user=user, obj=document),
         )
@@ -949,10 +899,6 @@ class TestPloneApiUser(unittest.TestCase):
     def test_grant_roles_disregards_adapter(self):
         """Test that borg.localrole-adpaters are not copied when granting
         local roles."""
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
 
         portal = api.portal.get()
         folder = api.content.create(
@@ -973,7 +919,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
 
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=folder),
             ['Member', 'Authenticated'],
         )
@@ -984,7 +930,7 @@ class TestPloneApiUser(unittest.TestCase):
         # throw in a adapter granting the reviewer-roles
         @adapter(Interface)
         @implementer(ILocalRoleProvider)
-        class LocalRoleProvider(object):
+        class LocalRoleProvider:
 
             def __init__(self, context):
                 self.context = context
@@ -995,12 +941,12 @@ class TestPloneApiUser(unittest.TestCase):
         provideAdapter(LocalRoleProvider)
 
         # the adapter-role is added for get_role
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=folder),
             ['Member', 'Authenticated', 'Reviewer'],
         )
 
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
             ['Reviewer'],
         )
@@ -1011,13 +957,13 @@ class TestPloneApiUser(unittest.TestCase):
             roles=['Contributor'],
             obj=folder,
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=folder),
             ['Member', 'Authenticated', 'Contributor', 'Reviewer'],
         )
 
         # The adapter role is in in the local roles but not persistent
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
             ['Contributor', 'Reviewer'],
         )
@@ -1027,11 +973,11 @@ class TestPloneApiUser(unittest.TestCase):
             ['Contributor'],
         )
 
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
             ['Reviewer'],
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=document),
             ['Member', 'Authenticated', 'Contributor', 'Reviewer'],
         )
@@ -1045,16 +991,16 @@ class TestPloneApiUser(unittest.TestCase):
         )
         api.group.add_user(groupname='foo', username='chuck')
 
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
             ['Contributor', 'Reviewer'],
         )
         api.group.grant_roles(groupname='foo', roles=['Manager'], obj=folder)
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=document, inherit=False),
             ['Contributor', 'Reviewer'],
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=document),
             [
                 'Contributor',
@@ -1064,7 +1010,7 @@ class TestPloneApiUser(unittest.TestCase):
                 'Member',
             ],
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=folder),
             [
                 'Contributor',
@@ -1074,7 +1020,7 @@ class TestPloneApiUser(unittest.TestCase):
                 'Member',
             ],
         )
-        assertCountEqual(
+        self.assertCountEqual(
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
             ['Contributor', 'Reviewer', 'Manager'],
         )
@@ -1151,39 +1097,35 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertNotIn('Editor', api.user.get_roles(user=user, obj=document))
 
         ROLES = ['Authenticated', 'Member']
-        if six.PY2:
-            assertCountEqual = self.assertItemsEqual
-        else:
-            assertCountEqual = self.assertCountEqual
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(username='chuck', obj=folder),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(user=user, obj=folder),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(username='chuck', obj=document),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             ROLES,
             api.user.get_roles(user=user, obj=document),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             [],
             api.user.get_roles(username='chuck', obj=folder, inherit=False),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             [],
             api.user.get_roles(user=user, obj=folder, inherit=False),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             [],
             api.user.get_roles(username='chuck', obj=document, inherit=False),
         )
-        assertCountEqual(
+        self.assertCountEqual(
             [],
             api.user.get_roles(user=user, obj=document, inherit=False),
         )

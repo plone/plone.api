@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
@@ -14,7 +13,6 @@ from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from zope.globalrequest import getRequest
 
-import six
 import traceback
 import Zope2
 
@@ -93,7 +91,7 @@ def adopt_roles(roles=None):
     :type roles: list of strings
     :Example: :ref:`env_adopt_roles_example`
     """
-    if isinstance(roles, six.string_types):
+    if isinstance(roles, str):
         roles = [roles]
 
     if not roles:
@@ -125,7 +123,7 @@ def _adopt_roles(roles):
     security_manager.removeContext(overriding_context)
 
 
-class _GlobalRoleOverridingContext(object):
+class _GlobalRoleOverridingContext:
     # ZopeSecurityPolicy will use security_context._proxy_roles in place of
     # the roles that would normally be active, provided that it happens to
     # consider the security_context object to be relevant.
