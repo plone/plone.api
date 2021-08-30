@@ -5,10 +5,10 @@
     so you have working references and proper formatting.
 
 
-.. _plone-api-user:
+.. _plone-api-relation:
 
-plone.api.user
-==============
+plone.api.relation
+==================
 
 .. automodule:: plone.api.relation
     :members:
