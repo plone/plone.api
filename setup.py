@@ -44,9 +44,11 @@ setup(
             'Products.CMFPlone',
             'manuel',
             'plone.app.dexterity',
+            'plone.app.intid',
             'plone.app.testing',
             'plone.indexer',
             'plone.registry',
+            'z3c.relationfield',
         ],
     },
     classifiers=[

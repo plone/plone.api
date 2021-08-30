@@ -85,6 +85,16 @@ api.env
     api.env.test_mode
 
 
+api.relation
+---------
+
+.. autosummary::
+
+    api.relation.get
+    api.relation.create
+    api.relation.delete
+
+
 Exceptions and errors
 ---------------------
 
