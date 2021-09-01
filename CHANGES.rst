@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0a1 (2021-09-01)
+--------------------
+
+Breaking changes:
+
+
+- Drop support for Archetypes and Python 2.
+  [pbauer] (#460)
+
+
+New features:
+
+
+- There is now a ``plone.api.relation`` module that make it easier to work with relations.
+  [pbauer] (#449)
+
+
 1.11.0 (2021-06-30)
 -------------------
 
