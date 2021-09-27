@@ -7,8 +7,6 @@ from collections import defaultdict
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import required_parameters
-from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
-from plone.app.iterate.dexterity.relation import StagingRelationValue
 from plone.app.linkintegrity.handlers import modifiedContent
 from plone.app.linkintegrity.utils import referencedRelationship
 from plone.dexterity.utils import iterSchemataForType
@@ -24,6 +22,16 @@ from zope.intid.interfaces import IIntIds
 from zope.lifecycleevent import modified
 
 import logging
+import pkg_resources
+
+try:
+    pkg_resources.get_distribution("plone.app.iterate")
+except pkg_resources.DistributionNotFound:
+    ITERATE_RELATION_NAME = None
+    StagingRelationValue = None
+else:
+    from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
+    from plone.app.iterate.dexterity.relation import StagingRelationValue
 
 
 logger = logging.getLogger(__name__)
