@@ -49,6 +49,14 @@ class IMyRegistrySettings(Interface):
     )
 
 
+class IMyOtherRegistrySettings(Interface):
+
+    field_three = schema.TextLine(
+        title='something',
+        description='something else',
+    )
+
+
 class ImNotAnInterface:
     pass
 
@@ -710,6 +718,29 @@ class TestPloneApiPortal(unittest.TestCase):
             ),
             text,
         )
+
+    def test_set_registry_record_with_invalid_value(self):
+        """Test setting an invalid value on a record from an interface.
+
+        This should give an invalid parameter error.
+        See also https://github.com/plone/plone.api/issues/435
+        and duplicate: https://github.com/plone/plone.api/issues/464
+        """
+        from plone.api.exc import InvalidParameterError
+        registry = getUtility(IRegistry)
+        registry.registerInterface(IMyOtherRegistrySettings)
+        with self.assertRaises(InvalidParameterError) as cm:
+            portal.set_registry_record(
+                'field_three',
+                42,
+                interface=IMyOtherRegistrySettings,
+            )
+        exc_str = str(cm.exception)
+
+        self.assertIn(
+            "The value parameter for the field field_three", exc_str
+        )
+        self.assertIn("TextLine", exc_str)
 
     def test_set_registry_record_on_invalid_interface(self):
         """Test that passing an invalid interface raises an Exception."""
