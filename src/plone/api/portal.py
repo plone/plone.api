@@ -372,11 +372,11 @@ def set_registry_record(name=None, value=None, interface=None):
         try:
             registry[interface.__identifier__ + '.' + name] = value
         except WrongType:
-            field_type = [
-                field[1]
-                for field in interface.namesAndDescriptions()
-                if field[0] == 'field_one'
-            ][0]
+            field_type = None
+            for field in interface.namesAndDescriptions():
+                if field[0] == name:
+                    field_type = field[1]
+                    break
             raise InvalidParameterError(
                 u'The value parameter for the field {name} needs to be '
                 u'{of_class} instead of {of_type}'.format(
