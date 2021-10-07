@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+1.11.1 (2021-10-07)
+-------------------
+
+Bug fixes:
+
+
+- Fixed IndexError when calling set_registry_record with wrong value.
+  [maurits] (#435)
+
+
 1.11.0 (2021-06-30)
 -------------------
 
