@@ -1,2 +1,0 @@
-Fixed IndexError when calling set_registry_record with wrong value.
-[maurits]

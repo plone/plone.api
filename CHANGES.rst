@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0a2 (2021-10-13)
+--------------------
+
+Bug fixes:
+
+
+- Fixed IndexError when calling set_registry_record with wrong value.
+  [maurits] (#435)
+- Prevent startup error in relation code when ``plone.app.iterate`` is missing.
+  [maurits] (#462)
+
+
 2.0.0a1 (2021-09-01)
 --------------------
 

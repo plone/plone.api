@@ -1,2 +1,0 @@
-Prevent startup error in relation code when ``plone.app.iterate`` is missing.
-[maurits]
