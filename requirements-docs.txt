@@ -1,0 +1,2 @@
+Sphinx
+sphinx-book-theme<=0.3.99
