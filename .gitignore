@@ -25,3 +25,4 @@
 /pip-selfcheck.json
 /_build/
 /.tox/
+pyvenv.cfg
