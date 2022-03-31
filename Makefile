@@ -32,7 +32,7 @@ bin/python bin/pip:
 .PHONY: netlify
 netlify: bin/python bin/pip
 	bin/pip install tox
-	tox -e plone6docs
+	bin/tox -e plone6docs
 	@echo
 	@echo "Build finished. The HTML pages are in _build/plone6docs/html."
 
