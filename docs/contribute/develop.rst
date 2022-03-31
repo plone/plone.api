@@ -50,7 +50,8 @@ First let's look at 'system' libraries and applications that are normally instal
 Python tools
 ------------
 
-* tox automation - tox aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software.
+* tox automation - tox aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software.  
+Install with `pip install tox`
 
 Build the documentation with
 
