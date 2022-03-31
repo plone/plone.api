@@ -44,6 +44,7 @@ Narrative documentation
     user.rst
     group.rst
     env.rst
+    relation.rst
 
 
 Complete API and advanced usage
@@ -58,6 +59,7 @@ Complete API and advanced usage
     api/user.rst
     api/group.rst
     api/env.rst
+    api/relation.rst
     api/exceptions.rst
 
 
