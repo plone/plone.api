@@ -30,7 +30,7 @@ bin/python bin/pip:
 # ----------------------------------------------------------------------
 
 .PHONY: netlify
-netlify:
+netlify: bin/python bin/pip
 	bin/pip install tox
 	tox -e plone6docs
 	@echo
