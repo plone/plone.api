@@ -50,18 +50,15 @@ First let's look at 'system' libraries and applications that are normally instal
 Python tools
 ------------
 
-.. todo::
+* tox automation - tox aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software.
 
-    Update this description:
+Build the documentation with
 
-    * add tox and propably pip.
-    * easy_install should be removed.
-    * question if virtualenv should be used, as tox also replaces this step.
+.. sourcecode:: bash
 
-Then you'll also need to install some Python specific tools:
+    tox -e docs
 
-* easy_install - the Python packaging system (download http://peak.telecommunity.com/dist/ez_setup.py and run ``sudo python2.7 ez_setup.py``.
-* virtualenv - a tool that assists in creating isolated Python working environments. Run ``sudo easy_install virtualenv`` after your have installed   `easy_install` above.
+The HTML pages are in _build/docs/html.
 
 .. note::
 
