@@ -72,10 +72,10 @@ Further information
 
 If you experience problems read through the following links as almost all of the above steps are required for a default Plone development environment:
 
-* http://plone.org/documentation/tutorial/buildout
+* https://docs.plone.org/manage/index.html
 * http://pypi.python.org/pypi/zc.buildout/
 * http://pypi.python.org/pypi/setuptools
-* http://plone.org/documentation/manual/installing-plone
+* https://plone.org/download
 
 If you are an OS X user, you first need a working Python implementation
 (the one that comes with the operating system is broken).
@@ -177,7 +177,7 @@ Once we are happy with your implementation, your branch gets merged into *master
     them; in other words, others can comment on your code without your code
     changing their development environments
 
-Read more about Git branching at http://learn.github.com/p/branching.html and on our Git workflow at `Working with Git and GitHub <http://docs.plone.org/develop/coredev/docs/git.html>`_.
+Read more about Git branching at https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches and on our Git workflow at `Working with Git and GitHub <http://docs.plone.org/develop/coredev/docs/git.html>`_.
 
 
 Once you are done with your work and you would like us to merge your changes into master, go to GitHub to do a *pull request*.
