@@ -23,7 +23,7 @@ Get relations
 
     api.relation.get(source=source, target=target, relationship="friend", unrestricted=False, as_dict=False)
 
-You must provide either source, target or relationship, or a combination of those.
+You must provide either source, target or relationship, or a combination of those to :meth:`api.relation.get`.
 ``unrestricted`` and ``as_dict`` are optional.
 
 By default the result is a list of ``RelationValue`` objects.
@@ -80,7 +80,7 @@ Delete one or more relations:
 
     api.relation.delete(source=source, target=target, relationship="friend")
 
-In order to delete relation(s), you must provide either ``source``, ``target`` or ``relationship``.
+In order to delete relation(s), you must provide either ``source``, ``target`` or ``relationship`` to :meth:`api.relation.delete`.
 You can mix and match.
 
 Delete all relations from source to any target:
