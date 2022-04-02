@@ -52,14 +52,6 @@ Python tools
 
 * tox automation - tox aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software. Install with `pip install tox`.
 
-Build the documentation with
-
-.. sourcecode:: bash
-
-    tox -e docs
-
-The HTML pages are in _build/docs/html.
-
 .. note::
 
     Again, OS X users should use https://github.com/collective/buildout.python,
@@ -197,8 +189,7 @@ Commit checklist
 Before every commit you should:
 
 * Run unit tests and syntax validation checks.
-* Add an entry to :ref:`changes` (if applicable).
-* Add/modify :ref:`sphinx-docs` (if applicable).
+* Add an entry to `CHANGES.rst` (if applicable).
 
 All syntax checks and all tests can be run with a single command.
 This command also re-generates your documentation.
@@ -224,11 +215,13 @@ Travis is configured with the ``.travis.yml`` file located in the root of this p
 Sphinx Documentation
 ====================
 
-Un-documented code is broken code.
+::
+
+    Un-documented code is broken code.
 
 For every feature you add to the codebase you should also add documentation for it to ``docs/``.
 
-After adding/modifying documentation, run ``make`` to re-generate your docs.
+After adding/modifying documentation, run `tox -e docs` to re-generate your docs.
 
 Publicly available documentation on http://api.plone.org is automatically generated from these source files, periodically.
 So when you push changes to master on GitHub you should soon be able to see them published on ``api.plone.org``.
