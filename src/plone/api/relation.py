@@ -140,7 +140,10 @@ def create(source=None, target=None, relationship=None):
     :type source: Content object
     :param target: [required] Object that the relation will point to.
     :type target: Content object
-    :param relationship: [required] Relationship name. If that name is the same as a field name and this field is a RelationChoice / RelationList we will update the field-value accordingly.
+    :param relationship: [required] Relationship name.
+        If that name is the same as a field name and this field
+        is a RelationChoice / RelationList
+        we will update the field-value accordingly.
     :type id: string
     :Example: :ref:`relation-create-example`
     """  # noqa
@@ -252,9 +255,10 @@ def delete(source=None, target=None, relationship=None):
     :type source: Content object
     :param target: Object that the relation points to.
     :type target: Content object
-    :param relationship: Relationship name. If that name is the same
-        as a field name and this field is a RelationChoice/RelationList we
-        will delete/update the field-value accordingly.
+    :param relationship: Relationship name.
+        If that name is the same as a field name
+        and this field is a RelationChoice/RelationList
+        we will delete/update the field-value accordingly.
     :type id: string
     :Example: :ref:`relation-delete-example`
     """
