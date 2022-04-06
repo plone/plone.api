@@ -29,10 +29,16 @@ bin/python bin/pip:
 # Documentation
 # ----------------------------------------------------------------------
 
+.PHONY: docs-html
+docs-html: bin/python bin/pip ## Build documentation
+	bin/pip install tox
+	bin/tox -e plone6docs
+	@echo
+	@echo "Build of documentation finished. The HTML pages are in _build/plone6docs/html."
+
 .PHONY: netlify
 netlify: bin/python bin/pip
 	bin/pip install tox
 	bin/tox -e plone6docs
 	@echo
-	@echo "Build finished. The HTML pages are in _build/plone6docs/html."
-
+	@echo "Build of documentation finished. The HTML pages are in _build/plone6docs/html."
