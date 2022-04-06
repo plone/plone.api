@@ -196,14 +196,14 @@ Travis is configured with the `.travis.yml` file located in the root of this pac
 Un-documented code is broken code.
 :::
 
-For every feature you add to the codebase you should also add documentation for it to `docs/`.
+For every feature you add to the codebase, you should also add documentation for it to `docs/`.
 
 After adding or modifying documentation, run `tox -e plone6docs` to re-generate your documentation.
 
-Publicly available documentation on <https://6.dev-docs.plone.org/plone.api/> is automatically generated from these source files, periodically.
-So when you push changes to master on GitHub you should soon be able to see them published on `api.plone.org`.
+Publicly available documentation on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api) is automatically generated from these source files, periodically.
+So when you push changes to master on GitHub you should soon be able to see them published on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api).
 
-Read the [reStructuredText Primer](https://www.sphinx-doc.org/en/master/usage/restructuredtext/) to brush up on your `reST` skills.
+Read the [General Guide to Writing Documentation](https://6.dev-docs.plone.org/contributing/writing-docs-guide.html) to brush up on your `MyST` skills.
 
 Example:
 
