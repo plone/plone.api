@@ -1,7 +1,7 @@
 .. admonition:: GitHub-only
 
     WARNING: If you are reading this on GitHub, DON'T!
-    Read the documentation at `docs.plone.org <http://docs.plone.org/develop/plone.api/docs/contribute/develop.html>`_
+    Read the documentation at `docs.plone.org <https://docs.plone.org/develop/plone.api/docs/contribute/develop.html>`_
     so you have working references and proper formatting.
 
 
@@ -21,11 +21,10 @@ Its purpose is to guide them through the steps needed to start contributing.
 Locations of information and tools
 ==================================
 
-* `Documentation @ docs.plone.org <http://docs.plone.org>`_
-* `Source code @ GitHub <http://github.com/plone/plone.api>`_
-* `Issues @ GitHub <http://github.com/plone/plone.api/issues>`_
-* `Continuous Integration @ Travis CI <http://travis-ci.org/plone/plone.api>`_
-* `Code Coverage @ Coveralls.io <http://coveralls.io/r/plone/plone.api>`_
+* `Documentation @ docs.plone.org <https://docs.plone.org>`_
+* `Source code @ GitHub <https://github.com/plone/plone.api>`_
+* `Issues @ GitHub <https://github.com/plone/plone.api/issues>`_
+* `Code Coverage @ Coveralls.io <https://coveralls.io/github/plone/plone.api>`_
 
 
 Prerequisites
@@ -64,8 +63,8 @@ Further information
 If you experience problems read through the following links as almost all of the above steps are required for a default Plone development environment:
 
 * https://docs.plone.org/manage/index.html
-* http://pypi.python.org/pypi/zc.buildout/
-* http://pypi.python.org/pypi/setuptools
+* https://pypi.org/project/zc.buildout/
+* https://pypi.org/project/setuptools/
 * https://plone.org/download
 
 If you are an OS X user, you first need a working Python implementation
@@ -168,7 +167,7 @@ Once we are happy with your implementation, your branch gets merged into *master
     them; in other words, others can comment on your code without your code
     changing their development environments
 
-Read more about Git branching at https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches and on our Git workflow at `Working with Git and GitHub <http://docs.plone.org/develop/coredev/docs/git.html>`_.
+Read more about Git branching at https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches and on our Git workflow at `Working with Git and GitHub <https://docs.plone.org/develop/coredev/docs/git.html>`_.
 
 
 Once you are done with your work and you would like us to merge your changes into master, go to GitHub to do a *pull request*.
@@ -207,7 +206,7 @@ This command also re-generates your documentation.
 Travis Continuous Integration
 =============================
 
-On every push to GitHub, `Travis <http://travis-ci.org/plone/plone.api>`_ runs all tests and syntax validation checks and reports build outcome to the ``#sprint`` IRC channel and the person who committed the last change.
+On every push to GitHub, `Travis <https://travis-ci.org/plone/plone.api>`_ runs all tests and syntax validation checks and reports build outcome to the ``#sprint`` IRC channel and the person who committed the last change.
 
 Travis is configured with the ``.travis.yml`` file located in the root of this package.
 
@@ -221,12 +220,12 @@ Sphinx Documentation
 
 For every feature you add to the codebase you should also add documentation for it to ``docs/``.
 
-After adding/modifying documentation, run `tox -e docs` to re-generate your docs.
+After adding/modifying documentation, run `tox -e plone6docs` to re-generate your docs.
 
-Publicly available documentation on http://api.plone.org is automatically generated from these source files, periodically.
+Publicly available documentation on https://6.dev-docs.plone.org/plone.api/ is automatically generated from these source files, periodically.
 So when you push changes to master on GitHub you should soon be able to see them published on ``api.plone.org``.
 
-Read the `reStructuredText Primer <http://sphinx-doc.org/rest.html>`_ to brush up on your `reST` skills.
+Read the `reStructuredText Primer <https://www.sphinx-doc.org/en/master/usage/restructuredtext/>`_ to brush up on your `reST` skills.
 
 Example:
 

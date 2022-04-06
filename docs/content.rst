@@ -1,7 +1,7 @@
 .. admonition:: GitHub-only
 
     WARNING: If you are reading this on GitHub, DON'T!
-    Read the documentation at `docs.plone.org <http://docs.plone.org/develop/plone.api/docs/content.html>`_
+    Read the documentation at `docs.plone.org <https://docs.plone.org/develop/plone.api/docs/content.html>`_
     so you have working references and proper formatting.
 
 
@@ -204,7 +204,7 @@ Combining multiple arguments:
 
 
 More information about how to use the catalog may be found in the
-`Plone Documentation <http://docs.plone.org/develop/plone/searching_and_indexing/index.html>`_.
+`Plone Documentation <https://docs.plone.org/develop/plone/searching_and_indexing/index.html>`_.
 
 Note that the catalog returns *brains* (metadata stored in indexes) and not objects.
 However, calling ``getObject()`` on brains does in fact give you the object.

@@ -70,7 +70,7 @@ def get():
 
     raise CannotGetPortalError(
         'Unable to get the portal object. More info on '
-        'http://docs.plone.org/develop/plone.api/docs/api/exceptions.html'
+        'https://docs.plone.org/develop/plone.api/docs/api/exceptions.html'
         '#plone.api.exc.CannotGetPortalError',
     )
 

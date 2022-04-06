@@ -1,7 +1,7 @@
 .. admonition:: GitHub-only
 
     WARNING: If you are reading this on GitHub, DON'T!
-    Read the documentation at `docs.plone.org <http://docs.plone.org/develop/plone.api/docs/about.html>`_
+    Read the documentation at `docs.plone.org <https://docs.plone.org/develop/plone.api/docs/about.html>`_
     so you have working references and proper formatting.
 
 
@@ -9,10 +9,11 @@
 About
 =====
 
+
 Inspiration
 ===========
 
-We want `plone.api` to be developed with `PEP 20 <http://www.python.org/dev/peps/pep-0020/>`_ idioms in mind, in particular:
+We want `plone.api` to be developed with `PEP 20 <https://peps.python.org/pep-0020/>`_ idioms in mind, in particular:
 
   | Explicit is better than implicit.
   | Readability counts.
@@ -25,11 +26,11 @@ All contributions to `plone.api` should keep these rules in mind.
 
 Two libraries are especially inspiring:
 
-`SQLAlchemy <http://www.sqlalchemy.org/>`_
+`SQLAlchemy <https://www.sqlalchemy.org/>`_
   Arguably, the reason for SQLAlchemy's success in the developer community lies as much in its feature set as in the fact that its API is very well   designed, is consistent, explicit, and easy to learn.
 
-`Requests <http://docs.python-requests.org>`_
-  If you look at the documentation for this library, or see `the comparison between the urllib2 way and the requests way <https://gist.github.com/973705>`_, you can see a parallel for Plone regarding the way we *have been* versus the way we *should be* writing code.
+`Requests <https://docs.python-requests.org/en/latest/>`_
+  If you look at the documentation for this library, or see `the comparison between the urllib2 way and the requests way <https://gist.github.com/kennethreitz/973705>`_, you can see a parallel for Plone regarding the way we *have been* versus the way we *should be* writing code.
   At the very least, we should have the option of being able to write such clean code.
 
 The API provides grouped functional access to otherwise distributed logic in Plone.

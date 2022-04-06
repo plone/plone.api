@@ -1,7 +1,7 @@
 .. admonition:: GitHub-only
 
     WARNING: If you are reading this on GitHub, DON'T!
-    Read the documentation at `docs.plone.org <http://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_
+    Read the documentation at `docs.plone.org <https://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_
     so you have working references and proper formatting.
 
 
@@ -12,7 +12,7 @@ How to contribute to this package?
 Conventions
 ===========
 
-For rules and guidelines on syntax style, development process, repository workflow, etc see `The Plone Styleguides <http://docs.plone.org/develop/styleguide/>`_ and `Working with Git and GitHub <http://docs.plone.org/develop/coredev/docs/git.html>`_
+For rules and guidelines on syntax style, development process, repository workflow, etc see `The Plone Styleguides <https://docs.plone.org/develop/styleguide/>`_ and `Working with Git and GitHub <https://docs.plone.org/develop/coredev/docs/git.html>`_
 
 
 Local development environment
