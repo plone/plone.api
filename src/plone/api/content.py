@@ -59,7 +59,7 @@ def create(
         KeyError,
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
-    :Example: :ref:`content_create_example`
+    :Example: :ref:`content-create-example`
     """
     # Create a temporary id if the id is not given
     content_id = not safe_id and id or str(random.randint(0, 99999999))
@@ -118,7 +118,7 @@ def get(path=None, UID=None):
     :returns: Content object
     :raises:
         ValueError,
-    :Example: :ref:`content_get_example`
+    :Example: :ref:`content-get-example`
     """
     if path:
         site = portal.get()
@@ -148,7 +148,7 @@ def move(source=None, target=None, id=None, safe_id=False):
     :param target: Target container to which the source object will
         be moved. If no target is specified, the source object's container will
         be used as a target, effectively making this operation a rename
-        (:ref:`content_rename_example`).
+        (:ref:`content-rename-example`).
     :type target: Folderish content object
     :param id: Pass this parameter if you want to change the id of the moved
         object on the target location. If the new id conflicts with another
@@ -163,7 +163,7 @@ def move(source=None, target=None, id=None, safe_id=False):
     :raises:
         KeyError
         ValueError
-    :Example: :ref:`content_move_example`
+    :Example: :ref:`content-move-example`
     """
     source_id = source.getId()
 
@@ -194,7 +194,7 @@ def rename(obj=None, new_id=None, safe_id=False):
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
     :returns: Content object that was renamed
-    :Example: :ref:`content_rename_example`
+    :Example: :ref:`content-rename-example`
     """
     obj_id = obj.getId()
     container = obj.aq_parent
@@ -232,7 +232,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
     :raises:
         KeyError,
         ValueError
-    :Example: :ref:`content_copy_example`
+    :Example: :ref:`content-copy-example`
     """
     source_id = source.getId()
 
@@ -271,7 +271,7 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
         ValueError
         plone.app.linkintegrity.exceptions.LinkIntegrityNotificationException
 
-    :Example: :ref:`content_delete_example`
+    :Example: :ref:`content-delete-example`
     """
     objects = [obj] if obj else objects
 
@@ -308,7 +308,7 @@ def get_state(obj=None, default=_marker):
     :rtype: string
     :raises:
         Products.CMFCore.WorkflowCore.WorkflowException
-    :Example: :ref:`content_get_state_example`
+    :Example: :ref:`content-get-state-example`
     """
     workflow = portal.get_tool('portal_workflow')
 
@@ -440,7 +440,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
     :raises:
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
-    :Example: :ref:`content_transition_example`
+    :Example: :ref:`content-transition-example`
     """
     workflow = portal.get_tool('portal_workflow')
     if transition is not None:
@@ -474,7 +474,7 @@ def disable_roles_acquisition(obj=None):
 
     :param obj: [required] Context object to block the acquisition on.
     :type obj: Content object
-    :Example: :ref:`content_disable_roles_acquisition_example`
+    :Example: :ref:`content-disable-roles-acquisition-example`
     """
     plone_utils = portal.get_tool('plone_utils')
     plone_utils.acquireLocalRoles(obj, status=0)
@@ -487,7 +487,7 @@ def enable_roles_acquisition(obj=None):
 
     :param obj: [required] Context object to enable the acquisition on.
     :type obj: Content object
-    :Example: :ref:`content_enable_roles_acquisition_example`
+    :Example: :ref:`content-enable-roles-acquisition-example`
     """
     plone_utils = portal.get_tool('plone_utils')
     plone_utils.acquireLocalRoles(obj, status=1)
@@ -506,7 +506,7 @@ def get_view(name=None, context=None, request=None):
     :raises:
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
-    :Example: :ref:`content_get_view_example`
+    :Example: :ref:`content-get-view-example`
     """
     # We do not use exceptionhandling to detect if the requested view is
     # available, because the __init__ of said view will contain
@@ -544,7 +544,7 @@ def get_uuid(obj=None):
     :rtype: string
     :raises:
         ValueError
-    :Example: :ref:`content_get_uuid_example`
+    :Example: :ref:`content-get-uuid-example`
     """
     return IUUID(obj)
 
@@ -597,7 +597,7 @@ def find(context=None, depth=None, **kwargs):
     :type obj: Content object
     :returns: Catalog brains
     :rtype: List
-    :Example: :ref:`content_find_example`
+    :Example: :ref:`content-find-example`
 
     """
     query = {}

@@ -59,7 +59,7 @@ def get():
 
     :returns: Plone portal object
     :rtype: Portal object
-    :Example: :ref:`portal_get_example`
+    :Example: :ref:`portal-get-example`
     """
 
     closest_site = getSite()
@@ -86,7 +86,7 @@ def get_navigation_root(context=None):
     :type context: context object
     :returns: Navigation Root
     :rtype: Portal object
-    :Example: :ref:`portal_get_navigation_root_example`
+    :Example: :ref:`portal-get-navigation-root-example`
     """
     context = aq_inner(context)
     return getNavigationRootObject(context, get())
@@ -102,7 +102,7 @@ def get_tool(name=None):
     :raises:
         :class:`~plone.api.exc.MissingParameterError`,
         :class:`~plone.api.exc.InvalidParameterError`
-    :Example: :ref:`portal_get_tool_example`
+    :Example: :ref:`portal-get-tool-example`
     """
     try:
         return getToolByName(get(), name)
@@ -147,7 +147,7 @@ def send_email(
     :type body: boolean
     :raises:
         ValueError
-    :Example: :ref:`portal_send_email_example`
+    :Example: :ref:`portal-send-email-example`
     """
     portal = get()
 
@@ -214,7 +214,7 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
     :rtype: string
     :raises:
         ValueError
-    :Example: :ref:`portal_get_localized_time_example`
+    :Example: :ref:`portal-get-localized-time-example`
     """
     tool = get_tool(name='translation_service')
     request = getRequest()
@@ -247,7 +247,7 @@ def show_message(message=None, request=None, type='info'):
     :type type: string
     :raises:
         ValueError
-    :Example: :ref:`portal_show_message_example`
+    :Example: :ref:`portal-show-message-example`
     """
     IStatusMessage(request).add(message, type=type)
 
@@ -265,7 +265,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
     :type default: anything
     :returns: Registry record value
     :rtype: plone.app.registry registry record
-    :Example: :ref:`portal_get_registry_record_example`
+    :Example: :ref:`portal-get-registry-record-example`
     """
     if not isinstance(name, str):
         raise InvalidParameterError("The 'name' parameter has to be a string")
@@ -333,7 +333,7 @@ def set_registry_record(name=None, value=None, interface=None):
     :param interface: interface whose attributes are plone.app.registry
         settings
     :type interface: zope.interface.Interface
-    :Example: :ref:`portal_set_registry_record_example`
+    :Example: :ref:`portal-set-registry-record-example`
     """
     if not isinstance(name, str):
         raise InvalidParameterError("The parameter 'name' has to be a string")
@@ -381,7 +381,7 @@ def get_default_language():
 
     :returns: language identifier
     :rtype: string
-    :Example: :ref:`portal_get_default_language_example`
+    :Example: :ref:`portal-get-default-language-example`
     """
     from plone.i18n.interfaces import ILanguageSchema
     registry = getUtility(IRegistry)
@@ -396,7 +396,7 @@ def get_current_language(context=None):
     :type context: object
     :returns: language identifier
     :rtype: string
-    :Example: :ref:`portal_get_current_language_example`
+    :Example: :ref:`portal-get-current-language-example`
     """
     request = getRequest()
     return request.get('LANGUAGE', None) or \
@@ -417,7 +417,7 @@ def translate(msgid, domain='plone', lang=None):
     :type lang: string
     :returns: translated message
     :rtype: str
-    :Example: :ref:`portal_translate_example`
+    :Example: :ref:`portal-translate-example`
     """
     translation_service = get_tool('translation_service')
     query = {
