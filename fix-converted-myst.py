@@ -12,14 +12,29 @@ count_files = {
     "unmodified": 0,
 }
 
-regex_replace_example = '(?<=:ref:`)(.*)(?=`)'
+
+def replace_label_underscore(data):
+    """Fix 'examples' reference in docstrings.
+
+    :Example: :ref:`portal_get_tool_example`
+    ->
+    :Example: :ref:`portal-get-tool-example`
+    """
+    regex_label_underscore = '(?<=:ref:`)(.*)(?=`)'
+
+    def _replace(mobj):
+        return mobj.group(0).replace('_', '-')
+
+    data = re.sub(
+        regex_label_underscore, _replace, data)
+    return data
 
 
-def replace_label_underscore(mobj):
-    return mobj.group(0).replace('_', '-')
-
-
-regex_github_warning = r':::{admonition}([\S\s]*?):::'
+def remove_github_warning(data):
+    """Remove 'GitHub-only' warning"""
+    regex_github_warning = r':::{admonition}([\S\s]*?):::'
+    data = re.sub(regex_github_warning, '', data, flags=re.DOTALL)
+    return data
 
 
 for root, dirs, files in (*os.walk('./src'), *os.walk('./docs')):
@@ -28,15 +43,13 @@ for root, dirs, files in (*os.walk('./src'), *os.walk('./docs')):
             filename = os.path.join(root, name)
             with open(filename, 'r+') as f:
                 data = f.read()
-                data_new = re.sub(regex_replace_example, replace_label_underscore, data)
-                # data_new = re.sub(regex_github_warning, '', data_new, flags=re.DOTALL)
+                data = replace_label_underscore(data)
+                # data = remove_github_warning(data)
                 f.seek(0)
-                f.write(data_new)
+                f.write(data)
                 count_files["modified"] += 1
                 logger.info(f"{filename} modified.")
 
 
 logger.info(f'myST modified for {count_files["modified"]} files.')
 logger.info(f'{count_files["unmodified"]} files unmodified.')
-
-# '\\1'.replace('_', '-')
