@@ -41,7 +41,7 @@ Checklist
 
 Folow these step to create a new release of `plone.api`.
 
-#. Verify that we have documented all changes in the ``docs/CHANGES.rst`` file.
+#. Verify that we have documented all changes in the ``CHANGES.rst`` file.
    Go through the list of commits since last release on GitHub and check all changes are documented.
 
 #. Modify the version identifier in the ``setup.py`` to reflect the version of the new release.

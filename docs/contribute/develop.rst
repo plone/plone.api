@@ -49,7 +49,7 @@ First let's look at 'system' libraries and applications that are normally instal
 Python tools
 ------------
 
-* tox automation - tox aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software. Install with `pip install tox`.
+* tox automation - tox aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software. Install with ``pip install tox``.
 
 .. note::
 
@@ -188,7 +188,7 @@ Commit checklist
 Before every commit you should:
 
 * Run unit tests and syntax validation checks.
-* Add an entry to `CHANGES.rst` (if applicable).
+* Add an entry to ``CHANGES.rst`` (if applicable).
 
 All syntax checks and all tests can be run with a single command.
 This command also re-generates your documentation.
@@ -214,13 +214,13 @@ Travis is configured with the ``.travis.yml`` file located in the root of this p
 Sphinx Documentation
 ====================
 
-::
+.. note::
 
     Un-documented code is broken code.
 
 For every feature you add to the codebase you should also add documentation for it to ``docs/``.
 
-After adding/modifying documentation, run `tox -e plone6docs` to re-generate your docs.
+After adding or modifying documentation, run ``tox -e plone6docs`` to re-generate your documentation.
 
 Publicly available documentation on https://6.dev-docs.plone.org/plone.api/ is automatically generated from these source files, periodically.
 So when you push changes to master on GitHub you should soon be able to see them published on ``api.plone.org``.
