@@ -35,13 +35,6 @@ docs-html: bin/python bin/pip ## Build documentation
 	bin/tox -e plone6docs
 	@echo
 	@echo "Build of documentation finished. The HTML pages are in _build/plone6docs/html."
-.PHONY: conversion-to-myst
-conversion-to-myst: bin/python bin/pip ## Run conversion of documentation from restructuredText to myST
-	bin/pip install "rst-to-myst[sphinx]"
-	-bin/rst2myst convert -R docs/*.rst
-	-bin/rst2myst convert -R docs/**/*.rst
-	python fix-converted-myst.py
-	make netlify
 
 .PHONY: netlify
 netlify: bin/python bin/pip ## Run documentatin build (Netlfy style)
@@ -49,3 +42,12 @@ netlify: bin/python bin/pip ## Run documentatin build (Netlfy style)
 	bin/tox -e plone6docs
 	@echo
 	@echo "Build of documentation finished. The HTML pages are in _build/plone6docs/html."
+
+## Run conversion of documentation from restructuredText to myST
+.PHONY: conversion-to-myst
+conversion-to-myst: bin/python bin/pip
+	bin/pip install "rst-to-myst[sphinx]"
+	-bin/rst2myst convert -R docs/*.rst
+	-bin/rst2myst convert -R docs/**/*.rst
+	python fix-converted-myst.py
+	make netlify
