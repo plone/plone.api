@@ -32,25 +32,25 @@ Source Code and Contribution
 ============================
 
 .. image:: https://api.travis-ci.org/plone/plone.api.svg
-    :target: http://travis-ci.org/#!/plone/plone.api
+    :target: https://travis-ci.org/#!/plone/plone.api
 
 .. image:: https://coveralls.io/repos/github/plone/plone.api/badge.svg?branch=master
     :alt: Coverage
     :target: https://coveralls.io/github/plone/plone.api?branch=master
 
 Contributors
-    Please read the document `Process for Plone core's development <http://docs.plone.org/develop/coredev/docs/index.html>`_.
-    Also consult the section about contribution in the `plone.api contributors documentation <http://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_.
+    Please read the document `Process for Plone core's development <https://docs.plone.org/develop/coredev/docs/index.html>`_.
+    Also consult the section about contribution in the `plone.api contributors documentation <https://docs.plone.org/develop/plone.api/docs/contribute/index.html>`_.
 
 Source Code
     at the `Plone code repository hosted at GitHub <https://github.com/plone/plone.api>`_.
 
 Issues
-    Please use the `issue tracker <http://github.com/plone/plone.api/issues>`_
+    Please use the `issue tracker <https://github.com/plone/plone.api/issues>`_
 
 Continuous Integration
-    runs on `Travis CI <http://travis-ci.org/plone/plone.api>`_.
+    runs on `Travis CI <https://travis-ci.org/plone/plone.api>`_.
 
 Code Coverage
-    is measured at `Coveralls.io <http://coveralls.io/r/plone/plone.api>`_.
+    is measured at `Coveralls.io <https://coveralls.io/github/plone/plone.api>`_.
 

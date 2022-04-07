@@ -1,18 +1,12 @@
-.. admonition:: GitHub-only
-
-    WARNING: If you are reading this on GitHub, DON'T!
-    Read the documentation at `docs.plone.org <http://docs.plone.org/develop/plone.api/docs/api/index.html>`_
-    so you have working references and proper formatting.
-
-
+```{eval-rst}
 .. currentmodule:: plone
+```
 
-List of all API methods with descriptions
-=========================================
+# List of all API methods with descriptions
 
-api.portal
-----------
+## api.portal
 
+```{eval-rst}
 .. autosummary::
 
     api.portal.get
@@ -23,10 +17,11 @@ api.portal
     api.portal.show_message
     api.portal.get_registry_record
 
+```
 
-api.content
------------
+## api.content
 
+```{eval-rst}
 .. autosummary::
 
     api.content.get
@@ -40,10 +35,11 @@ api.content
     api.content.transition
     api.content.get_view
 
+```
 
-api.user
---------
+## api.user
 
+```{eval-rst}
 .. autosummary::
 
     api.user.get
@@ -57,10 +53,11 @@ api.user
     api.user.grant_roles
     api.user.revoke_roles
 
+```
 
-api.group
----------
+## api.group
 
+```{eval-rst}
 .. autosummary::
 
     api.group.get
@@ -73,10 +70,11 @@ api.group
     api.group.grant_roles
     api.group.revoke_roles
 
+```
 
-api.env
----------
+## api.env
 
+```{eval-rst}
 .. autosummary::
 
     api.env.adopt_roles
@@ -84,23 +82,26 @@ api.env
     api.env.debug_mode
     api.env.test_mode
 
+```
 
-api.relation
----------
+## api.relation
 
+```{eval-rst}
 .. autosummary::
 
     api.relation.get
     api.relation.create
     api.relation.delete
 
+```
 
-Exceptions and errors
----------------------
+## Exceptions and errors
 
+```{eval-rst}
 .. autosummary::
 
     api.exc.PloneApiError
     api.exc.MissingParameterError
     api.exc.InvalidParameterError
     api.exc.CannotGetPortalError
+```

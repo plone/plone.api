@@ -29,7 +29,7 @@ def adopt_user(username=None, user=None):
     :type user: user object from acl_users.getUser() or api.user.get().
     :param username: username of user to switch to inside block.
     :type username: string
-    :Example: :ref:`env_adopt_user_example`
+    :Example: :ref:`env-adopt-user-example`
     """
     # Grab the user object out of acl_users because this function
     # accepts 'user' objects that are actually things like MemberData
@@ -89,7 +89,7 @@ def adopt_roles(roles=None):
 
     :param roles: New roles to gain inside block. Existing roles will be lost.
     :type roles: list of strings
-    :Example: :ref:`env_adopt_roles_example`
+    :Example: :ref:`env-adopt-roles-example`
     """
     if isinstance(roles, str):
         roles = [roles]
@@ -180,7 +180,7 @@ class _GlobalRoleOverridingContext:
 def debug_mode():
     """Returns True if your zope instance is running in debug mode.
 
-    :Example: :ref:`env_debug_mode_example`
+    :Example: :ref:`env-debug-mode-example`
     """
     return getConfiguration().debug_mode
 
@@ -188,7 +188,7 @@ def debug_mode():
 def test_mode():
     """Returns True if you are running the zope test runner.
 
-    :Example: :ref:`env_test_mode_example`
+    :Example: :ref:`env-test-mode-example`
     """
     global IS_TEST
 
@@ -206,7 +206,7 @@ def read_only_mode():
     """Check if the Zope instance is running on a read-only ZODB.
 
     :returns: bool isReadOnly True if ZODB is read-only
-    :Example: :ref:`env_read_only_mode_example`
+    :Example: :ref:`env-read-only-mode-example`
     """
     with closing(Zope2.DB.open()) as connection:
         return connection.isReadOnly()
@@ -216,7 +216,7 @@ def plone_version():
     """Return Plone version number.
 
     :returns: string denoting what release of Plone this distribution contains
-    :Example: :ref:`env_plone_version_example`
+    :Example: :ref:`env-plone-version-example`
     """
     return get_distribution('Products.CMFPlone').version
 
@@ -225,6 +225,6 @@ def zope_version():
     """Return Zope 2 version number.
 
     :returns: string denoting what release of Zope2 this distribution contains
-    :Example: :ref:`env_zope_version_example`
+    :Example: :ref:`env-zope-version-example`
     """
     return get_distribution('Zope2').version

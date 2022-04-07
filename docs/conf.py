@@ -1,7 +1,18 @@
-# sphinx configuration
+from pkg_resources import get_distribution
+
+import sys
 
 project = 'plone.api'
 copyright = '2012, Plone Foundation'
+
+version = release = get_distribution(project).version
+
+
+# The suffix of source filenames.
+source_suffix = {
+    ".md": "markdown",
+    ".rst": "restructuredtext",
+}
 
 extensions = [
     'sphinx.ext.doctest',
@@ -9,6 +20,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
+    "myst_parser",
+    "sphinx.ext.todo",
 ]
 master_doc = 'index'
 
@@ -24,11 +37,6 @@ latex_documents = [(
     'plone.api Documentation',
     '', 'manual'
 ), ]
-
-from pkg_resources import get_distribution
-version = release = get_distribution(project).version
-
-import sys
 
 
 class Mock:
@@ -49,6 +57,24 @@ class Mock:
         else:
             return Mock()
 
+
 MOCK_MODULES = ['lxml']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
+
+
+# -- Options for myST markdown conversion to html -----------------------------
+
+myst_enable_extensions = [
+    "colon_fence",
+    "deflist",
+]
+
+
+# -- Options for HTML output -------------------------------------------------
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+#
+html_theme = "sphinx_book_theme"
+

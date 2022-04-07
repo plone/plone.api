@@ -71,7 +71,7 @@ def get(
     :returns: A list of relations
     :rtype: List of RelationValue objects
 
-    :Example: :ref:`relation_get_example`
+    :Example: :ref:`relation-get-example`
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(source))
@@ -140,11 +140,12 @@ def create(source=None, target=None, relationship=None):
     :type source: Content object
     :param target: [required] Object that the relation will point to.
     :type target: Content object
-    :param relationship: [required] Relationship name. If that name is the same
-    as a field name and this field is a RelationChoice/RelationList we will
-    update the field-value accordingly.
+    :param relationship: [required] Relationship name.
+        If that name is the same as a field name and this field
+        is a RelationChoice / RelationList
+        we will update the field-value accordingly.
     :type id: string
-    :Example: :ref:`relation_create_example`
+    :Example: :ref:`relation-create-example`
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(source))
@@ -254,11 +255,12 @@ def delete(source=None, target=None, relationship=None):
     :type source: Content object
     :param target: Object that the relation points to.
     :type target: Content object
-    :param relationship: Relationship name. If that name is the same
-        as a field name and this field is a RelationChoice/RelationList we
-        will delete/update the field-value accordingly.
+    :param relationship: Relationship name.
+        If that name is the same as a field name
+        and this field is a RelationChoice/RelationList
+        we will delete/update the field-value accordingly.
     :type id: string
-    :Example: :ref:`relation_delete_example`
+    :Example: :ref:`relation-delete-example`
     """
     if source is not None and not base_hasattr(source, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(source))

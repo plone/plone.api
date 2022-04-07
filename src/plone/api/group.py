@@ -34,7 +34,7 @@ def create(
     :rtype: GroupData object
     :raises:
         ValueError
-    :Example: :ref:`group_create_example`
+    :Example: :ref:`group-create-example`
     """
     group_tool = portal.get_tool('portal_groups')
     group_tool.addGroup(
@@ -57,7 +57,7 @@ def get(groupname=None):
     :rtype: GroupData object
     :raises:
         ValueError
-    :Example: :ref:`group_get_example`
+    :Example: :ref:`group-get-example`
     """
     group_tool = portal.get_tool('portal_groups')
     return group_tool.getGroupById(groupname)
@@ -79,8 +79,8 @@ def get_groups(username=None, user=None):
     :returns: All groups (optionlly filtered by user)
     :rtype: List of GroupData objects
     :raises: UserNotFoundError
-    :Example: :ref:`group_get_all_groups_example`,
-        :ref:`group_get_users_groups_example`
+    :Example: :ref:`group-get-all-groups-example`,
+        :ref:`group-get-users-groups-example`
     """
     if username:
         user = user_get(username=username)
@@ -117,7 +117,7 @@ def delete(groupname=None, group=None):
     :type group: GroupData object
     :raises:
         ValueError
-    :Example: :ref:`group_delete_example`
+    :Example: :ref:`group-delete-example`
     """
     group_tool = portal.get_tool('portal_groups')
 
@@ -151,7 +151,7 @@ def add_user(groupname=None, group=None, username=None, user=None):
     :raises:
         ValueError
         UserNotFoundError
-    :Example: :ref:`group_add_user_example`
+    :Example: :ref:`group-add-user-example`
 
     """
     if username:
@@ -189,7 +189,7 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     :raises:
         ValueError
         UserNotFoundError
-    :Example: :ref:`group_remove_user_example`
+    :Example: :ref:`group-remove-user-example`
     """
     if username:
         user = user_get(username=username)
@@ -219,7 +219,7 @@ def get_roles(groupname=None, group=None, obj=None, inherit=True):
     :type inherit: boolean
     :raises:
         ValueError
-    :Example: :ref:`group_get_roles_example`
+    :Example: :ref:`group-get-roles-example`
     """
     group_id = groupname or group.id
 
@@ -268,7 +268,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
     :type obj: content object
     :raises:
         ValueError
-    :Example: :ref:`group_grant_roles_example`
+    :Example: :ref:`group-grant-roles-example`
     """
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise ValueError
@@ -315,7 +315,7 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     :type obj: content object
     :raises:
         ValueError
-    :Example: :ref:`group_revoke_roles_example`
+    :Example: :ref:`group-revoke-roles-example`
     """
     if 'Anonymous' in roles or 'Authenticated' in roles:
         raise ValueError
