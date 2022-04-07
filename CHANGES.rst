@@ -11,13 +11,6 @@ Changelog
 2.0.0a2 (2021-10-13)
 --------------------
 
-New features:
-
-
-- Preview of documentation per pull request. Netlify bot adds link in PR comments. [ksuess]
-- Integration in new Plone 6 documentation [ksuess]
-- Documentation is written in MyST markdown. Was restructuredText. [ksuess]
-
 Bug fixes:
 
 
