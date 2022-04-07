@@ -1,9 +1,3 @@
-:::{admonition} GitHub-only
-WARNING: If you are reading this on GitHub, DON'T!
-Read the documentation at [docs.plone.org](https://docs.plone.org/develop/plone.api/docs/index.html)
-so you have working references and proper formatting.
-:::
-
 # A Plone API
 
 > The `plone.api` is an elegant and simple API, built for humans wishing to develop with Plone.
