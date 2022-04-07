@@ -3,7 +3,7 @@
 This section is meant for contributors to the `plone.api` project.
 Its purpose is to guide them through the steps needed to start contributing.
 
-% note ::: This HowTo is written for Linux and OS X users.
+% note ``` This HowTo is written for Linux and OS X users.
 % If you're are running Windows we suggest using VMWare or a similar Virtualization tool to install Ubuntu Linux on a virtual machine or installing Ubuntu Linux as a secondary OS on your machine.
 % Alternatively, you can browse Plone's documentation on how to get Plone development environment up and running on Windows.
 % Plone does run on Windows but it's not completely trivial to set it up.
@@ -35,10 +35,10 @@ First let's look at 'system' libraries and applications that are normally instal
 
 - tox automation - tox aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software. Install with `pip install tox`.
 
-:::{note}
+```{note}
 Again, OS X users should use <https://github.com/collective/buildout.python>,
 it will make your life much easier to have a cleanly compiled Python instead of using the system one that is broken in many deeply confusing ways.
-:::
+```
 
 ### Further information
 
@@ -124,7 +124,7 @@ Click on one that catches your attention.
 If the issue description says `No one is assigned` it means no-one is already working on it and you can claim it as your own.
 Click on the button next to the text and make yourself the one assigned for this issue.
 
-Based on our {ref}`git_workflow` all new features must be developed in separate git branches.
+Based on our {ref}`git-workflow` all new features must be developed in separate git branches.
 So if you are not doing a very trivial fix, but rather adding new features/enhancements, you should create a *feature branch*.
 This way your work is kept in an isolated place where you can receive feedback on it, improve it, etc.
 Once we are happy with your implementation, your branch gets merged into *master* at which point everyone else starts using your code.
@@ -172,11 +172,11 @@ This command also re-generates your documentation.
 $ make
 ```
 
-:::{note}
+```{note}
 It pays off to invest a little time to make your editor run `pep8` and `pyflakes` on a file every time you save that file
 (or use `flake8` which combines both).
 This saves you lots of time in the long run.
-:::
+```
 
 ## Travis Continuous Integration
 
@@ -186,9 +186,9 @@ Travis is configured with the `.travis.yml` file located in the root of this pac
 
 ## Sphinx Documentation
 
-:::{note}
+```{note}
 Un-documented code is broken code.
-:::
+```
 
 For every feature you add to the codebase, you should also add documentation for it to `docs/`.
 

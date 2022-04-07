@@ -17,11 +17,11 @@ For example, using the portal catalog (see 'Find content objects').
 The intention is to cover 20% of the tasks any Plone developer does 80% of the time.
 By keeping everything in one place, the API stays introspectable and discoverable, important aspects of being Pythonic.
 
-:::{note}
+```{note}
 This package is stable and used in production, but from time to time changes will be made to the API.
 Additional API methods may be introduced in minor versions (1.1 -> 1.2).
 Backward-incompatible changes to the API will be restricted to major versions (1.x -> 2.x).
-:::
+```
 
 ## Narrative documentation
 

@@ -34,12 +34,12 @@ This distribution is a result of two historical factors: reuse of CMF- and Zope-
 Methods defined in `plone.api` implement best-practice access to the original distributed APIs.
 These methods also provide clear documentation of how best to access Plone APIs directly.
 
-:::{note}
+```{note}
 If you doubt those last sentences:
 We had five different ways to get the portal root with different edge-cases.
 We had three different ways to move an object.
 With this in mind, it's obvious that even the simplest Plone tasks can't be documented in a sane way.
-:::
+```
 
 We do not intend to cover all possible use-cases, only the most common.
 We will cover the 20% of possible tasks on which we spend 80% of our time.
@@ -52,11 +52,12 @@ We try to document sensible use cases even when we don't provide APIs for them, 
 
 API methods are grouped according to what they affect.
 For example:
-{ref}`chapter_portal`,
-{ref}`chapter_content`,
-{ref}`chapter_users`,
-{ref}`chapter_env` and
-{ref}`chapter_groups`.
+{ref}`chapter-portal`,
+{ref}`chapter-content`,
+{ref}`chapter-users`,
+{ref}`chapter-groups`,
+{ref}`chapter-relation` and
+{ref}`chapter-env`.
 In general, importing and using an API looks something like this:
 
 % invisible-code-block: python

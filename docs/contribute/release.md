@@ -67,7 +67,7 @@ Server response (200): OK
 done
 ```
 
-:::{note}
+```{note}
 Please ignore the sdist warning about README file above.
 PyPI does not depend on it and it's just a bug in setupools (reported and waiting to be fixed).
-:::
+```

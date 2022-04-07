@@ -146,7 +146,7 @@ def create(source=None, target=None, relationship=None):
         we will update the field-value accordingly.
     :type id: string
     :Example: :ref:`relation-create-example`
-    """  # noqa
+    """
     if source is not None and not base_hasattr(source, 'portal_type'):
         raise InvalidParameterError('{} has no portal_type'.format(source))
 
