@@ -32,7 +32,7 @@ def replace_label_underscore(data):
 
 def remove_github_warning(data):
     """Remove 'GitHub-only' warning"""
-    regex_github_warning = r':::{admonition}([\S\s]*?):::'
+    regex_github_warning = r':::{admonition} GitHub-only([\S\s]*?):::\n\n'
     data = re.sub(regex_github_warning, '', data, flags=re.DOTALL)
     return data
 
@@ -44,9 +44,10 @@ for root, dirs, files in (*os.walk('./src'), *os.walk('./docs')):
             with open(filename, 'r+') as f:
                 data = f.read()
                 data = replace_label_underscore(data)
-                # data = remove_github_warning(data)
+                data = remove_github_warning(data)
                 f.seek(0)
                 f.write(data)
+                f.truncate()
                 count_files["modified"] += 1
                 logger.info(f"{filename} modified.")
 
