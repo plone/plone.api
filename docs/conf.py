@@ -66,7 +66,8 @@ for mod_name in MOCK_MODULES:
 # -- Options for myST markdown conversion to html -----------------------------
 
 myst_enable_extensions = [
-    "colon_fence"
+    "colon_fence",
+    "deflist",
 ]
 
 

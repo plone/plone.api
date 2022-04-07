@@ -20,14 +20,12 @@ All contributions to `plone.api` should keep these rules in mind.
 
 Two libraries are especially inspiring:
 
-```{glossary}
 [SQLAlchemy](https://www.sqlalchemy.org/)
-   Arguably, the reason for SQLAlchemy's success in the developer community lies as much in its feature set as in the fact that its API is very well   designed, is consistent, explicit, and easy to learn.
+: Arguably, the reason for SQLAlchemy's success in the developer community lies as much in its feature set as in the fact that its API is very well designed, is consistent, explicit, and easy to learn.
 
 [Requests](https://docs.python-requests.org/en/latest/)
-   If you look at the documentation for this library, or see [the comparison between the urllib2 way and the requests way](https://gist.github.com/kennethreitz/973705), you can see a parallel for Plone regarding the way we *have been* versus the way we *should be* writing code.
-   At the very least, we should have the option of being able to write such clean code.
-```
+: If you look at the documentation for this library, or see [the comparison between the urllib2 way and the requests way](https://gist.github.com/kennethreitz/973705), you can see a parallel for Plone regarding the way we *have been* versus the way we *should be* writing code.
+At the very least, we should have the option of being able to write such clean code.
 
 The API provides grouped functional access to otherwise distributed logic in Plone.
 This distribution is a result of two historical factors: reuse of CMF- and Zope-methods, and reasonable but hard to remember splits like `acl_users` and `portal_memberdata`.
