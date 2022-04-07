@@ -1,5 +1,6 @@
 ```{eval-rst}
 .. module:: plone
+    :noindex:
 ```
 
 (chapter-groups)=
