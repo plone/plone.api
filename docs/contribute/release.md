@@ -14,7 +14,7 @@ To avoid human errors and to automate some of the tasks above we use `jarn.mkrel
 It's listed as a dependency in `setup.py` and should already be installed in your local bin:
 
 ```shell
-$ bin/mkrelease --help
+bin/mkrelease --help
 ```
 
 Apart from that, in order to be able to upload a new version to PyPI you need to be listed under `Package Index Owner` list and you need to configure your PyPI credentials in the `~/.pypirc` file, e.g.:
@@ -48,10 +48,12 @@ this change has been committed to git and all changes have been pushed upstream 
 
 ```shell
 # Check that package description is rendered correctly
-$ bin/longtest
+bin/longtest
 
 # Make a release and upload it to PyPI
-$ bin/mkrelease -d pypi -pq ./
+bin/mkrelease -d pypi -pq ./
+```
+```console
 Releasing plone.api 0.1
 Tagging plone.api 0.1
 To git@github.com:plone/plone.api.git

@@ -83,15 +83,15 @@ Use `git rebase --interactive` to squash all commits that you think are unnecess
 Go to your projects folder and download the lastest `plone.api` code:
 
 ```shell
-[you@local ~]$ cd <your_work_folder>
-[you@local work]$ git clone https://github.com/plone/plone.api.git
+cd <your_work_folder>
+git clone https://github.com/plone/plone.api.git
 ```
 
 Now `cd` into the newly created directory and build your environment:
 
 ```shell
-[you@local work]$ cd plone.api
-[you@local plone.api]$ make
+cd plone.api
+make
 ```
 
 Go make some tea while
@@ -106,10 +106,10 @@ Go make some tea while
 Other commands that you may want to run:
 
 ```shell
-[you@local plone.api]$ make tests  # run all tests and syntax validation
-[you@local plone.api]$ make docs   # re-generate documentation
-[you@local plone.api]$ make clean  # reset your env back to a fresh start
-[you@local plone.api]$ make        # re-build env, generate docs, run tests
+make tests  # run all tests and syntax validation
+make docs   # re-generate documentation
+make clean  # reset your env back to a fresh start
+make        # re-build env, generate docs, run tests
 ```
 
 Open `Makefile` in your favorite code editor to see all possible commands and what they do.
@@ -130,18 +130,18 @@ This way your work is kept in an isolated place where you can receive feedback o
 Once we are happy with your implementation, your branch gets merged into *master* at which point everyone else starts using your code.
 
 ```shell
-[you@local plone.api]$ git checkout master  # go to master branch
-[you@local plone.api]$ git checkout -b issue_17  # create a feature branch
+git checkout master  # go to master branch
+git checkout -b issue_17  # create a feature branch
 # replace 17 with the issue number you are working on
 
 # change code here
 
-[you@local plone.api]$ git add -p && git commit  # commit my changes
-[you@local plone.api]$ git push origin issue_17  # push my branch to GitHub
-# at this point others can see your changes but they don't get effected by
-them; in other words, others can comment on your code without your code
-changing their development environments
+git add -p && git commit  # commit my changes
+git push origin issue_17  # push my branch to GitHub
 ```
+
+At this point, others can see your changes, but they don't get affected by them.
+In other words, others can comment on your code without your code changing their development environments.
 
 Read more about Git branching at <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches> and on our Git workflow at [Working with Git and GitHub](https://docs.plone.org/develop/coredev/docs/git.html).
 
@@ -169,7 +169,7 @@ All syntax checks and all tests can be run with a single command.
 This command also re-generates your documentation.
 
 ```shell
-$ make
+make
 ```
 
 ```{note}
