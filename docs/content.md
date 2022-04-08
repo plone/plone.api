@@ -42,7 +42,7 @@ assert obj.id == 'my-content'
 There are several approaches to getting your content object.
 Consider the following portal structure:
 
-```
+```console
 plone (portal root)
 |-- blog
 |-- about

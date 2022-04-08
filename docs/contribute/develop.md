@@ -82,14 +82,14 @@ Use `git rebase --interactive` to squash all commits that you think are unnecess
 
 Go to your projects folder and download the lastest `plone.api` code:
 
-```bash
+```shell
 [you@local ~]$ cd <your_work_folder>
 [you@local work]$ git clone https://github.com/plone/plone.api.git
 ```
 
 Now `cd` into the newly created directory and build your environment:
 
-```bash
+```shell
 [you@local work]$ cd plone.api
 [you@local plone.api]$ make
 ```
@@ -105,7 +105,7 @@ Go make some tea while
 
 Other commands that you may want to run:
 
-```bash
+```shell
 [you@local plone.api]$ make tests  # run all tests and syntax validation
 [you@local plone.api]$ make docs   # re-generate documentation
 [you@local plone.api]$ make clean  # reset your env back to a fresh start
@@ -129,7 +129,7 @@ So if you are not doing a very trivial fix, but rather adding new features/enhan
 This way your work is kept in an isolated place where you can receive feedback on it, improve it, etc.
 Once we are happy with your implementation, your branch gets merged into *master* at which point everyone else starts using your code.
 
-```bash
+```shell
 [you@local plone.api]$ git checkout master  # go to master branch
 [you@local plone.api]$ git checkout -b issue_17  # create a feature branch
 # replace 17 with the issue number you are working on
@@ -168,7 +168,7 @@ Before every commit you should:
 All syntax checks and all tests can be run with a single command.
 This command also re-generates your documentation.
 
-```bash
+```shell
 $ make
 ```
 
