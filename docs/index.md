@@ -43,13 +43,6 @@ relation
 :maxdepth: 1
 
 api/index
-api/portal
-api/content
-api/user
-api/group
-api/env
-api/relation
-api/exceptions
 ```
 
 ## Contribute

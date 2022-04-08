@@ -4,6 +4,20 @@
 
 # List of all API methods with descriptions
 
+```{toctree}
+:maxdepth: 1
+:hidden: true
+
+portal
+content
+user
+group
+env
+relation
+exceptions
+```
+
+
 ## api.portal
 
 ```{eval-rst}
