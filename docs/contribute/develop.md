@@ -77,10 +77,11 @@ Use `git rebase --interactive` to squash all commits that you think are unnecess
 ```{eval-rst}
 .. todo::
 
-    Update this section as it seams out of date, there is no Makefile so this description makes no sense anymore.
+    Update this section as it seems out of date.
+    There is no `Makefile`, so this description makes no sense anymore.
 ```
 
-Go to your projects folder and download the lastest `plone.api` code:
+Go to your project's folder, and download the latest `plone.api` code:
 
 ```shell
 cd <your_work_folder>
@@ -100,8 +101,8 @@ Go make some tea while
 - bootstraps `zc.buildout`,
 - fetches all dependencies,
 - builds Plone,
-- runs all tests and
-- generates documentation so you can open it locally later on.
+- runs all tests, and
+- generates documentation so that you can open it locally later on.
 
 Other commands that you may want to run:
 
@@ -204,7 +205,8 @@ For docstrings in your code, use reStructuredText, as shown in the following exa
 def add(a, b):
     """Calculate the sum of the two parameters.
 
-    Also see the :func:`mod.path.my_func`, :meth:`mod.path.MyClass.method` and :attr:`mod.path.MY_CONSTANT` for more details.
+    Also see the :func:`mod.path.my_func`, :meth:`mod.path.MyClass.method`
+    and :attr:`mod.path.MY_CONSTANT` for more details.
 
     :param a: The first operand.
     :type a: :class:`mod.path.A`

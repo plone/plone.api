@@ -203,7 +203,7 @@ document_obj = document_brain.getObject()
 
 A Universally Unique IDentifier (UUID) is a unique, non-human-readable identifier for a content object which remains constant for the object even if the object is moved.
 
-Plone uses UUIDs for storing references between content and for linking by UIDs, enabling persistent links.
+Plone uses UUIDs for storing references between content and for linking by UUIDs, enabling persistent links.
 
 To get the UUID of any content object use {meth}`api.content.get_uuid`.
 The following code gets the UUID of the `contact` document.
