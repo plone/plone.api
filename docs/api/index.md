@@ -18,7 +18,7 @@ exceptions
 ```
 
 
-## api.portal
+## `api.portal`
 
 ```{eval-rst}
 .. autosummary::
@@ -33,7 +33,7 @@ exceptions
 
 ```
 
-## api.content
+## `api.content`
 
 ```{eval-rst}
 .. autosummary::
@@ -51,7 +51,7 @@ exceptions
 
 ```
 
-## api.user
+## `api.user`
 
 ```{eval-rst}
 .. autosummary::
@@ -69,7 +69,7 @@ exceptions
 
 ```
 
-## api.group
+## `api.group`
 
 ```{eval-rst}
 .. autosummary::
@@ -86,7 +86,7 @@ exceptions
 
 ```
 
-## api.env
+## `api.env`
 
 ```{eval-rst}
 .. autosummary::
@@ -98,7 +98,7 @@ exceptions
 
 ```
 
-## api.relation
+## `api.relation`
 
 ```{eval-rst}
 .. autosummary::
