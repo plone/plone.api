@@ -11,7 +11,7 @@ Setting up and using the local development environment.
 ```{toctree}
 :maxdepth: 2
 
-develop.rst
+develop
 ```
 
 ## Releasing a new version
@@ -21,5 +21,5 @@ Description of our release process and guidelines.
 ```{toctree}
 :maxdepth: 2
 
-release.rst
+release
 ```

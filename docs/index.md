@@ -28,13 +28,13 @@ Backward-incompatible changes to the API will be restricted to major versions (1
 ```{toctree}
 :maxdepth: 2
 
-about.rst
-portal.rst
-content.rst
-user.rst
-group.rst
-env.rst
-relation.rst
+about
+portal
+content
+user
+group
+env
+relation
 ```
 
 ## Complete API and advanced usage
@@ -42,14 +42,14 @@ relation.rst
 ```{toctree}
 :maxdepth: 1
 
-api/index.rst
-api/portal.rst
-api/content.rst
-api/user.rst
-api/group.rst
-api/env.rst
-api/relation.rst
-api/exceptions.rst
+api/index
+api/portal
+api/content
+api/user
+api/group
+api/env
+api/relation
+api/exceptions
 ```
 
 ## Contribute
@@ -57,7 +57,7 @@ api/exceptions.rst
 ```{toctree}
 :maxdepth: 2
 
-contribute/index.rst
+contribute/index
 ```
 
 ## Indices and tables
