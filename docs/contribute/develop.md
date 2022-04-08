@@ -29,7 +29,7 @@ First let's look at 'system' libraries and applications that are normally instal
 - `GNU make` - The fundamental build-control tool.
 - `GNU tar` - The (un)archiving tool for extracting downloaded archives.
 - `bzip2` and `gzip` decompression packages - `gzip` is nearly standard, however some platforms will require that `bzip2` be installed.
-- `Python 2.7` - Linux distributions normally already have it, OS X users should use <https://github.com/collective/buildout.python> to get a clean Python version (the one that comes with OS X is broken).
+- `Python 3.9` - Linux distributions normally already have it, OS X users should use <https://github.com/collective/buildout.python> to get a clean Python version (the one that comes with OS X is broken).
 
 ### Python tools
 
