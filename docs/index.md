@@ -1,9 +1,9 @@
 # `plone.api`
 
-> The `plone.api` is an elegant and simple API, built for humans wishing to develop with Plone.
->
-> It comes with *cookbook*-like documentation and step-by-step instructions for doing common development tasks in Plone.
-> Recipes try to assume the user does not have extensive knowledge about Plone internals.
+The `plone.api` is an elegant and simple API, built for humans wishing to develop with Plone.
+
+It comes with *cookbook*-like documentation and step-by-step instructions for doing common development tasks in Plone.
+Recipes try to assume the user does not have extensive knowledge about Plone internals.
 
 The intention of this package is to provide clear API methods for Plone functionality which may be confusing or difficult to access.
 As the underlying code improves, some API methods may be deprecated and the documentation
