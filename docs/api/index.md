@@ -2,7 +2,7 @@
 .. currentmodule:: plone
 ```
 
-# List of all API methods with descriptions
+# API methods and descriptions
 
 ```{toctree}
 :maxdepth: 1

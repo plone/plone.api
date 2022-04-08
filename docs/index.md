@@ -1,4 +1,4 @@
-# A Plone API
+# `plone.api`
 
 > The `plone.api` is an elegant and simple API, built for humans wishing to develop with Plone.
 >

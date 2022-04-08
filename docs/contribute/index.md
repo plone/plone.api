@@ -1,4 +1,4 @@
-# How to contribute to this package?
+# Contributing to `plone.api`
 
 ## Conventions
 
