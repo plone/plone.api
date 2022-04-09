@@ -3,10 +3,12 @@
 This section is meant for contributors to the `plone.api` project.
 Its purpose is to guide them through the steps needed to start contributing.
 
-% note ``` This HowTo is written for Linux and OS X users.
-% If you're are running Windows we suggest using VMWare or a similar Virtualization tool to install Ubuntu Linux on a virtual machine or installing Ubuntu Linux as a secondary OS on your machine.
-% Alternatively, you can browse Plone's documentation on how to get Plone development environment up and running on Windows.
-% Plone does run on Windows but it's not completely trivial to set it up.
+```{note}
+This HowTo is written for Linux and OS X users.
+If you are running Windows, we suggest either using VMWare or a similar virtualization tool to install Ubuntu Linux on a virtual machine, or installing Ubuntu Linux as a secondary operating system on your machine.
+Alternatively, you can browse Plone's documentation on how to get Plone development environment up and running on Windows.
+Plone does run on Windows, but it's not completely trivial to set it up.
+```
 
 ## Locations of information and tools
 
