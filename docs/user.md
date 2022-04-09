@@ -14,44 +14,52 @@
 To create a new user, use {meth}`api.user.create`.
 If your portal is configured to use emails as usernames, you just need to pass in the email of the new user.
 
-% invisible-code-block: python
-%
-% from plone import api
-% from plone.api.exc import InvalidParameterError
-% try:
-%     api.portal.set_registry_record('plone.use_email_as_login', True)
-% except InvalidParameterError:
-%     portal = api.portal.get()
-%     portal.portal_properties.site_properties.use_email_as_login = True
+```{eval-rst}
+.. invisible-code-block:: python
+
+    from plone import api
+    from plone.api.exc import InvalidParameterError
+    try:
+        api.portal.set_registry_record('plone.use_email_as_login', True)
+    except InvalidParameterError:
+        portal = api.portal.get()
+        portal.portal_properties.site_properties.use_email_as_login = True
+```
 
 ```python
 from plone import api
 user = api.user.create(email='alice@plone.org')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(user.id, 'alice@plone.org')
-% self.assertEqual(user.getProperty('email'), 'alice@plone.org')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(user.id, 'alice@plone.org')
+    self.assertEqual(user.getProperty('email'), 'alice@plone.org')
+```
 
 Otherwise, you also need to pass in the username of the new user.
 
-% invisible-code-block: python
-%
-% try:
-%     api.portal.set_registry_record('plone.use_email_as_login', False)
-% except InvalidParameterError:
-%     portal = api.portal.get()
-%     portal.portal_properties.site_properties.use_email_as_login = False
+```{eval-rst}
+.. invisible-code-block:: python
+
+    try:
+        api.portal.set_registry_record('plone.use_email_as_login', False)
+    except InvalidParameterError:
+        portal = api.portal.get()
+        portal.portal_properties.site_properties.use_email_as_login = False
+```
 
 ```python
 user = api.user.create(email='jane@plone.org', username='jane')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(user.id, 'jane')
-% self.assertEqual(user.getProperty('email'), 'jane@plone.org')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(user.id, 'jane')
+    self.assertEqual(user.getProperty('email'), 'jane@plone.org')
+```
 
 To set user properties when creating a new user, pass in a properties dict.
 
@@ -67,10 +75,12 @@ user = api.user.create(
 )
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(user.getProperty('fullname'), 'Bob')
-% self.assertEqual(user.getProperty('location'), 'Munich')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(user.getProperty('fullname'), 'Bob')
+    self.assertEqual(user.getProperty('location'), 'Munich')
+```
 
 Besides user properties you can also specify a password for the new user.
 Otherwise a random 8-character alphanumeric password will be generated.
@@ -94,9 +104,11 @@ from plone import api
 user = api.user.get(username='bob')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(user.id, 'bob')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(user.id, 'bob')
+```
 
 ## User properties
 
@@ -110,9 +122,11 @@ user.setMemberProperties(mapping={ 'location': 'Neverland', })
 location = user.getProperty('location')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(location, 'Neverland')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(location, 'Neverland')
+```
 
 (user-get-current-example)=
 
@@ -125,9 +139,11 @@ from plone import api
 current = api.user.get_current()
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(current.id, 'test_user_1_')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(current.id, 'test_user_1_')
+```
 
 (user-is-anonymous-example)=
 
@@ -143,9 +159,11 @@ if not api.user.is_anonymous():
 trigger = True
 ```
 
-% invisible-code-block: python
-%
-% self.assertTrue(trigger)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertTrue(trigger)
+```
 
 (user-get-all-users-example)=
 
@@ -158,9 +176,11 @@ from plone import api
 users = api.user.get_users()
 ```
 
-% invisible-code-block: python
-%
-% self.assertTrue('test_user_1_' in [user.id for user in users])
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertTrue('test_user_1_' in [user.id for user in users])
+```
 
 (user-get-groups-users-example)=
 
@@ -168,19 +188,23 @@ users = api.user.get_users()
 
 If you set the `groupname` parameter, then {meth}`api.user.get_users` will return only users that are members of this group.
 
-% invisible-code-block: python
-%
-% api.group.create(groupname='staff')
-% api.group.add_user(username='jane', groupname='staff')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    api.group.create(groupname='staff')
+    api.group.add_user(username='jane', groupname='staff')
+```
 
 ```python
 from plone import api
 users = api.user.get_users(groupname='staff')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(users[0].id, 'jane')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(users[0].id, 'jane')
+```
 
 (user-delete-example)=
 
@@ -194,18 +218,22 @@ api.user.create(username='unwanted', email='unwanted@example.org')
 api.user.delete(username='unwanted')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(api.user.get(username='unwanted'), None)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(api.user.get(username='unwanted'), None)
+```
 
 ```python
 unwanted = api.user.create(username='unwanted', email='unwanted@example.org')
 api.user.delete(user=unwanted)
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(api.user.get(username='unwanted'), None)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(api.user.get(username='unwanted'), None)
+```
 
 (user-get-roles-example)=
 
@@ -219,9 +247,11 @@ from plone import api
 roles = api.user.get_roles(username='jane')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(set(roles), set(['Member','Authenticated']))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(set(roles), set(['Member','Authenticated']))
+```
 
 If you pass in a content object, it will return local roles of the user in that particular context.
 
@@ -232,9 +262,11 @@ blog = api.content.create(container=portal, type='Document', id='blog', title='M
 roles = api.user.get_roles(username='jane', obj=portal['blog'])
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(set(roles), set(['Member','Authenticated']))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(set(roles), set(['Member','Authenticated']))
+```
 
 (user-get-permissions-example)=
 
@@ -249,18 +281,20 @@ mike = api.user.create(email='mike@plone.org', username='mike')
 permissions = api.user.get_permissions(username='mike')
 ```
 
-% invisible-code-block: python
-%
-% PERMISSIONS = {
-%     'View': True,
-%     'Manage portal': False,
-%     'Modify portal content': False,
-%     'Access contents information': True,
-% }
-%
-% for k, v in PERMISSIONS.items():
-%     self.assertTrue(v == api.user.get_permissions(username='mike').get(k, None))
-%     self.assertTrue(v == api.user.get_permissions(user=mike).get(k, None))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    PERMISSIONS = {
+        'View': True,
+        'Manage portal': False,
+        'Modify portal content': False,
+        'Access contents information': True,
+    }
+
+    for k, v in PERMISSIONS.items():
+        self.assertTrue(v == api.user.get_permissions(username='mike').get(k, None))
+        self.assertTrue(v == api.user.get_permissions(user=mike).get(k, None))
+```
 
 If you pass in a content object, it will return local permissions of the user in that particular context.
 
@@ -271,18 +305,20 @@ folder = api.content.create(container=portal, type='Folder', id='folder_two', ti
 permissions = api.user.get_permissions(username='mike', obj=portal['folder_two'])
 ```
 
-% invisible-code-block: python
-%
-% PERMISSIONS = {
-%     'View': False,
-%     'Manage portal': False,
-%     'Modify portal content': False,
-%     'Access contents information': False,
-% }
-%
-% for k, v in PERMISSIONS.items():
-%     self.assertTrue(v == api.user.get_permissions(username='mike', obj=portal['folder_two']).get(k, None))
-%     self.assertTrue(v == api.user.get_permissions(user=mike, obj=portal['folder_two']).get(k, None))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    PERMISSIONS = {
+        'View': False,
+        'Manage portal': False,
+        'Modify portal content': False,
+        'Access contents information': False,
+    }
+
+    for k, v in PERMISSIONS.items():
+        self.assertTrue(v == api.user.get_permissions(username='mike', obj=portal['folder_two']).get(k, None))
+        self.assertTrue(v == api.user.get_permissions(user=mike, obj=portal['folder_two']).get(k, None))
+```
 
 (user-has-permission-example)=
 
@@ -297,9 +333,11 @@ adam = api.user.create(email='adam@plone.org', username='adam')
 can_view = api.user.has_permission('View', username='adam')
 ```
 
-% invisible-code-block: python
-%
-% self.assertTrue(can_view)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertTrue(can_view)
+```
 
 If you pass in a content object, it will check the permission in that particular context.
 
@@ -310,9 +348,11 @@ folder = api.content.create(container=portal, type='Folder', id='folder_hp', tit
 can_view = api.user.has_permission('View', username='adam', obj=folder)
 ```
 
-% invisible-code-block: python
-%
-% self.assertFalse(can_view)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertFalse(can_view)
+```
 
 (user-grant-roles-example)=
 
@@ -327,11 +367,13 @@ api.user.grant_roles(username='jane',
 )
 ```
 
-% invisible-code-block: python
-%
-% EXPECTED_ROLES_SITE = ['Member', 'Reviewer', 'SiteAdministrator', 'Authenticated']
-% roles = api.user.get_roles(username='jane')
-% self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_SITE = ['Member', 'Reviewer', 'SiteAdministrator', 'Authenticated']
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+```
 
 If you pass a content object or folder,
 the roles are granted only on that context and not site-wide.
@@ -346,13 +388,15 @@ api.user.grant_roles(username='jane',
 )
 ```
 
-% invisible-code-block: python
-%
-% EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Editor', 'Contributor']
-% roles = api.user.get_roles(username='jane', obj=portal['folder_one'])
-% self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
-% roles = api.user.get_roles(username='jane')
-% self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Editor', 'Contributor']
+    roles = api.user.get_roles(username='jane', obj=portal['folder_one'])
+    self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+```
 
 (user-revoke-roles-example)=
 
@@ -365,11 +409,13 @@ from plone import api
 api.user.revoke_roles(username='jane', roles=['SiteAdministrator'])
 ```
 
-% invisible-code-block: python
-%
-% EXPECTED_ROLES_SITE = ['Member', 'Authenticated', 'Reviewer']
-% roles = api.user.get_roles(username='jane')
-% self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_SITE = ['Member', 'Authenticated', 'Reviewer']
+    roles = api.user.get_roles(username='jane')
+    self.assertEqual(set(EXPECTED_ROLES_SITE), set(roles))
+```
 
 If you pass a context object the local roles for that context will be removed.
 
@@ -393,11 +439,13 @@ api.user.revoke_roles(
 )
 ```
 
-% invisible-code-block: python
-%
-% EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
-% roles = api.user.get_roles(username='jane', obj=portal['folder_three'])
-% self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
+    roles = api.user.get_roles(username='jane', obj=portal['folder_three'])
+    self.assertEqual(set(EXPECTED_ROLES_CONTEXT), set(roles))
+```
 
 ## Further reading
 

@@ -54,20 +54,22 @@ plone (portal root)
     `-- sprint
 ```
 
-% invisible-code-block: python
-%
-% portal = api.portal.get()
-% image = api.content.create(type='Image', id='image', container=portal)
-% blog = api.content.create(type='Link', id='blog', container=portal)
-% about = api.content.create(type='Folder', id='about', container=portal)
-% events = api.content.create(type='Folder', id='events', container=portal)
-%
-% api.content.create(container=about, type='Document', id='team')
-% api.content.create(container=about, type='Document', id='contact')
-%
-% api.content.create(container=events, type='Event', id='training')
-% api.content.create(container=events, type='Event', id='conference')
-% api.content.create(container=events, type='Event', id='sprint')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    portal = api.portal.get()
+    image = api.content.create(type='Image', id='image', container=portal)
+    blog = api.content.create(type='Link', id='blog', container=portal)
+    about = api.content.create(type='Folder', id='about', container=portal)
+    events = api.content.create(type='Folder', id='events', container=portal)
+
+    api.content.create(container=about, type='Document', id='team')
+    api.content.create(container=about, type='Document', id='contact')
+
+    api.content.create(container=events, type='Event', id='training')
+    api.content.create(container=events, type='Event', id='conference')
+    api.content.create(container=events, type='Event', id='sprint')
+```
 
 The following operations will get objects from the stucture above, including using {meth}`api.content.get`.
 
@@ -95,15 +97,17 @@ team = api.content.get(UID=uid)
 not_found = api.content.get(UID='notfound')
 ```
 
-% invisible-code-block: python
-%
-% self.assertTrue(portal)
-% self.assertTrue(blog)
-% self.assertTrue(about)
-% self.assertTrue(conference)
-% self.assertTrue(sprint)
-% self.assertTrue(team)
-% self.assertEquals(not_found, None)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertTrue(portal)
+    self.assertTrue(blog)
+    self.assertTrue(about)
+    self.assertTrue(conference)
+    self.assertTrue(sprint)
+    self.assertTrue(team)
+    self.assertEquals(not_found, None)
+```
 
 (content-find-example)=
 
@@ -118,9 +122,11 @@ from plone import api
 documents = api.content.find(portal_type='Document')
 ```
 
-% invisible-code-block: python
-%
-% self.assertGreater(len(documents), 0)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertGreater(len(documents), 0)
+```
 
 Finding all Documents within a context:
 
@@ -130,9 +136,11 @@ documents = api.content.find(
     context=api.portal.get(), portal_type='Document')
 ```
 
-% invisible-code-block: python
-%
-% self.assertGreater(len(documents), 0)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertGreater(len(documents), 0)
+```
 
 Limit search depth:
 
@@ -141,9 +149,11 @@ from plone import api
 documents = api.content.find(depth=1, portal_type='Document')
 ```
 
-% invisible-code-block: python
-%
-% self.assertGreater(len(documents), 0)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertGreater(len(documents), 0)
+```
 
 Limit search depth within a context:
 
@@ -153,9 +163,11 @@ documents = api.content.find(
     context=api.portal.get(), depth=1, portal_type='Document')
 ```
 
-% invisible-code-block: python
-%
-% self.assertGreater(len(documents), 0)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertGreater(len(documents), 0)
+```
 
 Search by interface:
 
@@ -165,9 +177,11 @@ from Products.CMFCore.interfaces import IContentish
 documents = api.content.find(object_provides=IContentish)
 ```
 
-% invisible-code-block: python
-%
-% self.assertGreater(len(documents), 0)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertGreater(len(documents), 0)
+```
 
 Combining multiple arguments:
 
@@ -182,9 +196,11 @@ documents = api.content.find(
 )
 ```
 
-% invisible-code-block: python
-%
-% self.assertGreater(len(documents), 0)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertGreater(len(documents), 0)
+```
 
 More information about how to use the catalog may be found in the
 [Plone Documentation](https://docs.plone.org/develop/plone/searching_and_indexing/index.html).
@@ -216,9 +232,11 @@ contact = portal['about']['contact']
 uuid = api.content.get_uuid(obj=contact)
 ```
 
-% invisible-code-block: python
-%
-% self.assertTrue(isinstance(uuid, str))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertTrue(isinstance(uuid, str))
+```
 
 (content-move-example)=
 
@@ -235,10 +253,12 @@ contact = portal['about']['contact']
 api.content.move(source=contact, target=portal)
 ```
 
-% invisible-code-block: python
-%
-% self.assertFalse(portal['about'].get('contact'))
-% self.assertTrue(portal['contact'])
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertFalse(portal['about'].get('contact'))
+    self.assertTrue(portal['contact'])
+```
 
 Actually, `move` behaves like a filesystem move.
 If you pass it an `id` argument, the object will have that new ID in its new home.
@@ -256,10 +276,12 @@ portal = api.portal.get()
 api.content.rename(obj=portal['blog'], new_id='old-blog')
 ```
 
-% invisible-code-block: python
-%
-% self.assertFalse(portal.get('blog'))
-% self.assertTrue(portal['old-blog'])
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertFalse(portal.get('blog'))
+    self.assertTrue(portal['old-blog'])
+```
 
 (content-copy-example)=
 
@@ -278,10 +300,12 @@ api.content.copy(source=training, target=portal)
 Note that the new object will have the same ID as the old object (unless otherwise stated).
 This is not a problem, since the new object is in a different container.
 
-% invisible-code-block: python
-%
-% assert portal['events']['training'].id == 'training'
-% assert portal['training'].id == 'training'
+```{eval-rst}
+.. invisible-code-block:: python
+
+    assert portal['events']['training'].id == 'training'
+    assert portal['training'].id == 'training'
+```
 
 You can also set `target` to source's container and set `safe_id=True`.
 This will duplicate your content object in the same container and assign it a new, non-conflicting ID.
@@ -291,10 +315,12 @@ api.content.copy(source=portal['training'], target=portal, safe_id=True)
 new_training = portal['copy_of_training']
 ```
 
-% invisible-code-block: python
-%
-% self.assertTrue(portal['training'])  # old object remains
-% self.assertTrue(portal['copy_of_training'])
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertTrue(portal['training'])  # old object remains
+    self.assertTrue(portal['copy_of_training'])
+```
 
 (content-delete-example)=
 
@@ -308,16 +334,20 @@ portal = api.portal.get()
 api.content.delete(obj=portal['copy_of_training'])
 ```
 
-% invisible-code-block: python
-%
-% self.assertFalse(portal.get('copy_of_training'))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertFalse(portal.get('copy_of_training'))
+```
 
 To delete multiple content objects, pass the objects to the {meth}`api.content.delete` method:
 
-% invisible-code-block: python
-%
-% api.content.copy(source=portal['training'], target=portal, safe_id=True)
-% api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    api.content.copy(source=portal['training'], target=portal, safe_id=True)
+    api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
+```
 
 ```python
 from plone import api
@@ -326,21 +356,25 @@ data = [portal['copy_of_training'], portal['events']['copy_of_training'], ]
 api.content.delete(objects=data)
 ```
 
-% invisible-code-block: python
-%
-% self.assertFalse(portal.get('copy_of_training'))
-% self.assertFalse(portal.events.get('copy_of_training'))
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertFalse(portal.get('copy_of_training'))
+    self.assertFalse(portal.events.get('copy_of_training'))
+```
 
 If deleting content would result in broken links you will get a `LinkIntegrityNotificationException`. To delete anyway, set the option `check_linkintegrity` to `False`:
 
-% invisible-code-block: python
-%
-% from plone.app.textfield import RichTextValue
-% from zope.lifecycleevent import modified
-% api.content.copy(source=portal['training'], target=portal, safe_id=True)
-% api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
-% portal['about']['team'].text = RichTextValue('<a href="../copy_of_training">contact</a>', 'text/html', 'text/x-html-safe')
-% modified(portal['about']['team'])
+```{eval-rst}
+.. invisible-code-block:: python
+
+    from plone.app.textfield import RichTextValue
+    from zope.lifecycleevent import modified
+    api.content.copy(source=portal['training'], target=portal, safe_id=True)
+    api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
+    portal['about']['team'].text = RichTextValue('<a href="../copy_of_training">contact</a>', 'text/html', 'text/x-html-safe')
+    modified(portal['about']['team'])
+```
 
 ```python
 from plone import api
@@ -348,9 +382,11 @@ portal = api.portal.get()
 api.content.delete(obj=portal['copy_of_training'], check_linkintegrity=False)
 ```
 
-% invisible-code-block: python
-%
-% self.assertNotIn('copy_of_training', portal.keys())
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertNotIn('copy_of_training', portal.keys())
+```
 
 (content-manipulation-with-safe-id-option)=
 
@@ -362,9 +398,11 @@ If another object with the same ID is already present in the target container th
 
 However, if the `safe_id` option is enabled, a non-conflicting ID will be generated.
 
-% invisible-code-block: python
-%
-% api.content.create(container=portal, type='Document', id='document', safe_id=True)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    api.content.create(container=portal, type='Document', id='document', safe_id=True)
+```
 
 ```python
 api.content.create(container=portal, type='Document', id='document', safe_id=True)
@@ -383,9 +421,11 @@ portal = api.portal.get()
 state = api.content.get_state(obj=portal['about'])
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(state, 'private')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(state, 'private')
+```
 
 The optional `default` argument is returned if no workflow is defined for the object.
 
@@ -395,9 +435,11 @@ portal = api.portal.get()
 state = api.content.get_state(obj=portal['image'], default='Unknown')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(state, 'Unknown')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(state, 'Unknown')
+```
 
 (content-transition-example)=
 
@@ -411,12 +453,14 @@ portal = api.portal.get()
 api.content.transition(obj=portal['about'], transition='publish')
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(
-%     api.content.get_state(obj=portal['about']),
-%     'published'
-% )
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(
+        api.content.get_state(obj=portal['about']),
+        'published'
+    )
+```
 
 If your workflow accepts any additional arguments to the checkin method you may supply them via kwargs.
 These arguments can be saved to your transition using custom workflow variables inside the ZMI using an expression such as "python:state_change.kwargs.get('comment', '')"
@@ -426,8 +470,6 @@ from plone import api
 portal = api.portal.get()
 api.content.transition(obj=portal['about'], transition='reject', comment='You had a typo on your page.')
 ```
-
-% invisible-code-block: python
 
 (content-disable-roles-acquisition-example)=
 
@@ -441,10 +483,12 @@ portal = api.portal.get()
 api.content.disable_roles_acquisition(obj=portal['about'])
 ```
 
-% invisible-code-block: python
-%
-% ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
-% self.assertTrue(ac_flag)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
+    self.assertTrue(ac_flag)
+```
 
 (content-enable-roles-acquisition-example)=
 
@@ -458,15 +502,17 @@ portal = api.portal.get()
 api.content.enable_roles_acquisition(obj=portal['about'])
 ```
 
-% invisible-code-block: python
-%
-% # As __ac_local_roles_block__ is None by default, we have to set it,
-% # before we can test the enabling method.
-% portal['about'].__ac_local_roles_block__ = 1
-%
-% api.content.enable_roles_acquisition(obj=portal['about'])
-% ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
-% self.assertFalse(ac_flag)
+```{eval-rst}
+.. invisible-code-block:: python
+
+    # As __ac_local_roles_block__ is None by default, we have to set it,
+    # before we can test the enabling method.
+    portal['about'].__ac_local_roles_block__ = 1
+
+    api.content.enable_roles_acquisition(obj=portal['about'])
+    ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
+    self.assertFalse(ac_flag)
+```
 
 (content-get-view-example)=
 
@@ -484,9 +530,11 @@ view = api.content.get_view(
 )
 ```
 
-% invisible-code-block: python
-%
-% self.assertEqual(view.__name__, u'plone')
+```{eval-rst}
+.. invisible-code-block:: python
+
+    self.assertEqual(view.__name__, u'plone')
+```
 
 ## Further reading
 
