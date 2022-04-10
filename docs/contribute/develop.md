@@ -76,11 +76,9 @@ Use `git rebase --interactive` to squash all commits that you think are unnecess
 
 ## Creating and using the development environment
 
-```{eval-rst}
-.. todo::
-
-    Update this section as it seems out of date.
-    There is no `Makefile`, so this description makes no sense anymore.
+```{todo}
+Update this section as it seems out of date.
+There is no `Makefile`, so this description makes no sense anymore.
 ```
 
 Go to your project's folder, and download the latest `plone.api` code:
