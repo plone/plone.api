@@ -158,7 +158,7 @@ Limit search depth:
 ..  ifconfig:: plone_api_doctests
 ..  invisible-code-block: python
 
-    self.assertGreater(len(documents), 0)
+    self.assertGreater(len(documents), 0)  # TODO: This test fails
 ```
 
 Limit search depth within a context:
@@ -173,7 +173,7 @@ Limit search depth within a context:
 ..  ifconfig:: plone_api_doctests
 ..  invisible-code-block: python
 
-    self.assertGreater(len(documents), 0)
+    self.assertGreater(len(documents), 0)  # TODO: This test fails
 ```
 
 Search by interface:
