@@ -13,14 +13,14 @@
 
 Getting the Plone portal object is easy with {meth}`api.portal.get`.
 
-```python
-from plone import api
-portal = api.portal.get()
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(portal.getPortalTypeName(), 'Plone Site')
     self.assertEqual(portal.getId(), 'plone')
@@ -30,16 +30,15 @@ portal = api.portal.get()
 
 ## Get navigation root
 
-In multilingual or multi-site Plone installations you probably want to get the language-specific navigation root object,
-not the top portal object.
+In multilingual or multi-site Plone installations you probably want to get the language-specific navigation root object, not the top portal object.
 
 You do this with {meth}`api.portal.get_navigation_root()`.
 
 Assuming there is a document `english_page` in a folder `en`, which is the navigation root:
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     from plone import api
     from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -59,32 +58,31 @@ Assuming there is a document `english_page` in a folder `en`, which is the navig
     )
 ```
 
-```python
-from plone import api
-nav_root = api.portal.get_navigation_root(english_page)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+    from plone import api
+    nav_root = api.portal.get_navigation_root(english_page)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(nav_root.id, 'en')
 ```
 
-returns the folder `en`. If the folder `en` is not a navigation root it would return the portal.
+returns the folder `en`. If the folder `en` is not a navigation root, it would return the portal.
 
 ## Get portal url
 
 Since we now have the portal object, it's easy to get the portal URL.
 
-```python
-from plone import api
-url = api.portal.get().absolute_url()
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    url = api.portal.get().absolute_url()
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(url, 'http://nohost/plone')
 ```
@@ -95,14 +93,14 @@ url = api.portal.get().absolute_url()
 
 To get a portal tool easily, use {meth}`api.portal.get_tool` and pass in the name of the tool you need.
 
-```python
-from plone import api
-catalog = api.portal.get_tool(name='portal_catalog')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    catalog = api.portal.get_tool(name='portal_catalog')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
 ```
@@ -113,16 +111,16 @@ catalog = api.portal.get_tool(name='portal_catalog')
 
 To display the date/time in a user-friendly way, localized to the user's preferred language, use {meth}`api.portal.get_localized_time`.
 
-```python
-from plone import api
-from DateTime import DateTime
-today = DateTime()
-localized = api.portal.get_localized_time(datetime=today)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    from DateTime import DateTime
+    today = DateTime()
+    localized = api.portal.get_localized_time(datetime=today)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     # assert that the result is in fact a datetime
     self.assertEqual(DateTime(localized).__class__, DateTime)
@@ -134,14 +132,14 @@ localized = api.portal.get_localized_time(datetime=today)
 
 To get the default language, use {meth}`api.portal.get_default_language`.
 
-```python
-from plone import api
-lang = api.portal.get_default_language()
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    lang = api.portal.get_default_language()
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     # assert that the result is 'en'
     self.assertEqual(lang, 'en')
@@ -153,14 +151,14 @@ lang = api.portal.get_default_language()
 
 To get the currently negotiated language, use {meth}`api.portal.get_current_language`.
 
-```python
-from plone import api
-lang = api.portal.get_current_language()
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    lang = api.portal.get_current_language()
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     # assert that the result is 'en'
     self.assertEqual(lang, 'en')
@@ -172,14 +170,14 @@ lang = api.portal.get_current_language()
 
 To translate a message in a given language, use {meth}`api.portal.translate`.
 
-```python
-from plone import api
-msg = api.portal.translate('Edited', lang='es')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    msg = api.portal.translate('Edited', lang='es')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     # assert that the translation is correct
     self.assertEqual(msg, u'Editado')
@@ -192,8 +190,8 @@ msg = api.portal.translate('Edited', lang='es')
 To send an e-mail use {meth}`api.portal.send_email`:
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     # Mock the mail host so we can test sending the email
     from plone import api
@@ -213,19 +211,19 @@ To send an e-mail use {meth}`api.portal.send_email`:
     mailhost.reset()
 ```
 
-```python
-from plone import api
-api.portal.send_email(
-    recipient="bob@plone.org",
-    sender="noreply@plone.org",
-    subject="Trappist",
-    body="One for you Bob!",
-)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.portal.send_email(
+        recipient="bob@plone.org",
+        sender="noreply@plone.org",
+        subject="Trappist",
+        body="One for you Bob!",
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(len(mailhost.messages), 1)
 
@@ -245,33 +243,32 @@ api.portal.send_email(
 If you need to add other fields not supported on send_email signature,
 Python's standard [email module](https://docs.python.org/2.7/library/email.message.html#email.message.Message) can also be used:
 
-```python
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
-message = MIMEMultipart()
-message.attach(MIMEText("One for you Bar!"))
-
-part = MIMEText('<xml></xml>', 'xml')
-part.add_header(
-    'Content-Disposition',
-    'attachment; filename="report.xml"'
-)
-message.attach(part)
-
-message['Reply-To'] = "community@plone.org"
-
-api.portal.send_email(
-    recipient="bob@plone.org",
-    sender="noreply@plone.org",
-    subject="Trappist",
-    body=message,
-)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    message = MIMEMultipart()
+    message.attach(MIMEText("One for you Bar!"))
+
+    part = MIMEText('<xml></xml>', 'xml')
+    part.add_header(
+        'Content-Disposition',
+        'attachment; filename="report.xml"'
+    )
+    message.attach(part)
+
+    message['Reply-To'] = "community@plone.org"
+
+    api.portal.send_email(
+        recipient="bob@plone.org",
+        sender="noreply@plone.org",
+        subject="Trappist",
+        body=message,
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(len(mailhost.messages), 2)
 
@@ -294,19 +291,19 @@ api.portal.send_email(
 
 With {meth}`api.portal.show_message` you can show a notification message to the user.
 
-```python
+```{eval-rst}
+..  code-block:: python
+
 from plone import api
 api.portal.show_message(message='Blueberries!', request=request)
-```
 
-```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     from Products.statusmessages.interfaces import IStatusMessage
     messages = IStatusMessage(request)
     show = messages.show()
-    self.assertEqual(len(show), 1)
+    self.assertEqual(len(show), 1)  # TODO: This test fails, and blocks the next
     self.assertTrue('Blueberries!' in show[0].message)
 ```
 
@@ -318,8 +315,8 @@ Plone comes with a package `plone.app.registry` that provides a common way to st
 {meth}`api.portal.get_registry_record` provides an easy way to access these.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.registry.record import Record
@@ -331,14 +328,14 @@ Plone comes with a package `plone.app.registry` that provides a common way to st
     registry['my.package.someoption'] = True
 ```
 
-```python
-from plone import api
-api.portal.get_registry_record('my.package.someoption')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.portal.get_registry_record('my.package.someoption')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertTrue(api.portal.get_registry_record('my.package.someoption'))
 ```
@@ -347,8 +344,8 @@ One common pattern when using registry records is to define an interface with al
 {meth}`api.portal.get_registry_record` also allows you to use this pattern.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.api.tests.test_portal import IMyRegistrySettings
@@ -359,14 +356,14 @@ One common pattern when using registry records is to define an interface with al
     records.field_one = u'my text'
 ```
 
-```python
-from plone import api
-api.portal.get_registry_record('field_one', interface=IMyRegistrySettings)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.portal.get_registry_record('field_one', interface=IMyRegistrySettings)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(
         api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),
@@ -378,15 +375,15 @@ It is possible to provide a default value
 that will be returned by {meth}`api.portal.get_registry_record`
 if the queried record is not found.
 
-```python
-from plone import api
-api.portal.get_registry_record('foo', interface=IMyRegistrySettings, default=u'bar')
-api.portal.get_registry_record('foo', default=u'baz')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.portal.get_registry_record('foo', interface=IMyRegistrySettings, default=u'bar')
+    api.portal.get_registry_record('foo', default=u'baz')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
     self.assertEqual(
         api.portal.get_registry_record(
             'foo',
@@ -408,8 +405,8 @@ api.portal.get_registry_record('foo', default=u'baz')
 {meth}`api.portal.set_registry_record` provides an easy way to change `plone.app.registry` configuration and settings.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.registry.record import Record
@@ -421,14 +418,14 @@ api.portal.get_registry_record('foo', default=u'baz')
     registry['my.package.someoption'] = True
 ```
 
-```python
-from plone import api
-api.portal.set_registry_record('my.package.someoption', False)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.portal.set_registry_record('my.package.someoption', False)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertFalse(registry['my.package.someoption'])
 ```
@@ -436,8 +433,8 @@ api.portal.set_registry_record('my.package.someoption', False)
 {meth}`api.portal.set_registry_record` allows you to define an interface with all the settings.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.api.tests.test_portal import IMyRegistrySettings
@@ -447,14 +444,14 @@ api.portal.set_registry_record('my.package.someoption', False)
     records = registry.forInterface(IMyRegistrySettings)
 ```
 
-```python
-from plone import api
-api.portal.set_registry_record('field_one', u'new value', interface=IMyRegistrySettings)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.portal.set_registry_record('field_one', u'new value', interface=IMyRegistrySettings)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(
         api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),

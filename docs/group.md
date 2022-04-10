@@ -13,35 +13,35 @@
 
 To create a new group, use {meth}`api.group.create`.
 
-```python
-from plone import api
-group = api.group.create(groupname='staff')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    group = api.group.create(groupname='staff')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(group.id, 'staff')
 ```
 
 When you create groups, `title`, `description`, `roles` and `groups` are optional.
 
-```python
-from plone import api
-
-group = api.group.create(
-    groupname='board_members',
-    title='Board members',
-    description='Just a description',
-    roles=['Reader', ],
-    groups=['Site Administrators', ],
-)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+
+    group = api.group.create(
+        groupname='board_members',
+        title='Board members',
+        description='Just a description',
+        roles=['Reader', ],
+        groups=['Site Administrators', ],
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(group.id, 'board_members')
     self.assertEqual(group.getProperty('title'), 'Board members')
@@ -56,14 +56,14 @@ group = api.group.create(
 
 To get a group by its name, use {meth}`api.group.get`.
 
-```python
-from plone import api
-group = api.group.get(groupname='staff')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    group = api.group.get(groupname='staff')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(group.id, 'staff')
 ```
@@ -75,20 +75,20 @@ group = api.group.get(groupname='staff')
 Groups can be edited by using the `group_tool`.
 In this example, the `title`, `description` and `roles` are updated for the group 'Staff'.
 
-```python
-from plone import api
-group_tool = api.portal.get_tool(name='portal_groups')
-group_tool.editGroup(
-    'staff',
-    roles=['Editor', 'Reader'],
-    title='Staff',
-    description='Just a description',
-)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    group_tool = api.portal.get_tool(name='portal_groups')
+    group_tool.editGroup(
+        'staff',
+        roles=['Editor', 'Reader'],
+        title='Staff',
+        description='Just a description',
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     group = api.group.get(groupname='staff')
 
@@ -108,14 +108,14 @@ group_tool.editGroup(
 
 You can also get all groups by using {meth}`api.group.get_groups`.
 
-```python
-from plone import api
-groups = api.group.get_groups()
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    groups = api.group.get_groups()
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(groups[0].id, 'Administrators')
 ```
@@ -128,23 +128,23 @@ Groups may be filtered by member. By passing the `username` parameter,
 {meth}`api.group.get_groups` will return only the groups the user belongs to.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     api.user.create(email='jane@plone.org', username='jane')
     api.group.add_user(username='jane', groupname='staff')
     api.group.add_user(username='jane', groupname='Reviewers')
 ```
 
-```python
-from plone import api
-user = api.user.get(username='jane')
-groups = api.group.get_groups(username='jane')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    user = api.user.get(username='jane')
+    groups = api.group.get_groups(username='jane')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     group_list = [g.id for g in groups]
     self.assertCountEqual(
@@ -155,13 +155,15 @@ groups = api.group.get_groups(username='jane')
 
 You can also pass the user directly to {meth}`api.group.get_groups`:
 
-> from plone import api
-> user = api.user.get(username='jane')
-> groups = api.group.get_groups(user=user)
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    user = api.user.get(username='jane')
+    groups = api.group.get_groups(user=user)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     group_list = [g.id for g in groups]
     self.assertCountEqual(
@@ -174,14 +176,14 @@ You can also pass the user directly to {meth}`api.group.get_groups`:
 
 Use the {meth}`api.user.get_users` method to get all the users that are members of a group.
 
-```python
-from plone import api
-members = api.user.get_users(groupname='staff')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    members = api.user.get_users(groupname='staff')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(members[0].id, 'jane')
 ```
@@ -192,27 +194,27 @@ members = api.user.get_users(groupname='staff')
 
 To delete a group, use {meth}`api.group.delete` and pass in either the groupname or the group object you want to delete.
 
-```python
-from plone import api
-api.group.create(groupname='unwanted')
-api.group.delete(groupname='unwanted')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.group.create(groupname='unwanted')
+    api.group.delete(groupname='unwanted')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(api.group.get(groupname='unwanted'), None)
 ```
 
-```python
-unwanted = api.group.create(groupname='unwanted')
-api.group.delete(group=unwanted)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    unwanted = api.group.create(groupname='unwanted')
+    api.group.delete(group=unwanted)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(api.group.get(groupname='unwanted'), None)
 ```
@@ -224,16 +226,16 @@ api.group.delete(group=unwanted)
 To add a user to a group, use the {meth}`api.group.add_user` method.
 This method accepts either the groupname or the group object for the target group and the username or the user object you want to add to the group.
 
-```python
-from plone import api
-
-api.user.create(email='bob@plone.org', username='bob')
-api.group.add_user(groupname='staff', username='bob')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+
+    api.user.create(email='bob@plone.org', username='bob')
+    api.group.add_user(groupname='staff', username='bob')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertTrue(
         'staff' in [g.id for g in api.group.get_groups(username='bob')]
@@ -247,14 +249,14 @@ api.group.add_user(groupname='staff', username='bob')
 To remove a user from a group, use the {meth}`api.group.remove_user` method.
 This also accepts either the groupname or the group object for the target group and either the username or the user object you want to remove from the group.
 
-```python
-from plone import api
-api.group.remove_user(groupname='staff', username='bob')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.group.remove_user(groupname='staff', username='bob')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertFalse('staff' in [g.id for g in api.group.get_groups(username='bob')])
 ```
@@ -266,14 +268,14 @@ api.group.remove_user(groupname='staff', username='bob')
 To find the roles assigned to a group, use the {meth}`api.group.get_roles` method.
 By default it returns site-wide roles.
 
-```python
-from plone import api
-roles = api.group.get_roles(groupname='staff')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    roles = api.group.get_roles(groupname='staff')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader']
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
@@ -281,38 +283,38 @@ roles = api.group.get_roles(groupname='staff')
 
 If you pass in a content object, it will return the local roles of the group in that particular context.
 
-```python
-from plone import api
-portal = api.portal.get()
-folder = api.content.create(
-    container=portal,
-    type='Folder',
-    id='folder_four',
-    title='Folder Four',
-)
-roles = api.group.get_roles(groupname='staff', obj=portal['folder_four'])
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    folder = api.content.create(
+        container=portal,
+        type='Folder',
+        id='folder_four',
+        title='Folder Four',
+    )
+    roles = api.group.get_roles(groupname='staff', obj=portal['folder_four'])
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
 ```
 
 If you pass in a content object and `inherit=False`, it will return only the local roles of the group on that particular object and ignore global roles.
 
-```python
-api.group.grant_roles(
-    groupname='staff', roles=['Contributor'], obj=portal['folder_four'])
-
-roles = api.group.get_roles(
-    groupname='staff', obj=portal['folder_four'], inherit=False)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    api.group.grant_roles(
+        groupname='staff', roles=['Contributor'], obj=portal['folder_four'])
+
+    roles = api.group.get_roles(
+        groupname='staff', obj=portal['folder_four'], inherit=False)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_OBJ_ROLES = ['Contributor']
     self.assertEqual(set(EXPECTED_OBJ_ROLES), set(roles))
@@ -325,17 +327,17 @@ roles = api.group.get_roles(
 To grant roles to a group, use the {meth}`api.group.grant_roles` method.
 By default, roles are granted site-wide.
 
-```python
-from plone import api
-api.group.grant_roles(
-    groupname='staff',
-    roles=['Reviewer, SiteAdministrator'],
-)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.group.grant_roles(
+        groupname='staff',
+        roles=['Reviewer, SiteAdministrator'],
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader', 'Reviewer, SiteAdministrator']
     roles = api.group.get_roles(groupname='staff')
@@ -344,18 +346,18 @@ api.group.grant_roles(
 
 If you pass in a content object, roles will be assigned in that particular context.
 
-```python
-from plone import api
-portal = api.portal.get()
-folder = api.content.create(
-    container=portal, type='Folder', id='folder_five', title='Folder Five')
-api.group.grant_roles(
-    groupname='staff', roles=['Contributor'], obj=portal['folder_five'])
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    folder = api.content.create(
+        container=portal, type='Folder', id='folder_five', title='Folder Five')
+    api.group.grant_roles(
+        groupname='staff', roles=['Contributor'], obj=portal['folder_five'])
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_CONTEXT_ROLES = EXPECTED_SITE_ROLES + ['Contributor']
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
@@ -370,15 +372,14 @@ api.group.grant_roles(
 
 To revoke roles already granted to a group, use the {meth}`api.group.revoke_roles` method.
 
-```python
-from plone import api
-api.group.revoke_roles(
-    groupname='staff', roles=['Reviewer, SiteAdministrator'])
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+    from plone import api
+    api.group.revoke_roles(
+        groupname='staff', roles=['Reviewer, SiteAdministrator'])
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader']
     roles = api.group.get_roles(groupname='staff')
@@ -388,23 +389,23 @@ api.group.revoke_roles(
 If you pass in a content object, it will revoke roles granted in that particular context.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_CONTEXT_ROLES = ['Contributor']
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
     self.assertEqual(['Contributor'], roles)
 ```
 
-```python
-from plone import api
-api.group.revoke_roles(
-    groupname='staff', roles=['Contributor'], obj=portal['folder_five'])
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.group.revoke_roles(
+        groupname='staff', roles=['Contributor'], obj=portal['folder_five'])
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_CONTEXT_ROLES = []
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)

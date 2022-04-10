@@ -15,8 +15,8 @@ To create a new user, use {meth}`api.user.create`.
 If your portal is configured to use emails as usernames, you just need to pass in the email of the new user.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     from plone import api
     from plone.api.exc import InvalidParameterError
@@ -27,14 +27,14 @@ If your portal is configured to use emails as usernames, you just need to pass i
         portal.portal_properties.site_properties.use_email_as_login = True
 ```
 
-```python
-from plone import api
-user = api.user.create(email='alice@plone.org')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    user = api.user.create(email='alice@plone.org')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(user.id, 'alice@plone.org')
     self.assertEqual(user.getProperty('email'), 'alice@plone.org')
@@ -43,8 +43,8 @@ user = api.user.create(email='alice@plone.org')
 Otherwise, you also need to pass in the username of the new user.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     try:
         api.portal.set_registry_record('plone.use_email_as_login', False)
@@ -53,35 +53,35 @@ Otherwise, you also need to pass in the username of the new user.
         portal.portal_properties.site_properties.use_email_as_login = False
 ```
 
-```python
-user = api.user.create(email='jane@plone.org', username='jane')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    user = api.user.create(email='jane@plone.org', username='jane')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(user.id, 'jane')
     self.assertEqual(user.getProperty('email'), 'jane@plone.org')
 ```
 
-To set user properties when creating a new user, pass in a properties dict.
-
-```python
-properties = dict(
-    fullname='Bob',
-    location='Munich',
-)
-user = api.user.create(
-    username='bob',
-    email='bob@plone.org',
-    properties=properties,
-)
-```
+To set user properties when creating a new user, pass in a `properties` dict.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    properties = dict(
+        fullname='Bob',
+        location='Munich',
+    )
+    user = api.user.create(
+        username='bob',
+        email='bob@plone.org',
+        properties=properties,
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(user.getProperty('fullname'), 'Bob')
     self.assertEqual(user.getProperty('location'), 'Munich')
@@ -104,14 +104,14 @@ user = api.user.create(
 
 You can get a user with {meth}`api.user.get`.
 
-```python
-from plone import api
-user = api.user.get(username='bob')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    user = api.user.get(username='bob')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(user.id, 'bob')
 ```
@@ -121,16 +121,16 @@ user = api.user.get(username='bob')
 Users have various properties set on them.
 This is how you get and set them, using the underlying APIs:
 
-```python
-from plone import api
-user = api.user.get(username='bob')
-user.setMemberProperties(mapping={ 'location': 'Neverland', })
-location = user.getProperty('location')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    user = api.user.get(username='bob')
+    user.setMemberProperties(mapping={ 'location': 'Neverland', })
+    location = user.getProperty('location')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(location, 'Neverland')
 ```
@@ -141,14 +141,14 @@ location = user.getProperty('location')
 
 Getting the currently logged-in user is easy with {meth}`api.user.get_current`.
 
-```python
-from plone import api
-current = api.user.get_current()
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    current = api.user.get_current()
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(current.id, 'test_user_1_')
 ```
@@ -160,16 +160,16 @@ current = api.user.get_current()
 Sometimes you need to trigger or display some piece of information only for logged-in users.
 It's easy to use {meth}`api.user.is_anonymous` to do a basic check for it.
 
-```python
-from plone import api
-if not api.user.is_anonymous():
-    trigger = False
-trigger = True
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    if not api.user.is_anonymous():
+        trigger = False
+    trigger = True
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertTrue(trigger)
 ```
@@ -180,14 +180,14 @@ trigger = True
 
 Get all users in your portal with {meth}`api.user.get_users`.
 
-```python
-from plone import api
-users = api.user.get_users()
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    users = api.user.get_users()
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertTrue('test_user_1_' in [user.id for user in users])
 ```
@@ -199,21 +199,21 @@ users = api.user.get_users()
 If you set the `groupname` parameter, then {meth}`api.user.get_users` will return only users that are members of this group.
 
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     api.group.create(groupname='staff')
     api.group.add_user(username='jane', groupname='staff')
 ```
 
-```python
-from plone import api
-users = api.user.get_users(groupname='staff')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    users = api.user.get_users(groupname='staff')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(users[0].id, 'jane')
 ```
@@ -224,27 +224,27 @@ users = api.user.get_users(groupname='staff')
 
 To delete a user, use {meth}`api.user.delete` and pass in either the username or the user object you want to delete.
 
-```python
-from plone import api
-api.user.create(username='unwanted', email='unwanted@example.org')
-api.user.delete(username='unwanted')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.user.create(username='unwanted', email='unwanted@example.org')
+    api.user.delete(username='unwanted')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(api.user.get(username='unwanted'), None)
 ```
 
-```python
-unwanted = api.user.create(username='unwanted', email='unwanted@example.org')
-api.user.delete(user=unwanted)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    unwanted = api.user.create(username='unwanted', email='unwanted@example.org')
+    api.user.delete(user=unwanted)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(api.user.get(username='unwanted'), None)
 ```
@@ -256,30 +256,29 @@ api.user.delete(user=unwanted)
 The {meth}`api.user.get_roles` method is used for getting a user's roles.
 By default it returns site-wide roles.
 
-```python
-from plone import api
-roles = api.user.get_roles(username='jane')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+    from plone import api
+    roles = api.user.get_roles(username='jane')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(set(roles), set(['Member','Authenticated']))
 ```
 
 If you pass in a content object, it will return local roles of the user in that particular context.
 
-```python
-from plone import api
-portal = api.portal.get()
-blog = api.content.create(container=portal, type='Document', id='blog', title='My blog')
-roles = api.user.get_roles(username='jane', obj=portal['blog'])
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    blog = api.content.create(container=portal, type='Document', id='blog', title='My blog')
+    roles = api.user.get_roles(username='jane', obj=portal['blog'])
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertEqual(set(roles), set(['Member','Authenticated']))
 ```
@@ -291,15 +290,15 @@ roles = api.user.get_roles(username='jane', obj=portal['blog'])
 The {meth}`api.user.get_permissions` method is used for getting user's permissions.
 By default it returns site root permissions.
 
-```python
-from plone import api
-mike = api.user.create(email='mike@plone.org', username='mike')
-permissions = api.user.get_permissions(username='mike')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    mike = api.user.create(email='mike@plone.org', username='mike')
+    permissions = api.user.get_permissions(username='mike')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     PERMISSIONS = {
         'View': True,
@@ -315,16 +314,16 @@ permissions = api.user.get_permissions(username='mike')
 
 If you pass in a content object, it will return local permissions of the user in that particular context.
 
-```python
-from plone import api
-portal = api.portal.get()
-folder = api.content.create(container=portal, type='Folder', id='folder_two', title='Folder Two')
-permissions = api.user.get_permissions(username='mike', obj=portal['folder_two'])
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    folder = api.content.create(container=portal, type='Folder', id='folder_two', title='Folder Two')
+    permissions = api.user.get_permissions(username='mike', obj=portal['folder_two'])
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     PERMISSIONS = {
         'View': False,
@@ -345,31 +344,31 @@ permissions = api.user.get_permissions(username='mike', obj=portal['folder_two']
 Instead of getting all user permissions, you can check a single permission using the {meth}`api.user.has_permission` method.
 By default it checks the permission on the site root.
 
-```python
-from plone import api
-adam = api.user.create(email='adam@plone.org', username='adam')
-can_view = api.user.has_permission('View', username='adam')
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    adam = api.user.create(email='adam@plone.org', username='adam')
+    can_view = api.user.has_permission('View', username='adam')
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertTrue(can_view)
 ```
 
 If you pass in a content object, it will check the permission in that particular context.
 
-```python
-from plone import api
-portal = api.portal.get()
-folder = api.content.create(container=portal, type='Folder', id='folder_hp', title='Folder')
-can_view = api.user.has_permission('View', username='adam', obj=folder)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    portal = api.portal.get()
+    folder = api.content.create(container=portal, type='Folder', id='folder_hp', title='Folder')
+    can_view = api.user.has_permission('View', username='adam', obj=folder)
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     self.assertFalse(can_view)
 ```
@@ -380,16 +379,16 @@ can_view = api.user.has_permission('View', username='adam', obj=folder)
 
 The {meth}`api.user.grant_roles` allows us to grant a list of roles to the user.
 
-```python
-from plone import api
-api.user.grant_roles(username='jane',
-    roles=['Reviewer', 'SiteAdministrator']
-)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.user.grant_roles(username='jane',
+        roles=['Reviewer', 'SiteAdministrator']
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_ROLES_SITE = ['Member', 'Reviewer', 'SiteAdministrator', 'Authenticated']
     roles = api.user.get_roles(username='jane')
@@ -400,18 +399,18 @@ If you pass a content object or folder,
 the roles are granted only on that context and not site-wide.
 But all site-wide roles will also be returned by {meth}`api.user.get_roles` for this user on the given context.
 
-```python
-from plone import api
-folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
-api.user.grant_roles(username='jane',
-    roles=['Editor', 'Contributor'],
-    obj=portal['folder_one']
-)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    folder = api.content.create(container=portal, type='Folder', id='folder_one', title='Folder One')
+    api.user.grant_roles(username='jane',
+        roles=['Editor', 'Contributor'],
+        obj=portal['folder_one']
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Editor', 'Contributor']
     roles = api.user.get_roles(username='jane', obj=portal['folder_one'])
@@ -426,14 +425,14 @@ api.user.grant_roles(username='jane',
 
 The {meth}`api.user.revoke_roles` allows us to revoke a list of roles from the user.
 
-```python
-from plone import api
-api.user.revoke_roles(username='jane', roles=['SiteAdministrator'])
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+
+    from plone import api
+    api.user.revoke_roles(username='jane', roles=['SiteAdministrator'])
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_ROLES_SITE = ['Member', 'Authenticated', 'Reviewer']
     roles = api.user.get_roles(username='jane')
@@ -442,29 +441,28 @@ api.user.revoke_roles(username='jane', roles=['SiteAdministrator'])
 
 If you pass a context object the local roles for that context will be removed.
 
-```python
-from plone import api
-folder = api.content.create(
-    container=portal,
-    type='Folder',
-    id='folder_three',
-    title='Folder Three'
-)
-api.user.grant_roles(
-    username='jane',
-    roles=['Editor', 'Contributor'],
-    obj=portal['folder_three'],
-)
-api.user.revoke_roles(
-    username='jane',
-    roles=['Editor'],
-    obj=portal['folder_three'],
-)
-```
-
 ```{eval-rst}
-.. ifconfig:: plone_api_doctests
-.. invisible-code-block: python
+..  code-block:: python
+    from plone import api
+    folder = api.content.create(
+        container=portal,
+        type='Folder',
+        id='folder_three',
+        title='Folder Three'
+    )
+    api.user.grant_roles(
+        username='jane',
+        roles=['Editor', 'Contributor'],
+        obj=portal['folder_three'],
+    )
+    api.user.revoke_roles(
+        username='jane',
+        roles=['Editor'],
+        obj=portal['folder_three'],
+    )
+
+..  ifconfig:: plone_api_doctests
+..  invisible-code-block: python
 
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
     roles = api.user.get_roles(username='jane', obj=portal['folder_three'])
