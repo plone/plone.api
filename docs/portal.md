@@ -19,7 +19,8 @@ portal = api.portal.get()
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(portal.getPortalTypeName(), 'Plone Site')
     self.assertEqual(portal.getId(), 'plone')
@@ -37,7 +38,8 @@ You do this with {meth}`api.portal.get_navigation_root()`.
 Assuming there is a document `english_page` in a folder `en`, which is the navigation root:
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from plone import api
     from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -63,7 +65,8 @@ nav_root = api.portal.get_navigation_root(english_page)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(nav_root.id, 'en')
 ```
@@ -80,7 +83,8 @@ url = api.portal.get().absolute_url()
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(url, 'http://nohost/plone')
 ```
@@ -97,7 +101,8 @@ catalog = api.portal.get_tool(name='portal_catalog')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
 ```
@@ -116,7 +121,8 @@ localized = api.portal.get_localized_time(datetime=today)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     # assert that the result is in fact a datetime
     self.assertEqual(DateTime(localized).__class__, DateTime)
@@ -134,7 +140,8 @@ lang = api.portal.get_default_language()
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     # assert that the result is 'en'
     self.assertEqual(lang, 'en')
@@ -152,7 +159,8 @@ lang = api.portal.get_current_language()
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     # assert that the result is 'en'
     self.assertEqual(lang, 'en')
@@ -170,7 +178,8 @@ msg = api.portal.translate('Edited', lang='es')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     # assert that the translation is correct
     self.assertEqual(msg, u'Editado')
@@ -183,7 +192,8 @@ msg = api.portal.translate('Edited', lang='es')
 To send an e-mail use {meth}`api.portal.send_email`:
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     # Mock the mail host so we can test sending the email
     from plone import api
@@ -214,7 +224,8 @@ api.portal.send_email(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(len(mailhost.messages), 1)
 
@@ -259,7 +270,8 @@ api.portal.send_email(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(len(mailhost.messages), 2)
 
@@ -288,7 +300,8 @@ api.portal.show_message(message='Blueberries!', request=request)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from Products.statusmessages.interfaces import IStatusMessage
     messages = IStatusMessage(request)
@@ -305,7 +318,8 @@ Plone comes with a package `plone.app.registry` that provides a common way to st
 {meth}`api.portal.get_registry_record` provides an easy way to access these.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.registry.record import Record
@@ -323,7 +337,8 @@ api.portal.get_registry_record('my.package.someoption')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertTrue(api.portal.get_registry_record('my.package.someoption'))
 ```
@@ -332,7 +347,8 @@ One common pattern when using registry records is to define an interface with al
 {meth}`api.portal.get_registry_record` also allows you to use this pattern.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.api.tests.test_portal import IMyRegistrySettings
@@ -349,7 +365,8 @@ api.portal.get_registry_record('field_one', interface=IMyRegistrySettings)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(
         api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),
@@ -368,7 +385,8 @@ api.portal.get_registry_record('foo', default=u'baz')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
     self.assertEqual(
         api.portal.get_registry_record(
             'foo',
@@ -390,7 +408,8 @@ api.portal.get_registry_record('foo', default=u'baz')
 {meth}`api.portal.set_registry_record` provides an easy way to change `plone.app.registry` configuration and settings.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.registry.record import Record
@@ -408,7 +427,8 @@ api.portal.set_registry_record('my.package.someoption', False)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertFalse(registry['my.package.someoption'])
 ```
@@ -416,7 +436,8 @@ api.portal.set_registry_record('my.package.someoption', False)
 {meth}`api.portal.set_registry_record` allows you to define an interface with all the settings.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from plone.registry.interfaces import IRegistry
     from plone.api.tests.test_portal import IMyRegistrySettings
@@ -432,7 +453,8 @@ api.portal.set_registry_record('field_one', u'new value', interface=IMyRegistryS
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(
         api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),

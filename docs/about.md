@@ -59,7 +59,8 @@ For example:
 In general, importing and using an API looks something like this:
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from plone import api
     from plone.api.exc import InvalidParameterError
@@ -79,7 +80,8 @@ user = api.user.create(email='alice@plone.org')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(portal.__class__.__name__, 'PloneSite')
     self.assertEqual(catalog.__class__.__name__, 'CatalogTool')

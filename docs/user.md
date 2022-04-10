@@ -15,7 +15,8 @@ To create a new user, use {meth}`api.user.create`.
 If your portal is configured to use emails as usernames, you just need to pass in the email of the new user.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from plone import api
     from plone.api.exc import InvalidParameterError
@@ -32,7 +33,8 @@ user = api.user.create(email='alice@plone.org')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(user.id, 'alice@plone.org')
     self.assertEqual(user.getProperty('email'), 'alice@plone.org')
@@ -41,7 +43,8 @@ user = api.user.create(email='alice@plone.org')
 Otherwise, you also need to pass in the username of the new user.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     try:
         api.portal.set_registry_record('plone.use_email_as_login', False)
@@ -55,7 +58,8 @@ user = api.user.create(email='jane@plone.org', username='jane')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(user.id, 'jane')
     self.assertEqual(user.getProperty('email'), 'jane@plone.org')
@@ -76,7 +80,8 @@ user = api.user.create(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(user.getProperty('fullname'), 'Bob')
     self.assertEqual(user.getProperty('location'), 'Munich')
@@ -105,7 +110,8 @@ user = api.user.get(username='bob')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(user.id, 'bob')
 ```
@@ -123,7 +129,8 @@ location = user.getProperty('location')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(location, 'Neverland')
 ```
@@ -140,7 +147,8 @@ current = api.user.get_current()
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(current.id, 'test_user_1_')
 ```
@@ -160,7 +168,8 @@ trigger = True
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertTrue(trigger)
 ```
@@ -177,7 +186,8 @@ users = api.user.get_users()
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertTrue('test_user_1_' in [user.id for user in users])
 ```
@@ -189,7 +199,8 @@ users = api.user.get_users()
 If you set the `groupname` parameter, then {meth}`api.user.get_users` will return only users that are members of this group.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     api.group.create(groupname='staff')
     api.group.add_user(username='jane', groupname='staff')
@@ -201,7 +212,8 @@ users = api.user.get_users(groupname='staff')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(users[0].id, 'jane')
 ```
@@ -219,7 +231,8 @@ api.user.delete(username='unwanted')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(api.user.get(username='unwanted'), None)
 ```
@@ -230,7 +243,8 @@ api.user.delete(user=unwanted)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(api.user.get(username='unwanted'), None)
 ```
@@ -248,7 +262,8 @@ roles = api.user.get_roles(username='jane')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(set(roles), set(['Member','Authenticated']))
 ```
@@ -263,7 +278,8 @@ roles = api.user.get_roles(username='jane', obj=portal['blog'])
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(set(roles), set(['Member','Authenticated']))
 ```
@@ -282,7 +298,8 @@ permissions = api.user.get_permissions(username='mike')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     PERMISSIONS = {
         'View': True,
@@ -306,7 +323,8 @@ permissions = api.user.get_permissions(username='mike', obj=portal['folder_two']
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     PERMISSIONS = {
         'View': False,
@@ -334,7 +352,8 @@ can_view = api.user.has_permission('View', username='adam')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertTrue(can_view)
 ```
@@ -349,7 +368,8 @@ can_view = api.user.has_permission('View', username='adam', obj=folder)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertFalse(can_view)
 ```
@@ -368,7 +388,8 @@ api.user.grant_roles(username='jane',
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_ROLES_SITE = ['Member', 'Reviewer', 'SiteAdministrator', 'Authenticated']
     roles = api.user.get_roles(username='jane')
@@ -389,7 +410,8 @@ api.user.grant_roles(username='jane',
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Editor', 'Contributor']
     roles = api.user.get_roles(username='jane', obj=portal['folder_one'])
@@ -410,7 +432,8 @@ api.user.revoke_roles(username='jane', roles=['SiteAdministrator'])
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_ROLES_SITE = ['Member', 'Authenticated', 'Reviewer']
     roles = api.user.get_roles(username='jane')
@@ -440,7 +463,8 @@ api.user.revoke_roles(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_ROLES_CONTEXT = EXPECTED_ROLES_SITE + ['Contributor']
     roles = api.user.get_roles(username='jane', obj=portal['folder_three'])

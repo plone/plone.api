@@ -20,6 +20,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
+    "sphinx.ext.ifconfig",
     "myst_parser",
     "sphinx.ext.todo",
 ]
@@ -37,6 +38,10 @@ latex_documents = [(
     'plone.api Documentation',
     '', 'manual'
 ), ]
+
+
+def setup(app):
+    app.add_config_value("plone_api_doctests", "", True)
 
 
 class Mock:

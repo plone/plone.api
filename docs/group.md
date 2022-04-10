@@ -19,7 +19,8 @@ group = api.group.create(groupname='staff')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(group.id, 'staff')
 ```
@@ -39,7 +40,8 @@ group = api.group.create(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(group.id, 'board_members')
     self.assertEqual(group.getProperty('title'), 'Board members')
@@ -60,7 +62,8 @@ group = api.group.get(groupname='staff')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(group.id, 'staff')
 ```
@@ -84,7 +87,8 @@ group_tool.editGroup(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     group = api.group.get(groupname='staff')
 
@@ -110,7 +114,8 @@ groups = api.group.get_groups()
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(groups[0].id, 'Administrators')
 ```
@@ -123,7 +128,8 @@ Groups may be filtered by member. By passing the `username` parameter,
 {meth}`api.group.get_groups` will return only the groups the user belongs to.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     api.user.create(email='jane@plone.org', username='jane')
     api.group.add_user(username='jane', groupname='staff')
@@ -137,7 +143,8 @@ groups = api.group.get_groups(username='jane')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     group_list = [g.id for g in groups]
     self.assertCountEqual(
@@ -153,7 +160,8 @@ You can also pass the user directly to {meth}`api.group.get_groups`:
 > groups = api.group.get_groups(user=user)
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     group_list = [g.id for g in groups]
     self.assertCountEqual(
@@ -172,7 +180,8 @@ members = api.user.get_users(groupname='staff')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(members[0].id, 'jane')
 ```
@@ -190,7 +199,8 @@ api.group.delete(groupname='unwanted')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(api.group.get(groupname='unwanted'), None)
 ```
@@ -201,7 +211,8 @@ api.group.delete(group=unwanted)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(api.group.get(groupname='unwanted'), None)
 ```
@@ -221,7 +232,8 @@ api.group.add_user(groupname='staff', username='bob')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertTrue(
         'staff' in [g.id for g in api.group.get_groups(username='bob')]
@@ -241,7 +253,8 @@ api.group.remove_user(groupname='staff', username='bob')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertFalse('staff' in [g.id for g in api.group.get_groups(username='bob')])
 ```
@@ -259,7 +272,8 @@ roles = api.group.get_roles(groupname='staff')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader']
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
@@ -280,7 +294,8 @@ roles = api.group.get_roles(groupname='staff', obj=portal['folder_four'])
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(set(EXPECTED_SITE_ROLES), set(roles))
 ```
@@ -296,7 +311,8 @@ roles = api.group.get_roles(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_OBJ_ROLES = ['Contributor']
     self.assertEqual(set(EXPECTED_OBJ_ROLES), set(roles))
@@ -318,7 +334,8 @@ api.group.grant_roles(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader', 'Reviewer, SiteAdministrator']
     roles = api.group.get_roles(groupname='staff')
@@ -337,7 +354,8 @@ api.group.grant_roles(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_CONTEXT_ROLES = EXPECTED_SITE_ROLES + ['Contributor']
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
@@ -359,7 +377,8 @@ api.group.revoke_roles(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_SITE_ROLES = ['Authenticated', 'Editor', 'Reader']
     roles = api.group.get_roles(groupname='staff')
@@ -369,7 +388,8 @@ api.group.revoke_roles(
 If you pass in a content object, it will revoke roles granted in that particular context.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_CONTEXT_ROLES = ['Contributor']
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)
@@ -383,7 +403,8 @@ api.group.revoke_roles(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     EXPECTED_CONTEXT_ROLES = []
     roles = api.group.get_roles(groupname='staff', obj=portal['folder_five'], inherit=False)

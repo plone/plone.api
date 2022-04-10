@@ -55,7 +55,8 @@ plone (portal root)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     portal = api.portal.get()
     image = api.content.create(type='Image', id='image', container=portal)
@@ -98,7 +99,8 @@ not_found = api.content.get(UID='notfound')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertTrue(portal)
     self.assertTrue(blog)
@@ -123,7 +125,8 @@ documents = api.content.find(portal_type='Document')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertGreater(len(documents), 0)
 ```
@@ -137,7 +140,8 @@ documents = api.content.find(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertGreater(len(documents), 0)
 ```
@@ -150,7 +154,8 @@ documents = api.content.find(depth=1, portal_type='Document')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertGreater(len(documents), 0)
 ```
@@ -164,7 +169,8 @@ documents = api.content.find(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertGreater(len(documents), 0)
 ```
@@ -178,7 +184,8 @@ documents = api.content.find(object_provides=IContentish)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertGreater(len(documents), 0)
 ```
@@ -197,7 +204,8 @@ documents = api.content.find(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertGreater(len(documents), 0)
 ```
@@ -233,7 +241,8 @@ uuid = api.content.get_uuid(obj=contact)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertTrue(isinstance(uuid, str))
 ```
@@ -254,7 +263,8 @@ api.content.move(source=contact, target=portal)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertFalse(portal['about'].get('contact'))
     self.assertTrue(portal['contact'])
@@ -277,7 +287,8 @@ api.content.rename(obj=portal['blog'], new_id='old-blog')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertFalse(portal.get('blog'))
     self.assertTrue(portal['old-blog'])
@@ -301,7 +312,8 @@ Note that the new object will have the same ID as the old object (unless otherwi
 This is not a problem, since the new object is in a different container.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     assert portal['events']['training'].id == 'training'
     assert portal['training'].id == 'training'
@@ -316,7 +328,8 @@ new_training = portal['copy_of_training']
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertTrue(portal['training'])  # old object remains
     self.assertTrue(portal['copy_of_training'])
@@ -335,7 +348,8 @@ api.content.delete(obj=portal['copy_of_training'])
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertFalse(portal.get('copy_of_training'))
 ```
@@ -343,7 +357,8 @@ api.content.delete(obj=portal['copy_of_training'])
 To delete multiple content objects, pass the objects to the {meth}`api.content.delete` method:
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     api.content.copy(source=portal['training'], target=portal, safe_id=True)
     api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
@@ -357,7 +372,8 @@ api.content.delete(objects=data)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertFalse(portal.get('copy_of_training'))
     self.assertFalse(portal.events.get('copy_of_training'))
@@ -366,7 +382,8 @@ api.content.delete(objects=data)
 If deleting content would result in broken links you will get a `LinkIntegrityNotificationException`. To delete anyway, set the option `check_linkintegrity` to `False`:
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     from plone.app.textfield import RichTextValue
     from zope.lifecycleevent import modified
@@ -383,7 +400,8 @@ api.content.delete(obj=portal['copy_of_training'], check_linkintegrity=False)
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertNotIn('copy_of_training', portal.keys())
 ```
@@ -399,7 +417,8 @@ If another object with the same ID is already present in the target container th
 However, if the `safe_id` option is enabled, a non-conflicting ID will be generated.
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     api.content.create(container=portal, type='Document', id='document', safe_id=True)
 ```
@@ -422,7 +441,8 @@ state = api.content.get_state(obj=portal['about'])
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(state, 'private')
 ```
@@ -436,7 +456,8 @@ state = api.content.get_state(obj=portal['image'], default='Unknown')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(state, 'Unknown')
 ```
@@ -454,7 +475,8 @@ api.content.transition(obj=portal['about'], transition='publish')
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(
         api.content.get_state(obj=portal['about']),
@@ -484,7 +506,8 @@ api.content.disable_roles_acquisition(obj=portal['about'])
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
     self.assertTrue(ac_flag)
@@ -503,7 +526,8 @@ api.content.enable_roles_acquisition(obj=portal['about'])
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     # As __ac_local_roles_block__ is None by default, we have to set it,
     # before we can test the enabling method.
@@ -531,7 +555,8 @@ view = api.content.get_view(
 ```
 
 ```{eval-rst}
-.. invisible-code-block:: python
+.. ifconfig:: plone_api_doctests
+.. invisible-code-block: python
 
     self.assertEqual(view.__name__, u'plone')
 ```
