@@ -60,6 +60,7 @@ Assuming there is a document `english_page` in a folder `en`, which is the navig
 
 ```{eval-rst}
 ..  code-block:: python
+
     from plone import api
     nav_root = api.portal.get_navigation_root(english_page)
 
@@ -245,6 +246,7 @@ Python's standard [email module](https://docs.python.org/2.7/library/email.messa
 
 ```{eval-rst}
 ..  code-block:: python
+
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
 

@@ -258,6 +258,7 @@ By default it returns site-wide roles.
 
 ```{eval-rst}
 ..  code-block:: python
+
     from plone import api
     roles = api.user.get_roles(username='jane')
 
@@ -443,6 +444,7 @@ If you pass a context object the local roles for that context will be removed.
 
 ```{eval-rst}
 ..  code-block:: python
+
     from plone import api
     folder = api.content.create(
         container=portal,

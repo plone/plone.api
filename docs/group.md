@@ -374,6 +374,7 @@ To revoke roles already granted to a group, use the {meth}`api.group.revoke_role
 
 ```{eval-rst}
 ..  code-block:: python
+
     from plone import api
     api.group.revoke_roles(
         groupname='staff', roles=['Reviewer, SiteAdministrator'])
