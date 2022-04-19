@@ -7,20 +7,39 @@
 
 # Relations
 
+
 (relation-get-example)=
 
 ## Get relations
 
+% invisible-code-block: python
+%
+% from plone import api
+% portal = api.portal.get()
+% bob = api.content.create(type='Document', id='bob', container=portal)
+% bobby = api.content.create(type='Document', id='bobby', container=portal)
+%
+% source = bob
+% target = bobby
+% api.relation.create(source=source, target=target, relationship="friend")
+
 ```python
-api.relation.get(source=source, target=target, relationship="friend", unrestricted=False, as_dict=False)
+from plone import api
+
+friendship = api.relation.get(
+    source=source, target=target, relationship="friend", unrestricted=False, as_dict=False
+    )
 ```
+
+% invisible-code-block: python
+%
+% self.assertTrue(friendship)
 
 You must provide either source, target, or relationship, or a combination of those, to {meth}`api.relation.get`.
 `unrestricted` and `as_dict` are optional.
 
-By default the result is a list of `RelationValue` objects.
-
-If you set `as_dict=True` it will return a dictionary with the names of the relations as keys and lists of objects as values.
+By default the result is a list of {class}`z3c.relationfield.RelationValue` objects.
+If you set `as_dict=True` {meth}`api.relation.get` will return a dictionary with the names of the relations as keys and lists of objects as values.
 
 By default the View permission is checked on the relation objects.
 You only get objects that you are allowed to see.
@@ -29,8 +48,12 @@ Use the `unrestricted` parameter if you want to bypass this check.
 To get back relations, so relations pointing to an item, use:
 
 ```python
-api.relation.get(target=target)
+friendships = api.relation.get(target=target)
 ```
+
+% invisible-code-block: python
+%
+% self.assertEqual([friendship.from_object for friendship in friendships], [source])
 
 To get the objects connected by relations you can use the api of these return values:
 
@@ -40,6 +63,7 @@ for relation in api.relation.get(source=source):
     target = relation.to_object
     relationship = relation.from_attribute
 ```
+
 
 (relation-create-example)=
 
