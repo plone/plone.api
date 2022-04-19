@@ -8,10 +8,9 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 
-long_description = \
-    read('README.rst') + '\n\n' + \
-    read('CHANGES.rst') + '\n\n' + \
-    read('LICENSE')
+long_description = (
+    read('README.rst') + '\n\n' + read('CHANGES.rst') + '\n\n' + read('LICENSE')
+)
 
 version = '2.0.0a3.dev0'
 
@@ -42,13 +41,13 @@ setup(
     extras_require={
         'test': [
             'Products.CMFPlone',
-            'manuel',
             'plone.app.dexterity',
             'plone.app.intid',
             'plone.app.testing',
             'plone.indexer',
             'plone.registry',
             'z3c.relationfield',
+            'zope.testrunner',
         ],
     },
     classifiers=[
@@ -61,7 +60,6 @@ setup(
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
