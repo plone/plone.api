@@ -1,0 +1,1 @@
+Add doctests to module plone.api.relation. [ksuess]
