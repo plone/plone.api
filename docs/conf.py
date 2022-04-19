@@ -25,8 +25,13 @@ extensions = [
 ]
 master_doc = 'index'
 
-locale_dirs = ["translated/"]
+locale_dirs = ['translated/']
 language = 'en'
+
+linkcheck_ignore = [
+    r"https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches",
+]
+
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual])
@@ -35,8 +40,9 @@ latex_documents = [(
     'index',
     'ploneapi.tex',
     'plone.api Documentation',
-    '', 'manual'
-), ]
+    '',
+    'manual',
+)]
 
 
 class Mock:

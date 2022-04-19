@@ -1,15 +1,12 @@
 """Module that provides functionality for content manipulation."""
 
 from copy import copy as _copy
-from pkg_resources import DistributionNotFound
-from pkg_resources import get_distribution
-from pkg_resources import parse_version
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
-from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # noqa
+from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -21,6 +18,7 @@ from zope.interface import providedBy
 
 import random
 import transaction
+
 
 _marker = []
 
@@ -54,6 +52,7 @@ def create(
         conflicting with another object in the target container, raise an
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
+
     :returns: Content object
     :raises:
         KeyError,
@@ -353,7 +352,8 @@ def _find_path(maps, path, current_state, start_state):
 
 
 def _wf_transitions_for(workflow, from_state, to_state):
-    """Get a list of transition IDs required to transition
+    """Get list of transition IDs required to transition.
+
     from ``from_state`` to ``to_state``.
 
     :param workflow: Workflow object which contains states and transitions
@@ -424,7 +424,9 @@ def _transition_to(obj, workflow, to_state, **kwargs):
 @at_least_one_of('transition', 'to_state')
 @mutually_exclusive_parameters('transition', 'to_state')
 def transition(obj=None, transition=None, to_state=None, **kwargs):
-    """Perform a workflow transition for the object or attempt to perform
+    """Perform a workflow transition.
+
+    for the object or attempt to perform
     workflow transitions on the object to reach the given state.
     The later will not guarantee that transition guards conditions can be met.
 
@@ -447,9 +449,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
         try:
             workflow.doActionFor(obj, transition, **kwargs)
         except WorkflowException:
-            transitions = [
-                action['id'] for action in workflow.listActions(object=obj)
-            ]
+            transitions = [action['id'] for action in workflow.listActions(object=obj)]
 
             raise InvalidParameterError(
                 "Invalid transition '{}'.\n"
@@ -470,6 +470,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
 @required_parameters('obj')
 def disable_roles_acquisition(obj=None):
     """Disable acquisition of local roles on given obj.
+
     Set __ac_local_roles_block__ = 1 on obj.
 
     :param obj: [required] Context object to block the acquisition on.
@@ -483,6 +484,7 @@ def disable_roles_acquisition(obj=None):
 @required_parameters('obj')
 def enable_roles_acquisition(obj=None):
     """Enable acquisition of local roles on given obj.
+
     Set __ac_local_roles_block__ = 0 on obj.
 
     :param obj: [required] Context object to enable the acquisition on.

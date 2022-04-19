@@ -24,12 +24,14 @@ class TestPloneApiGroup(unittest.TestCase):
         self.portal = self.layer['portal']
         self.group_tool = getToolByName(self.portal, 'portal_groups')
         self.portal_membership = getToolByName(
-            self.portal, 'portal_membership',
+            self.portal,
+            'portal_membership',
         )
 
     def test_create_constraints(self):
         """Test the constraints for creating a group."""
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.group.create()
 
@@ -77,12 +79,14 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_get_constraints(self):
         """Test the constraints for geting a group."""
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.group.get()
 
     def test_get_no_groupname(self):
         """Test getting a group without passing a groupname."""
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.group.create()
 
@@ -114,6 +118,7 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # username and user are mutually exclusive
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.group.get_groups(
                 username='chuck',
@@ -146,6 +151,7 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_get_groups_nonexistant_user(self):
         """Test retrieving of groups for a user that does not exist."""
         from plone.api.exc import UserNotFoundError
+
         with self.assertRaises(UserNotFoundError):
             api.group.get_groups(username='theurbanspaceman')
 
@@ -166,12 +172,14 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_delete_constraints(self):
         """Test deleting a group without passing parameters."""
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.group.delete()
 
     def test_delete_groupname_and_group(self):
         """Test deleting a group passing both groupname and group."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.group.delete(
                 groupname='bacon',
@@ -199,6 +207,7 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_add_user_constraints(self):
         """Test the constraints when a user is added to a group."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.group.add_user(
                 groupname='staff',
@@ -208,6 +217,7 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_add_user_username_and_user(self):
         """Test adding a user to a group passing both username and user."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.group.add_user(
                 groupname='staff',
@@ -228,6 +238,7 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_add_user_with_nonexistant_user(self):
         """Test adding a user that does not exist to a group."""
         from plone.api.exc import UserNotFoundError
+
         with self.assertRaises(UserNotFoundError):
             api.group.add_user(username='jane', groupname='staff')
 
@@ -313,6 +324,7 @@ class TestPloneApiGroup(unittest.TestCase):
     def test_remove_user_with_nonexistant_user(self):
         """Test removing a user from a group when the user does not exist"""
         from plone.api.exc import UserNotFoundError
+
         api.group.create(groupname='staff')
         group = api.group.get(groupname='staff')
         with self.assertRaises(UserNotFoundError):
@@ -322,6 +334,7 @@ class TestPloneApiGroup(unittest.TestCase):
         """Test grant roles."""
         from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
+
         group = api.group.create(groupname='foo')
 
         # You can't grant Anonymous
@@ -367,6 +380,7 @@ class TestPloneApiGroup(unittest.TestCase):
         """Test revoke roles."""
         from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
+
         group = api.group.create(groupname='bar')
 
         # You can't revoke Anonymous
@@ -548,7 +562,9 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # The Contributor-role is added
         api.group.grant_roles(
-            groupname='foo', roles=['Contributor'], obj=folder,
+            groupname='foo',
+            roles=['Contributor'],
+            obj=folder,
         )
         self.assertCountEqual(
             ['Contributor'],
@@ -571,7 +587,9 @@ class TestPloneApiGroup(unittest.TestCase):
             ),
         )
         api.group.grant_roles(
-            groupname='foo', roles=['Contributor'], obj=document,
+            groupname='foo',
+            roles=['Contributor'],
+            obj=document,
         )
         # one only-local role
         self.assertEqual(
@@ -583,7 +601,6 @@ class TestPloneApiGroup(unittest.TestCase):
                     inherit=False,
                 ),
             ),
-
         )
 
         # The Editor-role is added even though it is already a global role
@@ -624,7 +641,6 @@ class TestPloneApiGroup(unittest.TestCase):
         @adapter(Interface)
         @implementer(ILocalRoleProvider)
         class LocalRoleProvider:
-
             def __init__(self, context):
                 self.context = context
 
@@ -646,7 +662,9 @@ class TestPloneApiGroup(unittest.TestCase):
 
         # Assign a local role
         api.group.grant_roles(
-            groupname='foo', roles=['Contributor'], obj=folder,
+            groupname='foo',
+            roles=['Contributor'],
+            obj=folder,
         )
         self.assertCountEqual(
             api.group.get_roles(groupname='foo', obj=folder),
@@ -666,7 +684,8 @@ class TestPloneApiGroup(unittest.TestCase):
         # cleanup
         gsm = getGlobalSiteManager()
         gsm.unregisterAdapter(
-            factory=LocalRoleProvider, provided=ILocalRoleProvider,
+            factory=LocalRoleProvider,
+            provided=ILocalRoleProvider,
         )
 
     def test_revoke_roles_in_context(self):
@@ -790,5 +809,9 @@ class TestPloneApiGroup(unittest.TestCase):
         document.manage_setLocalRoles('AuthenticatedUsers', ('Reader',))
         self.assertNotIn(
             'Reader',
-            api.group.get_roles(groupname='ploneboat', inherit=False, obj=document),  # noqa: E501
+            api.group.get_roles(
+                groupname='ploneboat',
+                inherit=False,
+                obj=document,
+            ),
         )

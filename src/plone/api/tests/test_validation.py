@@ -22,6 +22,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         """Check that calling the decorator with the function as an argument
         is equivalent to decorating the function.
         """
+
         @required_parameters('arg1')
         def _func1_decorated(arg1=None, arg2=None, arg3=None):
             """This is my docstring"""
@@ -30,6 +31,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         def _func2_undecorated(arg1=None, arg2=None, arg3=None):
             """This is my docstring"""
             pass
+
         _func2_decorated = required_parameters('arg1')(_func2_undecorated)
 
         # Check that the decorated function gets the correct docstring
@@ -141,6 +143,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         single required parameter is missing.
         """
         from plone.api.exc import MissingParameterError
+
         _func = required_parameters('arg1')(undecorated_func)
         with self.assertRaises(MissingParameterError):
             _func()
@@ -150,6 +153,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         required parameters is missing.
         """
         from plone.api.exc import MissingParameterError
+
         _func = required_parameters('arg1', 'arg2')(undecorated_func)
         with self.assertRaises(MissingParameterError):
             _func('hello')
@@ -176,6 +180,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         one mutually exclusive argument is provided.
         """
         from plone.api.exc import InvalidParameterError
+
         _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
         with self.assertRaises(InvalidParameterError):
             _func('ahoy', 'there')
@@ -188,6 +193,7 @@ class TestPloneAPIValidation(unittest.TestCase):
         when at least one is required.
         """
         from plone.api.exc import MissingParameterError
+
         _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
         with self.assertRaises(MissingParameterError):
             _func()
@@ -207,6 +213,7 @@ class TestPloneAPIValidation(unittest.TestCase):
 
     def test_required_and_mutually_exclusive(self):
         """Test that multiple decorators can be used together."""
+
         @mutually_exclusive_parameters('arg2', 'arg3')
         @required_parameters('arg1')
         def _func1_decorated(arg1=None, arg2=None, arg3=None):

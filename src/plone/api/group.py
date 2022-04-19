@@ -95,7 +95,7 @@ def get_groups(username=None, user=None):
         except AttributeError as e:
             # Anonymous users from the Zope acl_users folder will fail on this
             if 'portal_groups' in str(e):
-                return[]
+                return []
             raise
 
         return [get(groupname=group) for group in groups]
@@ -282,9 +282,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         actual_roles = obj.get_local_roles_for_userid(group_id)
 
     actual_roles = [
-        role
-        for role in actual_roles
-        if role not in ['Anonymous', 'Authenticated']
+        role for role in actual_roles if role not in ['Anonymous', 'Authenticated']
     ]
 
     roles = list(set(actual_roles) | set(roles))
@@ -328,9 +326,7 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
         actual_roles = get_roles(groupname=group_id, obj=obj, inherit=False)
 
     actual_roles = [
-        role
-        for role in actual_roles
-        if role not in ['Anonymous', 'Authenticated']
+        role for role in actual_roles if role not in ['Anonymous', 'Authenticated']
     ]
 
     roles = list(set(actual_roles) - set(roles))

@@ -8,9 +8,8 @@ from plone import api
 from plone.api.content import _parse_object_provides_query
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # NOQA: E501
+from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 from plone.app.textfield import RichTextValue
-from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
@@ -28,12 +27,11 @@ from zope.lifecycleevent import IObjectMovedEvent
 from zope.lifecycleevent import modified
 from zope.lifecycleevent import ObjectMovedEvent
 
-import pkg_resources
 import unittest
 
 
 class TestPloneApiContent(unittest.TestCase):
-    """Unit tests for content manipulation using plone.api"""
+    """Unit tests for content manipulation using plone.api."""
 
     layer = INTEGRATION_TESTING
 
@@ -103,13 +101,14 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
     def verify_intids(self):
-        """Test that the intids are in order"""
+        """Test that the intids are in order."""
         from zope.component import getUtility
         from zope.intid.interfaces import IIntIds
 
         intids = getUtility(IIntIds)
         broken_keys = [
-            key for key in intids.ids
+            key
+            for key in intids.ids
             if not self.portal.unrestrictedTraverse(key.path, None)
         ]
         obsolete_paths = [key.path for key in broken_keys]
@@ -117,10 +116,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Objects used as keys with a hash can behave strangely.
         # I have seen this go wrong in a production site.
-        weird_keys = [
-            key for key in intids.ids
-            if key not in intids.ids
-        ]
+        weird_keys = [key for key in intids.ids if key not in intids.ids]
         weird_paths = [key.path for key in weird_keys]
         self.assertListEqual(weird_paths, [])
 
@@ -194,12 +190,13 @@ class TestPloneApiContent(unittest.TestCase):
         ENABLED = 1
         if getattr(aq_base(folder), 'setConstrainTypesMode', None):  # AT
             folder.setConstrainTypesMode(ENABLED)
-            folder.setLocallyAllowedTypes(('News Item', ))
+            folder.setLocallyAllowedTypes(('News Item',))
         else:  # DX
             from Products.CMFPlone.interfaces import ISelectableConstrainTypes
+
             constraints = ISelectableConstrainTypes(folder)
             constraints.setConstrainTypesMode(ENABLED)
-            constraints.setLocallyAllowedTypes(('News Item', ))
+            constraints.setLocallyAllowedTypes(('News Item',))
 
         with self.assertRaises(InvalidParameterError):
             api.content.create(
@@ -209,7 +206,7 @@ class TestPloneApiContent(unittest.TestCase):
             )
 
     def test_create_dexterity(self):
-        """Test create dexterity"""
+        """Test create dexterity."""
         container = self.portal
 
         # This section check for DX compatibilty. The custom DX types defined
@@ -256,7 +253,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.verify_intids()
 
     def test_create_content(self):
-        """Test create content"""
+        """Test create content."""
         container = self.portal
 
         # This section below is either AT (Plone < 5) or DX (Plone >= 5)
@@ -363,12 +360,13 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(ude.exception.reason, unicode_exception_message)
 
     def test_create_at_with_title_in_request(self):
-        """ Test that content gets created with the correct title, even if
-            request.form['title'] already exists and has a different value.
-            This can occur, for example, when adding a Plone with an enabled
-            product that creates a site structure. In that case, the 'title'
-            would be that of the portal.
-            Only AT content types are affected, due to content.processForm.
+        """Test that content gets created with the correct title.
+
+        even if request.form['title'] already exists and has a different value.
+        This can occur, for example, when adding a Plone with an enabled
+        product that creates a site structure. In that case, the 'title'
+        would be that of the portal.
+        Only AT content types are affected, due to content.processForm.
         """
         leaked_title = 'This should not be set on content items'
         self.layer['request'].form['title'] = leaked_title
@@ -402,9 +400,9 @@ class TestPloneApiContent(unittest.TestCase):
             description='Image gallery of a zoom sequence',
             query=[
                 {
-                 'i': 'Type',
-                 'o': 'plone.app.querystring.operation.string.is',
-                 'v': ['Image'],
+                    'i': 'Type',
+                    'o': 'plone.app.querystring.operation.string.is',
+                    'v': ['Image'],
                 },
             ],
         )
@@ -413,6 +411,7 @@ class TestPloneApiContent(unittest.TestCase):
     def test_create_event(self):
         """Test create a event."""
         import datetime
+
         today = datetime.datetime.now()
         tomorrow = today + datetime.timedelta(days=1)
         event = api.content.create(
@@ -431,9 +430,9 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_get_constraints(self):
         """Test the constraints when content is fetched with get."""
-
         # Path and UID parameter can not be given together
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.content.get(
                 path='/',
@@ -442,12 +441,12 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Either a path or UID must be given
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.content.get()
 
     def test_get(self):
         """Test the getting of content in varios ways."""
-
         # Test getting the about folder by path and UID
         about_by_path = api.content.get('/about')
         about_by_uid = api.content.get(UID=self.about.UID())
@@ -493,13 +492,14 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_move(self):
         """Test moving of content."""
-
         container = self.portal
 
         # Move contact to the same folder (basically a rename)
         nucontact = api.content.move(source=self.contact, id='nu-contact')
-        assert (container['about']['nu-contact']
-                and container['about']['nu-contact'] == nucontact)
+        assert (
+            container['about']['nu-contact']
+            and container['about']['nu-contact'] == nucontact
+        )
         assert 'contact' not in container['about'].keys()
 
         # Move team page to portal root
@@ -514,13 +514,16 @@ class TestPloneApiContent(unittest.TestCase):
             target=self.about,
             id='our-team',
         )
-        assert (container['about']['our-team']
-                and container['about']['our-team'] == ourteam)
+        assert (
+            container['about']['our-team'] and container['about']['our-team'] == ourteam
+        )
         assert 'team' not in container.keys()
 
         # Test with safe_id option when moving content
         api.content.create(
-            container=self.about, type='Link', id='link-to-blog',
+            container=self.about,
+            type='Link',
+            id='link-to-blog',
         )
         linktoblog1 = api.content.move(
             source=self.blog,
@@ -528,8 +531,10 @@ class TestPloneApiContent(unittest.TestCase):
             id='link-to-blog',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1']
-                and container['about']['link-to-blog-1'] == linktoblog1)
+        assert (
+            container['about']['link-to-blog-1']
+            and container['about']['link-to-blog-1'] == linktoblog1
+        )
         assert 'link-to-blog' not in container.keys()
 
         api.content.move(source=self.conference, id='conference-renamed')
@@ -540,15 +545,11 @@ class TestPloneApiContent(unittest.TestCase):
             source=container.about,
             target=container.events,
         )
-        assert (
-            container['events']['about']
-            and container['events']['about'] == about
-        )
+        assert container['events']['about'] and container['events']['about'] == about
         self.verify_intids()
 
     def test_move_no_move_if_target_is_source_parent(self):
-        """Test that trying to move an object to its parent is a noop"""
-
+        """Test that trying to move an object to its parent is a noop."""
         target = self.contact.aq_parent
         with mock.patch.object(target, 'manage_pasteObjects'):
             api.content.move(
@@ -573,7 +574,6 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_rename(self):
         """Test renaming of content."""
-
         container = self.portal
         sm = getGlobalSiteManager()
         firedEvents = []
@@ -581,14 +581,16 @@ class TestPloneApiContent(unittest.TestCase):
         def recordEvent(event):
             firedEvents.append(event.__class__)
 
-        sm.registerHandler(recordEvent, (IObjectWillBeMovedEvent, ))
-        sm.registerHandler(recordEvent, (IObjectMovedEvent, ))
-        sm.registerHandler(recordEvent, (IObjectModifiedEvent, ))
+        sm.registerHandler(recordEvent, (IObjectWillBeMovedEvent,))
+        sm.registerHandler(recordEvent, (IObjectMovedEvent,))
+        sm.registerHandler(recordEvent, (IObjectModifiedEvent,))
 
         # Rename contact
         nucontact = api.content.rename(obj=self.contact, new_id='nu-contact')
-        assert (container['about']['nu-contact']
-                and container['about']['nu-contact'] == nucontact)
+        assert (
+            container['about']['nu-contact']
+            and container['about']['nu-contact'] == nucontact
+        )
         assert 'contact' not in container['about'].keys()
 
         self.assertCountEqual(
@@ -599,26 +601,32 @@ class TestPloneApiContent(unittest.TestCase):
                 ContainerModifiedEvent,
             ],
         )
-        sm.unregisterHandler(recordEvent, (IObjectWillBeMovedEvent, ))
-        sm.unregisterHandler(recordEvent, (IObjectMovedEvent, ))
-        sm.unregisterHandler(recordEvent, (IObjectModifiedEvent, ))
+        sm.unregisterHandler(recordEvent, (IObjectWillBeMovedEvent,))
+        sm.unregisterHandler(recordEvent, (IObjectMovedEvent,))
+        sm.unregisterHandler(recordEvent, (IObjectModifiedEvent,))
 
         # Test with safe_id option when moving content
         api.content.create(
-            container=self.about, type='Link', id='link-to-blog',
+            container=self.about,
+            type='Link',
+            id='link-to-blog',
         )
         linktoblog1 = api.content.rename(
             obj=container['about']['link-to-blog'],
             new_id='link-to-blog',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1']
-                and container['about']['link-to-blog-1'] == linktoblog1)
+        assert (
+            container['about']['link-to-blog-1']
+            and container['about']['link-to-blog-1'] == linktoblog1
+        )
         assert 'link-to-blog' not in container.keys()
 
         # Rename to existing id
         api.content.create(
-            container=self.about, type='Link', id='link-to-blog',
+            container=self.about,
+            type='Link',
+            id='link-to-blog',
         )
 
         with self.assertRaises(CopyError):
@@ -631,8 +639,10 @@ class TestPloneApiContent(unittest.TestCase):
             new_id='link-to-blog-1',
             safe_id=True,
         )
-        assert (container['about']['link-to-blog-1-1']
-                and container['about']['link-to-blog-1-1'] == linktoblog11)
+        assert (
+            container['about']['link-to-blog-1-1']
+            and container['about']['link-to-blog-1-1'] == linktoblog11
+        )
         assert 'link-to-blog' not in container.keys()
 
     def test_rename_same_id(self):
@@ -678,8 +688,7 @@ class TestPloneApiContent(unittest.TestCase):
         team = api.content.copy(source=self.team, target=container)
         assert container['team'] and container['team'] == team
         assert (
-            container['about']['team']
-            and container['about']['team'] != team
+            container['about']['team'] and container['about']['team'] != team
         )  # old content still available
 
         # When copying objects we can change the id
@@ -688,9 +697,8 @@ class TestPloneApiContent(unittest.TestCase):
             target=self.about,
             id='our-team',
         )
-        assert(
-            container['about']['our-team']
-            and container['about']['our-team'] == ourteam
+        assert (
+            container['about']['our-team'] and container['about']['our-team'] == ourteam
         )
 
         # When copying whithout target parameter should take source parent
@@ -699,7 +707,9 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test the safe_id option when moving content
         api.content.create(
-            container=self.about, type='Link', id='link-to-blog',
+            container=self.about,
+            type='Link',
+            id='link-to-blog',
         )
 
         linktoblog1 = api.content.copy(
@@ -708,7 +718,7 @@ class TestPloneApiContent(unittest.TestCase):
             id='link-to-blog',
             safe_id=True,
         )
-        assert(
+        assert (
             container['about']['link-to-blog-1']
             and container['about']['link-to-blog-1'] == linktoblog1
         )
@@ -718,22 +728,23 @@ class TestPloneApiContent(unittest.TestCase):
             source=container.about,
             target=container.events,
         )
-        assert(
-            container['events']['about']
-            and container['events']['about'] == about
-        )
+        assert container['events']['about'] and container['events']['about'] == about
 
         # When copying with safe_id=True, the prior created item should not be
         # renamed, and the copied item should have a sane postfix
 
         # Create a products folder
         products = api.content.create(
-            type='Folder', id='products', container=self.portal,
+            type='Folder',
+            id='products',
+            container=self.portal,
         )
 
         # Create a item inside the products folder
         item = api.content.create(
-            container=products, type='Document', id='item',
+            container=products,
+            type='Document',
+            id='item',
         )
 
         api.content.copy(source=item, id='item', safe_id=True)
@@ -776,6 +787,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Using the same id should fail
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.content.copy(obj, obj.__parent__, obj.id)
 
@@ -787,6 +799,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # When no parameters are given an error is raised
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.content.delete()
 
@@ -797,6 +810,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # The content item must be given as parameter
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.content.delete()
 
@@ -1006,8 +1020,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(len(brains), 1)
 
     def test_find_interface_dict__include_not_query(self):
-        """Check if not query in object_provides is functional.
-        """
+        """Check if not query in object_provides is functional."""
 
         brains_all = api.content.find(
             object_provides={'query': IContentish.__identifier__},
@@ -1026,7 +1039,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(len(brains_all) - len(brains), 1)
 
     def test_find_interface_dict__all_options(self):
-        """ Check for all options in a object_provides query are correctly
+        """Check for all options in a object_provides query are correctly
         transformed.
         """
         parser = _parse_object_provides_query
@@ -1153,10 +1166,12 @@ class TestPloneApiContent(unittest.TestCase):
         )
         # full blown query - interfaces/identifiers mixed
         self.assertDictEqual(
-            parse({
-                'query': [INavigationRoot, IContentish.__identifier__],
-                'operator': 'and',
-            }),
+            parse(
+                {
+                    'query': [INavigationRoot, IContentish.__identifier__],
+                    'operator': 'and',
+                }
+            ),
             {
                 'query': [
                     INavigationRoot.__identifier__,
@@ -1168,9 +1183,9 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_get_state(self):
         """Test retrieving the workflow state of a content item."""
-
         # This should fail because an content item is mandatory
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.content.get_state()
 
@@ -1178,8 +1193,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(review_state, 'private')
 
     def test_get_state_default_value(self):
-        """Test passing in a default value.
-        """
+        """Test passing in a default value."""
         # A WorkflowException is raise if no workflow is defined for the obj.
         # This is normally the case for Images and Files.
         with self.assertRaises(WorkflowException):
@@ -1221,7 +1235,8 @@ class TestPloneApiContent(unittest.TestCase):
         # This should fail because the transition doesn't exist
         with self.assertRaises(InvalidParameterError) as cm:
             api.content.transition(
-                transition='foo', obj=self.blog,
+                transition='foo',
+                obj=self.blog,
             )
 
         self.maxDiff = None  # to see assert diff
@@ -1264,10 +1279,10 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
     def test_diable_roles_acquisition(self):
-        """ Test disabling local roles acquisition.
-        """
+        """Test disabling local roles acquisition."""
         # This should fail because an content item is mandatory
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.content.disable_roles_acquisition()
 
@@ -1276,10 +1291,10 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertTrue(blog_ac_flag)
 
     def test_enable_roles_acquisition(self):
-        """ Test enabling local roles acquisition.
-        """
+        """Test enabling local roles acquisition."""
         # This should fail because an content item is mandatory
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.content.enable_roles_acquisition()
 
@@ -1294,6 +1309,7 @@ class TestPloneApiContent(unittest.TestCase):
     def test_get_view_constraints(self):
         """Test the constraints for deleting content."""
         from plone.api.exc import MissingParameterError
+
         request = self.layer['request']
 
         # When no parameters are given an error is raised
@@ -1382,9 +1398,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.maxDiff = None  # to see assert diff
         self.assertTrue(
             str(cm.exception).startswith(
-                "Cannot find a view with name 'foo'.\n"
-                'Available views are:\n'
-                '\n',
+                "Cannot find a view with name 'foo'.\n" 'Available views are:\n' '\n',
             ),
         )
 

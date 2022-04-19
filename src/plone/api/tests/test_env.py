@@ -124,70 +124,90 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_test_defaults(self):
         """Test that the default set-up does what I expect it to."""
-        self.should_allow([
-            'public_method',
-            'pp_method',
-            'qq_method',
-        ])
-        self.should_forbid([
-            'rr_method',
-            'private_method',
-        ])
+        self.should_allow(
+            [
+                'public_method',
+                'pp_method',
+                'qq_method',
+            ]
+        )
+        self.should_forbid(
+            [
+                'rr_method',
+                'private_method',
+            ]
+        )
 
     def test_adopt_manager_role(self):
         """Test that we can adopt the Manager role temporarily."""
         with api.env.adopt_roles(roles=['Manager']):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-                'qq_method',
-                'rr_method',
-            ])
-            self.should_forbid([
-                'private_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                    'qq_method',
+                    'rr_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
+                ]
+            )
         self.test_test_defaults()
 
     def test_adopt_manager_string_role(self):
         """Test that we can adopt the Manager role temporarily."""
         with api.env.adopt_roles(roles='Manager'):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-                'qq_method',
-                'rr_method',
-            ])
-            self.should_forbid([
-                'private_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                    'qq_method',
+                    'rr_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
+                ]
+            )
         self.test_test_defaults()
 
     def test_adopt_fewers_role(self):
         """Test that we can adopt a non-Manager role temporarily."""
         with api.env.adopt_roles(roles=['Member']):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-            ])
-            self.should_forbid([
-                'qq_method',
-                'rr_method',
-                'private_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'qq_method',
+                    'rr_method',
+                    'private_method',
+                ]
+            )
         self.test_test_defaults()
 
     def test_drop_to_anon(self):
         """Test that we can drop roles."""
         with api.env.adopt_roles(roles=['Anonymous']):
-            self.should_allow([
-                'public_method',
-            ])
-            self.should_forbid([
-                'pp_method',
-                'rr_method',
-                'qq_method',
-                'private_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'pp_method',
+                    'rr_method',
+                    'qq_method',
+                    'private_method',
+                ]
+            )
 
     def test_content_owner_role(self):
         """Tests that adopting a role should not affect content ownership."""
@@ -205,29 +225,37 @@ class TestPloneApiEnv(unittest.TestCase):
     def test_become_manager_by_name(self):
         """Tests that becoming a manager user works."""
         with api.env.adopt_user(username='superhuman'):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-                'qq_method',
-                'rr_method',
-            ])
-            self.should_forbid([
-                'private_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                    'qq_method',
+                    'rr_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
+                ]
+            )
         self.test_test_defaults()
 
     def test_become_manager_by_obj(self):
         """Tests that becoming a manager with user from api.user works."""
         with api.env.adopt_user(user=api.user.get(username='superhuman')):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-                'qq_method',
-                'rr_method',
-            ])
-            self.should_forbid([
-                'private_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                    'qq_method',
+                    'rr_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
+                ]
+            )
         self.test_test_defaults()
 
     def test_become_manager_by_acl_user(self):
@@ -236,40 +264,52 @@ class TestPloneApiEnv(unittest.TestCase):
 
         au_ordinary = acl_users.getUser('worker')
         with api.env.adopt_user(user=au_ordinary):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-            ])
-            self.should_forbid([
-                'private_method',
-                'qq_method',
-                'rr_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
+                    'qq_method',
+                    'rr_method',
+                ]
+            )
 
         au_manager = acl_users.getUser('superhuman')
         with api.env.adopt_user(user=au_manager):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-                'qq_method',
-                'rr_method',
-            ])
-            self.should_forbid([
-                'private_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                    'qq_method',
+                    'rr_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
+                ]
+            )
 
     def test_become_ordinary(self):
         """Tests that becoming a user with fewer permissions works."""
         with api.env.adopt_user(username='worker'):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-            ])
-            self.should_forbid([
-                'private_method',
-                'qq_method',
-                'rr_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
+                    'qq_method',
+                    'rr_method',
+                ]
+            )
         self.test_test_defaults()
 
     def test_adopted_content_ownership(self):
@@ -287,56 +327,76 @@ class TestPloneApiEnv(unittest.TestCase):
     def test_adopted_nested_ownership(self):
         """Test deep nesting of adopt_user and adopt_roles blocks."""
         with api.env.adopt_user(username='worker'):
-            self.should_allow([
-                'public_method',
-                'pp_method',
-            ])
-            self.should_forbid([
-                'private_method',
-                'qq_method',
-                'rr_method',
-            ])
-            with api.env.adopt_roles(['Anonymous']):
-                self.should_allow([
+            self.should_allow(
+                [
                     'public_method',
-                ])
-                self.should_forbid([
-                    'private_method',
                     'pp_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
                     'qq_method',
                     'rr_method',
-                ])
-                with api.env.adopt_user(username='boss'):
-                    self.should_allow([
+                ]
+            )
+            with api.env.adopt_roles(['Anonymous']):
+                self.should_allow(
+                    [
                         'public_method',
+                    ]
+                )
+                self.should_forbid(
+                    [
+                        'private_method',
                         'pp_method',
                         'qq_method',
-                    ])
-                    self.should_forbid([
-                        'private_method',
                         'rr_method',
-                    ])
-                    with api.env.adopt_roles(['Manager']):
-                        self.should_allow([
+                    ]
+                )
+                with api.env.adopt_user(username='boss'):
+                    self.should_allow(
+                        [
                             'public_method',
                             'pp_method',
                             'qq_method',
-                            'rr_method',
-                        ])
-                        self.should_forbid([
+                        ]
+                    )
+                    self.should_forbid(
+                        [
                             'private_method',
-                        ])
-
-                        with api.env.adopt_roles(['Anonymous']):
-                            self.should_allow([
+                            'rr_method',
+                        ]
+                    )
+                    with api.env.adopt_roles(['Manager']):
+                        self.should_allow(
+                            [
                                 'public_method',
-                            ])
-                            self.should_forbid([
-                                'private_method',
                                 'pp_method',
                                 'qq_method',
                                 'rr_method',
-                            ])
+                            ]
+                        )
+                        self.should_forbid(
+                            [
+                                'private_method',
+                            ]
+                        )
+
+                        with api.env.adopt_roles(['Anonymous']):
+                            self.should_allow(
+                                [
+                                    'public_method',
+                                ]
+                            )
+                            self.should_forbid(
+                                [
+                                    'private_method',
+                                    'pp_method',
+                                    'qq_method',
+                                    'rr_method',
+                                ]
+                            )
                         # /roles Anonymous
 
                         doc4 = api.content.create(
@@ -351,37 +411,49 @@ class TestPloneApiEnv(unittest.TestCase):
                         self.assertEqual(actual_pp, intended_pp)
                     # /roles Manager
 
-                    self.should_allow([
-                        'public_method',
-                        'pp_method',
-                        'qq_method',
-                    ])
-                    self.should_forbid([
-                        'private_method',
-                        'rr_method',
-                    ])
+                    self.should_allow(
+                        [
+                            'public_method',
+                            'pp_method',
+                            'qq_method',
+                        ]
+                    )
+                    self.should_forbid(
+                        [
+                            'private_method',
+                            'rr_method',
+                        ]
+                    )
                 # /user boss
 
-                self.should_allow([
-                    'public_method',
-                ])
-                self.should_forbid([
-                    'private_method',
-                    'pp_method',
-                    'qq_method',
-                    'rr_method',
-                ])
+                self.should_allow(
+                    [
+                        'public_method',
+                    ]
+                )
+                self.should_forbid(
+                    [
+                        'private_method',
+                        'pp_method',
+                        'qq_method',
+                        'rr_method',
+                    ]
+                )
             # /roles Anonymous
 
-            self.should_allow([
-                'public_method',
-                'pp_method',
-            ])
-            self.should_forbid([
-                'private_method',
-                'qq_method',
-                'rr_method',
-            ])
+            self.should_allow(
+                [
+                    'public_method',
+                    'pp_method',
+                ]
+            )
+            self.should_forbid(
+                [
+                    'private_method',
+                    'qq_method',
+                    'rr_method',
+                ]
+            )
         # /user worker
 
     def test_adopting_zope_users(self):
@@ -390,6 +462,7 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_adopting_anonymous(self):
         from AccessControl.users import nobody
+
         self.assertNotEqual(nobody, api.user.get_current())
         with api.env.adopt_user(user=nobody):
             self.assertEqual(nobody, api.user.get_current())
@@ -397,12 +470,14 @@ class TestPloneApiEnv(unittest.TestCase):
     def test_empty_warning(self):
         """Tests that empty roles lists get warned about."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.env.adopt_roles([])
 
     def test_argument_requirement(self):
         """Tests that missing arguments don't go unnoticed."""
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.env.adopt_roles()
 
@@ -411,6 +486,7 @@ class TestPloneApiEnv(unittest.TestCase):
         getConfiguration.debug_mode."""
         from App.config import getConfiguration
         from plone.api.env import debug_mode
+
         getConfiguration().debug_mode = True
         self.assertEqual(debug_mode(), True)
         getConfiguration().debug_mode = False
@@ -419,23 +495,27 @@ class TestPloneApiEnv(unittest.TestCase):
     def test_test_mode(self):
         """Tests that test_mode() returns True as we are in a test runner."""
         from plone.api.env import test_mode
+
         self.assertEqual(test_mode(), True)
 
     def test_read_only_mode(self):
         """Test that read_only_mode() returns False
         as we have a write enabled ZODB."""
         from plone.api.env import read_only_mode
+
         self.assertFalse(read_only_mode())
 
     def test_plone_version(self):
         """Tests that plone_version() returns Plone version."""
         from plone.api.env import plone_version
+
         self.assertTrue(isinstance(plone_version(), str))
         self.assertRegexpMatches(plone_version(), version_regexp)
 
     def test_zope_version(self):
         """Tests that zope_version() returns Zope version."""
         from plone.api.env import zope_version
+
         self.assertTrue(isinstance(zope_version(), str))
         self.assertRegexpMatches(zope_version(), version_regexp)
 

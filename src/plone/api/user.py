@@ -23,7 +23,7 @@ def create(
     email=None,
     username=None,
     password=None,
-    roles=('Member', ),
+    roles=('Member',),
     properties=None,
 ):
     """Create a user.
@@ -256,7 +256,7 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
 
 @contextmanager
 def _nop_context_manager():
-    """A trivial context manager that does nothing."""
+    """Do nothing (trivial context manager)."""
     yield
 
 

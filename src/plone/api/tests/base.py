@@ -9,20 +9,21 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 
-import pkg_resources
-
 
 class PloneApiLayer(PloneSandboxLayer):
 
-    defaultBases = (PLONE_FIXTURE, )
+    defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         """Prepare Zope instance by loading appropriate ZCMLs."""
         import plone.app.dexterity
+
         self.loadZCML(package=plone.app.dexterity)
         import plone.api
+
         self.loadZCML(package=plone.api, name='testing.zcml')
         import plone.app.contenttypes
+
         self.loadZCML(package=plone.app.contenttypes)
 
     def setUpPloneSite(self, portal):
@@ -44,10 +45,10 @@ class PloneApiLayer(PloneSandboxLayer):
 
 FIXTURE = PloneApiLayer()
 INTEGRATION_TESTING = IntegrationTesting(
-    bases=(FIXTURE, ),
+    bases=(FIXTURE,),
     name='PloneApiLayer:Integration',
 )
 FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(FIXTURE, ),
+    bases=(FIXTURE,),
     name='PloneApiLayer:Functional',
 )

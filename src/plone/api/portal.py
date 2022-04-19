@@ -19,7 +19,6 @@ from zope.globalrequest import getRequest
 from zope.interface.interfaces import IInterface
 
 import datetime as dtime
-import pkg_resources
 
 
 logger = getLogger('plone.api.portal')
@@ -36,16 +35,14 @@ elif (
     and PrintingMailHost.ENABLED.lower() in PrintingMailHost.TRUISMS
 ):
     PRINTINGMAILHOST_ENABLED = True
-elif (
-    PrintingMailHost.ENABLED is None
-    and PrintingMailHost.DevelopmentMode is True
-):
+elif PrintingMailHost.ENABLED is None and PrintingMailHost.DevelopmentMode is True:
     PRINTINGMAILHOST_ENABLED = True
 else:
     # PrintingMailHost only patches in debug mode.
     # plone.api.env.debug_mode cannot be used here, because .env imports this
     # file
     from App.config import getConfiguration
+
     PRINTINGMAILHOST_ENABLED = getConfiguration().debug_mode
 
 MISSING = object()
@@ -61,7 +58,6 @@ def get():
     :rtype: Portal object
     :Example: :ref:`portal-get-example`
     """
-
     closest_site = getSite()
     if closest_site is not None:
         for potential_portal in closest_site.aq_chain:
@@ -153,6 +149,7 @@ def send_email(
 
     if not PRINTINGMAILHOST_ENABLED:
         from plone.api import content
+
         ctrlOverview = content.get_view(
             context=portal,
             request=portal.REQUEST,
@@ -254,7 +251,7 @@ def show_message(message=None, request=None, type='info'):
 
 @required_parameters('name')
 def get_registry_record(name=None, interface=None, default=MISSING):
-    """Get a record value from ``plone.app.registry``
+    """Get a record value from ``plone.app.registry``.
 
     :param name: [required] Name
     :type name: string
@@ -272,8 +269,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
-            'The interface parameter has to derive from '
-            'zope.interface.Interface',
+            'The interface parameter has to derive from ' 'zope.interface.Interface',
         )
 
     registry = getUtility(IRegistry)
@@ -309,9 +305,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
     # Show all records that 'look like' name.
     # We don't dump the whole list, because it 1500+ items.
-    msg = (
-        "Cannot find a record with name '{name}'".format(name=name)
-    )
+    msg = "Cannot find a record with name '{name}'".format(name=name)
     records = [key for key in registry.records.keys() if name in key]
     if records:
         msg = (
@@ -324,7 +318,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
 @required_parameters('name', 'value')
 def set_registry_record(name=None, value=None, interface=None):
-    """Set a record value in the ``plone.app.registry``
+    """Set a record value in the ``plone.app.registry``.
 
     :param name: [required] Name of the record
     :type name: string
@@ -340,8 +334,7 @@ def set_registry_record(name=None, value=None, interface=None):
 
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
-            'The interface parameter has to derive from '
-            'zope.interface.Interface',
+            'The interface parameter has to derive from ' 'zope.interface.Interface',
         )
 
     registry = getUtility(IRegistry)
@@ -351,6 +344,7 @@ def set_registry_record(name=None, value=None, interface=None):
         get_registry_record(name=name, interface=interface)
 
         from zope.schema._bootstrapinterfaces import WrongType
+
         try:
             registry[interface.__identifier__ + '.' + name] = value
         except WrongType:
@@ -384,6 +378,7 @@ def get_default_language():
     :Example: :ref:`portal-get-default-language-example`
     """
     from plone.i18n.interfaces import ILanguageSchema
+
     registry = getUtility(IRegistry)
     settings = registry.forInterface(ILanguageSchema, prefix='plone')
     return settings.default_language
@@ -399,9 +394,11 @@ def get_current_language(context=None):
     :Example: :ref:`portal-get-current-language-example`
     """
     request = getRequest()
-    return request.get('LANGUAGE', None) or \
-        (context and aq_inner(context).Language()) \
+    return (
+        request.get('LANGUAGE', None)
+        or (context and aq_inner(context).Language())
         or get_default_language()
+    )
 
 
 def translate(msgid, domain='plone', lang=None):

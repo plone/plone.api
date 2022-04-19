@@ -24,8 +24,9 @@ from zope.lifecycleevent import modified
 import logging
 import pkg_resources
 
+
 try:
-    pkg_resources.get_distribution("plone.app.iterate")
+    pkg_resources.get_distribution('plone.app.iterate')
 except pkg_resources.DistributionNotFound:
     ITERATE_RELATION_NAME = None
     StagingRelationValue = None
@@ -55,7 +56,7 @@ def get(
     unrestricted=False,
     as_dict=False,
 ):
-    """Get specific relations given a source/target/relationship
+    """Get specific relations given a source/target/relationship.
 
     :param source: Object that the relations originate from.
     :type source: Content object
@@ -134,7 +135,7 @@ def get(
 
 @required_parameters('source', 'target', 'relationship')
 def create(source=None, target=None, relationship=None):
-    """Create a relation from source to target using zc.relation
+    """Create a relation from source to target using zc.relation.
 
     :param source: [required] Object that the relation will originate from.
     :type source: Content object
@@ -178,10 +179,7 @@ def create(source=None, target=None, relationship=None):
         modifiedContent(source, None)
         return
 
-    if (
-        ITERATE_RELATION_NAME is not None
-        and from_attribute == ITERATE_RELATION_NAME
-    ):
+    if ITERATE_RELATION_NAME is not None and from_attribute == ITERATE_RELATION_NAME:
         # Iterate relations use a subclass of RelationValue
         relation = StagingRelationValue(to_id)
         event._setRelation(source, ITERATE_RELATION_NAME, relation)

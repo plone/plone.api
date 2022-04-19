@@ -1,3 +1,5 @@
+"""Module provides info about your instance and tools to switch roles and user."""
+
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
@@ -178,7 +180,7 @@ class _GlobalRoleOverridingContext:
 
 
 def debug_mode():
-    """Returns True if your zope instance is running in debug mode.
+    """Return True if your zope instance is running in debug mode.
 
     :Example: :ref:`env-debug-mode-example`
     """

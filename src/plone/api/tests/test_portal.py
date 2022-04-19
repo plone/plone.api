@@ -160,6 +160,7 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test error msg when getSite() returns None."""
         getSite.return_value = None
         from plone.api.exc import CannotGetPortalError
+
         with self.assertRaises(CannotGetPortalError):
             portal.get()
 
@@ -168,12 +169,14 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # When no parameters are given an error is raised
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             portal.get_tool()
 
     def test_get_tool_tool_not_found(self):
         """Test that error msg lists available tools if a tool is not found."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_tool('portal_foo')
 
@@ -300,8 +303,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
     def test_send_email_with_config_in_registry(self):
-        """Test mail-setting being stored in registry
-        """
+        """Test mail-setting being stored in registry"""
         self.mailhost.reset()
 
         portal.set_registry_record(
@@ -322,7 +324,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertEqual(msg['From'], 'Registry <reg@example.org>')
 
     def test_send_email_with_printingmailhost(self):
-        """ Test that send_email does not raise an exception when
+        """Test that send_email does not raise an exception when
         Products.PrintingMailHost is installed and active.
         """
         old_flag = portal.PRINTINGMAILHOST_ENABLED
@@ -365,6 +367,7 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # When no parameters are given an error is raised
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             portal.get_localized_time()
 
@@ -459,6 +462,7 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test to see if message appears."""
 
         from Products.statusmessages.interfaces import IStatusMessage
+
         request = self.layer['request']
         portal.show_message(message='Blueberries!', request=request)
         messages = IStatusMessage(request)
@@ -480,6 +484,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertTrue(INavigationRoot.providedBy(navigation_root))
 
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             portal.get_navigation_root()
 
@@ -507,12 +512,14 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_get_missing_registry_record(self):
         """Test that getting a missing registry record raises an Exception."""
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             portal.get_registry_record()
 
     def test_get_invalid_registry_record(self):
         """Test that getting an invalid registry record raises an Exception."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             portal.get_registry_record(name=dict({'foo': 'bar'}))
 
@@ -567,6 +574,7 @@ class TestPloneApiPortal(unittest.TestCase):
     def test_get_invalid_interface_for_registry_record(self):
         """Test that passing an invalid interface raises an Exception."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             portal.get_registry_record(
                 'something',
@@ -578,6 +586,7 @@ class TestPloneApiPortal(unittest.TestCase):
         interface.
         """
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError) as cm:
             portal.get_registry_record(
                 'something',
@@ -593,6 +602,7 @@ class TestPloneApiPortal(unittest.TestCase):
         an Exception.
         """
         from plone.api.exc import InvalidParameterError
+
         registry = getUtility(IRegistry)
         registry.registerInterface(IMyRegistrySettings)
 
@@ -607,6 +617,7 @@ class TestPloneApiPortal(unittest.TestCase):
         field from an interface.
         """
         from plone.api.exc import InvalidParameterError
+
         registry = getUtility(IRegistry)
         registry.registerInterface(IMyRegistrySettings)
 
@@ -624,7 +635,7 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertTrue(exc_str.find('field_two') != -1)
 
     def test_get_invalid_record_with_default(self):
-        """ If get_registry_record is called with a default parameter
+        """If get_registry_record is called with a default parameter
         and the record cannot be resolved
         the default will be returned instead of raising InvalidParameterError
         """
@@ -661,6 +672,7 @@ class TestPloneApiPortal(unittest.TestCase):
         parameters, a MissingParameterError exception is raised.
         """
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             portal.set_registry_record()
 
@@ -669,6 +681,7 @@ class TestPloneApiPortal(unittest.TestCase):
         an Exception.
         """
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             portal.set_registry_record(
                 name='nonexistent.sharepoint.power',
@@ -686,6 +699,7 @@ class TestPloneApiPortal(unittest.TestCase):
         )
 
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             portal.set_registry_record(name='plone.api.plone_power')
 
@@ -694,6 +708,7 @@ class TestPloneApiPortal(unittest.TestCase):
         list for the record name instead of a string, raises an error.
         """
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             portal.set_registry_record(
                 name=['foo', 'bar'],
@@ -727,6 +742,7 @@ class TestPloneApiPortal(unittest.TestCase):
         and duplicate: https://github.com/plone/plone.api/issues/464
         """
         from plone.api.exc import InvalidParameterError
+
         registry = getUtility(IRegistry)
         registry.registerInterface(IMyOtherRegistrySettings)
         with self.assertRaises(InvalidParameterError) as cm:
@@ -737,14 +753,13 @@ class TestPloneApiPortal(unittest.TestCase):
             )
         exc_str = str(cm.exception)
 
-        self.assertIn(
-            "The value parameter for the field field_three", exc_str
-        )
+        self.assertIn("The value parameter for the field field_three", exc_str)
         self.assertIn("TextLine", exc_str)
 
     def test_set_registry_record_on_invalid_interface(self):
         """Test that passing an invalid interface raises an Exception."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             portal.set_registry_record(
                 'something',
@@ -757,6 +772,7 @@ class TestPloneApiPortal(unittest.TestCase):
         interface.
         """
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError) as cm:
             portal.set_registry_record(
                 'something',
@@ -773,6 +789,7 @@ class TestPloneApiPortal(unittest.TestCase):
         an Exception.
         """
         from plone.api.exc import InvalidParameterError
+
         registry = getUtility(IRegistry)
         registry.registerInterface(IMyRegistrySettings)
 
@@ -788,6 +805,7 @@ class TestPloneApiPortal(unittest.TestCase):
         field from an interface.
         """
         from plone.api.exc import InvalidParameterError
+
         registry = getUtility(IRegistry)
         registry.registerInterface(IMyRegistrySettings)
 
@@ -810,6 +828,7 @@ class TestPloneApiPortal(unittest.TestCase):
         Exception..
         """
         from plone.api.exc import InvalidParameterError
+
         registry = getUtility(IRegistry)
         registry.registerInterface(IMyRegistrySettings)
 
@@ -825,6 +844,7 @@ class TestPloneApiPortal(unittest.TestCase):
         Exception..
         """
         from plone.api.exc import InvalidParameterError
+
         registry = getUtility(IRegistry)
         registry.registerInterface(IMyRegistrySettings)
 
@@ -857,8 +877,7 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test translation."""
         self.assertEqual(
             portal.translate(
-                'A workflow action triggers a workflow transition on an '
-                'object.',
+                'A workflow action triggers a workflow transition on an ' 'object.',
                 lang='es',
             ),
             'Una acción de flujo de trabajo dispara una transición de '

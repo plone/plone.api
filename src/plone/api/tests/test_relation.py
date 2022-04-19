@@ -185,7 +185,6 @@ class TestPloneApiRelation(unittest.TestCase):
         self.assertEqual(self.about.description, '')
         self.assertEqual(len(api.relation.get(source=self.about, target=self.blog)), 3)
 
-
     def test_delete_constraints(self):
         """Test the constraints when deleting relations."""
         from plone.api.exc import InvalidParameterError
@@ -342,8 +341,12 @@ class TestPloneApiRelation(unittest.TestCase):
         self.assertEqual(len(api.relation.get(target=self.blog)), 2)
         self.assertEqual(len(api.relation.get(relationship='link')), 3)
 
-        self.assertEqual(len(api.relation.get(source=self.about, relationship='link')), 1)
-        self.assertEqual(len(api.relation.get(source=self.about, target=self.events)), 0)
+        self.assertEqual(
+            len(api.relation.get(source=self.about, relationship='link')), 1
+        )
+        self.assertEqual(
+            len(api.relation.get(source=self.about, target=self.events)), 0
+        )
         self.assertEqual(len(api.relation.get(source=self.about, target=self.blog)), 1)
 
         self.assertEqual(len(api.relation.get(source=self.events)), 2)
@@ -361,7 +364,9 @@ class TestPloneApiRelation(unittest.TestCase):
             target=self.blog,
             relationship='bloglink',
         )
-        self.assertEqual(len(api.relation.get(relationship='link', as_dict=True)['link']), 1)
+        self.assertEqual(
+            len(api.relation.get(relationship='link', as_dict=True)['link']), 1
+        )
         rels = api.relation.get(target=self.blog, as_dict=True)
         self.assertEqual(len(rels['link']), 1)
         self.assertEqual(len(rels['bloglink']), 1)
@@ -420,4 +425,6 @@ class TestPloneApiRelation(unittest.TestCase):
         login(self.portal, 'bob')
 
         self.assertEqual(len(api.relation.get(relationship='link')), 2)
-        self.assertEqual(len(api.relation.get(relationship='link', unrestricted=True)), 3)
+        self.assertEqual(
+            len(api.relation.get(relationship='link', unrestricted=True)), 3
+        )

@@ -7,14 +7,13 @@ from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import logout
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
-from plone.registry.interfaces import IRegistry
+from unittest import mock
 from zope.component import adapter
 from zope.component import getGlobalSiteManager
 from zope.component import provideAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 
-from unittest import mock
 import unittest
 
 
@@ -29,7 +28,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.portal_membership = api.portal.get_tool('portal_membership')
 
     def _check_userid_and_username_different(self):
-        """Ensure that the userid and username are not equal
+        """Ensure that the userid and username are not equal.
 
         This is important for tests which rely on differentiation between the
         two. These tests should rely on the Test User created by
@@ -44,6 +43,7 @@ class TestPloneApiUser(unittest.TestCase):
 
     def _set_emaillogin(self, value):
         from plone.api.exc import InvalidParameterError
+
         try:
             api.portal.set_registry_record('plone.use_email_as_login', value)
         except InvalidParameterError:
@@ -52,10 +52,10 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_create_no_email(self):
         """Test that exception is raised if no email is given."""
-
         self._set_emaillogin(True)
 
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.user.create(
                 username='chuck',
@@ -86,7 +86,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_create_no_username(self):
         """Test create if no username is provided."""
-
         # If there is no username, email will be used instead
         self._set_emaillogin(True)
 
@@ -102,6 +101,7 @@ class TestPloneApiUser(unittest.TestCase):
         self._set_emaillogin(False)
 
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.create(
                 email='chuck@norris.org',
@@ -168,10 +168,9 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
     def test_get_constraints(self):
-        """Test that exception is raised if no username is given when getting
-        the user.
-        """
+        """Test on raised exeption if no username is given when getting the user."""
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.user.get()
 
@@ -225,6 +224,7 @@ class TestPloneApiUser(unittest.TestCase):
         bacon = api.group.get(groupname='bacon')
 
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.get_users(
                 groupname='bacon',
@@ -233,22 +233,23 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_users_nonexistent_group(self):
         """Test getting users for a group that does not exist."""
-
         from plone.api.exc import GroupNotFoundError
+
         with self.assertRaises(GroupNotFoundError):
             api.user.get_users(groupname='bacon')
 
     def test_delete_no_username(self):
         """Test deleting of a member with email login."""
-
         self._set_emaillogin(True)
 
         # This should fail either an username or user object should be given
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.user.delete()
 
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.delete(
                 username='chuck@norris.org',
@@ -262,8 +263,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.delete(user=user)
 
     def test_delete_username(self):
-        """test whether the user has been deleted."""
-
+        """Test whether the user has been deleted."""
         api.user.create(
             username='unwanted',
             password='secret',
@@ -280,7 +280,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_is_anonymous(self):
         """Test anonymous access."""
-
         self.assertEqual(api.user.is_anonymous(), False)
         logout()
         self.assertEqual(api.user.is_anonymous(), True)
@@ -324,6 +323,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.get_roles(
                 username='chuck',
@@ -347,20 +347,22 @@ class TestPloneApiUser(unittest.TestCase):
     def test_get_roles_nonexistant_user(self):
         """Test get roles for a user that does not exist."""
         from plone.api.exc import UserNotFoundError
+
         with self.assertRaises(UserNotFoundError):
             api.user.get_roles(username='theurbanspaceman')
 
     def test_get_roles_anonymous(self):
         """Test get_roles for an anonymous user."""
         from AccessControl.users import nobody
+
         with api.env.adopt_user(user=nobody):
             self.assertEqual(
                 api.user.get_roles(),
-                ('Anonymous', ),
+                ('Anonymous',),
             )
 
     def test_get_roles_in_context(self):
-        """Test get local and inherited roles for a user on an object"""
+        """Test get local and inherited roles for a user on an object."""
         api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -391,7 +393,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
     def test_get_roles_local_only(self):
-        """Test get local roles for a user on an object"""
+        """Test get local roles for a user on an object."""
         api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -477,7 +479,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_permissions_root(self):
         """Test get permissions on site root."""
-
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -486,6 +487,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.get_permissions(
                 username='chuck',
@@ -511,14 +513,13 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_get_permissions_nonexistant_user(self):
         """Test get_permissions for a user that does not exist."""
-
         from plone.api.exc import UserNotFoundError
+
         with self.assertRaises(UserNotFoundError):
             api.user.get_permissions(username='ming')
 
     def test_get_permissions_context(self):
         """Test get permissions on some context."""
-
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -527,6 +528,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.get_permissions(
                 username='chuck',
@@ -565,7 +567,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_has_permission_context(self):
         """Test has_permission on some context."""
-
         username = 'billy'
         user = api.user.create(
             username=username,
@@ -575,6 +576,7 @@ class TestPloneApiUser(unittest.TestCase):
 
         # Cannot supply both username and user arguments
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.has_permission(
                 'View',
@@ -615,7 +617,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_grant_roles(self):
         """Test granting a couple of roles."""
-
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -649,7 +650,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_grant_roles_username_and_user(self):
         """Test grant roles passing username and user."""
-
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -657,17 +657,19 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.user.grant_roles(username=user)
 
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.grant_roles(username='chuck', roles=('Authenticated'))
 
     def test_grant_roles_anonymous(self):
         """Test granting Anonymous role."""
-
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.grant_roles(
                 username='chuck',
@@ -677,6 +679,7 @@ class TestPloneApiUser(unittest.TestCase):
     def test_grant_roles_authenticated(self):
         """Test granting Authenticated role."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.grant_roles(
                 username='chuck',
@@ -686,12 +689,14 @@ class TestPloneApiUser(unittest.TestCase):
     def test_grant_roles_no_parameters(self):
         """Test grant roles without passing parameters."""
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.user.grant_roles()
 
     def test_grant_roles_no_user(self):
         """If no user is found, raise a suitable error."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.grant_roles(
                 username='chuck',
@@ -700,7 +705,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_revoke_roles(self):
         """Test revoke roles."""
-
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -736,7 +740,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_revoke_roles_username_and_user(self):
         """Test revoke roles passing username and user."""
-
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -744,13 +747,14 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.user.revoke_roles(user=user)
 
     def test_revoke_roles_anonymous(self):
         """Test revoking Anonymous role."""
-
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.revoke_roles(
                 username='chuck',
@@ -759,8 +763,8 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_revoke_roles_authenticated(self):
         """Test revoking Authenticated role."""
-
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.revoke_roles(
                 username='chuck',
@@ -769,8 +773,8 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_revoke_roles_no_parameters(self):
         """Test revoke roles without passing parameters."""
-
         from plone.api.exc import MissingParameterError
+
         with self.assertRaises(MissingParameterError):
             api.user.revoke_roles()
 
@@ -782,6 +786,7 @@ class TestPloneApiUser(unittest.TestCase):
             password='secret',
         )
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.revoke_roles(username='chuck', roles=['Authenticated'])
 
@@ -801,6 +806,7 @@ class TestPloneApiUser(unittest.TestCase):
     def test_revoke_roles_no_user(self):
         """If no user is found, raise a suitable error."""
         from plone.api.exc import InvalidParameterError
+
         with self.assertRaises(InvalidParameterError):
             api.user.revoke_roles(
                 username='chuck',
@@ -809,7 +815,6 @@ class TestPloneApiUser(unittest.TestCase):
 
     def test_grant_roles_in_context(self):
         """Test grant roles."""
-
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
@@ -897,9 +902,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
     def test_grant_roles_disregards_adapter(self):
-        """Test that borg.localrole-adpaters are not copied when granting
-        local roles."""
-
+        """Test that borg.localrole-adpaters are not copied on granting local roles."""
         portal = api.portal.get()
         folder = api.content.create(
             container=portal,
@@ -931,7 +934,6 @@ class TestPloneApiUser(unittest.TestCase):
         @adapter(Interface)
         @implementer(ILocalRoleProvider)
         class LocalRoleProvider:
-
             def __init__(self, context):
                 self.context = context
 
@@ -1028,12 +1030,12 @@ class TestPloneApiUser(unittest.TestCase):
         # cleanup
         gsm = getGlobalSiteManager()
         gsm.unregisterAdapter(
-            factory=LocalRoleProvider, provided=ILocalRoleProvider,
+            factory=LocalRoleProvider,
+            provided=ILocalRoleProvider,
         )
 
     def test_revoke_roles_in_context(self):
         """Test revoke roles."""
-
         user = api.user.create(
             username='chuck',
             email='chuck@norris.org',
