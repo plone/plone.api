@@ -40,14 +40,17 @@ from unittest import TestSuite
 
 def sybil_setup(namespace):
     """Shared test environment set-up, ran before every test."""
+    print("*** sybil_setup")
+    print("namespace", namespace)
     layer = INTEGRATION_TESTING
-    browser = Browser(namespace.get('app', layer['app']))
-    if not namespace.get('portal'):
+    app = namespace.get('app', layer['app'])
+    if not namespace.get('app'):
         namespace.update(
             {
+                'app': app,
                 'portal': namespace.get('portal', layer['portal']),
                 'request': namespace.get('request', layer['request']),
-                'browser': browser,
+                'browser': Browser(app),
             },
         )
 
@@ -58,13 +61,15 @@ sb = Sybil(
         PythonCodeBlockParser(),
     ],
     path='./doctests',
-    pattern='*.md',
+    # TODO Switch back to *.md
+    # pattern='*.md',
+    pattern='testdoc.md',
     setup=sybil_setup,
 )
 
 
 def _load_tests(loader=None, tests=None, pattern=None):
-    doctests_suites = []
+    suite = TestSuite()
     for path in sorted(sb.path.glob('**/*')):
         if path.is_file() and sb.should_parse(path):
             document = sb.parse(path)
@@ -78,22 +83,19 @@ def _load_tests(loader=None, tests=None, pattern=None):
                 ),
             )
 
-            testsuite_of_document = TestSuite()
-            examples = [example for example in document]
-            stc = SybilTestCase(examples)
-            stc.namespace.update(
-                {
-                    'self': stc,
-                },
-            )
-            testsuite_of_document.addTest(stc)
-            doctests_suites.append(
-                layered(
-                    testsuite_of_document,
-                    layer=INTEGRATION_TESTING,
-                ),
-            )
-    return TestSuite(doctests_suites)
+            for example in document:
+                stc = SybilTestCase(example)
+                stc.namespace.update(
+                    {
+                        'self': stc,
+                    },
+                )
+                suite.addTest(stc)
+    layeredSuite = layered(
+        suite,
+        layer=INTEGRATION_TESTING,
+    )
+    return layeredSuite
 
 
 load_tests = _load_tests
