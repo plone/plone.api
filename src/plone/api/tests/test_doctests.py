@@ -8,11 +8,11 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing import layered
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from zope.testing import renormalizing
 
 import doctest
-import manuel.codeblock
+import manuel.myst.codeblock
 import manuel.doctest
 import manuel.testing
 import os
@@ -94,7 +94,7 @@ def DocFileSuite(
     :rtype: `manuel.testing.TestSuite`
     """
     m = manuel.doctest.Manuel(optionflags=flags, checker=CHECKER)
-    m += manuel.codeblock.Manuel()
+    m += manuel.myst.codeblock.Manuel()
 
     return layered(
         manuel.testing.TestSuite(
