@@ -13,7 +13,7 @@ Releasing a new version of `plone.api` involves the following steps:
 To avoid human errors and to automate some of the tasks above we use `jarn.mkrelease`.
 It's listed as a dependency in `setup.py` and should already be installed in your local bin:
 
-```bash
+```shell
 $ bin/mkrelease --help
 ```
 
@@ -46,7 +46,7 @@ In the following example we are releasing version 0.1 of `plone.api`.
 The package has been prepared so that `setup.py` contains the version `0.1`,
 this change has been committed to git and all changes have been pushed upstream to GitHub:
 
-```bash
+```shell
 # Check that package description is rendered correctly
 $ bin/longtest
 
