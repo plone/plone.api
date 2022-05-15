@@ -1,5 +1,7 @@
 # Development environment
 
+{sub-ref}`today`
+
 This section is meant for contributors to the `plone.api` project.
 Its purpose is to guide them through the steps needed to start contributing.
 
@@ -26,33 +28,25 @@ First let's look at 'system' libraries and applications that are normally instal
 - `git` - Version control system.
 - `gcc` - The GNU Compiler Collection.
 - `g++` - The C++ extensions for gcc.
-- `GNU make` - The fundamental build-control tool.
 - `GNU tar` - The (un)archiving tool for extracting downloaded archives.
 - `bzip2` and `gzip` decompression packages - `gzip` is nearly standard, however some platforms will require that `bzip2` be installed.
-- `Python 2.7` - Linux distributions normally already have it, OS X users should use <https://github.com/collective/buildout.python> to get a clean Python version (the one that comes with OS X is broken).
+- `Python 3` - It is recommended to use a virtual environment , i.e. pyenv or venv, to get a clean Python version. 
 
 ### Python tools
 
-- tox automation - tox aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software. Install with `pip install tox`.
+tox automation
+: `tox` aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software. Install with `pip install tox`.
 
-```{note}
-Again, OS X users should use <https://github.com/collective/buildout.python>,
-it will make your life much easier to have a cleanly compiled Python instead of using the system one that is broken in many deeply confusing ways.
-```
 
 ### Further information
 
-If you experience problems read through the following links as almost all of the above steps are required for a default Plone development environment:
+If you experience problems, read through the following links as almost all of the above steps are required for a default Plone development environment:
 
 - <https://docs.plone.org/manage/index.html>
 - <https://pypi.org/project/zc.buildout/>
 - <https://pypi.org/project/setuptools/>
 - <https://plone.org/download>
 
-If you are an OS X user, you first need a working Python implementation
-(the one that comes with the operating system is broken).
-Use <https://github.com/collective/buildout.python> and be happy.
-Also applicable to other OSes, if getting a working Python proves a challenge.
 
 (git-workflow)=
 
@@ -74,46 +68,36 @@ Use `git rebase --interactive` to squash all commits that you think are unnecess
 
 ## Creating and using the development environment
 
-```{eval-rst}
-.. todo::
-
-    Update this section as it seams out of date, there is no Makefile so this description makes no sense anymore.
-```
-
 Go to your projects folder and download the lastest `plone.api` code:
 
-```bash
+```shell
 [you@local ~]$ cd <your_work_folder>
 [you@local work]$ git clone https://github.com/plone/plone.api.git
 ```
 
 Now `cd` into the newly created directory and build your environment:
 
-```bash
+```shell
 [you@local work]$ cd plone.api
-[you@local plone.api]$ make
+[you@local plone.api]$ pip install tox
+[you@local plone.api]$ tox
 ```
 
-Go make some tea while
+Go make some tea while `tox` runs all tasks listed under `tox -l`
 
-- `make` creates an isolated Python environment in your `` plone.api` `` folder,
-- bootstraps `zc.buildout`,
-- fetches all dependencies,
-- builds Plone,
-- runs all tests and
-- generates documentation so you can open it locally later on.
+- runs all checks and tests
+- generates documentation so you can open it locally later on
 
 Other commands that you may want to run:
 
-```bash
-[you@local plone.api]$ make tests  # run all tests and syntax validation
-[you@local plone.api]$ make docs   # re-generate documentation
-[you@local plone.api]$ make clean  # reset your env back to a fresh start
-[you@local plone.api]$ make        # re-build env, generate docs, run tests
+```shell
+[you@local plone.api]$ tox -e py39-plone-60  # run all tests for Python 3.9 and Plone 6
+[you@local plone.api]$ tox -e plone6docs   # re-generate documentation
 ```
 
-Open `Makefile` in your favorite code editor to see all possible commands and what they do.
-And read <http://www.gnu.org/software/make/manual/make.html> to learn more about `make`.
+Run `tox -l` to list all tox environments. Open `tox.ini` in your favorite code editor to see all possible commands and what they do.
+And read <https://tox.wiki/en/latest/> to learn more about `tox`.
+
 
 (working-on-an-issue)=
 
@@ -129,7 +113,7 @@ So if you are not doing a very trivial fix, but rather adding new features/enhan
 This way your work is kept in an isolated place where you can receive feedback on it, improve it, etc.
 Once we are happy with your implementation, your branch gets merged into *master* at which point everyone else starts using your code.
 
-```bash
+```shell
 [you@local plone.api]$ git checkout master  # go to master branch
 [you@local plone.api]$ git checkout -b issue_17  # create a feature branch
 # replace 17 with the issue number you are working on
@@ -163,13 +147,13 @@ where I added the get_navigation_root() method.
 Before every commit you should:
 
 - Run unit tests and syntax validation checks.
-- Add an entry to `CHANGES.rst` (if applicable).
+- Add an entry to `/news/` (if applicable).
 
 All syntax checks and all tests can be run with a single command.
 This command also re-generates your documentation.
 
-```bash
-$ make
+```shell
+tox
 ```
 
 ```{note}
@@ -178,11 +162,12 @@ It pays off to invest a little time to make your editor run `pep8` and `pyflakes
 This saves you lots of time in the long run.
 ```
 
-## Travis Continuous Integration
 
-On every push to GitHub, [Travis](https://travis-ci.org/plone/plone.api) runs all tests and syntax validation checks and reports build outcome to the `#sprint` IRC channel and the person who committed the last change.
+## GitHub Continuous Integration
 
-Travis is configured with the `.travis.yml` file located in the root of this package.
+On every push GitHub runs all tests and syntax validation checks.
+GitHub CI is configured in `.github/workflow` in the root of this package.
+
 
 ## Sphinx Documentation
 
@@ -194,41 +179,108 @@ For every feature you add to the codebase, you should also add documentation for
 
 After adding or modifying documentation, run `tox -e plone6docs` to re-generate your documentation.
 
-Publicly available documentation on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api) is automatically generated from these source files, periodically.
+Publicly available documentation on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api) is automatically generated from these source files.
 So when you push changes to master on GitHub you should soon be able to see them published on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api).
 
 Read the [General Guide to Writing Documentation](https://6.dev-docs.plone.org/contributing/writing-docs-guide.html) to brush up on your `MyST` skills.
 
-Example:
+### Adding a function to an existing module
+
+Example: Add a new function `plone.api.content.foo`.
+
+The function would go into module `plone.api.content`.
+So you add your function in `/src/plone/api/content.py`
+
+% invisible-code-block: python
+%
+% from plone.api.validation import at_least_one_of
+% from plone.api.validation import mutually_exclusive_parameters
 
 ```python
-def add(a, b):
-    """Calculate the sum of the two parameters.
+@mutually_exclusive_parameters('path', 'UID')
+@at_least_one_of('path', 'UID')
+def foo(path=None, UID=None):
+    """Do foo.
 
-    Also see the :func:`mod.path.my_func`, :meth:`mod.path.MyClass.method` and :attr:`mod.path.MY_CONSTANT` for more details.
+    :param path: Path to the object we want to get,
+        relative to the portal root.
+    :type path: string
 
-    :param a: The first operand.
-    :type a: :class:`mod.path.A`
+    :param UID: UID of the object we want to get.
+    :type UID: string
 
-    :param b: The second operand.
-    :type b: :class:`mod.path.B`
-
-    :rtype: int
-    :return: The sum of the operands.
-    :raises: `KeyError`, if the operands are not the correct type.
+    :returns: String
+    :raises:
+        :class:`~plone.api.exc.MissingParameterError`,
+        :class:`~plone.api.exc.InvalidParameterError`
+    :Example: :ref:`content-foo-example`
     """
+    return "foo"
 ```
 
-Attributes are documented using the `#:` marker above the attribute.
-The documentation may span multiple lines.
+% invisible-code-block: python
+%
+% bar = foo('/plone/blog')
+% self.assertEqual(bar,"foo")
+%
+% from plone.api.exc import InvalidParameterError
+% self.assertRaises(
+%     InvalidParameterError,
+%     lambda: foo("/plone/blog", "abcd001")
+% )
+
+Add documentation in `/docs/content.md`.
+Describe what your function does and write some tests in code blocks. TestCase methods like `self.assertEqual()` are available in `doctests`.
+See [unittest.TestCase assert methods](https://docs.python.org/3/library/unittest.html#unittest.TestCase.debug) for all available methods.
+The file is linked in `/src/plone/api/tests/doctests/`, which includes the doctests in plone.api testing set up.
+The package `manuel` allows to write doctests as common Python code in code blocks.
+
+````markdown
+(content-foo-example)=
+
+## Get the foo of an object
+
+You can use the {meth}`api.content.foo` function to get the foo of an object.
 
 ```python
-#: Description of the constant value
-MY_CONSTANT = 0xc0ffee
-
-class Foobar(object):
-
-    #: Description of the class variable which spans over
-    #: multiple lines
-    FOO = 1
+from plone import api
+blog_foo = api.content.foo(path="/plone/blog")
 ```
+
+% invisible-code-block: python
+%
+% self.assertEqual(blog_foo,"foo")
+````
+
+Code blocks are rendered in documentation.
+
+````markdown
+```python
+from plone import api
+blog_foo = api.content.foo(path="/plone/blog")
+```
+````
+
+Invisible code blocks are not rendered in documentation and can be used for tests.
+
+````markdown
+% invisible-code-block: python
+%
+% self.assertEqual(blog_foo,"foo")
+````
+
+Invisible code blocks are also handy for enriching the namespace without cluttering the narrative documentation.
+
+````markdown
+% invisible-code-block: python
+%
+% portal = api.portal.get()
+% image = api.content.create(type='Image', id='image', container=portal)
+% blog = api.content.create(type='Link', id='blog', container=portal)
+````
+
+
+Function and example in documentation are referenced vice versa.
+The function references the narrative documentation via label `content-foo-example`.
+The narrative documentation references the API function documentation via `` {meth}`api.content.foo` ``.  
+The documentation is rendered with a link from API reference to narrative documentation and a another link back.
