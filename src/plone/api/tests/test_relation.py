@@ -34,55 +34,55 @@ class TestPloneApiRelation(unittest.TestCase):
         This is copied from test_content.py.
         We may want to simplify.  But could be okay.
         """
-        self.portal = self.layer['portal']
+        self.portal = self.layer["portal"]
 
         self.blog = api.content.create(
-            type='Link',
-            id='blog',
+            type="Link",
+            id="blog",
             container=self.portal,
         )
         self.about = api.content.create(
-            type='Folder',
-            id='about',
+            type="Folder",
+            id="about",
             container=self.portal,
         )
         self.events = api.content.create(
-            type='Folder',
-            id='events',
+            type="Folder",
+            id="events",
             container=self.portal,
         )
 
         self.team = api.content.create(
             container=self.about,
-            type='Document',
-            id='team',
+            type="Document",
+            id="team",
         )
         self.contact = api.content.create(
             container=self.about,
-            type='Document',
-            id='contact',
+            type="Document",
+            id="contact",
         )
 
         self.training = api.content.create(
             container=self.events,
-            type='Event',
-            id='training',
+            type="Event",
+            id="training",
         )
         self.conference = api.content.create(
             container=self.events,
-            type='Event',
-            id='conference',
+            type="Event",
+            id="conference",
         )
         self.sprint = api.content.create(
             container=self.events,
-            type='Event',
-            id='sprint',
+            type="Event",
+            id="sprint",
         )
 
         self.image = api.content.create(
             container=self.portal,
-            type='Image',
-            id='image',
+            type="Image",
+            id="image",
         )
 
     def test_create_constraints(self):
@@ -98,14 +98,14 @@ class TestPloneApiRelation(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             api.relation.create(
                 target=self.blog,
-                relationship='link',
+                relationship="link",
             )
 
         # Check the constraints for the target parameter
         with self.assertRaises(MissingParameterError):
             api.relation.create(
                 source=self.about,
-                relationship='link',
+                relationship="link",
             )
 
         # Check the constraints for the relationship parameter
@@ -116,12 +116,12 @@ class TestPloneApiRelation(unittest.TestCase):
             )
 
         # We require a source with portal_type
-        app = self.layer['app']
+        app = self.layer["app"]
         with self.assertRaises(InvalidParameterError):
             api.relation.create(
                 source=app,
                 target=self.blog,
-                relationship='link',
+                relationship="link",
             )
 
         # We require a target with portal_type
@@ -129,7 +129,7 @@ class TestPloneApiRelation(unittest.TestCase):
             api.relation.create(
                 source=self.about,
                 target=app,
-                relationship='link',
+                relationship="link",
             )
 
         # We require a string relationship
@@ -147,18 +147,18 @@ class TestPloneApiRelation(unittest.TestCase):
         relations = api.relation.get(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         self.assertEqual(len(relations), 0)
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         relations = api.relation.get(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         self.assertEqual(len(relations), 1)
         relation = relations[0]
@@ -170,28 +170,27 @@ class TestPloneApiRelation(unittest.TestCase):
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='relatedItems',
+            relationship="relatedItems",
         )
         self.assertEqual(len(self.about.relatedItems), 1)
         self.assertIsInstance(self.about.relatedItems[0], RelationValue)
 
         # create relation with a fieldname that is no relationfield
-        self.assertEqual(self.about.description, '')
+        self.assertEqual(self.about.description, "")
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='description',
+            relationship="description",
         )
-        self.assertEqual(self.about.description, '')
+        self.assertEqual(self.about.description, "")
         self.assertEqual(len(api.relation.get(source=self.about, target=self.blog)), 3)
-
 
     def test_delete_constraints(self):
         """Test the constraints when deleting relations."""
         from plone.api.exc import InvalidParameterError
 
         # If source is given, it must have a portal_type.
-        app = self.layer['app']
+        app = self.layer["app"]
         with self.assertRaises(InvalidParameterError):
             api.relation.delete(source=app)
 
@@ -208,17 +207,17 @@ class TestPloneApiRelation(unittest.TestCase):
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.delete(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         relations = api.relation.get(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         self.assertEqual(len(relations), 0)
 
@@ -227,12 +226,12 @@ class TestPloneApiRelation(unittest.TestCase):
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='relatedItems',
+            relationship="relatedItems",
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 2)
         self.assertIsInstance(self.about.relatedItems[0], RelationValue)
@@ -240,7 +239,7 @@ class TestPloneApiRelation(unittest.TestCase):
         api.relation.delete(
             source=self.about,
             target=self.blog,
-            relationship='relatedItems',
+            relationship="relatedItems",
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 1)
         self.assertEqual(len(self.about.relatedItems), 0)
@@ -250,17 +249,17 @@ class TestPloneApiRelation(unittest.TestCase):
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='relatedItems',
+            relationship="relatedItems",
         )
         api.relation.create(
             source=self.about,
             target=self.events,
-            relationship='relatedItems',
+            relationship="relatedItems",
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 3)
         self.assertIsInstance(self.about.relatedItems[0], RelationValue)
@@ -268,7 +267,7 @@ class TestPloneApiRelation(unittest.TestCase):
         api.relation.delete(
             source=self.about,
             target=self.blog,
-            relationship='relatedItems',
+            relationship="relatedItems",
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 2)
         self.assertEqual(len(self.about.relatedItems), 1)
@@ -279,21 +278,21 @@ class TestPloneApiRelation(unittest.TestCase):
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='description',
+            relationship="description",
         )
-        self.assertEqual(self.about.description, '')
+        self.assertEqual(self.about.description, "")
         self.assertEqual(len(api.relation.get(source=self.about)), 1)
-        rels = relation_catalog.findRelations({'from_attribute': 'description'})
+        rels = relation_catalog.findRelations({"from_attribute": "description"})
         self.assertEqual(len([i for i in rels]), 1)
 
         api.relation.delete(
             source=self.about,
             target=self.blog,
-            relationship='description',
+            relationship="description",
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 0)
-        self.assertEqual(self.about.description, '')
-        rels = relation_catalog.findRelations({'from_attribute': 'description'})
+        self.assertEqual(self.about.description, "")
+        rels = relation_catalog.findRelations({"from_attribute": "description"})
         self.assertEqual(len([i for i in rels]), 0)
 
     def test_get_constraints(self):
@@ -301,7 +300,7 @@ class TestPloneApiRelation(unittest.TestCase):
         from plone.api.exc import InvalidParameterError
 
         # If source is given, it must have a portal_type.
-        app = self.layer['app']
+        app = self.layer["app"]
         with self.assertRaises(InvalidParameterError):
             api.relation.get(source=app)
 
@@ -318,106 +317,114 @@ class TestPloneApiRelation(unittest.TestCase):
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.create(
             source=self.events,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.create(
             source=self.about.team,
             target=self.events,
-            relationship='team',
+            relationship="team",
         )
         api.relation.create(
             source=self.events,
             target=self.portal.image,
-            relationship='link',
+            relationship="link",
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 1)
         self.assertIsInstance(api.relation.get(source=self.about), list)
         self.assertIsInstance(api.relation.get(source=self.about)[0], RelationValue)
 
         self.assertEqual(len(api.relation.get(target=self.blog)), 2)
-        self.assertEqual(len(api.relation.get(relationship='link')), 3)
+        self.assertEqual(len(api.relation.get(relationship="link")), 3)
 
-        self.assertEqual(len(api.relation.get(source=self.about, relationship='link')), 1)
-        self.assertEqual(len(api.relation.get(source=self.about, target=self.events)), 0)
+        self.assertEqual(
+            len(api.relation.get(source=self.about, relationship="link")), 1
+        )
+        self.assertEqual(
+            len(api.relation.get(source=self.about, target=self.events)), 0
+        )
         self.assertEqual(len(api.relation.get(source=self.about, target=self.blog)), 1)
 
         self.assertEqual(len(api.relation.get(source=self.events)), 2)
-        self.assertEqual(len(api.relation.get(relationship='team')), 1)
+        self.assertEqual(len(api.relation.get(relationship="team")), 1)
 
     def test_get_relation_as_dict(self):
         """Test getting relations as dicts"""
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.create(
             source=self.events,
             target=self.blog,
-            relationship='bloglink',
+            relationship="bloglink",
         )
-        self.assertEqual(len(api.relation.get(relationship='link', as_dict=True)['link']), 1)
+        self.assertEqual(
+            len(api.relation.get(relationship="link", as_dict=True)["link"]), 1
+        )
         rels = api.relation.get(target=self.blog, as_dict=True)
-        self.assertEqual(len(rels['link']), 1)
-        self.assertEqual(len(rels['bloglink']), 1)
+        self.assertEqual(len(rels["link"]), 1)
+        self.assertEqual(len(rels["bloglink"]), 1)
 
     def test_get_broken_relation(self):
         """Test that broken relations are ignored."""
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.create(
             source=self.events,
             target=self.portal.image,
-            relationship='link',
+            relationship="link",
         )
         self.assertEqual(len(api.relation.get(source=self.about)), 1)
-        self.assertEqual(len(api.relation.get(relationship='link')), 2)
+        self.assertEqual(len(api.relation.get(relationship="link")), 2)
 
         # break a relation
-        self.portal._delObject('blog')
+        self.portal._delObject("blog")
 
         self.assertEqual(len(api.relation.get(source=self.about)), 0)
-        self.assertEqual(len(api.relation.get(relationship='link')), 1)
+        self.assertEqual(len(api.relation.get(relationship="link")), 1)
 
     def test_restricted_relation(self):
         """Test that rels between inaccessible items are ignored."""
         api.relation.create(
             source=self.about,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.create(
             source=self.events,
             target=self.blog,
-            relationship='link',
+            relationship="link",
         )
         api.relation.create(
             source=self.about.team,
             target=self.events,
-            relationship='team',
+            relationship="team",
         )
         api.relation.create(
             source=self.events,
             target=self.portal.image,
-            relationship='link',
+            relationship="link",
         )
-        api.content.transition(self.events, to_state='published')
-        api.content.transition(self.blog, to_state='published')
-        self.assertEqual(len(api.relation.get(relationship='link')), 3)
+        api.content.transition(self.events, to_state="published")
+        api.content.transition(self.blog, to_state="published")
+        self.assertEqual(len(api.relation.get(relationship="link")), 3)
 
         # Switch user
-        api.user.create(email='bob@plone.org', username='bob')
-        setRoles(self.portal, 'bob', ['Member'])
+        api.user.create(email="bob@plone.org", username="bob")
+        setRoles(self.portal, "bob", ["Member"])
         logout()
-        login(self.portal, 'bob')
+        login(self.portal, "bob")
 
-        self.assertEqual(len(api.relation.get(relationship='link')), 2)
-        self.assertEqual(len(api.relation.get(relationship='link', unrestricted=True)), 3)
+        self.assertEqual(len(api.relation.get(relationship="link")), 2)
+        self.assertEqual(
+            len(api.relation.get(relationship="link", unrestricted=True)), 3
+        )

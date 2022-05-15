@@ -10,7 +10,7 @@ import unittest
 
 
 def undecorated_func(arg1=None, arg2=None, arg3=None):
-    return 'foo'
+    return "foo"
 
 
 class TestPloneAPIValidation(unittest.TestCase):
@@ -22,7 +22,8 @@ class TestPloneAPIValidation(unittest.TestCase):
         """Check that calling the decorator with the function as an argument
         is equivalent to decorating the function.
         """
-        @required_parameters('arg1')
+
+        @required_parameters("arg1")
         def _func1_decorated(arg1=None, arg2=None, arg3=None):
             """This is my docstring"""
             pass
@@ -30,10 +31,11 @@ class TestPloneAPIValidation(unittest.TestCase):
         def _func2_undecorated(arg1=None, arg2=None, arg3=None):
             """This is my docstring"""
             pass
-        _func2_decorated = required_parameters('arg1')(_func2_undecorated)
+
+        _func2_decorated = required_parameters("arg1")(_func2_undecorated)
 
         # Check that the decorated function gets the correct docstring
-        self.assertEqual(_func1_decorated.__doc__, 'This is my docstring')
+        self.assertEqual(_func1_decorated.__doc__, "This is my docstring")
 
         # Check that both functions have the same docstring
         self.assertEqual(_func1_decorated.__doc__, _func2_decorated.__doc__)
@@ -43,27 +45,27 @@ class TestPloneAPIValidation(unittest.TestCase):
         a parameter that doesn't exist in the function signature.
         """
         with self.assertRaises(ValueError):
-            _func = required_parameters('arg1', 'wibble', 'wobble')
+            _func = required_parameters("arg1", "wibble", "wobble")
             _func(undecorated_func)
 
         with self.assertRaises(ValueError):
             _func = mutually_exclusive_parameters(
-                'arg1',
-                'wibble',
-                'wobble',
+                "arg1",
+                "wibble",
+                "wobble",
             )
             _func(undecorated_func)
 
     def test_get_supplied_args(self):
         """Test that positional and keyword args are recognised correctly."""
         # the arguments specified in the function signature
-        signature = ('arg1', 'arg2', 'arg3')
+        signature = ("arg1", "arg2", "arg3")
 
         # test that positional args are recognised correctly
-        result = _gsa(signature, ('foo', 'wibble'), {})
+        result = _gsa(signature, ("foo", "wibble"), {})
         self.assertEqual(
             set(result),
-            {'arg1', 'arg2'},
+            {"arg1", "arg2"},
         )
 
         # test that keyword args are recognised correctly
@@ -71,35 +73,35 @@ class TestPloneAPIValidation(unittest.TestCase):
             signature,
             (),
             {
-                'arg1': 'foo',
-                'arg2': 'wibble',
+                "arg1": "foo",
+                "arg2": "wibble",
             },
         )
         self.assertEqual(
             set(result),
-            {'arg1', 'arg2'},
+            {"arg1", "arg2"},
         )
 
         # test that a mixture of args are recognised correctly
         result = _gsa(
             signature,
-            ('foo',),
-            {'arg2': 'wibble'},
+            ("foo",),
+            {"arg2": "wibble"},
         )
         self.assertEqual(
             set(result),
-            {'arg1', 'arg2'},
+            {"arg1", "arg2"},
         )
 
         # test that None-valued positional args are ignored
         result = _gsa(
             signature,
-            ('foo', None),
+            ("foo", None),
             {},
         )
         self.assertEqual(
             set(result),
-            {'arg1'},
+            {"arg1"},
         )
 
         # test that None-valued keyword args are ignored
@@ -107,33 +109,33 @@ class TestPloneAPIValidation(unittest.TestCase):
             signature,
             (),
             {
-                'arg1': None,
-                'arg2': 'wibble',
+                "arg1": None,
+                "arg2": "wibble",
             },
         )
         self.assertEqual(
             set(result),
-            {'arg2'},
+            {"arg2"},
         )
 
     def test_single_keyword_arg_provided(self):
         """Test for passing a single required parameter
         as a keyword argument.
         """
-        _func = required_parameters('arg1')(undecorated_func)
+        _func = required_parameters("arg1")(undecorated_func)
         self.assertEqual(
-            _func(arg1='hello'),
-            'foo',
+            _func(arg1="hello"),
+            "foo",
         )
 
     def test_single_positional_arg_provided(self):
         """Test for passing a single required parameter
         as a positional argument.
         """
-        _func = required_parameters('arg1')(undecorated_func)
+        _func = required_parameters("arg1")(undecorated_func)
         self.assertEqual(
-            _func('hello'),
-            'foo',
+            _func("hello"),
+            "foo",
         )
 
     def test_single_arg_missing(self):
@@ -141,7 +143,8 @@ class TestPloneAPIValidation(unittest.TestCase):
         single required parameter is missing.
         """
         from plone.api.exc import MissingParameterError
-        _func = required_parameters('arg1')(undecorated_func)
+
+        _func = required_parameters("arg1")(undecorated_func)
         with self.assertRaises(MissingParameterError):
             _func()
 
@@ -150,104 +153,108 @@ class TestPloneAPIValidation(unittest.TestCase):
         required parameters is missing.
         """
         from plone.api.exc import MissingParameterError
-        _func = required_parameters('arg1', 'arg2')(undecorated_func)
+
+        _func = required_parameters("arg1", "arg2")(undecorated_func)
         with self.assertRaises(MissingParameterError):
-            _func('hello')
+            _func("hello")
 
     def test_no_mutually_exclusive_args_provided(self):
         """Test for passing no args (valid) to a function that specifies
         mutually exclusive parameters.
         """
-        _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
-        self.assertEqual(_func(), 'foo')
-        self.assertEqual(_func(arg3='hello'), 'foo')
+        _func = mutually_exclusive_parameters("arg1", "arg2")(undecorated_func)
+        self.assertEqual(_func(), "foo")
+        self.assertEqual(_func(arg3="hello"), "foo")
 
     def test_one_mutually_exclusive_arg_provided(self):
         """Test for passing one arg (the right number) to a function
         that specifies mutually exclusive parameters.
         """
-        _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
-        self.assertEqual(_func('hello'), 'foo')
-        self.assertEqual(_func(arg1='hello'), 'foo')
-        self.assertEqual(_func(arg2='hello'), 'foo')
+        _func = mutually_exclusive_parameters("arg1", "arg2")(undecorated_func)
+        self.assertEqual(_func("hello"), "foo")
+        self.assertEqual(_func(arg1="hello"), "foo")
+        self.assertEqual(_func(arg2="hello"), "foo")
 
     def test_two_mutually_exclusive_args_provided(self):
         """Test that InvalidParameterError is raised if more than
         one mutually exclusive argument is provided.
         """
         from plone.api.exc import InvalidParameterError
-        _func = mutually_exclusive_parameters('arg1', 'arg2')(undecorated_func)
+
+        _func = mutually_exclusive_parameters("arg1", "arg2")(undecorated_func)
         with self.assertRaises(InvalidParameterError):
-            _func('ahoy', 'there')
+            _func("ahoy", "there")
 
         with self.assertRaises(InvalidParameterError):
-            _func(arg1='ahoy', arg2='there')
+            _func(arg1="ahoy", arg2="there")
 
     def test_require_at_least_one_but_none_provided(self):
         """Test that MissingParameterError is raised if no argument is supplied
         when at least one is required.
         """
         from plone.api.exc import MissingParameterError
-        _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
+
+        _func = at_least_one_of("arg1", "arg2")(undecorated_func)
         with self.assertRaises(MissingParameterError):
             _func()
 
     def test_require_at_least_one_and_one_provided(self):
         """Test for passing one argument when at least one is required."""
-        _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
-        self.assertEqual(_func('ahoy'), 'foo')
-        self.assertEqual(_func(arg2='ahoy'), 'foo')
+        _func = at_least_one_of("arg1", "arg2")(undecorated_func)
+        self.assertEqual(_func("ahoy"), "foo")
+        self.assertEqual(_func(arg2="ahoy"), "foo")
 
     def test_require_at_least_one_and_several_provided(self):
         """Test for passing several arguments when at least one is required."""
-        _func = at_least_one_of('arg1', 'arg2')(undecorated_func)
-        self.assertEqual(_func('ahoy', 'there'), 'foo')
-        self.assertEqual(_func(arg1='ahoy', arg2='there'), 'foo')
-        self.assertEqual(_func('ahoy', arg2='there', arg3='matey'), 'foo')
+        _func = at_least_one_of("arg1", "arg2")(undecorated_func)
+        self.assertEqual(_func("ahoy", "there"), "foo")
+        self.assertEqual(_func(arg1="ahoy", arg2="there"), "foo")
+        self.assertEqual(_func("ahoy", arg2="there", arg3="matey"), "foo")
 
     def test_required_and_mutually_exclusive(self):
         """Test that multiple decorators can be used together."""
-        @mutually_exclusive_parameters('arg2', 'arg3')
-        @required_parameters('arg1')
+
+        @mutually_exclusive_parameters("arg2", "arg3")
+        @required_parameters("arg1")
         def _func1_decorated(arg1=None, arg2=None, arg3=None):
-            return 'foo'
+            return "foo"
 
         from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
 
         # test that the required parameter error works (missing arg1)
         with self.assertRaises(MissingParameterError):
-            _func1_decorated(arg2='ahoy')
+            _func1_decorated(arg2="ahoy")
 
         # test that the mutually exclusive decorator works
         # (arg2 and arg3 should not be there)
         with self.assertRaises(InvalidParameterError):
             _func1_decorated(
-                arg1='ahoy',
-                arg2='there',
-                arg3='matey',
+                arg1="ahoy",
+                arg2="there",
+                arg3="matey",
             )
 
         # test that they both work.  Making no assumptions here about the order
         # in which they fire.
         with self.assertRaises((InvalidParameterError, MissingParameterError)):
             _func1_decorated(
-                arg2='ahoy',
-                arg3='there',
+                arg2="ahoy",
+                arg3="there",
             )
 
         # everything ok
-        self.assertEqual(_func1_decorated('ahoy', arg3='there'), 'foo')
+        self.assertEqual(_func1_decorated("ahoy", arg3="there"), "foo")
 
     def test_exactly_one_required(self):
         """Test that combining mutually_exclusive_parameters and
         at_least_one_of is equivalent to 'exactly one required'.
         """
 
-        @mutually_exclusive_parameters('arg1', 'arg2')
-        @at_least_one_of('arg1', 'arg2')
+        @mutually_exclusive_parameters("arg1", "arg2")
+        @at_least_one_of("arg1", "arg2")
         def _func1_decorated(arg1=None, arg2=None, arg3=None):
-            return 'foo'
+            return "foo"
 
         from plone.api.exc import InvalidParameterError
         from plone.api.exc import MissingParameterError
@@ -258,8 +265,8 @@ class TestPloneAPIValidation(unittest.TestCase):
 
         # test that it errors if you provide both
         with self.assertRaises(InvalidParameterError):
-            _func1_decorated('ahoy', 'there')
+            _func1_decorated("ahoy", "there")
 
         # everything ok
-        self.assertEqual(_func1_decorated('ahoy'), 'foo')
-        self.assertEqual(_func1_decorated('ahoy', arg3='there'), 'foo')
+        self.assertEqual(_func1_decorated("ahoy"), "foo")
+        self.assertEqual(_func1_decorated("ahoy", arg3="there"), "foo")

@@ -1,15 +1,12 @@
 """Module that provides functionality for content manipulation."""
 
 from copy import copy as _copy
-from pkg_resources import DistributionNotFound
-from pkg_resources import get_distribution
-from pkg_resources import parse_version
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
-from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException  # noqa
+from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -22,11 +19,12 @@ from zope.interface import providedBy
 import random
 import transaction
 
+
 _marker = []
 
 
-@required_parameters('container', 'type')
-@at_least_one_of('id', 'title')
+@required_parameters("container", "type")
+@at_least_one_of("id", "title")
 def create(
     container=None,
     type=None,
@@ -54,6 +52,7 @@ def create(
         conflicting with another object in the target container, raise an
         InvalidParameterError. When True, choose a new, non-conflicting id.
     :type safe_id: boolean
+
     :returns: Content object
     :raises:
         KeyError,
@@ -65,7 +64,7 @@ def create(
     content_id = not safe_id and id or str(random.randint(0, 99999999))
 
     if title:
-        kwargs['title'] = title
+        kwargs["title"] = title
 
     try:
         container.invokeFactory(type, content_id, **kwargs)
@@ -78,11 +77,11 @@ def create(
 
         raise InvalidParameterError(
             "Cannot add a '{obj_type}' object to the container.\n"
-            'Allowed types are:\n'
-            '{allowed_types}\n'
-            '{message}'.format(
+            "Allowed types are:\n"
+            "{allowed_types}\n"
+            "{message}".format(
                 obj_type=type,
-                allowed_types='\n'.join(sorted(types)),
+                allowed_types="\n".join(sorted(types)),
                 message=str(e),
             ),
         )
@@ -105,8 +104,8 @@ def create(
     return content
 
 
-@mutually_exclusive_parameters('path', 'UID')
-@at_least_one_of('path', 'UID')
+@mutually_exclusive_parameters("path", "UID")
+@at_least_one_of("path", "UID")
 def get(path=None, UID=None):
     """Get an object.
 
@@ -122,9 +121,9 @@ def get(path=None, UID=None):
     """
     if path:
         site = portal.get()
-        site_absolute_path = '/'.join(site.getPhysicalPath())
-        if not path.startswith('{path}'.format(path=site_absolute_path)):
-            path = '{site_path}{relative_path}'.format(
+        site_absolute_path = "/".join(site.getPhysicalPath())
+        if not path.startswith("{path}".format(path=site_absolute_path)):
+            path = "{site_path}{relative_path}".format(
                 site_path=site_absolute_path,
                 relative_path=path,
             )
@@ -138,8 +137,8 @@ def get(path=None, UID=None):
         return uuidToObject(UID)
 
 
-@required_parameters('source')
-@at_least_one_of('target', 'id')
+@required_parameters("source")
+@at_least_one_of("target", "id")
 def move(source=None, target=None, id=None, safe_id=False):
     """Move the object to the target container.
 
@@ -181,7 +180,7 @@ def move(source=None, target=None, id=None, safe_id=False):
         return target[source_id]
 
 
-@required_parameters('obj', 'new_id')
+@required_parameters("obj", "new_id")
 def rename(obj=None, new_id=None, safe_id=False):
     """Rename the object.
 
@@ -208,8 +207,8 @@ def rename(obj=None, new_id=None, safe_id=False):
     return container[new_id]
 
 
-@required_parameters('source')
-@at_least_one_of('target', 'id')
+@required_parameters("source")
+@at_least_one_of("target", "id")
 def copy(source=None, target=None, id=None, safe_id=False):
     """Copy the object to the target container.
 
@@ -243,7 +242,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
         source.aq_parent.manage_copyObjects(source_id),
     )
 
-    new_id = copy_info[0]['new_id']
+    new_id = copy_info[0]["new_id"]
     if id:
         if not safe_id and id in target:
             msg = "Duplicate ID '{0}' in '{1}' for '{2}'"
@@ -254,8 +253,8 @@ def copy(source=None, target=None, id=None, safe_id=False):
         return target[new_id]
 
 
-@mutually_exclusive_parameters('obj', 'objects')
-@at_least_one_of('obj', 'objects')
+@mutually_exclusive_parameters("obj", "objects")
+@at_least_one_of("obj", "objects")
 def delete(obj=None, objects=None, check_linkintegrity=True):
     """Delete the object(s).
 
@@ -282,7 +281,7 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
     if check_linkintegrity:
         site = portal.get()
         linkintegrity_view = get_view(
-            name='delete_confirmation_info',
+            name="delete_confirmation_info",
             context=site,
             request=site.REQUEST,
         )
@@ -290,14 +289,14 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
         breaches = linkintegrity_view.get_breaches(objects)
         if breaches:
             raise LinkIntegrityNotificationException(
-                'Linkintegrity-breaches: {}'.format(breaches),
+                "Linkintegrity-breaches: {}".format(breaches),
             )
 
     for obj_ in objects:
         obj_.aq_parent.manage_delObjects([obj_.getId()])
 
 
-@required_parameters('obj')
+@required_parameters("obj")
 def get_state(obj=None, default=_marker):
     """Get the current workflow state of the object.
 
@@ -310,14 +309,14 @@ def get_state(obj=None, default=_marker):
         Products.CMFCore.WorkflowCore.WorkflowException
     :Example: :ref:`content-get-state-example`
     """
-    workflow = portal.get_tool('portal_workflow')
+    workflow = portal.get_tool("portal_workflow")
 
     if default is not _marker and not workflow.getWorkflowsFor(obj):
         return default
 
     # This still raises WorkflowException when the workflow state is broken,
     # ie 'review_state' is absent
-    return workflow.getInfoFor(ob=obj, name='review_state')
+    return workflow.getInfoFor(ob=obj, name="review_state")
 
 
 # work backwards from our end state
@@ -353,7 +352,8 @@ def _find_path(maps, path, current_state, start_state):
 
 
 def _wf_transitions_for(workflow, from_state, to_state):
-    """Get a list of transition IDs required to transition
+    """Get list of transition IDs required to transition.
+
     from ``from_state`` to ``to_state``.
 
     :param workflow: Workflow object which contains states and transitions
@@ -394,14 +394,14 @@ def _transition_to(obj, workflow, to_state, **kwargs):
     # via any route we can find
     for wf in workflow.getWorkflowsFor(obj):
         status = workflow.getStatusOf(wf.getId(), obj)
-        if not status or not status.get('review_state'):
+        if not status or not status.get("review_state"):
             continue
-        if status['review_state'] == to_state:
+        if status["review_state"] == to_state:
             return
 
         transitions = _wf_transitions_for(
             wf,
-            status['review_state'],
+            status["review_state"],
             to_state,
         )
         if not transitions:
@@ -420,11 +420,13 @@ def _transition_to(obj, workflow, to_state, **kwargs):
         break
 
 
-@required_parameters('obj')
-@at_least_one_of('transition', 'to_state')
-@mutually_exclusive_parameters('transition', 'to_state')
+@required_parameters("obj")
+@at_least_one_of("transition", "to_state")
+@mutually_exclusive_parameters("transition", "to_state")
 def transition(obj=None, transition=None, to_state=None, **kwargs):
-    """Perform a workflow transition for the object or attempt to perform
+    """Perform a workflow transition.
+
+    for the object or attempt to perform
     workflow transitions on the object to reach the given state.
     The later will not guarantee that transition guards conditions can be met.
 
@@ -442,58 +444,58 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content-transition-example`
     """
-    workflow = portal.get_tool('portal_workflow')
+    workflow = portal.get_tool("portal_workflow")
     if transition is not None:
         try:
             workflow.doActionFor(obj, transition, **kwargs)
         except WorkflowException:
-            transitions = [
-                action['id'] for action in workflow.listActions(object=obj)
-            ]
+            transitions = [action["id"] for action in workflow.listActions(object=obj)]
 
             raise InvalidParameterError(
                 "Invalid transition '{}'.\n"
-                'Valid transitions are:\n'
-                '{}'.format(transition, '\n'.join(sorted(transitions))),
+                "Valid transitions are:\n"
+                "{}".format(transition, "\n".join(sorted(transitions))),
             )
     else:
         _transition_to(obj, workflow, to_state, **kwargs)
-        if workflow.getInfoFor(obj, 'review_state') != to_state:
+        if workflow.getInfoFor(obj, "review_state") != to_state:
             raise InvalidParameterError(
-                'Could not find workflow to set state to {} on {}'.format(
+                "Could not find workflow to set state to {} on {}".format(
                     to_state,
                     obj,
                 ),
             )
 
 
-@required_parameters('obj')
+@required_parameters("obj")
 def disable_roles_acquisition(obj=None):
     """Disable acquisition of local roles on given obj.
+
     Set __ac_local_roles_block__ = 1 on obj.
 
     :param obj: [required] Context object to block the acquisition on.
     :type obj: Content object
     :Example: :ref:`content-disable-roles-acquisition-example`
     """
-    plone_utils = portal.get_tool('plone_utils')
+    plone_utils = portal.get_tool("plone_utils")
     plone_utils.acquireLocalRoles(obj, status=0)
 
 
-@required_parameters('obj')
+@required_parameters("obj")
 def enable_roles_acquisition(obj=None):
     """Enable acquisition of local roles on given obj.
+
     Set __ac_local_roles_block__ = 0 on obj.
 
     :param obj: [required] Context object to enable the acquisition on.
     :type obj: Content object
     :Example: :ref:`content-enable-roles-acquisition-example`
     """
-    plone_utils = portal.get_tool('plone_utils')
+    plone_utils = portal.get_tool("plone_utils")
     plone_utils.acquireLocalRoles(obj, status=1)
 
 
-@required_parameters('name', 'context', 'request')
+@required_parameters("name", "context", "request")
 def get_view(name=None, context=None, request=None):
     """Get a BrowserView object.
 
@@ -525,16 +527,16 @@ def get_view(name=None, context=None, request=None):
     if name not in available_view_names:
         raise InvalidParameterError(
             "Cannot find a view with name '{name}'.\n"
-            'Available views are:\n'
-            '{views}'.format(
+            "Available views are:\n"
+            "{views}".format(
                 name=name,
-                views='\n'.join(sorted(available_view_names)),
+                views="\n".join(sorted(available_view_names)),
             ),
         )
     return getMultiAdapter((context, request), name=name)
 
 
-@required_parameters('obj')
+@required_parameters("obj")
 def get_uuid(obj=None):
     """Get the object's Universally Unique IDentifier (UUID).
 
@@ -558,32 +560,32 @@ def _parse_object_provides_query(query):
         (eg. `{'query': [Iface1, Iface2], 'operator': 'or'}`)
     """
     ifaces = query
-    operator = 'or'
+    operator = "or"
     query_not = []
 
     if isinstance(query, dict):
-        ifaces = query.get('query', [])
-        operator = query.get('operator', operator)
-        query_not = query.get('not', [])
+        ifaces = query.get("query", [])
+        operator = query.get("operator", operator)
+        query_not = query.get("not", [])
         # KeywordIndex also supports "range",
         # but that's not useful for querying object_provides
 
     if not isinstance(ifaces, (list, tuple)):
         ifaces = [ifaces]
-    ifaces = [getattr(x, '__identifier__', x) for x in ifaces]
+    ifaces = [getattr(x, "__identifier__", x) for x in ifaces]
 
     if not isinstance(query_not, (list, tuple)):
         query_not = [query_not]
-    query_not = [getattr(x, '__identifier__', x) for x in query_not]
+    query_not = [getattr(x, "__identifier__", x) for x in query_not]
 
     result = {}
 
     if ifaces:
-        result['query'] = ifaces
-        result['operator'] = operator
+        result["query"] = ifaces
+        result["operator"] = operator
 
     if query_not:
-        result['not'] = query_not
+        result["not"] = query_not
 
     return result
 
@@ -604,16 +606,16 @@ def find(context=None, depth=None, **kwargs):
     query.update(**kwargs)
 
     # Save the original path to maybe restore it later.
-    orig_path = query.get('path')
+    orig_path = query.get("path")
     if isinstance(orig_path, dict):
-        orig_path = orig_path.get('query')
+        orig_path = orig_path.get("query")
 
     # Passing a context or depth overrides the existing path query,
     # for now.
     if context or depth is not None:
         # Make the path a dictionary, unless it already is.
         if not isinstance(orig_path, dict):
-            query['path'] = {}
+            query["path"] = {}
 
     # Limit search depth
     if depth is not None:
@@ -622,20 +624,20 @@ def find(context=None, depth=None, **kwargs):
             context = portal.get()
         else:
             # Restore the original path
-            query['path']['query'] = orig_path
-        query['path']['depth'] = depth
+            query["path"]["query"] = orig_path
+        query["path"]["depth"] = depth
 
     if context is not None:
-        query['path']['query'] = '/'.join(context.getPhysicalPath())
+        query["path"]["query"] = "/".join(context.getPhysicalPath())
 
     # Convert interfaces to their identifiers and also allow to query
     # multiple values using {'query:[], 'operator':'and|or'}
-    obj_provides = query.get('object_provides', [])
+    obj_provides = query.get("object_provides", [])
     if obj_provides:
-        query['object_provides'] = _parse_object_provides_query(obj_provides)
+        query["object_provides"] = _parse_object_provides_query(obj_provides)
 
     # Make sure we don't dump the whole catalog.
-    catalog = portal.get_tool('portal_catalog')
+    catalog = portal.get_tool("portal_catalog")
     indexes = catalog.indexes()
     valid_indexes = [index for index in query if index in indexes]
     if not valid_indexes:

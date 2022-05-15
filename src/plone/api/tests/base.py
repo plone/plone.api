@@ -9,33 +9,34 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 
-import pkg_resources
-
 
 class PloneApiLayer(PloneSandboxLayer):
 
-    defaultBases = (PLONE_FIXTURE, )
+    defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         """Prepare Zope instance by loading appropriate ZCMLs."""
         import plone.app.dexterity
+
         self.loadZCML(package=plone.app.dexterity)
         import plone.api
-        self.loadZCML(package=plone.api, name='testing.zcml')
+
+        self.loadZCML(package=plone.api, name="testing.zcml")
         import plone.app.contenttypes
+
         self.loadZCML(package=plone.app.contenttypes)
 
     def setUpPloneSite(self, portal):
         """Prepare a Plone instance for testing."""
         # Install into Plone site using portal_setup
-        self.applyProfile(portal, 'Products.CMFPlone:plone')
-        self.applyProfile(portal, 'plone.app.contenttypes:default')
+        self.applyProfile(portal, "Products.CMFPlone:plone")
+        self.applyProfile(portal, "plone.app.contenttypes:default")
 
         # Create dummy content types for Dexterity tests
-        self.applyProfile(portal, 'plone.api:testfixture')
+        self.applyProfile(portal, "plone.api:testfixture")
 
         # Login as manager
-        setRoles(portal, TEST_USER_ID, ['Manager'])
+        setRoles(portal, TEST_USER_ID, ["Manager"])
         login(portal, TEST_USER_NAME)
 
     def tearDownZope(self, app):
@@ -44,10 +45,10 @@ class PloneApiLayer(PloneSandboxLayer):
 
 FIXTURE = PloneApiLayer()
 INTEGRATION_TESTING = IntegrationTesting(
-    bases=(FIXTURE, ),
-    name='PloneApiLayer:Integration',
+    bases=(FIXTURE,),
+    name="PloneApiLayer:Integration",
 )
 FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(FIXTURE, ),
-    name='PloneApiLayer:Functional',
+    bases=(FIXTURE,),
+    name="PloneApiLayer:Functional",
 )

@@ -24,6 +24,7 @@ from zope.lifecycleevent import modified
 import logging
 import pkg_resources
 
+
 try:
     pkg_resources.get_distribution("plone.app.iterate")
 except pkg_resources.DistributionNotFound:
@@ -40,14 +41,14 @@ logger = logging.getLogger(__name__)
 def _get_field_and_schema_for_fieldname(field_id, portal_type):
     """Get field and its schema from a portal_type."""
     # Turn form.widgets.IDublinCore.title into title
-    field_id = field_id.split('.')[-1]
+    field_id = field_id.split(".")[-1]
     for schema in iterSchemataForType(portal_type):
         field = schema.get(field_id, None)
         if field is not None:
             return (field, schema)
 
 
-@at_least_one_of('source', 'target', 'relationship')
+@at_least_one_of("source", "target", "relationship")
 def get(
     source=None,
     target=None,
@@ -55,7 +56,7 @@ def get(
     unrestricted=False,
     as_dict=False,
 ):
-    """Get specific relations given a source/target/relationship
+    """Get specific relations given a source/target/relationship.
 
     :param source: Object that the relations originate from.
     :type source: Content object
@@ -73,17 +74,17 @@ def get(
 
     :Example: :ref:`relation-get-example`
     """
-    if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(source))
+    if source is not None and not base_hasattr(source, "portal_type"):
+        raise InvalidParameterError("{} has no portal_type".format(source))
 
-    if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(target))
+    if target is not None and not base_hasattr(target, "portal_type"):
+        raise InvalidParameterError("{} has no portal_type".format(target))
 
     if relationship is not None and not isinstance(
         relationship,
         str,
     ):
-        raise InvalidParameterError('{} is no string'.format(relationship))
+        raise InvalidParameterError("{} is no string".format(relationship))
 
     intids = getUtility(IIntIds)
     relation_catalog = getUtility(ICatalog)
@@ -100,11 +101,11 @@ def get(
         checkPermission = getSecurityManager().checkPermission
 
     if source is not None:
-        query['from_id'] = intids.getId(source)
+        query["from_id"] = intids.getId(source)
     if target is not None:
-        query['to_id'] = intids.getId(target)
+        query["to_id"] = intids.getId(target)
     if relationship is not None:
-        query['from_attribute'] = relationship
+        query["from_attribute"] = relationship
 
     for relation in relation_catalog.findRelations(query):
         if relation.isBroken():
@@ -114,8 +115,8 @@ def get(
             source_obj = relation.from_object
             target_obj = relation.to_object
 
-            if checkPermission('View', source_obj) and checkPermission(
-                'View',
+            if checkPermission("View", source_obj) and checkPermission(
+                "View",
                 target_obj,
             ):
                 if as_dict:
@@ -132,9 +133,9 @@ def get(
     return results
 
 
-@required_parameters('source', 'target', 'relationship')
+@required_parameters("source", "target", "relationship")
 def create(source=None, target=None, relationship=None):
-    """Create a relation from source to target using zc.relation
+    """Create a relation from source to target using zc.relation.
 
     :param source: [required] Object that the relation will originate from.
     :type source: Content object
@@ -147,14 +148,14 @@ def create(source=None, target=None, relationship=None):
     :type id: string
     :Example: :ref:`relation-create-example`
     """
-    if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(source))
+    if source is not None and not base_hasattr(source, "portal_type"):
+        raise InvalidParameterError("{} has no portal_type".format(source))
 
-    if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(target))
+    if target is not None and not base_hasattr(target, "portal_type"):
+        raise InvalidParameterError("{} has no portal_type".format(target))
 
     if not isinstance(relationship, str):
-        raise InvalidParameterError('{} is no string'.format(relationship))
+        raise InvalidParameterError("{} is no string".format(relationship))
 
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
@@ -165,9 +166,9 @@ def create(source=None, target=None, relationship=None):
     # Check if there is exactly this relation.
     # If so remove it and create a fresh one.
     query = {
-        'from_attribute': from_attribute,
-        'from_id': from_id,
-        'to_id': to_id,
+        "from_attribute": from_attribute,
+        "from_id": from_id,
+        "to_id": to_id,
     }
     for rel in relation_catalog.findRelations(query):
         relation_catalog.unindex(rel)
@@ -178,10 +179,7 @@ def create(source=None, target=None, relationship=None):
         modifiedContent(source, None)
         return
 
-    if (
-        ITERATE_RELATION_NAME is not None
-        and from_attribute == ITERATE_RELATION_NAME
-    ):
+    if ITERATE_RELATION_NAME is not None and from_attribute == ITERATE_RELATION_NAME:
         # Iterate relations use a subclass of RelationValue
         relation = StagingRelationValue(to_id)
         event._setRelation(source, ITERATE_RELATION_NAME, relation)
@@ -197,7 +195,7 @@ def create(source=None, target=None, relationship=None):
         # The relationship is not the name of a dexterity field.
         # Only create a relation.
         logger.debug(
-            'No dexterity field. Setting relation %s from %s to %s',
+            "No dexterity field. Setting relation %s from %s to %s",
             source.absolute_url(),
             target.absolute_url(),
             relationship,
@@ -209,7 +207,7 @@ def create(source=None, target=None, relationship=None):
 
     if isinstance(field, RelationList):
         logger.info(
-            'Add relation to relationlist %s from %s to %s',
+            "Add relation to relationlist %s from %s to %s",
             from_attribute,
             source.absolute_url(),
             target.absolute_url(),
@@ -222,7 +220,7 @@ def create(source=None, target=None, relationship=None):
 
     elif isinstance(field, (Relation, RelationChoice)):
         logger.info(
-            'Add relation %s from %s to %s',
+            "Add relation %s from %s to %s",
             from_attribute,
             source.absolute_url(),
             target.absolute_url(),
@@ -238,16 +236,16 @@ def create(source=None, target=None, relationship=None):
     # Let's create the relationship and log a warning.
     event._setRelation(source, from_attribute, RelationValue(to_id))
     logger.warning(
-        'Created relation %s on an item that has a field with the same name '
-        'which is not a relation field. Is this what you wanted? '
-        'Relation points from %s to %s',
+        "Created relation %s on an item that has a field with the same name "
+        "which is not a relation field. Is this what you wanted? "
+        "Relation points from %s to %s",
         from_attribute,
         source.absolute_url(),
         target.absolute_url(),
     )
 
 
-@at_least_one_of('source', 'target', 'relationship')
+@at_least_one_of("source", "target", "relationship")
 def delete(source=None, target=None, relationship=None):
     """Delete relation or relations.
 
@@ -262,27 +260,27 @@ def delete(source=None, target=None, relationship=None):
     :type id: string
     :Example: :ref:`relation-delete-example`
     """
-    if source is not None and not base_hasattr(source, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(source))
+    if source is not None and not base_hasattr(source, "portal_type"):
+        raise InvalidParameterError("{} has no portal_type".format(source))
 
-    if target is not None and not base_hasattr(target, 'portal_type'):
-        raise InvalidParameterError('{} has no portal_type'.format(target))
+    if target is not None and not base_hasattr(target, "portal_type"):
+        raise InvalidParameterError("{} has no portal_type".format(target))
 
     if relationship is not None and not isinstance(
         relationship,
         str,
     ):
-        raise InvalidParameterError('{} is no string'.format(relationship))
+        raise InvalidParameterError("{} is no string".format(relationship))
 
     query = {}
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
     if source is not None:
-        query['from_id'] = intids.getId(source)
+        query["from_id"] = intids.getId(source)
     if target is not None:
-        query['to_id'] = intids.getId(target)
+        query["to_id"] = intids.getId(target)
     if relationship is not None:
-        query['from_attribute'] = relationship
+        query["from_attribute"] = relationship
     for rel in relation_catalog.findRelations(query):
         source = rel.from_object
         from_attribute = rel.from_attribute
@@ -300,7 +298,7 @@ def delete(source=None, target=None, relationship=None):
         field, _schema = field_and_schema
         if isinstance(field, RelationList):
             logger.info(
-                'Remove relation from %s to %s from relationlist %s',
+                "Remove relation from %s to %s from relationlist %s",
                 source.absolute_url(),
                 target.absolute_url(),
                 from_attribute,
@@ -312,7 +310,7 @@ def delete(source=None, target=None, relationship=None):
 
         elif isinstance(field, (Relation, RelationChoice)):
             logger.info(
-                'Remove relation %s from %s to %s',
+                "Remove relation %s from %s to %s",
                 from_attribute,
                 source.absolute_url(),
                 target.absolute_url(),

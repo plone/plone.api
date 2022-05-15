@@ -10,7 +10,7 @@ from plone.api.validation import required_parameters
 from Products.PlonePAS.interfaces.plugins import ILocalRolesPlugin
 
 
-@required_parameters('groupname')
+@required_parameters("groupname")
 def create(
     groupname=None,
     title=None,
@@ -36,7 +36,7 @@ def create(
         ValueError
     :Example: :ref:`group-create-example`
     """
-    group_tool = portal.get_tool('portal_groups')
+    group_tool = portal.get_tool("portal_groups")
     group_tool.addGroup(
         groupname,
         roles,
@@ -47,7 +47,7 @@ def create(
     return group_tool.getGroupById(groupname)
 
 
-@required_parameters('groupname')
+@required_parameters("groupname")
 def get(groupname=None):
     """Get a group.
 
@@ -59,11 +59,11 @@ def get(groupname=None):
         ValueError
     :Example: :ref:`group-get-example`
     """
-    group_tool = portal.get_tool('portal_groups')
+    group_tool = portal.get_tool("portal_groups")
     return group_tool.getGroupById(groupname)
 
 
-@mutually_exclusive_parameters('username', 'user')
+@mutually_exclusive_parameters("username", "user")
 def get_groups(username=None, user=None):
     """Get all groups or all groups filtered by user.
 
@@ -87,15 +87,15 @@ def get_groups(username=None, user=None):
         if not user:
             raise UserNotFoundError
 
-    group_tool = portal.get_tool('portal_groups')
+    group_tool = portal.get_tool("portal_groups")
 
     if user:
         try:
             groups = group_tool.getGroupsForPrincipal(user)
         except AttributeError as e:
             # Anonymous users from the Zope acl_users folder will fail on this
-            if 'portal_groups' in str(e):
-                return[]
+            if "portal_groups" in str(e):
+                return []
             raise
 
         return [get(groupname=group) for group in groups]
@@ -103,8 +103,8 @@ def get_groups(username=None, user=None):
     return group_tool.listGroups()
 
 
-@mutually_exclusive_parameters('groupname', 'group')
-@at_least_one_of('groupname', 'group')
+@mutually_exclusive_parameters("groupname", "group")
+@at_least_one_of("groupname", "group")
 def delete(groupname=None, group=None):
     """Delete a group.
 
@@ -119,7 +119,7 @@ def delete(groupname=None, group=None):
         ValueError
     :Example: :ref:`group-delete-example`
     """
-    group_tool = portal.get_tool('portal_groups')
+    group_tool = portal.get_tool("portal_groups")
 
     if group:
         groupname = group.id
@@ -127,10 +127,10 @@ def delete(groupname=None, group=None):
     return group_tool.removeGroup(groupname)
 
 
-@mutually_exclusive_parameters('groupname', 'group')
-@at_least_one_of('groupname', 'group')
-@mutually_exclusive_parameters('username', 'user')
-@at_least_one_of('username', 'user')
+@mutually_exclusive_parameters("groupname", "group")
+@at_least_one_of("groupname", "group")
+@mutually_exclusive_parameters("username", "user")
+@at_least_one_of("username", "user")
 def add_user(groupname=None, group=None, username=None, user=None):
     """Add the user to a group.
 
@@ -161,14 +161,14 @@ def add_user(groupname=None, group=None, username=None, user=None):
 
     user_id = user.id
     group_id = groupname or group.id
-    portal_groups = portal.get_tool('portal_groups')
+    portal_groups = portal.get_tool("portal_groups")
     portal_groups.addPrincipalToGroup(user_id, group_id)
 
 
-@mutually_exclusive_parameters('groupname', 'group')
-@at_least_one_of('groupname', 'group')
-@mutually_exclusive_parameters('username', 'user')
-@at_least_one_of('username', 'user')
+@mutually_exclusive_parameters("groupname", "group")
+@at_least_one_of("groupname", "group")
+@mutually_exclusive_parameters("username", "user")
+@at_least_one_of("username", "user")
 def remove_user(groupname=None, group=None, username=None, user=None):
     """Remove the user from a group.
 
@@ -197,12 +197,12 @@ def remove_user(groupname=None, group=None, username=None, user=None):
             raise UserNotFoundError
     user_id = user.id
     group_id = groupname or group.id
-    portal_groups = portal.get_tool('portal_groups')
+    portal_groups = portal.get_tool("portal_groups")
     portal_groups.removePrincipalFromGroup(user_id, group_id)
 
 
-@mutually_exclusive_parameters('groupname', 'group')
-@at_least_one_of('groupname', 'group')
+@mutually_exclusive_parameters("groupname", "group")
+@at_least_one_of("groupname", "group")
 def get_roles(groupname=None, group=None, obj=None, inherit=True):
     """Get group's site-wide or local roles.
 
@@ -242,16 +242,16 @@ def get_roles(groupname=None, group=None, obj=None, inherit=True):
         # same as above we use the PloneUser version of getRolesInContext.
         # Include roles from adapters granting local roles
         roles = set()
-        pas = portal.get_tool('acl_users')
+        pas = portal.get_tool("acl_users")
         for _, lrmanager in pas.plugins.listPlugins(ILocalRolesPlugin):
             for adapter in lrmanager._getAdapters(obj):
                 roles.update(adapter.getRoles(group_id))
         return list(roles)
 
 
-@required_parameters('roles')
-@mutually_exclusive_parameters('groupname', 'group')
-@at_least_one_of('groupname', 'group')
+@required_parameters("roles")
+@mutually_exclusive_parameters("groupname", "group")
+@at_least_one_of("groupname", "group")
 def grant_roles(groupname=None, group=None, roles=None, obj=None):
     """Grant roles to a group.
 
@@ -270,7 +270,7 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         ValueError
     :Example: :ref:`group-grant-roles-example`
     """
-    if 'Anonymous' in roles or 'Authenticated' in roles:
+    if "Anonymous" in roles or "Authenticated" in roles:
         raise ValueError
 
     group_id = groupname or group.id
@@ -282,13 +282,11 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         actual_roles = obj.get_local_roles_for_userid(group_id)
 
     actual_roles = [
-        role
-        for role in actual_roles
-        if role not in ['Anonymous', 'Authenticated']
+        role for role in actual_roles if role not in ["Anonymous", "Authenticated"]
     ]
 
     roles = list(set(actual_roles) | set(roles))
-    portal_groups = portal.get_tool('portal_groups')
+    portal_groups = portal.get_tool("portal_groups")
 
     if obj is None:
         portal_groups.setRolesForGroup(group_id=group_id, roles=roles)
@@ -296,9 +294,9 @@ def grant_roles(groupname=None, group=None, roles=None, obj=None):
         obj.manage_setLocalRoles(group_id, roles)
 
 
-@required_parameters('roles')
-@mutually_exclusive_parameters('groupname', 'group')
-@at_least_one_of('groupname', 'group')
+@required_parameters("roles")
+@mutually_exclusive_parameters("groupname", "group")
+@at_least_one_of("groupname", "group")
 def revoke_roles(groupname=None, group=None, roles=None, obj=None):
     """Revoke roles from a group.
 
@@ -317,7 +315,7 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
         ValueError
     :Example: :ref:`group-revoke-roles-example`
     """
-    if 'Anonymous' in roles or 'Authenticated' in roles:
+    if "Anonymous" in roles or "Authenticated" in roles:
         raise ValueError
 
     group_id = groupname or group.id
@@ -328,13 +326,11 @@ def revoke_roles(groupname=None, group=None, roles=None, obj=None):
         actual_roles = get_roles(groupname=group_id, obj=obj, inherit=False)
 
     actual_roles = [
-        role
-        for role in actual_roles
-        if role not in ['Anonymous', 'Authenticated']
+        role for role in actual_roles if role not in ["Anonymous", "Authenticated"]
     ]
 
     roles = list(set(actual_roles) - set(roles))
-    portal_groups = portal.get_tool('portal_groups')
+    portal_groups = portal.get_tool("portal_groups")
 
     if obj is None:
         portal_groups.setRolesForGroup(group_id=group_id, roles=roles)
