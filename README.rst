@@ -22,7 +22,7 @@ The intention is
 Documentation
 =============
 
-`plone.api documentation <https://docs.plone.org/develop/plone.api/docs/index.html>`_ is part of the official Plone documentation.
+`plone.api documentation <https://6.dev-docs.plone.org/plone.api/index.html>`_ is part of the official Plone documentation.
 
 ``plone.api`` comes with *cookbook*-like documentation and step-by-step instructions for doing common development tasks in Plone.
 Recipes try to assume the user does not have extensive knowledge about Plone internals.
@@ -31,12 +31,7 @@ Recipes try to assume the user does not have extensive knowledge about Plone int
 Source Code and Contribution
 ============================
 
-.. image:: https://api.travis-ci.org/plone/plone.api.svg
-    :target: https://travis-ci.org/#!/plone/plone.api
-
-.. image:: https://coveralls.io/repos/github/plone/plone.api/badge.svg?branch=master
-    :alt: Coverage
-    :target: https://coveralls.io/github/plone/plone.api?branch=master
+# TODO Github CI badge
 
 Contributors
     Please read the document `Process for Plone core's development <https://docs.plone.org/develop/coredev/docs/index.html>`_.
