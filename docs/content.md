@@ -1,5 +1,6 @@
 ```{eval-rst}
 .. module:: plone
+    :noindex:
 ```
 
 (chapter-content)=
@@ -32,7 +33,7 @@ obj = api.content.create(
 The `id` of the new object is automatically and safely generated from its `title`.
 
 ```python
-assert obj.id == 'my-content'
+self.assertEqual(obj.id, 'my-content')
 ```
 
 (content-get-example)=
@@ -103,7 +104,7 @@ not_found = api.content.get(UID='notfound')
 % self.assertTrue(conference)
 % self.assertTrue(sprint)
 % self.assertTrue(team)
-% self.assertEquals(not_found, None)
+% self.assertEqual(not_found, None)
 
 (content-find-example)=
 
@@ -243,6 +244,15 @@ api.content.move(source=contact, target=portal)
 Actually, `move` behaves like a filesystem move.
 If you pass it an `id` argument, the object will have that new ID in its new home.
 By default it will retain its original ID.
+
+% invisible-code-block: python
+%
+% self.assertEqual(contact.id, "contact")
+% self.assertTrue(portal['contact'])
+% contact = portal['contact']
+% api.content.move(source=contact, target=portal['about'], id="new-contact")
+% self.assertEqual(contact.id, "new-contact")
+% self.assertTrue(portal['about']['new-contact'])
 
 (content-rename-example)=
 
@@ -427,7 +437,6 @@ portal = api.portal.get()
 api.content.transition(obj=portal['about'], transition='reject', comment='You had a typo on your page.')
 ```
 
-% invisible-code-block: python
 
 (content-disable-roles-acquisition-example)=
 
