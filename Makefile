@@ -29,6 +29,9 @@ bin/python bin/pip:
 # Documentation
 # ----------------------------------------------------------------------
 
+# TODO Remove complete Makefile when Netlify build command is switched from 'make netlify' to 'tox -e docs'.
+
+# Just a developer helper. Can be replaced by 'tox -e docs' ('tox -e plone6docs') 
 .PHONY: docs-html
 docs-html: bin/python bin/pip ## Build documentation
 	bin/pip install tox
@@ -36,14 +39,20 @@ docs-html: bin/python bin/pip ## Build documentation
 	@echo
 	@echo "Build of documentation finished. The HTML pages are in _build/plone6docs/html."
 
+.PHONY: livehtml
+livehtml:
+	sphinx-autobuild  -b html -d _build/plone6docs/doctrees docs _build/plone6docs/html $(O)
+
+# TODO Remove when Netlify build command is switched from 'make netlify' to 'tox -e docs'.
 .PHONY: netlify
-netlify: bin/python bin/pip ## Run documentatin build (Netlfy style)
+netlify: bin/python bin/pip ## Build documentation (Netlfy style)
 	bin/pip install tox
 	bin/tox -e plone6docs
 	@echo
 	@echo "Build of documentation finished. The HTML pages are in _build/plone6docs/html."
 
 ## Run conversion of documentation from restructuredText to myST
+# TODO Remove later when MyST documentation is settled.
 .PHONY: conversion-to-myst
 conversion-to-myst: bin/python bin/pip
 	bin/pip install "rst-to-myst[sphinx]"
