@@ -1,3 +1,5 @@
+"""Module provides info about your instance and tools to switch roles and user."""
+
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
@@ -20,8 +22,8 @@ import Zope2
 IS_TEST = None
 
 
-@at_least_one_of('username', 'user')
-@mutually_exclusive_parameters('username', 'user')
+@at_least_one_of("username", "user")
+@mutually_exclusive_parameters("username", "user")
 def adopt_user(username=None, user=None):
     """Context manager for temporarily switching user inside a block.
 
@@ -83,7 +85,7 @@ def _adopt_user(user):
     setSecurityManager(old_security_manager)
 
 
-@required_parameters('roles')
+@required_parameters("roles")
 def adopt_roles(roles=None):
     """Context manager for temporarily switching roles.
 
@@ -178,7 +180,7 @@ class _GlobalRoleOverridingContext:
 
 
 def debug_mode():
-    """Returns True if your zope instance is running in debug mode.
+    """Return True if your zope instance is running in debug mode.
 
     :Example: :ref:`env-debug-mode-example`
     """
@@ -195,7 +197,7 @@ def test_mode():
     if IS_TEST is None:
         IS_TEST = False
         for frame in traceback.extract_stack():
-            if 'testrunner' in frame[0] or 'testreport/runner' in frame[0]:
+            if "testrunner" in frame[0] or "testreport/runner" in frame[0]:
                 IS_TEST = True
                 break
 
@@ -218,7 +220,7 @@ def plone_version():
     :returns: string denoting what release of Plone this distribution contains
     :Example: :ref:`env-plone-version-example`
     """
-    return get_distribution('Products.CMFPlone').version
+    return get_distribution("Products.CMFPlone").version
 
 
 def zope_version():
@@ -227,4 +229,4 @@ def zope_version():
     :returns: string denoting what release of Zope2 this distribution contains
     :Example: :ref:`env-zope-version-example`
     """
-    return get_distribution('Zope2').version
+    return get_distribution("Zope2").version

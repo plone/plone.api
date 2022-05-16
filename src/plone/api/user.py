@@ -23,7 +23,7 @@ def create(
     email=None,
     username=None,
     password=None,
-    roles=('Member', ),
+    roles=("Member",),
     properties=None,
 ):
     """Create a user.
@@ -52,26 +52,26 @@ def create(
 
     # it may happen that someone passes email in the properties dict, catch
     # that and set the email so the code below this works fine
-    if not email and properties.get('email'):
-        email = properties.get('email')
+    if not email and properties.get("email"):
+        email = properties.get("email")
 
     if not email:
         raise MissingParameterError("You need to pass the new user's email.")
 
-    use_email_as_username = portal.get_registry_record('plone.use_email_as_login')
+    use_email_as_username = portal.get_registry_record("plone.use_email_as_login")
     if not use_email_as_username and not username:
         raise InvalidParameterError(
-            'The portal is configured to use username '
-            'that is not email so you need to pass a username.',
+            "The portal is configured to use username "
+            "that is not email so you need to pass a username.",
         )
 
-    registration = portal.get_tool('portal_registration')
+    registration = portal.get_tool("portal_registration")
     user_id = use_email_as_username and email or username
 
     # Generate a random 8-char password
     if not password:
         chars = string.ascii_letters + string.digits
-        password = ''.join(random.choice(chars) for char in range(8))
+        password = "".join(random.choice(chars) for char in range(8))
 
     properties.update(username=user_id)
     properties.update(email=email)
@@ -85,8 +85,8 @@ def create(
     return get(username=user_id)
 
 
-@mutually_exclusive_parameters('userid', 'username')
-@at_least_one_of('userid', 'username')
+@mutually_exclusive_parameters("userid", "username")
+@at_least_one_of("userid", "username")
 def get(userid=None, username=None):
     """Get a user.
 
@@ -111,7 +111,7 @@ def get(userid=None, username=None):
     :Example: :ref:`user-get-example`
     """
     if userid is not None:
-        portal_membership = portal.get_tool('portal_membership')
+        portal_membership = portal.get_tool("portal_membership")
         return portal_membership.getMemberById(userid)
 
     return get_member_by_login_name(
@@ -128,11 +128,11 @@ def get_current():
     :rtype: MemberData object
     :Example: :ref:`user-get-current-example`
     """
-    portal_membership = portal.get_tool('portal_membership')
+    portal_membership = portal.get_tool("portal_membership")
     return portal_membership.getAuthenticatedMember()
 
 
-@mutually_exclusive_parameters('groupname', 'group')
+@mutually_exclusive_parameters("groupname", "group")
 def get_users(groupname=None, group=None):
     """Get all users or all users filtered by group.
 
@@ -151,12 +151,12 @@ def get_users(groupname=None, group=None):
         :ref:`user-get-groups-users-example`
     """
     if groupname:
-        group_tool = portal.get_tool('portal_groups')
+        group_tool = portal.get_tool("portal_groups")
         group = group_tool.getGroupById(groupname)
         if not group:
             raise GroupNotFoundError
 
-    portal_membership = portal.get_tool('portal_membership')
+    portal_membership = portal.get_tool("portal_membership")
 
     if group:
         return group.getGroupMembers()
@@ -164,8 +164,8 @@ def get_users(groupname=None, group=None):
         return portal_membership.listMembers()
 
 
-@mutually_exclusive_parameters('username', 'user')
-@at_least_one_of('username', 'user')
+@mutually_exclusive_parameters("username", "user")
+@at_least_one_of("username", "user")
 def delete(username=None, user=None):
     """Delete a user.
 
@@ -181,7 +181,7 @@ def delete(username=None, user=None):
         InvalidParameterError
     :Example: :ref:`user-delete-example`
     """
-    portal_membership = portal.get_tool('portal_membership')
+    portal_membership = portal.get_tool("portal_membership")
     user_id = username or user.id
     portal_membership.deleteMembers((user_id,))
 
@@ -193,10 +193,10 @@ def is_anonymous():
     :rtype: bool
     :Example: :ref:`user-is-anonymous-example`
     """
-    return bool(portal.get_tool('portal_membership').isAnonymousUser())
+    return bool(portal.get_tool("portal_membership").isAnonymousUser())
 
 
-@mutually_exclusive_parameters('username', 'user')
+@mutually_exclusive_parameters("username", "user")
 def get_roles(username=None, user=None, obj=None, inherit=True):
     """Get user's site-wide or local roles.
 
@@ -218,7 +218,7 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
         MissingParameterError
     :Example: :ref:`user-get-roles-example`
     """
-    portal_membership = portal.get_tool('portal_membership')
+    portal_membership = portal.get_tool("portal_membership")
 
     if username is None:
         if user is None:
@@ -244,7 +244,7 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
             principal_ids = list(plone_user.getGroups())
             principal_ids.insert(0, plone_user.getId())
             roles = set()
-            pas = portal.get_tool('acl_users')
+            pas = portal.get_tool("acl_users")
             for _, lrmanager in pas.plugins.listPlugins(ILocalRolesPlugin):
                 for adapter in lrmanager._getAdapters(obj):
                     for principal_id in principal_ids:
@@ -256,11 +256,11 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
 
 @contextmanager
 def _nop_context_manager():
-    """A trivial context manager that does nothing."""
+    """Do nothing (trivial context manager)."""
     yield
 
 
-@mutually_exclusive_parameters('username', 'user')
+@mutually_exclusive_parameters("username", "user")
 def get_permissions(username=None, user=None, obj=None):
     """Get user's site-wide or local permissions.
 
@@ -295,7 +295,7 @@ def get_permissions(username=None, user=None, obj=None):
     return result
 
 
-@mutually_exclusive_parameters('username', 'user')
+@mutually_exclusive_parameters("username", "user")
 def has_permission(permission, username=None, user=None, obj=None):
     """Check whether this user has the given permission.
 
@@ -330,8 +330,8 @@ def has_permission(permission, username=None, user=None, obj=None):
         return bool(getSecurityManager().checkPermission(permission, obj))
 
 
-@required_parameters('roles')
-@mutually_exclusive_parameters('username', 'user')
+@required_parameters("roles")
+@mutually_exclusive_parameters("username", "user")
 def grant_roles(username=None, user=None, obj=None, roles=None):
     """Grant roles to a user.
 
@@ -357,13 +357,13 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
         user = get(username=username)
     # check we got a user
     if user is None:
-        raise InvalidParameterError('User could not be found')
+        raise InvalidParameterError("User could not be found")
 
     if isinstance(roles, tuple):
         roles = list(roles)
 
     # These roles cannot be granted
-    if 'Anonymous' in roles or 'Authenticated' in roles:
+    if "Anonymous" in roles or "Authenticated" in roles:
         raise InvalidParameterError
 
     if obj is None:
@@ -379,8 +379,8 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
         obj.manage_setLocalRoles(user.getId(), roles)
 
 
-@required_parameters('roles')
-@mutually_exclusive_parameters('username', 'user')
+@required_parameters("roles")
+@mutually_exclusive_parameters("username", "user")
 def revoke_roles(username=None, user=None, obj=None, roles=None):
     """Revoke roles from a user.
 
@@ -405,11 +405,11 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
         user = get(username=username)
     # check we got a user
     if user is None:
-        raise InvalidParameterError('User could not be found')
+        raise InvalidParameterError("User could not be found")
 
     roles = set(roles)
 
-    if 'Anonymous' in roles or 'Authenticated' in roles:
+    if "Anonymous" in roles or "Authenticated" in roles:
         raise InvalidParameterError
 
     inherit = True
@@ -420,7 +420,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     actual_roles = {
         role
         for role in get_roles(user=user, obj=obj, inherit=inherit)
-        if role not in ['Anonymous', 'Authenticated']
+        if role not in ["Anonymous", "Authenticated"]
     }
 
     roles = list(actual_roles - roles)

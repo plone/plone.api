@@ -13,7 +13,7 @@ Releasing a new version of `plone.api` involves the following steps:
 To avoid human errors and to automate some of the tasks above we use `jarn.mkrelease`.
 It's listed as a dependency in `setup.py` and should already be installed in your local bin:
 
-```bash
+```shell
 $ bin/mkrelease --help
 ```
 
@@ -31,12 +31,12 @@ password = secret
 
 ## Checklist
 
-Folow these step to create a new release of `plone.api`.
+Follow these step to create a new release of `plone.api`.
 
 1. Verify that we have documented all changes in the `CHANGES.rst` file.
    Go through the list of commits since last release on GitHub and check all changes are documented.
 2. Modify the version identifier in the `setup.py` to reflect the version of the new release.
-3. Confirm that the package description (generated from `README.rst` and others) renders correctly by running `bin/longtest` and open its ouput in your favorite browser.
+3. Confirm that the package description (generated from `README.md` and others) renders correctly by running `bin/longtest` and open its ouput in your favorite browser.
 4. Commit all changes to the git repository and push them upstream to GitHub.
 5. Create a release, tag it in git and upload it to GitHub by running `bin/mkrelease -d pypi -pq .` (see example below).
 
@@ -46,7 +46,7 @@ In the following example we are releasing version 0.1 of `plone.api`.
 The package has been prepared so that `setup.py` contains the version `0.1`,
 this change has been committed to git and all changes have been pushed upstream to GitHub:
 
-```bash
+```shell
 # Check that package description is rendered correctly
 $ bin/longtest
 

@@ -25,7 +25,7 @@ extensions = [
 ]
 master_doc = 'index'
 
-locale_dirs = ["translated/"]
+locale_dirs = ['translated/']
 language = 'en'
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -35,8 +35,9 @@ latex_documents = [(
     'index',
     'ploneapi.tex',
     'plone.api Documentation',
-    '', 'manual'
-), ]
+    '',
+    'manual',
+)]
 
 
 class Mock:
