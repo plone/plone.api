@@ -497,6 +497,22 @@ view = api.content.get_view(
 %
 % self.assertEqual(view.__name__, u'plone')
 
+Since version `2.0.0`, the `request` argument can be omitted.
+In that case the global request will be used.
+
+```python
+from plone import api
+portal = api.portal.get()
+view = api.content.get_view(
+    name='plone',
+    context=portal['about'],
+)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(view.__name__, u'plone')
+
 ## Further reading
 
 For more information on possible flags and usage options please see the full {ref}`plone-api-content` specification.

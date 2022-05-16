@@ -13,6 +13,7 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.container.interfaces import INameChooser
+from zope.globalrequest import getRequest
 from zope.interface import Interface
 from zope.interface import providedBy
 
@@ -495,7 +496,7 @@ def enable_roles_acquisition(obj=None):
     plone_utils.acquireLocalRoles(obj, status=1)
 
 
-@required_parameters("name", "context", "request")
+@required_parameters("name", "context")
 def get_view(name=None, context=None, request=None):
     """Get a BrowserView object.
 
@@ -510,6 +511,8 @@ def get_view(name=None, context=None, request=None):
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content-get-view-example`
     """
+    if request is None:
+        request = getRequest()
     # We do not use exceptionhandling to detect if the requested view is
     # available, because the __init__ of said view will contain
     # errors in client code.

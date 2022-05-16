@@ -451,12 +451,9 @@ class TestPloneApiPortal(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             portal.show_message()
 
-        # message and request are required
+        # message is a required parameter
         with self.assertRaises(MissingParameterError):
             portal.show_message(request=self.layer["request"])
-
-        with self.assertRaises(MissingParameterError):
-            portal.show_message(message="Beer is brewing.")
 
     def test_show_message(self):
         """Test to see if message appears."""
