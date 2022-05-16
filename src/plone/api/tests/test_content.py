@@ -1330,13 +1330,6 @@ class TestPloneApiContent(unittest.TestCase):
                 request=request,
             )
 
-        # request is required
-        with self.assertRaises(MissingParameterError):
-            api.content.get_view(
-                name="plone",
-                context=self.blog,
-            )
-
     def test_get_view(self):
         """Test the view."""
         request = self.layer["request"]
