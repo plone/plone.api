@@ -31,7 +31,7 @@ Recipes try to assume the user does not have extensive knowledge about Plone int
 Source Code and Contribution
 ============================
 
-[![Testing Status](https://github.com/plone/plone.api/actions/workflows/plone_python.yml/badge.svg "Testing Status")](https://github.com/plone/plone.api/actions/workflows/plone_python.yml)
+![Testing Status](https://github.com/plone/plone.api/blob/re-add-doctests-manuel-myst/.github/workflows/plone_python.yml/badge.svg)
 
 
 Contributors
