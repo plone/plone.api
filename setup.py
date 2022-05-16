@@ -9,7 +9,7 @@ def read(*rnames):
 
 
 long_description = (
-    read("README.rst") + "\n\n" + read("CHANGES.rst") + "\n\n" + read("LICENSE")
+    read("README.md") + "\n\n" + read("CHANGES.rst") + "\n\n" + read("LICENSE")
 )
 
 version = "2.0.0a3.dev0"
