@@ -41,7 +41,7 @@ setup(
     extras_require={
         "test": [
             "Products.CMFPlone",
-            "manuel",
+            "manuel>=1.11.2",
             "plone.app.dexterity",
             "plone.app.intid",
             "plone.app.testing",
