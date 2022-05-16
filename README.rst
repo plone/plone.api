@@ -31,7 +31,8 @@ Recipes try to assume the user does not have extensive knowledge about Plone int
 Source Code and Contribution
 ============================
 
-# TODO Github CI badge
+[![Testing Status](https://github.com/plone/plone.api/actions/workflows/plone_python.yml/badge.svg "Testing Status")](https://github.com/plone/plone.api/actions/workflows/plone_python.yml)
+
 
 Contributors
     Please read the document `Process for Plone core's development <https://docs.plone.org/develop/coredev/docs/index.html>`_.
