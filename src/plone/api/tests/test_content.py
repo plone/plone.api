@@ -1,6 +1,8 @@
 """Tests for plone.api.content."""
 
 from Acquisition import aq_base
+from contextlib import AbstractContextManager
+from gc import callbacks
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
@@ -12,6 +14,7 @@ from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationExceptio
 from plone.app.textfield import RichTextValue
 from plone.base.interfaces import INavigationRoot
 from plone.indexer import indexer
+from plone.namedfile import NamedBlobFile
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -21,6 +24,7 @@ from zExceptions import BadRequest
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.container.contained import ContainerModifiedEvent
+from zope.event import subscribers
 from zope.interface import alsoProvides
 from zope.lifecycleevent import IObjectModifiedEvent
 from zope.lifecycleevent import IObjectMovedEvent
@@ -28,6 +32,21 @@ from zope.lifecycleevent import modified
 from zope.lifecycleevent import ObjectMovedEvent
 
 import unittest
+
+
+class EventRecorder(AbstractContextManager):
+    def __init__(self):
+        self.events = []
+
+    def __enter__(self):
+        subscribers.append(self.record)
+        return self.events
+
+    def record(self, event):
+        self.events.append(event.__class__.__name__)
+
+    def __exit__(self, *exc_info):
+        subscribers.remove(self.record)
 
 
 class TestPloneApiContent(unittest.TestCase):
@@ -66,7 +85,6 @@ class TestPloneApiContent(unittest.TestCase):
             id="events",
             container=self.portal,
         )
-
         self.team = api.content.create(
             container=self.about,
             type="Document",
@@ -251,6 +269,44 @@ class TestPloneApiContent(unittest.TestCase):
                 id="test-item",
             )
         self.verify_intids()
+
+    def test_create_dexterity_folder_events(self):
+        """Check the events that are fired when a folder is created.
+        Ensure the events fired are consistent whether or not an id is passed
+        and assert that the object is not moved in the creation process.
+        """
+        container = self.portal
+
+        # Create a folder passing an id and record the events
+        with EventRecorder() as events_id_yes:
+            foo = api.content.create(
+                id="foo",
+                container=container,
+                title="Bar",
+                type="Dexterity Folder",
+            )
+
+        self.assertEqual(foo.id, "foo")
+
+        # Create a folder not passing an id and record the events
+        with EventRecorder() as events_id_not:
+            bar = api.content.create(
+                container=container,
+                title="Bar",
+                type="Dexterity Folder",
+            )
+
+        self.assertEqual(bar.id, "bar")
+
+        self.assertListEqual(
+            events_id_yes, events_id_not, "The events fired should be consistent"
+        )
+
+        self.assertNotIn(
+            "ObjectMovedEvent",
+            events_id_yes,
+            "The object should be created in the proper place",
+        )
 
     def test_create_content(self):
         """Test create content."""
