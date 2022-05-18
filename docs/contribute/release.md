@@ -11,13 +11,13 @@ Releasing a new version of `plone.api` involves the following steps:
 5. Upload the generated package to Python Package Index (PyPI).
 
 To avoid human errors and to automate some of the tasks above we use `jarn.mkrelease`.
-It's listed as a dependency in `setup.py` and should already be installed in your local bin:
+It's listed as a dependency in `setup.py` and should already be installed in your local `bin`:
 
 ```shell
 bin/mkrelease --help
 ```
 
-Apart from that, in order to be able to upload a new version to PyPI you need to be listed under `Package Index Owner` list and you need to configure your PyPI credentials in the `~/.pypirc` file, e.g.:
+Apart from that, to upload a new version to PyPI, you need to be listed under the `Package Index Owner` list, and you need to configure your PyPI credentials in the `~/.pypirc` file, for example:
 
 ```
 [distutils]
