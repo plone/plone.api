@@ -119,7 +119,7 @@ This way your work is kept in an isolated place where you can receive feedback o
 Once we are happy with your implementation, your branch gets merged into *master* at which point everyone else starts using your code.
 
 ```shell
-git checkout master  # go to master branch
+git checkout master       # go to master branch
 git checkout -b issue_17  # create a feature branch
 # replace 17 with the issue number you are working on
 

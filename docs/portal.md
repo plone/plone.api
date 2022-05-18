@@ -27,7 +27,7 @@ portal = api.portal.get()
 
 ## Get navigation root
 
-In multilingual or multi-site Plone installations you probably want to get the language-specific navigation root object, not the top portal object.
+In multilingual or multi-site Plone installations, you probably want to get the language-specific navigation root object, not the top portal object.
 
 You do this with {meth}`api.portal.get_navigation_root()`.
 
