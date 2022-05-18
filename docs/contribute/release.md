@@ -31,12 +31,12 @@ password = secret
 
 ## Checklist
 
-Folow these step to create a new release of `plone.api`.
+Follow these step to create a new release of `plone.api`.
 
 1. Verify that we have documented all changes in the `CHANGES.rst` file.
    Go through the list of commits since last release on GitHub and check all changes are documented.
 2. Modify the version identifier in the `setup.py` to reflect the version of the new release.
-3. Confirm that the package description (generated from `README.rst` and others) renders correctly by running `bin/longtest` and open its ouput in your favorite browser.
+3. Confirm that the package description (generated from `README.md` and others) renders correctly by running `bin/longtest` and open its output in your favorite browser.
 4. Commit all changes to the git repository and push them upstream to GitHub.
 5. Create a release, tag it in git and upload it to GitHub by running `bin/mkrelease -d pypi -pq .` (see example below).
 

@@ -8,12 +8,12 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing import layered
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from zope.testing import renormalizing
 
 import doctest
-import manuel.codeblock
 import manuel.doctest
+import manuel.myst.codeblock
 import manuel.testing
 import os
 import pkg_resources
@@ -24,7 +24,7 @@ import unittest
 logger = getLogger(__name__)
 
 try:
-    pkg_resources.get_distribution('plone.app.contenttypes')
+    pkg_resources.get_distribution("plone.app.contenttypes")
 except pkg_resources.DistributionNotFound:
     HAS_PA_CONTENTTYPES = False
 else:
@@ -37,45 +37,52 @@ FLAGS = (
     | doctest.REPORT_ONLY_FIRST_FAILURE
 )
 
-CHECKER = renormalizing.RENormalizing([
-    # Normalize the generated UUID values to always compare equal.
-    (re.compile(
-        r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
-        '<UUID>',
-     ),
-])
+CHECKER = renormalizing.RENormalizing(
+    [
+        # Normalize the generated UUID values to always compare equal.
+        (
+            re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"),
+            "<UUID>",
+        ),
+    ]
+)
 
 
 def setUp(self):  # pragma: no cover
     """Shared test environment set-up, ran before every test."""
-    layer = self.globs['layer']
+    layer = self.globs["layer"]
     # Update global variables within the tests.
-    self.globs.update({
-        'portal': layer['portal'],
-        'request': layer['request'],
-        'browser': Browser(layer['app']),
-        'TEST_USER_NAME': TEST_USER_NAME,
-        'TEST_USER_PASSWORD': TEST_USER_PASSWORD,
-        'self': self,
-    })
+    self.globs.update(
+        {
+            "portal": layer["portal"],
+            "request": layer["request"],
+            "browser": Browser(layer["app"]),
+            "TEST_USER_NAME": TEST_USER_NAME,
+            "TEST_USER_PASSWORD": TEST_USER_PASSWORD,
+            "self": self,
+        }
+    )
 
-    portal = self.globs['portal']
-    browser = self.globs['browser']
+    portal = self.globs["portal"]
+    browser = self.globs["browser"]
 
     browser.handleErrors = True
     portal.error_log._ignored_exceptions = ()
 
-    setRoles(portal, TEST_USER_ID, ['Manager'])
+    setRoles(portal, TEST_USER_ID, ["Manager"])
 
-    applyProfile(portal, 'Products.CMFPlone:plone')
+    applyProfile(portal, "Products.CMFPlone:plone")
 
     # Plone 5 support
     if HAS_PA_CONTENTTYPES:
-        applyProfile(portal, 'plone.app.contenttypes:default')
+        applyProfile(portal, "plone.app.contenttypes:default")
 
 
 def DocFileSuite(
-    testfile, flags=FLAGS, setUp=setUp, layer=PLONE_INTEGRATION_TESTING,
+    testfile,
+    flags=FLAGS,
+    setUp=setUp,
+    layer=PLONE_INTEGRATION_TESTING,
 ):
     """Returns a test suite configured with a test layer.
 
@@ -94,7 +101,7 @@ def DocFileSuite(
     :rtype: `manuel.testing.TestSuite`
     """
     m = manuel.doctest.Manuel(optionflags=flags, checker=CHECKER)
-    m += manuel.codeblock.Manuel()
+    m += manuel.myst.codeblock.Manuel()
 
     return layered(
         manuel.testing.TestSuite(
@@ -109,7 +116,7 @@ def DocFileSuite(
 
 def test_suite():
     """Find .rst files and test code examples in them."""
-    path = 'doctests'
+    path = "doctests"
     doctests = []
     docs_path = os.path.join(os.path.dirname(__file__), path)
 
@@ -118,7 +125,7 @@ def test_suite():
             doctests.append(DocFileSuite(os.path.join(path, filename)))
         except OSError:
             logger.warning(
-                'test_doctest.py skipping {file}'.format(file=filename),
+                "test_doctest.py skipping {file}".format(file=filename),
             )
 
     return unittest.TestSuite(doctests)

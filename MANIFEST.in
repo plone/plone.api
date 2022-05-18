@@ -4,8 +4,8 @@ include tox.ini
 # Ignore most of the docs directory.
 prune docs
 
-# The doctests point to docs/*.rst, so we need them, including CHANGES.rst.
-include docs/*.rst
+# The doctests point to docs/*.md, so we need them, including CHANGES.rst.
+include docs/*.md
 
 graft src
 
@@ -13,3 +13,7 @@ global-exclude *.pyc
 include pyproject.toml
 recursive-exclude news *
 exclude news
+
+# added by check-manifest
+recursive-include src *.py
+recursive-include src *.rst

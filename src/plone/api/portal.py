@@ -19,10 +19,9 @@ from zope.globalrequest import getRequest
 from zope.interface.interfaces import IInterface
 
 import datetime as dtime
-import pkg_resources
 
 
-logger = getLogger('plone.api.portal')
+logger = getLogger("plone.api.portal")
 
 try:
     from Products import PrintingMailHost
@@ -36,16 +35,14 @@ elif (
     and PrintingMailHost.ENABLED.lower() in PrintingMailHost.TRUISMS
 ):
     PRINTINGMAILHOST_ENABLED = True
-elif (
-    PrintingMailHost.ENABLED is None
-    and PrintingMailHost.DevelopmentMode is True
-):
+elif PrintingMailHost.ENABLED is None and PrintingMailHost.DevelopmentMode is True:
     PRINTINGMAILHOST_ENABLED = True
 else:
     # PrintingMailHost only patches in debug mode.
     # plone.api.env.debug_mode cannot be used here, because .env imports this
     # file
     from App.config import getConfiguration
+
     PRINTINGMAILHOST_ENABLED = getConfiguration().debug_mode
 
 MISSING = object()
@@ -61,7 +58,6 @@ def get():
     :rtype: Portal object
     :Example: :ref:`portal-get-example`
     """
-
     closest_site = getSite()
     if closest_site is not None:
         for potential_portal in closest_site.aq_chain:
@@ -69,13 +65,13 @@ def get():
                 return potential_portal
 
     raise CannotGetPortalError(
-        'Unable to get the portal object. More info on '
-        'https://docs.plone.org/develop/plone.api/docs/api/exceptions.html'
-        '#plone.api.exc.CannotGetPortalError',
+        "Unable to get the portal object. More info on "
+        "https://docs.plone.org/develop/plone.api/docs/api/exceptions.html"
+        "#plone.api.exc.CannotGetPortalError",
     )
 
 
-@required_parameters('context')
+@required_parameters("context")
 def get_navigation_root(context=None):
     """Get the navigation root object for the context.
 
@@ -92,7 +88,7 @@ def get_navigation_root(context=None):
     return getNavigationRootObject(context, get())
 
 
-@required_parameters('name')
+@required_parameters("name")
 def get_tool(name=None):
     """Get a portal tool in a simple way.
 
@@ -112,17 +108,17 @@ def get_tool(name=None):
         portal = get()
         tools = []
         for id in portal.objectIds():
-            if id.startswith('portal_'):
+            if id.startswith("portal_"):
                 tools.append(id)
 
         raise InvalidParameterError(
             "Cannot find a tool with name '{name}'.\n"
-            'Available tools are:\n'
-            '{tools}'.format(name=name, tools='\n'.join(tools)),
+            "Available tools are:\n"
+            "{tools}".format(name=name, tools="\n".join(tools)),
         )
 
 
-@required_parameters('recipient', 'subject', 'body')
+@required_parameters("recipient", "subject", "body")
 def send_email(
     sender=None,
     recipient=None,
@@ -153,19 +149,20 @@ def send_email(
 
     if not PRINTINGMAILHOST_ENABLED:
         from plone.api import content
+
         ctrlOverview = content.get_view(
             context=portal,
             request=portal.REQUEST,
-            name='overview-controlpanel',
+            name="overview-controlpanel",
         )
         if ctrlOverview.mailhost_warning():
-            raise ValueError('MailHost is not configured.')
+            raise ValueError("MailHost is not configured.")
 
-    encoding = get_registry_record('plone.email_charset')
+    encoding = get_registry_record("plone.email_charset")
 
     if not sender:
-        from_address = get_registry_record('plone.email_from_address')
-        from_name = get_registry_record('plone.email_from_name')
+        from_address = get_registry_record("plone.email_from_address")
+        from_name = get_registry_record("plone.email_from_name")
         sender = formataddr((from_name, from_address))
         if parseaddr(sender)[1] != from_address:
             # formataddr probably got confused by special characters.
@@ -176,7 +173,7 @@ def send_email(
     if isinstance(body, str):
         body = body.encode(encoding)
 
-    host = get_tool('MailHost')
+    host = get_tool("MailHost")
     host.send(
         body,
         recipient,
@@ -187,7 +184,7 @@ def send_email(
     )
 
 
-@required_parameters('datetime')
+@required_parameters("datetime")
 def get_localized_time(datetime=None, long_format=False, time_only=False):
     """Display a date/time in a user-friendly way.
 
@@ -216,13 +213,13 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
         ValueError
     :Example: :ref:`portal-get-localized-time-example`
     """
-    tool = get_tool(name='translation_service')
+    tool = get_tool(name="translation_service")
     request = getRequest()
 
     # isinstance won't work because of date -> datetime inheritance
     if type(datetime) is dtime.date:
         if time_only:
-            return ''
+            return ""
         datetime = dtime.datetime(datetime.year, datetime.month, datetime.day)
         long_format = False
 
@@ -230,13 +227,13 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
         datetime,
         long_format,
         time_only,
-        domain='plonelocales',
+        domain="plonelocales",
         request=request,
     )
 
 
-@required_parameters('message', 'request')
-def show_message(message=None, request=None, type='info'):
+@required_parameters("message")
+def show_message(message=None, request=None, type="info"):
     """Display a status message.
 
     :param message: [required] Message to show.
@@ -249,12 +246,14 @@ def show_message(message=None, request=None, type='info'):
         ValueError
     :Example: :ref:`portal-show-message-example`
     """
+    if request is None:
+        request = getRequest()
     IStatusMessage(request).add(message, type=type)
 
 
-@required_parameters('name')
+@required_parameters("name")
 def get_registry_record(name=None, interface=None, default=MISSING):
-    """Get a record value from ``plone.app.registry``
+    """Get a record value from ``plone.app.registry``.
 
     :param name: [required] Name
     :type name: string
@@ -272,8 +271,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
-            'The interface parameter has to derive from '
-            'zope.interface.Interface',
+            "The interface parameter has to derive from " "zope.interface.Interface",
         )
 
     registry = getUtility(IRegistry)
@@ -282,7 +280,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
         records = registry.forInterface(interface, check=False)
         _marker = object()
         if getattr(records, name, _marker) != _marker:
-            return registry['{}.{}'.format(interface.__identifier__, name)]
+            return registry["{}.{}".format(interface.__identifier__, name)]
 
         if default is not MISSING:
             return default
@@ -291,12 +289,12 @@ def get_registry_record(name=None, interface=None, default=MISSING):
         records = [key for key in interface.names()]
         msg = (
             'Cannot find a record with name "{name}"'
-            ' on interface {identifier}.\n'
-            'Did you mean?\n'
-            '{records}'.format(
+            " on interface {identifier}.\n"
+            "Did you mean?\n"
+            "{records}".format(
                 name=name,
                 identifier=interface.__identifier__,
-                records='\n'.join(records),
+                records="\n".join(records),
             )
         )
         raise InvalidParameterError(msg)
@@ -309,22 +307,20 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
     # Show all records that 'look like' name.
     # We don't dump the whole list, because it 1500+ items.
-    msg = (
-        "Cannot find a record with name '{name}'".format(name=name)
-    )
+    msg = "Cannot find a record with name '{name}'".format(name=name)
     records = [key for key in registry.records.keys() if name in key]
     if records:
         msg = (
-            '{message}\n'
-            'Did you mean?:\n'
-            '{records}'.format(message=msg, records='\n'.join(records))
+            "{message}\n"
+            "Did you mean?:\n"
+            "{records}".format(message=msg, records="\n".join(records))
         )
     raise InvalidParameterError(msg)
 
 
-@required_parameters('name', 'value')
+@required_parameters("name", "value")
 def set_registry_record(name=None, value=None, interface=None):
-    """Set a record value in the ``plone.app.registry``
+    """Set a record value in the ``plone.app.registry``.
 
     :param name: [required] Name of the record
     :type name: string
@@ -340,8 +336,7 @@ def set_registry_record(name=None, value=None, interface=None):
 
     if interface is not None and not IInterface.providedBy(interface):
         raise InvalidParameterError(
-            'The interface parameter has to derive from '
-            'zope.interface.Interface',
+            "The interface parameter has to derive from " "zope.interface.Interface",
         )
 
     registry = getUtility(IRegistry)
@@ -351,8 +346,9 @@ def set_registry_record(name=None, value=None, interface=None):
         get_registry_record(name=name, interface=interface)
 
         from zope.schema._bootstrapinterfaces import WrongType
+
         try:
-            registry[interface.__identifier__ + '.' + name] = value
+            registry[interface.__identifier__ + "." + name] = value
         except WrongType:
             field_type = None
             for field in interface.namesAndDescriptions():
@@ -360,8 +356,8 @@ def set_registry_record(name=None, value=None, interface=None):
                     field_type = field[1]
                     break
             raise InvalidParameterError(
-                'The value parameter for the field {name} needs to be '
-                '{of_class} instead of {of_type}'.format(
+                "The value parameter for the field {name} needs to be "
+                "{of_class} instead of {of_type}".format(
                     name=name,
                     of_class=str(field_type.__class__),
                     of_type=type(value),
@@ -384,8 +380,9 @@ def get_default_language():
     :Example: :ref:`portal-get-default-language-example`
     """
     from plone.i18n.interfaces import ILanguageSchema
+
     registry = getUtility(IRegistry)
-    settings = registry.forInterface(ILanguageSchema, prefix='plone')
+    settings = registry.forInterface(ILanguageSchema, prefix="plone")
     return settings.default_language
 
 
@@ -399,12 +396,14 @@ def get_current_language(context=None):
     :Example: :ref:`portal-get-current-language-example`
     """
     request = getRequest()
-    return request.get('LANGUAGE', None) or \
-        (context and aq_inner(context).Language()) \
+    return (
+        request.get("LANGUAGE", None)
+        or (context and aq_inner(context).Language())
         or get_default_language()
+    )
 
 
-def translate(msgid, domain='plone', lang=None):
+def translate(msgid, domain="plone", lang=None):
     """Translate a message into a given language.
 
     Default to current negotiated language if no target language specified.
@@ -419,13 +418,13 @@ def translate(msgid, domain='plone', lang=None):
     :rtype: str
     :Example: :ref:`portal-translate-example`
     """
-    translation_service = get_tool('translation_service')
+    translation_service = get_tool("translation_service")
     query = {
-        'msgid': msgid,
-        'domain': domain,
-        'target_language': lang,
+        "msgid": msgid,
+        "domain": domain,
+        "target_language": lang,
     }
     if lang is None:
         # Pass the request, so zope.i18n.translate can negotiate the language.
-        query['context'] = getRequest()
+        query["context"] = getRequest()
     return translation_service.utranslate(**query)

@@ -1,0 +1,31 @@
+name: Plone backend tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  plone_python:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.7", "3.8", "3.9"]
+        plone-version: ["5.2", "6.0"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install system libraries
+        run: sudo apt-get install libxml2-dev libxslt1-dev libjpeg-dev
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox tox-gh-actions
+      - name: Test with tox
+        run: tox
+        env:
+          PLONE: ${{ matrix.plone-version }}

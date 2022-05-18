@@ -309,6 +309,20 @@ api.portal.show_message(message='Blueberries!', request=request)
     self.assertTrue('Blueberries!' in show[0].message)
 ```
 
+Since version `2.0.0`, the `request` argument can be omitted.
+In that case the global request will be used.
+
+```python
+api.portal.show_message(message='Cranberries!')
+```
+
+% invisible-code-block: python
+%
+% from Products.statusmessages.interfaces import IStatusMessage
+% messages = IStatusMessage(request)
+% show = messages.show()
+% self.assertTrue('Cranberries!' in show[-1].message)
+
 (portal-get-registry-record-example)=
 
 ## Get plone.app.registry record

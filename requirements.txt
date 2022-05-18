@@ -1,0 +1,5 @@
+-c constraints.txt
+setuptools
+zc.buildout
+Pillow>=8.3.2
+tox

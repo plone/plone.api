@@ -32,7 +32,7 @@ obj = api.content.create(
 The `id` of the new object is automatically and safely generated from its `title`.
 
 ```python
-assert obj.id == 'my-content'
+self.assertEqual(obj.id, 'my-content')
 ```
 
 (content-get-example)=
@@ -54,63 +54,56 @@ plone (portal root)
     `-- sprint
 ```
 
-```{eval-rst}
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    from plone import api
-    portal = api.portal.get()
-    image = api.content.create(type='Image', id='image', container=portal)
-    blog = api.content.create(type='Link', id='blog', container=portal)
-    about = api.content.create(type='Folder', id='about', container=portal)
-    events = api.content.create(type='Folder', id='events', container=portal)
-
-    api.content.create(container=about, type='Document', id='team')
-    api.content.create(container=about, type='Document', id='contact')
-
-    api.content.create(container=events, type='Event', id='training')
-    api.content.create(container=events, type='Event', id='conference')
-    api.content.create(container=events, type='Event', id='sprint')
-```
+% invisible-code-block: python
+%
+% portal = api.portal.get()
+% image = api.content.create(type='Image', id='image', container=portal)
+% blog = api.content.create(type='Link', id='blog', container=portal)
+% about = api.content.create(type='Folder', id='about', container=portal)
+% events = api.content.create(type='Folder', id='events', container=portal)
+%
+% api.content.create(container=about, type='Document', id='team')
+% api.content.create(container=about, type='Document', id='contact')
+%
+% api.content.create(container=events, type='Event', id='training')
+% api.content.create(container=events, type='Event', id='conference')
+% api.content.create(container=events, type='Event', id='sprint')
 
 The following operations will get objects from the structure above, including using {meth}`api.content.get`.
 
-```{eval-rst}
-..  code-block:: python
+```python
+# let's first get the portal object
+from plone import api
+portal = api.portal.get()
+assert portal.id == 'plone'
 
-    # let's first get the portal object
-    from plone import api
-    portal = api.portal.get()
-    assert portal.id == 'plone'
+# content can be accessed directly with dict-like access
+blog = portal['blog']
 
-    # content can be accessed directly with dict-like access
-    blog = portal['blog']
+# another way is to use ``get()`` method and pass it a path
+about = api.content.get(path='/about')
 
-    # another way is to use ``get()`` method and pass it a path
-    about = api.content.get(path='/about')
+# more examples
+conference = portal['events']['conference']
+sprint = api.content.get(path='/events/sprint')
 
-    # more examples
-    conference = portal['events']['conference']
-    sprint = api.content.get(path='/events/sprint')
+# moreover, you can access content by its UID
+uid = about['team'].UID()
+team = api.content.get(UID=uid)
 
-    # moreover, you can access content by its UID
-    uid = about['team'].UID()
-    team = api.content.get(UID=uid)
-
-    # returns None if UID cannot be found in catalog
-    not_found = api.content.get(UID='notfound')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertTrue(portal)
-    self.assertTrue(blog)
-    self.assertTrue(about)
-    self.assertTrue(conference)
-    self.assertTrue(sprint)
-    self.assertTrue(team)
-    self.assertEquals(not_found, None)
+# returns None if UID cannot be found in catalog
+not_found = api.content.get(UID='notfound')
 ```
+
+% invisible-code-block: python
+%
+% self.assertTrue(portal)
+% self.assertTrue(blog)
+% self.assertTrue(about)
+% self.assertTrue(conference)
+% self.assertTrue(sprint)
+% self.assertTrue(team)
+% self.assertEquals(not_found, None)
 
 (content-find-example)=
 
@@ -120,96 +113,78 @@ You can use the find function to search for content.
 
 Finding all Documents:
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    documents = api.content.find(portal_type='Document')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertGreater(len(documents), 0)
+```python
+from plone import api
+documents = api.content.find(portal_type='Document')
 ```
+
+% invisible-code-block: python
+%
+% self.assertGreater(len(documents), 0)
 
 Finding all Documents within a context:
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    documents = api.content.find(
-        context=api.portal.get(), portal_type='Document')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertGreater(len(documents), 0)
+```python
+from plone import api
+documents = api.content.find(
+    context=api.portal.get(), portal_type='Document')
 ```
+
+% invisible-code-block: python
+%
+% self.assertGreater(len(documents), 0)
 
 Limit search depth:
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    documents = api.content.find(depth=1, portal_type='Document')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertGreater(len(documents), 0)  # TODO: This test fails
+```python
+from plone import api
+documents = api.content.find(depth=1, portal_type='Document')
 ```
+
+% invisible-code-block: python
+%
+% self.assertGreater(len(documents), 0)
 
 Limit search depth within a context:
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    documents = api.content.find(
-        context=api.portal.get(), depth=1, portal_type='Document')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertGreater(len(documents), 0)  # TODO: This test fails
+```python
+from plone import api
+documents = api.content.find(
+    context=api.portal.get(), depth=1, portal_type='Document')
 ```
+
+% invisible-code-block: python
+%
+% self.assertGreater(len(documents), 0)
 
 Search by interface:
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    from Products.CMFCore.interfaces import IContentish
-    documents = api.content.find(object_provides=IContentish)
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertGreater(len(documents), 0)
+```python
+from plone import api
+from Products.CMFCore.interfaces import IContentish
+documents = api.content.find(object_provides=IContentish)
 ```
+
+% invisible-code-block: python
+%
+% self.assertGreater(len(documents), 0)
 
 Combining multiple arguments:
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    from Products.CMFCore.interfaces import IContentish
-    documents = api.content.find(
-        context=api.portal.get(),
-        depth=2,
-        object_provides=IContentish,
-        SearchableText='Team',
-    )
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertGreater(len(documents), 0)
+```python
+from plone import api
+from Products.CMFCore.interfaces import IContentish
+documents = api.content.find(
+    context=api.portal.get(),
+    depth=2,
+    object_provides=IContentish,
+    SearchableText='Team',
+)
 ```
+
+% invisible-code-block: python
+%
+% self.assertGreater(len(documents), 0)
 
 More information about how to use the catalog may be found in the
 [Plone Documentation](https://docs.plone.org/develop/plone/searching_and_indexing/index.html).
@@ -228,25 +203,22 @@ document_obj = document_brain.getObject()
 
 A Universally Unique IDentifier (UUID) is a unique, non-human-readable identifier for a content object which remains constant for the object even if the object is moved.
 
-Plone uses UUIDs for storing references between content and for linking by UUIDs, enabling persistent links.
+Plone uses UUIDs for storing references between content and for linking by UIDs, enabling persistent links.
 
 To get the UUID of any content object use {meth}`api.content.get_uuid`.
 The following code gets the UUID of the `contact` document.
 
-```{eval-rst}
-..  code-block:: python
+```python
+from plone import api
+portal = api.portal.get()
+contact = portal['about']['contact']
 
-    from plone import api
-    portal = api.portal.get()
-    contact = portal['about']['contact']
-
-    uuid = api.content.get_uuid(obj=contact)
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertTrue(isinstance(uuid, str))
+uuid = api.content.get_uuid(obj=contact)
 ```
+
+% invisible-code-block: python
+%
+% self.assertTrue(isinstance(uuid, str))
 
 (content-move-example)=
 
@@ -255,25 +227,31 @@ The following code gets the UUID of the `contact` document.
 To move content around the portal structure defined above use the {meth}`api.content.move` method.
 The code below moves the `contact` item (with all it contains) out of the folder `about` and into the Plone portal root.
 
-```{eval-rst}
-..  code-block:: python
+```python
+from plone import api
+portal = api.portal.get()
+contact = portal['about']['contact']
 
-    from plone import api
-    portal = api.portal.get()
-    contact = portal['about']['contact']
-
-    api.content.move(source=contact, target=portal)
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertFalse(portal['about'].get('contact'))
-    self.assertTrue(portal['contact'])
+api.content.move(source=contact, target=portal)
 ```
+
+% invisible-code-block: python
+%
+% self.assertFalse(portal['about'].get('contact'))
+% self.assertTrue(portal['contact'])
 
 Actually, `move` behaves like a filesystem move.
 If you pass it an `id` argument, the object will have that new ID in its new home.
 By default it will retain its original ID.
+
+% invisible-code-block: python
+%
+% self.assertEqual(contact.id, "contact")
+% self.assertTrue(portal['contact'])
+% contact = portal['contact']
+% api.content.move(source=contact, target=portal['about'], id="new-contact")
+% self.assertEqual(contact.id, "new-contact")
+% self.assertTrue(portal['about']['new-contact'])
 
 (content-rename-example)=
 
@@ -281,19 +259,16 @@ By default it will retain its original ID.
 
 To rename a content object (change its ID), use the {meth}`api.content.rename` method.
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    api.content.rename(obj=portal['blog'], new_id='old-blog')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertFalse(portal.get('blog'))
-    self.assertTrue(portal['old-blog'])
+```python
+from plone import api
+portal = api.portal.get()
+api.content.rename(obj=portal['blog'], new_id='old-blog')
 ```
+
+% invisible-code-block: python
+%
+% self.assertFalse(portal.get('blog'))
+% self.assertTrue(portal['old-blog'])
 
 (content-copy-example)=
 
@@ -301,42 +276,34 @@ To rename a content object (change its ID), use the {meth}`api.content.rename` m
 
 To copy a content object, use the {meth}`api.content.copy` method.
 
-```{eval-rst}
-..  code-block:: python
+```python
+from plone import api
+portal = api.portal.get()
+training = portal['events']['training']
 
-    from plone import api
-    portal = api.portal.get()
-    training = portal['events']['training']
-
-    api.content.copy(source=training, target=portal)
+api.content.copy(source=training, target=portal)
 ```
 
 Note that the new object will have the same ID as the old object (unless otherwise stated).
 This is not a problem, since the new object is in a different container.
 
-```{eval-rst}
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    assert portal['events']['training'].id == 'training'
-    assert portal['training'].id == 'training'
-```
+% invisible-code-block: python
+%
+% assert portal['events']['training'].id == 'training'
+% assert portal['training'].id == 'training'
 
 You can also set `target` to source's container and set `safe_id=True`.
 This will duplicate your content object in the same container and assign it a new, non-conflicting ID.
 
-```{eval-rst}
-..  code-block:: python
-
-    api.content.copy(source=portal['training'], target=portal, safe_id=True)
-    new_training = portal['copy_of_training']
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertTrue(portal['training'])  # old object remains
-    self.assertTrue(portal['copy_of_training'])
+```python
+api.content.copy(source=portal['training'], target=portal, safe_id=True)
+new_training = portal['copy_of_training']
 ```
+
+% invisible-code-block: python
+%
+% self.assertTrue(portal['training'])  # old object remains
+% self.assertTrue(portal['copy_of_training'])
 
 (content-delete-example)=
 
@@ -344,70 +311,55 @@ This will duplicate your content object in the same container and assign it a ne
 
 To delete a content object, pass the object to the {meth}`api.content.delete` method:
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    api.content.delete(obj=portal['copy_of_training'])
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertFalse(portal.get('copy_of_training'))
+```python
+from plone import api
+portal = api.portal.get()
+api.content.delete(obj=portal['copy_of_training'])
 ```
+
+% invisible-code-block: python
+%
+% self.assertFalse(portal.get('copy_of_training'))
 
 To delete multiple content objects, pass the objects to the {meth}`api.content.delete` method:
 
-```{eval-rst}
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
+% invisible-code-block: python
+%
+% api.content.copy(source=portal['training'], target=portal, safe_id=True)
+% api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
 
-    api.content.copy(source=portal['training'], target=portal, safe_id=True)
-    api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
+```python
+from plone import api
+portal = api.portal.get()
+data = [portal['copy_of_training'], portal['events']['copy_of_training'], ]
+api.content.delete(objects=data)
 ```
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    data = [portal['copy_of_training'], portal['events']['copy_of_training'], ]
-    api.content.delete(objects=data)
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertFalse(portal.get('copy_of_training'))
-    self.assertFalse(portal.events.get('copy_of_training'))
-```
+% invisible-code-block: python
+%
+% self.assertFalse(portal.get('copy_of_training'))
+% self.assertFalse(portal.events.get('copy_of_training'))
 
 If deleting content would result in broken links you will get a `LinkIntegrityNotificationException`. To delete anyway, set the option `check_linkintegrity` to `False`:
 
-```{eval-rst}
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
+% invisible-code-block: python
+%
+% from plone.app.textfield import RichTextValue
+% from zope.lifecycleevent import modified
+% api.content.copy(source=portal['training'], target=portal, safe_id=True)
+% api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
+% portal['about']['team'].text = RichTextValue('<a href="../copy_of_training">contact</a>', 'text/html', 'text/x-html-safe')
+% modified(portal['about']['team'])
 
-    from plone.app.textfield import RichTextValue
-    from zope.lifecycleevent import modified
-    api.content.copy(source=portal['training'], target=portal, safe_id=True)
-    api.content.copy(source=portal['events']['training'], target=portal['events'], safe_id=True)
-    portal['about']['team'].text = RichTextValue('<a href="../copy_of_training">contact</a>', 'text/html', 'text/x-html-safe')
-    modified(portal['about']['team'])
+```python
+from plone import api
+portal = api.portal.get()
+api.content.delete(obj=portal['copy_of_training'], check_linkintegrity=False)
 ```
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    api.content.delete(obj=portal['copy_of_training'], check_linkintegrity=False)
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertNotIn('copy_of_training', portal.keys())
-```
+% invisible-code-block: python
+%
+% self.assertNotIn('copy_of_training', portal.keys())
 
 (content-manipulation-with-safe-id-option)=
 
@@ -419,12 +371,9 @@ If another object with the same ID is already present in the target container th
 
 However, if the `safe_id` option is enabled, a non-conflicting ID will be generated.
 
-```{eval-rst}
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    api.content.create(container=portal, type='Document', id='document', safe_id=True)
-```
+% invisible-code-block: python
+%
+% api.content.create(container=portal, type='Document', id='document', safe_id=True)
 
 ```python
 api.content.create(container=portal, type='Document', id='document', safe_id=True)
@@ -437,33 +386,27 @@ document = portal['document-1']
 
 To find out the current workflow state of your content, use the {meth}`api.content.get_state` method.
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    state = api.content.get_state(obj=portal['about'])
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertEqual(state, 'private')
+```python
+from plone import api
+portal = api.portal.get()
+state = api.content.get_state(obj=portal['about'])
 ```
+
+% invisible-code-block: python
+%
+% self.assertEqual(state, 'private')
 
 The optional `default` argument is returned if no workflow is defined for the object.
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    state = api.content.get_state(obj=portal['image'], default='Unknown')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertEqual(state, 'Unknown')
+```python
+from plone import api
+portal = api.portal.get()
+state = api.content.get_state(obj=portal['image'], default='Unknown')
 ```
+
+% invisible-code-block: python
+%
+% self.assertEqual(state, 'Unknown')
 
 (content-transition-example)=
 
@@ -471,21 +414,18 @@ The optional `default` argument is returned if no workflow is defined for the ob
 
 To transition your content to a new workflow state, use the {meth}`api.content.transition` method.
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    api.content.transition(obj=portal['about'], transition='publish')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertEqual(
-        api.content.get_state(obj=portal['about']),
-        'published'
-    )
+```python
+from plone import api
+portal = api.portal.get()
+api.content.transition(obj=portal['about'], transition='publish')
 ```
+
+% invisible-code-block: python
+%
+% self.assertEqual(
+%     api.content.get_state(obj=portal['about']),
+%     'published'
+% )
 
 If your workflow accepts any additional arguments to the checkin method you may supply them via kwargs.
 These arguments can be saved to your transition using custom workflow variables inside the ZMI using an expression such as "python:state_change.kwargs.get('comment', '')"
@@ -496,25 +436,23 @@ portal = api.portal.get()
 api.content.transition(obj=portal['about'], transition='reject', comment='You had a typo on your page.')
 ```
 
+
 (content-disable-roles-acquisition-example)=
 
 ## Disable local roles acquisition
 
 To disable the acquisition of local roles for an object, use the {meth}`api.content.disable_roles_acquisition` method.
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    api.content.disable_roles_acquisition(obj=portal['about'])
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
-    self.assertTrue(ac_flag)
+```python
+from plone import api
+portal = api.portal.get()
+api.content.disable_roles_acquisition(obj=portal['about'])
 ```
+
+% invisible-code-block: python
+%
+% ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
+% self.assertTrue(ac_flag)
 
 (content-enable-roles-acquisition-example)=
 
@@ -522,24 +460,21 @@ To disable the acquisition of local roles for an object, use the {meth}`api.cont
 
 To enable the acquisition of local roles for an object, use the {meth}`api.content.enable_roles_acquisition` method.
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    api.content.enable_roles_acquisition(obj=portal['about'])
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    # As __ac_local_roles_block__ is None by default, we have to set it,
-    # before we can test the enabling method.
-    portal['about'].__ac_local_roles_block__ = 1
-
-    api.content.enable_roles_acquisition(obj=portal['about'])
-    ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
-    self.assertFalse(ac_flag)
+```python
+from plone import api
+portal = api.portal.get()
+api.content.enable_roles_acquisition(obj=portal['about'])
 ```
+
+% invisible-code-block: python
+%
+% # As __ac_local_roles_block__ is None by default, we have to set it,
+% # before we can test the enabling method.
+% portal['about'].__ac_local_roles_block__ = 1
+%
+% api.content.enable_roles_acquisition(obj=portal['about'])
+% ac_flag = getattr(portal['about'], '__ac_local_roles_block__', None)
+% self.assertFalse(ac_flag)
 
 (content-get-view-example)=
 
@@ -547,22 +482,35 @@ To enable the acquisition of local roles for an object, use the {meth}`api.conte
 
 To get a {class}`BrowserView` for your content, use {meth}`api.content.get_view`.
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-    portal = api.portal.get()
-    view = api.content.get_view(
-        name='plone',
-        context=portal['about'],
-        request=request,
-    )
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertEqual(view.__name__, u'plone')
+```python
+from plone import api
+portal = api.portal.get()
+view = api.content.get_view(
+    name='plone',
+    context=portal['about'],
+    request=request,
+)
 ```
+
+% invisible-code-block: python
+%
+% self.assertEqual(view.__name__, u'plone')
+
+Since version `2.0.0`, the `request` argument can be omitted.
+In that case, the global request will be used.
+
+```python
+from plone import api
+portal = api.portal.get()
+view = api.content.get_view(
+    name='plone',
+    context=portal['about'],
+)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(view.__name__, u'plone')
 
 ## Further reading
 
