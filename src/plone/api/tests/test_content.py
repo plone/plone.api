@@ -2,7 +2,6 @@
 
 from Acquisition import aq_base
 from contextlib import AbstractContextManager
-from gc import callbacks
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
@@ -14,7 +13,6 @@ from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationExceptio
 from plone.app.textfield import RichTextValue
 from plone.base.interfaces import INavigationRoot
 from plone.indexer import indexer
-from plone.namedfile import NamedBlobFile
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -380,6 +378,14 @@ class TestPloneApiContent(unittest.TestCase):
         assert second_page
         self.assertEqual(second_page.id, "test-document-1")
         self.assertEqual(second_page.portal_type, "Document")
+
+    def test_create_with_not_lowercase_id(self):
+        obj = api.content.create(
+            container=self.portal,
+            type="Dexterity Item",
+            id="Doc1",
+        )
+        self.assertEqual(obj.id, "Doc1")
 
     def test_create_raises_unicodedecodeerror(self):
         """Test that the create method raises UnicodeDecodeErrors correctly."""
