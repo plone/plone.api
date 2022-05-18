@@ -129,7 +129,7 @@ This would be extremely difficult, if not impossible.
 It is also important that developers be able to ensure that their tests continue to work even if wrappers were to be deprecated.
 Consider the failure lurking behind test code such as this:
 
-```python
+```
 if users['bob'].__class__.__name__ == 'WrappedMemberDataObject':
     # do something
 ```
