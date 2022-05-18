@@ -58,35 +58,29 @@ For example:
 {ref}`chapter-env`.
 In general, importing and using an API looks something like this:
 
-```{eval-rst}
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
+% invisible-code-block: python
+%
+% from plone import api
+% from plone.api.exc import InvalidParameterError
+% try:
+%     api.portal.set_registry_record('plone.use_email_as_login', True)
+% except InvalidParameterError:
+%     portal = api.portal.get()
+%     portal.portal_properties.site_properties.use_email_as_login = True
 
-    from plone import api
-    from plone.api.exc import InvalidParameterError
-    try:
-        api.portal.set_registry_record('plone.use_email_as_login', True)
-    except InvalidParameterError:
-        portal = api.portal.get()
-        portal.portal_properties.site_properties.use_email_as_login = True
+```python
+from plone import api
+
+portal = api.portal.get()
+catalog = api.portal.get_tool(name="portal_catalog")
+user = api.user.create(email='alice@plone.org')
 ```
 
-```{eval-rst}
-..  code-block:: python
-
-    from plone import api
-
-    portal = api.portal.get()
-    catalog = api.portal.get_tool(name="portal_catalog")
-    user = api.user.create(email='alice@plone.org')
-
-..  ifconfig:: plone_api_doctests
-..  invisible-code-block: python
-
-    self.assertEqual(portal.__class__.__name__, 'PloneSite')
-    self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
-    self.assertEqual(user.__class__.__name__, 'MemberData')
-```
+% invisible-code-block: python
+%
+% self.assertEqual(portal.__class__.__name__, 'PloneSite')
+% self.assertEqual(catalog.__class__.__name__, 'CatalogTool')
+% self.assertEqual(user.__class__.__name__, 'MemberData')
 
 Always import the top-level package
 (`from plone import api`)

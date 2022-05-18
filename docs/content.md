@@ -103,7 +103,7 @@ not_found = api.content.get(UID='notfound')
 % self.assertTrue(conference)
 % self.assertTrue(sprint)
 % self.assertTrue(team)
-% self.assertEquals(not_found, None)
+% self.assertEqual(not_found, None)
 
 (content-find-example)=
 
