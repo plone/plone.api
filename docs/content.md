@@ -495,7 +495,7 @@ view = api.content.get_view(
 
 % invisible-code-block: python
 %
-% self.assertEqual(view.__name__, u'plone')
+% self.assertEqual(view.__name__, 'plone')
 
 Since version `2.0.0`, the `request` argument can be omitted.
 In that case the global request will be used.

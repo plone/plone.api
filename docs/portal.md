@@ -156,7 +156,7 @@ msg = api.portal.translate('Edited', lang='es')
 % invisible-code-block: python
 %
 % # assert that the translation is correct
-% self.assertEqual(msg, u'Editado')
+% self.assertEqual(msg, 'Editado')
 
 (portal-send-email-example)=
 
@@ -323,7 +323,7 @@ One common pattern when using registry records is to define an interface with al
 % registry = getUtility(IRegistry)
 % registry.registerInterface(IMyRegistrySettings)
 % records = registry.forInterface(IMyRegistrySettings)
-% records.field_one = u'my text'
+% records.field_one = 'my text'
 
 ```python
 from plone import api
@@ -334,7 +334,7 @@ api.portal.get_registry_record('field_one', interface=IMyRegistrySettings)
 %
 % self.assertEqual(
 %     api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),
-%     u'my text'
+%     'my text'
 % )
 
 It is possible to provide a default value
@@ -343,8 +343,8 @@ if the queried record is not found.
 
 ```python
 from plone import api
-api.portal.get_registry_record('foo', interface=IMyRegistrySettings, default=u'bar')
-api.portal.get_registry_record('foo', default=u'baz')
+api.portal.get_registry_record('foo', interface=IMyRegistrySettings, default='bar')
+api.portal.get_registry_record('foo', default='baz')
 ```
 
 % invisible-code-block: python
@@ -352,13 +352,13 @@ api.portal.get_registry_record('foo', default=u'baz')
 %     api.portal.get_registry_record(
 %         'foo',
 %         interface=IMyRegistrySettings,
-%         default=u'bar'
+%         default='bar'
 %     ),
-%     u'bar',
+%     'bar',
 % )
 % self.assertEqual(
-%     api.portal.get_registry_record('foo', default=u'baz'),
-%     u'baz',
+%     api.portal.get_registry_record('foo', default='baz'),
+%     'baz',
 % )
 
 (portal-set-registry-record-example)=
@@ -400,14 +400,14 @@ api.portal.set_registry_record('my.package.someoption', False)
 
 ```python
 from plone import api
-api.portal.set_registry_record('field_one', u'new value', interface=IMyRegistrySettings)
+api.portal.set_registry_record('field_one', 'new value', interface=IMyRegistrySettings)
 ```
 
 % invisible-code-block: python
 %
 % self.assertEqual(
 %     api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),
-%     u'new value'
+%     'new value'
 % )
 
 ## Further reading
