@@ -387,6 +387,18 @@ class TestPloneApiContent(unittest.TestCase):
         )
         self.assertEqual(obj.id, "Doc1")
 
+    def test_create_anonymous_unauthorized(self):
+        from AccessControl import Unauthorized
+        from plone.app.testing import logout
+
+        logout()
+        with self.assertRaises(Unauthorized):
+            api.content.create(
+                container=self.portal,
+                type="Dexterity Item",
+                id="foo",
+            )
+
     def test_create_raises_unicodedecodeerror(self):
         """Test that the create method raises UnicodeDecodeErrors correctly."""
         site = getGlobalSiteManager()
