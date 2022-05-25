@@ -44,14 +44,14 @@ Consider the following portal structure:
 
 ```console
 plone (portal root)
-|-- blog
-|-- about
-|   |-- team
-|   `-- contact
-`-- events
-    |-- training
-    |-- conference
-    `-- sprint
+├── blog
+├── about
+│   ├── team
+│   └── contact
+└── events
+    ├── training
+    ├── conference
+    └── sprint
 ```
 
 % invisible-code-block: python
