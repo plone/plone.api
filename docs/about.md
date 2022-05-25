@@ -23,7 +23,7 @@ Two libraries are especially inspiring:
 [SQLAlchemy](https://www.sqlalchemy.org/)
 : Arguably, the reason for SQLAlchemy's success in the developer community lies as much in its feature set as in the fact that its API is very well-designed, is consistent, explicit, and easy to learn.
 
-[Requests](https://docs.python-requests.org/en/latest/)
+[Requests](https://requests.readthedocs.io/en/latest/)
 : If you look at the documentation for this library, or see [the comparison between the urllib2 way and the requests way](https://gist.github.com/kennethreitz/973705), you can see a parallel for Plone regarding the way we *have been* versus the way we *should be* writing code.
   At the very least, we should have the option of being able to write such clean code.
 
