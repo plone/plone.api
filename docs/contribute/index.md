@@ -13,13 +13,3 @@ Setting up and using the local development environment.
 
 develop
 ```
-
-## Releasing a new version
-
-Description of our release process and guidelines.
-
-```{toctree}
-:maxdepth: 2
-
-release
-```
