@@ -134,9 +134,11 @@ groups = api.group.get_groups(username='jane')
 
 You can also pass the user directly to {meth}`api.group.get_groups`:
 
-> from plone import api
-> user = api.user.get(username='jane')
-> groups = api.group.get_groups(user=user)
+```python
+from plone import api
+user = api.user.get(username='jane')
+groups = api.group.get_groups(user=user)
+```
 
 % invisible-code-block: python
 %

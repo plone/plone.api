@@ -1,9 +1,9 @@
-# A Plone API
+# `plone.api`
 
-> The `plone.api` is an elegant and simple API, built for humans wishing to develop with Plone.
->
-> It comes with *cookbook*-like documentation and step-by-step instructions for doing common development tasks in Plone.
-> Recipes try to assume the user does not have extensive knowledge about Plone internals.
+The `plone.api` is an elegant and simple API, built for humans wishing to develop with Plone.
+
+It comes with *cookbook*-like documentation and step-by-step instructions for doing common development tasks in Plone.
+Recipes try to assume the user does not have extensive knowledge about Plone internals.
 
 The intention of this package is to provide clear API methods for Plone functionality which may be confusing or difficult to access.
 As the underlying code improves, some API methods may be deprecated and the documentation
@@ -23,41 +23,47 @@ Additional API methods may be introduced in minor versions (1.1 -> 1.2).
 Backward-incompatible changes to the API will be restricted to major versions (1.x -> 2.x).
 ```
 
+
 ## Narrative documentation
 
 ```{toctree}
 :maxdepth: 2
 
-about.rst
-portal.rst
-content.rst
-user.rst
-group.rst
-env.rst
-relation.rst
+about
+portal
+content
+user
+group
+env
+relation
 ```
+
 
 ## Complete API and advanced usage
 
 ```{toctree}
 :maxdepth: 1
+:hidden:
 
-api/index.rst
-api/portal.rst
-api/content.rst
-api/user.rst
-api/group.rst
-api/env.rst
-api/relation.rst
-api/exceptions.rst
+api/index
 ```
+
+-   {doc}`api/index`
+-   [`plone.api.portal`](api/portal)
+-   [`plone.api.content`](api/content)
+-   [`plone.api.user`](api/user)
+-   [`plone.api.group`](api/group)
+-   [`plone.api.env`](api/env)
+-   [`plone.api.relation`](api/relation)
+-   [`plone.api.exceptions`](api/exceptions)
+
 
 ## Contribute
 
 ```{toctree}
 :maxdepth: 2
 
-contribute/index.rst
+contribute/index
 ```
 
 ## Indices and tables

@@ -53,7 +53,7 @@ user = api.user.create(email='jane@plone.org', username='jane')
 % self.assertEqual(user.id, 'jane')
 % self.assertEqual(user.getProperty('email'), 'jane@plone.org')
 
-To set user properties when creating a new user, pass in a properties dict.
+To set user properties when creating a new user, pass in a `properties` dict.
 
 ```python
 properties = dict(
@@ -72,7 +72,7 @@ user = api.user.create(
 % self.assertEqual(user.getProperty('fullname'), 'Bob')
 % self.assertEqual(user.getProperty('location'), 'Munich')
 
-Besides user properties you can also specify a password for the new user.
+Beside user properties, you can also specify a password for the new user.
 Otherwise a random 8-character alphanumeric password will be generated.
 
 ```python

@@ -1,6 +1,5 @@
 ```{eval-rst}
 .. module:: plone
-    :noindex:
 ```
 
 (chapter-content)=
@@ -43,16 +42,16 @@ self.assertEqual(obj.id, 'my-content')
 There are several approaches to getting your content object.
 Consider the following portal structure:
 
-```
+```console
 plone (portal root)
-|-- blog
-|-- about
-|   |-- team
-|   `-- contact
-`-- events
-    |-- training
-    |-- conference
-    `-- sprint
+├── blog
+├── about
+│   ├── team
+│   └── contact
+└── events
+    ├── training
+    ├── conference
+    └── sprint
 ```
 
 % invisible-code-block: python
@@ -70,7 +69,7 @@ plone (portal root)
 % api.content.create(container=events, type='Event', id='conference')
 % api.content.create(container=events, type='Event', id='sprint')
 
-The following operations will get objects from the stucture above, including using {meth}`api.content.get`.
+The following operations will get objects from the structure above, including using {meth}`api.content.get`.
 
 ```python
 # let's first get the portal object
@@ -498,7 +497,7 @@ view = api.content.get_view(
 % self.assertEqual(view.__name__, 'plone')
 
 Since version `2.0.0`, the `request` argument can be omitted.
-In that case the global request will be used.
+In that case, the global request will be used.
 
 ```python
 from plone import api

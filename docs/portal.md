@@ -27,8 +27,7 @@ portal = api.portal.get()
 
 ## Get navigation root
 
-In multilingual or multi-site Plone installations you probably want to get the language-specific navigation root object,
-not the top portal object.
+In multilingual or multi-site Plone installations, you probably want to get the language-specific navigation root object, not the top portal object.
 
 You do this with {meth}`api.portal.get_navigation_root()`.
 
@@ -62,7 +61,7 @@ nav_root = api.portal.get_navigation_root(english_page)
 %
 % self.assertEqual(nav_root.id, 'en')
 
-returns the folder `en`. If the folder `en` is not a navigation root it would return the portal.
+Returns the folder `en`. If the folder `en` is not a navigation root, it would return the portal.
 
 ## Get portal url
 
@@ -272,7 +271,7 @@ api.portal.show_message(message='Blueberries!', request=request)
 % self.assertTrue('Blueberries!' in show[0].message)
 
 Since version `2.0.0`, the `request` argument can be omitted.
-In that case the global request will be used.
+In that case, the global request will be used.
 
 ```python
 api.portal.show_message(message='Cranberries!')
@@ -337,9 +336,7 @@ api.portal.get_registry_record('field_one', interface=IMyRegistrySettings)
 %     'my text'
 % )
 
-It is possible to provide a default value
-that will be returned by {meth}`api.portal.get_registry_record`
-if the queried record is not found.
+It is possible to provide a default value that will be returned by {meth}`api.portal.get_registry_record`, if the queried record is not found.
 
 ```python
 from plone import api

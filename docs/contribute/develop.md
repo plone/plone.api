@@ -5,10 +5,12 @@
 This section is meant for contributors to the `plone.api` project.
 Its purpose is to guide them through the steps needed to start contributing.
 
-% note ``` This HowTo is written for Linux and OS X users.
-% If you're are running Windows we suggest using VMWare or a similar Virtualization tool to install Ubuntu Linux on a virtual machine or installing Ubuntu Linux as a secondary OS on your machine.
-% Alternatively, you can browse Plone's documentation on how to get Plone development environment up and running on Windows.
-% Plone does run on Windows but it's not completely trivial to set it up.
+```{note}
+This HowTo is written for Linux and OS X users.
+If you are running Windows, we suggest using either Windows Subsystem for Linux, VMWare or a similar virtualization tool to install Ubuntu Linux on a virtual machine, or installing Ubuntu Linux as a secondary operating system on your machine.
+Alternatively, you can browse Plone's documentation on how to get Plone development environment up and running on Windows.
+Plone does run on Windows, but it's not completely trivial to set it up.
+```
 
 ## Locations of information and tools
 
@@ -30,12 +32,14 @@ First let's look at 'system' libraries and applications that are normally instal
 - `g++` - The C++ extensions for gcc.
 - `GNU tar` - The (un)archiving tool for extracting downloaded archives.
 - `bzip2` and `gzip` decompression packages - `gzip` is nearly standard, however some platforms will require that `bzip2` be installed.
-- `Python 3` - It is recommended to use a virtual environment , i.e. pyenv or venv, to get a clean Python version. 
+- `Python 3` - It is recommended to use a Python virtual environment, using tools such as pyenv or venv, to get a clean Python version.
 
 ### Python tools
 
 tox automation
-: `tox` aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing and release process of Python software. Install with `pip install tox`.
+: `tox` aims to automate and standardize testing in Python.
+  It is part of a larger vision of easing the packaging, testing, and release process of Python software.
+  Install with `pip install tox`.
 
 
 ### Further information
@@ -71,19 +75,19 @@ Use `git rebase --interactive` to squash all commits that you think are unnecess
 Go to your projects folder and download the lastest `plone.api` code:
 
 ```shell
-[you@local ~]$ cd <your_work_folder>
-[you@local work]$ git clone https://github.com/plone/plone.api.git
+cd <your_work_folder>
+git clone https://github.com/plone/plone.api.git
 ```
 
 Now `cd` into the newly created directory and build your environment:
 
 ```shell
-[you@local work]$ cd plone.api
-[you@local plone.api]$ pip install tox
-[you@local plone.api]$ tox
+cd plone.api
+pip install tox
+tox
 ```
 
-Go make some tea while `tox` runs all tasks listed under `tox -l`
+Go make some tea while `tox` runs all tasks listed under `tox -l`.
 
 - runs all checks and tests
 - generates documentation so you can open it locally later on
@@ -91,12 +95,13 @@ Go make some tea while `tox` runs all tasks listed under `tox -l`
 Other commands that you may want to run:
 
 ```shell
-[you@local plone.api]$ tox -e py39-plone-60  # run all tests for Python 3.9 and Plone 6
-[you@local plone.api]$ tox -e plone6docs   # re-generate documentation
+tox -e py39-plone-60  # run all tests for Python 3.9 and Plone 6
+tox -e plone6docs     # re-generate documentation
 ```
 
-Run `tox -l` to list all tox environments. Open `tox.ini` in your favorite code editor to see all possible commands and what they do.
-And read <https://tox.wiki/en/latest/> to learn more about `tox`.
+Run `tox -l` to list all tox environments.
+Open `tox.ini` in your favorite code editor to see all possible commands and what they do.
+Read <https://tox.wiki/en/latest/> to learn more about `tox`.
 
 
 (working-on-an-issue)=
@@ -114,18 +119,18 @@ This way your work is kept in an isolated place where you can receive feedback o
 Once we are happy with your implementation, your branch gets merged into *master* at which point everyone else starts using your code.
 
 ```shell
-[you@local plone.api]$ git checkout master  # go to master branch
-[you@local plone.api]$ git checkout -b issue_17  # create a feature branch
+git checkout master       # go to master branch
+git checkout -b issue_17  # create a feature branch
 # replace 17 with the issue number you are working on
 
 # change code here
 
-[you@local plone.api]$ git add -p && git commit  # commit my changes
-[you@local plone.api]$ git push origin issue_17  # push my branch to GitHub
-# at this point others can see your changes but they don't get effected by
-them; in other words, others can comment on your code without your code
-changing their development environments
+git add -p && git commit  # commit my changes
+git push origin issue_17  # push my branch to GitHub
 ```
+
+At this point, others can see your changes, but they don't get affected by them.
+In other words, others can comment on your code without your code changing their development environments.
 
 Read more about Git branching at <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches> and on our Git workflow at [Working with Git and GitHub](https://docs.plone.org/develop/coredev/docs/git.html).
 
@@ -175,21 +180,20 @@ GitHub CI is configured in `.github/workflow` in the root of this package.
 Un-documented code is broken code.
 ```
 
-For every feature you add to the codebase, you should also add documentation for it to `docs/`.
+For every feature you add to the codebase, you should also add documentation of it to `docs/`.
 
 After adding or modifying documentation, run `tox -e plone6docs` to re-generate your documentation.
 
-Publicly available documentation on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api) is automatically generated from these source files.
-So when you push changes to master on GitHub you should soon be able to see them published on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api).
+Publicly available documentation on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api) is automatically generated from these source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
 
-Read the [General Guide to Writing Documentation](https://6.dev-docs.plone.org/contributing/writing-docs-guide.html) to brush up on your `MyST` skills.
+For writing narrative documentation, read the [General Guide to Writing Documentation](https://6.dev-docs.plone.org/contributing/writing-docs-guide.html).
 
 ### Adding a function to an existing module
 
 Example: Add a new function `plone.api.content.foo`.
 
-The function would go into module `plone.api.content`.
-So you add your function in `/src/plone/api/content.py`
+The function would go in the module `plone.api.content`.
+Therefore you would add your function in `/src/plone/api/content.py`.
 
 % invisible-code-block: python
 %
@@ -230,17 +234,18 @@ def foo(path=None, UID=None):
 % )
 
 Add documentation in `/docs/content.md`.
-Describe what your function does and write some tests in code blocks. TestCase methods like `self.assertEqual()` are available in `doctests`.
+Describe what your function does, and write some tests in code blocks.
+`TestCase` methods such as `self.assertEqual()` are available in `doctests`.
 See [unittest.TestCase assert methods](https://docs.python.org/3/library/unittest.html#unittest.TestCase.debug) for all available methods.
-The file is linked in `/src/plone/api/tests/doctests/`, which includes the doctests in plone.api testing set up.
-The package `manuel` allows to write doctests as common Python code in code blocks.
+The file is linked in `/src/plone/api/tests/doctests/`, which includes the doctests in `plone.api` testing set up.
+The package `manuel` allows you to write doctests as common Python code in code blocks.
 
 ````markdown
 (content-foo-example)=
 
 ## Get the foo of an object
 
-You can use the {meth}`api.content.foo` function to get the foo of an object.
+You can use the {meth}`api.content.foo` function to get the `foo` of an object.
 
 ```python
 from plone import api
@@ -263,24 +268,23 @@ blog_foo = api.content.foo(path="/plone/blog")
 
 Invisible code blocks are not rendered in documentation and can be used for tests.
 
-````markdown
+```markdown
 % invisible-code-block: python
 %
 % self.assertEqual(blog_foo,"foo")
-````
+```
 
 Invisible code blocks are also handy for enriching the namespace without cluttering the narrative documentation.
 
-````markdown
+```markdown
 % invisible-code-block: python
 %
 % portal = api.portal.get()
 % image = api.content.create(type='Image', id='image', container=portal)
 % blog = api.content.create(type='Link', id='blog', container=portal)
-````
+```
 
-
-Function and example in documentation are referenced vice versa.
+Functions and examples in documentation are mutually referenced.
 The function references the narrative documentation via label `content-foo-example`.
-The narrative documentation references the API function documentation via `` {meth}`api.content.foo` ``.  
-The documentation is rendered with a link from API reference to narrative documentation and a another link back.
+The narrative documentation references the API function documentation via `` {meth}`api.content.foo` ``.
+The documentation is rendered with a link from the API reference to the narrative documentation, which in turn links back to the API reference.

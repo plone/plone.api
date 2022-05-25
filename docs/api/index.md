@@ -2,9 +2,23 @@
 .. currentmodule:: plone
 ```
 
-# List of all API methods with descriptions
+# API methods and descriptions
 
-## api.portal
+```{toctree}
+:maxdepth: 1
+:hidden: true
+
+portal
+content
+user
+group
+env
+relation
+exceptions
+```
+
+
+## `api.portal`
 
 ```{eval-rst}
 .. autosummary::
@@ -19,7 +33,7 @@
 
 ```
 
-## api.content
+## `api.content`
 
 ```{eval-rst}
 .. autosummary::
@@ -37,7 +51,7 @@
 
 ```
 
-## api.user
+## `api.user`
 
 ```{eval-rst}
 .. autosummary::
@@ -55,7 +69,7 @@
 
 ```
 
-## api.group
+## `api.group`
 
 ```{eval-rst}
 .. autosummary::
@@ -72,7 +86,7 @@
 
 ```
 
-## api.env
+## `api.env`
 
 ```{eval-rst}
 .. autosummary::
@@ -84,7 +98,7 @@
 
 ```
 
-## api.relation
+## `api.relation`
 
 ```{eval-rst}
 .. autosummary::

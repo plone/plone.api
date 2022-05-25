@@ -1,4 +1,4 @@
-# How to contribute to this package?
+# Contributing to `plone.api`
 
 ## Conventions
 
@@ -11,15 +11,5 @@ Setting up and using the local development environment.
 ```{toctree}
 :maxdepth: 2
 
-develop.rst
-```
-
-## Releasing a new version
-
-Description of our release process and guidelines.
-
-```{toctree}
-:maxdepth: 2
-
-release.rst
+develop
 ```
