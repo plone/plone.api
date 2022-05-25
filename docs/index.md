@@ -23,6 +23,7 @@ Additional API methods may be introduced in minor versions (1.1 -> 1.2).
 Backward-incompatible changes to the API will be restricted to major versions (1.x -> 2.x).
 ```
 
+
 ## Narrative documentation
 
 ```{toctree}
@@ -37,13 +38,25 @@ env
 relation
 ```
 
+
 ## Complete API and advanced usage
 
 ```{toctree}
 :maxdepth: 1
+:hidden:
 
 api/index
 ```
+
+-   {doc}`api/index`
+-   [`plone.api.portal`](api/portal)
+-   [`plone.api.content`](api/content)
+-   [`plone.api.user`](api/user)
+-   [`plone.api.group`](api/group)
+-   [`plone.api.env`](api/env)
+-   [`plone.api.relation`](api/relation)
+-   [`plone.api.exceptions`](api/exceptions)
+
 
 ## Contribute
 
