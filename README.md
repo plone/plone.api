@@ -39,7 +39,7 @@ Issues
     Please use the [issue tracker](https://github.com/plone/plone.api/issues)
 
 Continuous Integration
-    runs on [Travis CI](https://travis-ci.org/plone/plone.api).
+    tested on [GitHub Actions](https://github.com/plone/plone.api/actions).
 
 Code Coverage
     is measured at [Coveralls.io](https://coveralls.io/github/plone/plone.api).
