@@ -3,7 +3,7 @@ html_meta:
   "description": "Exceptions raised by plone.api methods"
   "property=og:description": "Exceptions raised by plone.api methods"
   "property=og:title": "plone.api.exc"
-  "keywords": "exceptions, Plone, development"
+  "keywords": "exceptions, Plone, API, development"
 ---
 
 (plone-api-errors)=

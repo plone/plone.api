@@ -21,10 +21,6 @@ html_meta:
 
 To create a new group, use {meth}`api.group.create`, providing a required string parameter of `groupname`.
 
-```{todo}
-Why is the api parameter for the id named 'groupname'?
-```
-
 ```python
 from plone import api
 group = api.group.create(groupname='staff')

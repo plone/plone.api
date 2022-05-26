@@ -3,7 +3,7 @@ html_meta:
   "description": "Inspiration for creating an API. Design decisions for an intuitive usage in common development tasks."
   "property=og:description": "Inspiration for creating an API. Design decisions for an intuitive usage in common development tasks."
   "property=og:title": "About"
-  "keywords": "inspiration, design decisions, Plone, development"
+  "keywords": "inspiration, design decisions, Plone, development, API"
 ---
 
 # About

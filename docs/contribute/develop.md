@@ -3,7 +3,7 @@ html_meta:
   "description": "How to set up your develoment environment to contribute"
   "property=og:description": "How to set up your develoment environment to contribute"
   "property=og:title": "Development environment"
-  "keywords": "contribute, Plone, development"
+  "keywords": "contribute, Plone, API, development"
 ---
 
 # Development environment
