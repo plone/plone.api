@@ -1,6 +1,6 @@
 ---
 html_meta:
-  "description": "How to contribute"
+  "description": "How to contribute to plone.api"
   "property=og:description": "How to contribute to plone.api"
   "property=og:title": "Contributing to plone.api"
   "keywords": "Plone, development, contribute"
