@@ -16,7 +16,7 @@ We want `plone.api` to be developed with [PEP 20](https://peps.python.org/pep-00
 >
 > Readability counts.
 >
-> There should be one – and preferably only one – obvious way to do it.
+> There should be one—and preferably only one—obvious way to do it.
 >
 > Now is better than never.
 >
