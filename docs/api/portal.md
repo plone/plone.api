@@ -2,7 +2,7 @@
 html_meta:
   "description": "Module that provides various utility methods on the portal level."
   "property=og:description": "Module that provides various utility methods on the portal level."
-  "property=og:title": "API methods of module plone.api.portal"
+  "property=og:title": "plone.api.portal"
   "keywords": "development, Plone, global, API, portal, root"
 ---
 
