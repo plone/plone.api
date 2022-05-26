@@ -19,7 +19,7 @@ html_meta:
 
 ## Create group
 
-Groups are created with {meth}`api.group.create` providing a group id.
+To create a new group, use {meth}`api.group.create`, providing a required string parameter of `groupname`.
 
 ```{todo}
 Why is the api parameter for the id named 'groupname'?
