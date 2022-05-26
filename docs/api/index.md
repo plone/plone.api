@@ -2,7 +2,7 @@
 html_meta:
   "description": "Overview of the API methods"
   "property=og:description": "Overview of the API methods"
-  "property=og:title": "plone.api methods"
+  "property=og:title": "API methods and descriptions"
   "keywords": "Plone, API, methods, development"
 ---
 
