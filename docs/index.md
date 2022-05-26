@@ -1,3 +1,11 @@
+---
+html_meta:
+  "description": "The API provides grouped functional access to otherwise distributed logic in Plone."
+  "property=og:description": "The API provides grouped functional access to otherwise distributed logic in Plone."
+  "property=og:title": "plone.api"
+  "keywords": "Plone, API, development"
+---
+
 # `plone.api`
 
 The `plone.api` is an elegant and simple API, built for humans wishing to develop with Plone.

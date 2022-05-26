@@ -1,3 +1,11 @@
+---
+html_meta:
+  "description": "Create, access, modify and delete relations of Plone content"
+  "property=og:description": "Create, access, modify and delete relations of Plone content"
+  "property=og:title": "Relations"
+  "keywords": "Plone, development, API, relations, related content"
+---
+
 ```{eval-rst}
 .. module:: plone
     :noindex:

@@ -1,3 +1,11 @@
+---
+html_meta:
+  "description": "Access tools and global settings. Send e-mails and raise notifications."
+  "property=og:description": "Access tools and global settings. Send e-mails and raise notifications."
+  "property=og:title": "Portal"
+  "keywords": "Plone, development, API, global, task, "
+---
+
 ```{eval-rst}
 .. module:: plone
     :noindex:

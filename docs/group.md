@@ -1,3 +1,11 @@
+---
+html_meta:
+  "description": "Create, access, modify and delete groups and group memberships"
+  "property=og:description": "Create, access, modify and delete groups and group memberships"
+  "property=og:title": "Groups"
+  "keywords": "Plone, development, API, users, groups"
+---
+
 ```{eval-rst}
 .. module:: plone
     :noindex:
@@ -11,7 +19,11 @@
 
 ## Create group
 
-To create a new group, use {meth}`api.group.create`.
+Groups are created with {meth}`api.group.create` providing a group id.
+
+```{todo}
+Why is the api parameter for the id named 'groupname'?
+```
 
 ```python
 from plone import api
@@ -63,13 +75,13 @@ group = api.group.get(groupname='staff')
 
 ## Editing a group
 
-Groups can be edited by using the `group_tool`.
+Groups can be edited by using the tool `portal_groups`.
 In this example, the `title`, `description` and `roles` are updated for the group 'Staff'.
 
 ```python
 from plone import api
-group_tool = api.portal.get_tool(name='portal_groups')
-group_tool.editGroup(
+portal_groups = api.portal.get_tool(name='portal_groups')
+portal_groups.editGroup(
     'staff',
     roles=['Editor', 'Reader'],
     title='Staff',
@@ -120,7 +132,6 @@ Groups may be filtered by member. By passing the `username` parameter,
 
 ```python
 from plone import api
-user = api.user.get(username='jane')
 groups = api.group.get_groups(username='jane')
 ```
 

@@ -1,3 +1,11 @@
+---
+html_meta:
+  "description": "How to set up your develoment environment to contribute"
+  "property=og:description": "How to set up your develoment environment to contribute"
+  "property=og:title": "Development"
+  "keywords": "contribute, Plone, development"
+---
+
 # Development environment
 
 {sub-ref}`today`

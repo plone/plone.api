@@ -78,4 +78,3 @@ myst_enable_extensions = [
 # a list of builtin themes.
 #
 html_theme = "sphinx_book_theme"
-
