@@ -75,7 +75,7 @@ group = api.group.get(groupname='staff')
 
 ## Editing a group
 
-Groups can be edited by using the tool `portal_groups`.
+Groups can be edited by using the method {meth}`api.portal.get_tool`, providing the portal tool `portal_groups` as the `name` argument.
 In this example, the `title`, `description` and `roles` are updated for the group 'Staff'.
 
 ```python
