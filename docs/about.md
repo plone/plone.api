@@ -1,3 +1,11 @@
+---
+html_meta:
+  "description": "Inspiration for creating an API. Design decisions for an intuitive usage in common development tasks."
+  "property=og:description": "Inspiration for creating an API. Design decisions for an intuitive usage in common development tasks."
+  "property=og:title": "About"
+  "keywords": "inspiration, design decisions, Plone, development, API"
+---
+
 # About
 
 ## Inspiration
@@ -8,7 +16,7 @@ We want `plone.api` to be developed with [PEP 20](https://peps.python.org/pep-00
 >
 > Readability counts.
 >
-> There should be one-- and preferably only one --obvious way to do it.
+> There should be one—and preferably only one—obvious way to do it.
 >
 > Now is better than never.
 >
@@ -84,7 +92,7 @@ user = api.user.create(email='alice@plone.org')
 
 Always import the top-level package
 (`from plone import api`)
-and then use the group namespace to access the method you want
+and then use the module namespace to access the method you want
 (`portal = api.portal.get()`).
 
 All example code should adhere to this style, to encourage one and only one preferred way of consuming API methods.

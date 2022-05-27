@@ -1,3 +1,11 @@
+---
+html_meta:
+  "description": "Overview of the API methods"
+  "property=og:description": "Overview of the API methods"
+  "property=og:title": "API methods and descriptions"
+  "keywords": "Plone, API, methods, development"
+---
+
 ```{eval-rst}
 .. currentmodule:: plone
 ```

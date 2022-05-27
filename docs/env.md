@@ -1,3 +1,11 @@
+---
+html_meta:
+  "description": "Authorize for working in another role. Get environment information."
+  "property=og:description": "Authorize for working in another role. Get environment information."
+  "property=og:title": "Environment"
+  "keywords": "authorization, Plone, API, development"
+---
+
 ```{eval-rst}
 .. module:: plone
     :noindex:
