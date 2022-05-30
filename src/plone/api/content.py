@@ -9,6 +9,7 @@ from plone.api.validation import required_parameters
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
+from Products.CMFCore.DynamicType import DynamicType
 from Products.CMFCore.WorkflowCore import WorkflowException
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
@@ -130,7 +131,10 @@ def get(path=None, UID=None):
             )
 
         try:
-            return site.restrictedTraverse(path)
+            content = site.restrictedTraverse(path)
+            # Only return a content if it implements DynamicType,
+            # which is true for Dexterity content and Comment (plone.app.discussion)
+            return content if isinstance(content, DynamicType) else None
         except (KeyError, AttributeError):
             return None  # When no object is found don't raise an error
 
