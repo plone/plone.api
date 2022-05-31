@@ -129,14 +129,14 @@ def get(path=None, UID=None):
                 site_path=site_absolute_path,
                 relative_path=path,
             )
-
         try:
             content = site.restrictedTraverse(path)
+        except (KeyError, AttributeError):
+            return None  # When no object is found don't raise an error
+        else:
             # Only return a content if it implements DynamicType,
             # which is true for Dexterity content and Comment (plone.app.discussion)
             return content if isinstance(content, DynamicType) else None
-        except (KeyError, AttributeError):
-            return None  # When no object is found don't raise an error
 
     elif UID:
         return uuidToObject(UID)
