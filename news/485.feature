@@ -1,1 +1,1 @@
-- Documentation: Add meta data [ksuess, stevepiercy]
+Documentation: Add meta data [ksuess, stevepiercy]
