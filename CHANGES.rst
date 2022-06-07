@@ -8,6 +8,21 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0a4 (2022-06-07)
+--------------------
+
+New features:
+
+
+- Documentation: Add meta data [ksuess, stevepiercy] (#485)
+
+
+Bug fixes:
+
+
+- plone.api.content.get should always return a content [ericof] (#487)
+
+
 2.0.0a3 (2022-05-26)
 --------------------
 
