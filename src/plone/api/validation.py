@@ -102,7 +102,7 @@ def mutually_exclusive_parameters(*exclusive_params):
             if len(clashes) > 1:
                 raise InvalidParameterError(
                     "These parameters are mutually exclusive: {arg}.".format(
-                        arg=", ".join(supplied_args),
+                        arg=", ".join(clashes),
                     ),
                 )
 

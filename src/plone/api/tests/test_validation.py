@@ -182,11 +182,23 @@ class TestPloneAPIValidation(unittest.TestCase):
         from plone.api.exc import InvalidParameterError
 
         _func = mutually_exclusive_parameters("arg1", "arg2")(undecorated_func)
-        with self.assertRaises(InvalidParameterError):
+        with self.assertRaisesRegex(
+            InvalidParameterError,
+            "^These parameters are mutually exclusive: arg1, arg2.$",
+        ):
             _func("ahoy", "there")
 
-        with self.assertRaises(InvalidParameterError):
+        with self.assertRaisesRegex(
+            InvalidParameterError,
+            "^These parameters are mutually exclusive: arg1, arg2.$",
+        ):
             _func(arg1="ahoy", arg2="there")
+
+        with self.assertRaisesRegex(
+            InvalidParameterError,
+            "^These parameters are mutually exclusive: arg1, arg2.$",
+        ):
+            _func(arg1="ahoy", arg2="there", arg3="!")
 
     def test_require_at_least_one_but_none_provided(self):
         """Test that MissingParameterError is raised if no argument is supplied
