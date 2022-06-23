@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0b1 (2022-06-23)
+--------------------
+
+Bug fixes:
+
+
+- ``mutually_exclusive_parameters`` error message should include only related arguments.
+  [martin.peeters] (#489)
+
+
 2.0.0a4 (2022-06-07)
 --------------------
 
