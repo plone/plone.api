@@ -1,1 +1,2 @@
-- `mutually_exclusive_parameters` error message should include only related arguments
+``mutually_exclusive_parameters`` error message should include only related arguments.
+[martin.peeters]
