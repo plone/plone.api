@@ -27,6 +27,10 @@ role_mapping = (
 version_regexp = r"^(\d+(\.\d+){1,3})(a\d+|b\d+|rc\d+)?(\.dev\d)?$"
 
 
+class TestException(Exception):
+    """Test exception."""
+
+
 class HasProtectedMethods(SimpleItem):
 
     security = AccessControl.ClassSecurityInfo()
@@ -523,3 +527,25 @@ class TestPloneApiEnv(unittest.TestCase):
         user = api.user.get(userid=TEST_USER_ID)
         with api.env.adopt_user(user=user):
             self.assertEqual(api.user.get_current().getId(), TEST_USER_ID)
+
+    def test_roles_restored_after_exception(self):
+        """Tests that roles are restored after an exception."""
+        self.assertFalse(api.user.has_permission("Manage portal content"))
+        try:
+            with api.env.adopt_roles(["Manager"]):
+                self.assertTrue(api.user.has_permission("Manage portal content"))
+                raise TestException("Test exception")
+        except TestException:
+            pass
+        self.assertFalse(api.user.has_permission("Manage portal content"))
+
+    def test_user_restored_after_exception(self):
+        """Tests that roles are restored after an exception."""
+        self.assertEqual(api.user.get_current().getUserId(), "boss")
+        try:
+            with api.env.adopt_user(username="superhuman"):
+                self.assertEqual(api.user.get_current().getUserId(), "superhuman")
+                raise TestException("Test exception")
+        except TestException:
+            pass
+        self.assertEqual(api.user.get_current().getUserId(), "boss")

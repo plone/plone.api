@@ -80,9 +80,10 @@ def _adopt_user(user):
     old_security_manager = getSecurityManager()
     newSecurityManager(getRequest(), user)
 
-    yield
-
-    setSecurityManager(old_security_manager)
+    try:
+        yield
+    finally:
+        setSecurityManager(old_security_manager)
 
 
 @required_parameters("roles")
@@ -120,9 +121,10 @@ def _adopt_roles(roles):
     security_manager = getSecurityManager()
     security_manager.addContext(overriding_context)
 
-    yield
-
-    security_manager.removeContext(overriding_context)
+    try:
+        yield
+    finally:
+        security_manager.removeContext(overriding_context)
 
 
 class _GlobalRoleOverridingContext:
