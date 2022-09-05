@@ -1,9 +1,10 @@
 ---
-html_meta:
-  "description": "How to contribute to plone.api"
-  "property=og:description": "How to contribute to plone.api"
-  "property=og:title": "Contributing to plone.api"
-  "keywords": "Plone, API, development, contribute"
+myst:
+  html_meta:
+    "description": "How to contribute to plone.api"
+    "property=og:description": "How to contribute to plone.api"
+    "property=og:title": "Contributing to plone.api"
+    "keywords": "Plone, API, development, contribute"
 ---
 
 # Contributing to `plone.api`

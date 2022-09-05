@@ -1,9 +1,10 @@
 ---
-html_meta:
-  "description": "The API provides grouped functional access to otherwise distributed logic in Plone."
-  "property=og:description": "The API provides grouped functional access to otherwise distributed logic in Plone."
-  "property=og:title": "plone.api"
-  "keywords": "Plone, API, development"
+myst:
+  html_meta:
+    "description": "The API provides grouped functional access to otherwise distributed logic in Plone."
+    "property=og:description": "The API provides grouped functional access to otherwise distributed logic in Plone."
+    "property=og:title": "plone.api"
+    "keywords": "Plone, API, development"
 ---
 
 # `plone.api`

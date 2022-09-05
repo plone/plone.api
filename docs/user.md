@@ -1,9 +1,10 @@
 ---
-html_meta:
-  "description": "Access, create, modify, and delete users"
-  "property=og:description": "Access, create, modify, and delete users"
-  "property=og:title": "Users"
-  "keywords": "users, groups, Plone, development, API"
+myst:
+  html_meta:
+    "description": "Access, create, modify, and delete users"
+    "property=og:description": "Access, create, modify, and delete users"
+    "property=og:title": "Users"
+    "keywords": "users, groups, Plone, development, API"
 ---
 
 ```{eval-rst}
