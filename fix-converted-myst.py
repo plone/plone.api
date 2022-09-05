@@ -3,10 +3,10 @@ import os
 import re
 
 logging.basicConfig()
-logger = logging.getLogger("fix converted myST documentation")
+logger = logging.getLogger("fix converted MyST documentation")
 logger.setLevel(logging.INFO)
 
-logger.info("Fix some myST / markdown stuff.")
+logger.info("Fix some MyST / markdown stuff.")
 count_files = {
     "modified": 0,
     "unmodified": 0,
@@ -52,5 +52,5 @@ for root, dirs, files in (*os.walk('./src'), *os.walk('./docs')):
                 logger.info(f"{filename} modified.")
 
 
-logger.info(f'myST modified for {count_files["modified"]} files.')
+logger.info(f'MyST modified for {count_files["modified"]} files.')
 logger.info(f'{count_files["unmodified"]} files unmodified.')
