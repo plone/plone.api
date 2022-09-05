@@ -1,9 +1,10 @@
 ---
-html_meta:
-  "description": "Get, modify, and delete content"
-  "property=og:description": "Get, modify, and delete content"
-  "property=og:title": "Content"
-  "keywords": "Plone, API, development"
+myst:
+  html_meta:
+    "description": "Get, modify, and delete content"
+    "property=og:description": "Get, modify, and delete content"
+    "property=og:title": "Content"
+    "keywords": "Plone, API, development"
 ---
 
 ```{eval-rst}

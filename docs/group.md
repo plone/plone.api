@@ -1,9 +1,10 @@
 ---
-html_meta:
-  "description": "Create, access, modify, and delete groups and group memberships"
-  "property=og:description": "Create, access, modify, and delete groups and group memberships"
-  "property=og:title": "Groups"
-  "keywords": "Plone, development, API, users, groups"
+myst:
+  html_meta:
+    "description": "Create, access, modify, and delete groups and group memberships"
+    "property=og:description": "Create, access, modify, and delete groups and group memberships"
+    "property=og:title": "Groups"
+    "keywords": "Plone, development, API, users, groups"
 ---
 
 ```{eval-rst}
