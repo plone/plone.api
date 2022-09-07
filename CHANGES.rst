@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0b2 (2022-09-07)
+--------------------
+
+Bug fixes:
+
+
+- Ensure that the security related context managers
+  restore the context even if an error occurs. (#374)
+
+
 2.0.0b1 (2022-06-23)
 --------------------
 

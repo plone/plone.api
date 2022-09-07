@@ -1,2 +1,0 @@
-Ensure that the security related context managers
-restore the context even if an error occurs.
