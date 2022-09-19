@@ -59,7 +59,7 @@ class TestPloneApiUser(unittest.TestCase):
         with self.assertRaises(MissingParameterError):
             api.user.create(
                 username="chuck",
-                password="secret",
+                password="secretpw",
             )
 
     def test_get_user_userid_username(self):
@@ -78,7 +78,7 @@ class TestPloneApiUser(unittest.TestCase):
         """Test that email is parsed from the properties."""
         user = api.user.create(
             username="chuck",
-            password="secret",
+            password="secretpw",
             properties={"email": "chuck@norris.org"},
         )
 
@@ -91,7 +91,7 @@ class TestPloneApiUser(unittest.TestCase):
 
         user = api.user.create(
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         self.assertEqual(user.getUserName(), "chuck@norris.org")
@@ -105,7 +105,7 @@ class TestPloneApiUser(unittest.TestCase):
         with self.assertRaises(InvalidParameterError):
             api.user.create(
                 email="chuck@norris.org",
-                password="secret",
+                password="secretpw",
             )
 
     def test_create_with_username(self):
@@ -115,7 +115,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
         self.assertEqual(user.getUserName(), "chuck@norris.org")
 
@@ -124,7 +124,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
         self.assertEqual(user.getUserName(), "chuck")
 
@@ -134,7 +134,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
         self.assertCountEqual(
             api.user.get_roles(user=user),
@@ -146,7 +146,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
             roles=["Reviewer", "Editor"],
         )
         self.assertCountEqual(
@@ -159,7 +159,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
             roles=[],
         )
         self.assertCountEqual(
@@ -179,7 +179,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
         self.assertEqual(api.user.get("chuck").id, user.id)
 
@@ -195,7 +195,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
         users = [user.getUserName() for user in api.user.get_users()]
         self.assertCountEqual(
@@ -208,7 +208,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
         api.group.create(groupname="staff")
         api.group.add_user(username="chuck", groupname="staff")
@@ -256,24 +256,24 @@ class TestPloneApiUser(unittest.TestCase):
                 user=mock.Mock(),
             )
 
-        api.user.create(email="chuck@norris.org", password="secret")
+        api.user.create(email="chuck@norris.org", password="secretpw")
         api.user.delete(username="unwanted@norris.org")
 
-        user = api.user.create(email="steven@seagal.org", password="secret")
+        user = api.user.create(email="steven@seagal.org", password="secretpw")
         api.user.delete(user=user)
 
     def test_delete_username(self):
         """Test whether the user has been deleted."""
         api.user.create(
             username="unwanted",
-            password="secret",
+            password="secretpw",
             email="unwanted@example.org",
         )
         api.user.delete(username="unwanted")
 
         user = api.user.create(
             username="steven",
-            password="secret",
+            password="secretpw",
             email="steven@example.org",
         )
         api.user.delete(user=user)
@@ -290,7 +290,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
             roles=ROLES,
         )
         self.assertCountEqual(
@@ -304,7 +304,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
             roles=ROLES,
         )
         self.assertCountEqual(
@@ -318,7 +318,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
             roles=ROLES,
         )
 
@@ -366,7 +366,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         portal = api.portal.get()
@@ -397,7 +397,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         portal = api.portal.get()
@@ -428,7 +428,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
         api.group.create("foo", roles=["Reviewer"])
         api.group.add_user(groupname="foo", username="chuck")
@@ -482,7 +482,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
             roles=[],
         )
 
@@ -523,7 +523,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
             roles=[],
         )
 
@@ -571,7 +571,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username=username,
             email="billy@bob.net",
-            password="secret",
+            password="secretpw",
         )
 
         # Cannot supply both username and user arguments
@@ -620,7 +620,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         api.user.grant_roles(username="chuck", roles=["Editor"])
@@ -653,7 +653,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         from plone.api.exc import MissingParameterError
@@ -708,7 +708,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         api.user.grant_roles(username="chuck", roles=["Reviewer", "Editor"])
@@ -743,7 +743,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         from plone.api.exc import MissingParameterError
@@ -783,7 +783,7 @@ class TestPloneApiUser(unittest.TestCase):
         api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
         from plone.api.exc import InvalidParameterError
 
@@ -818,7 +818,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         portal = api.portal.get()
@@ -919,7 +919,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         self.assertCountEqual(
@@ -1039,7 +1039,7 @@ class TestPloneApiUser(unittest.TestCase):
         user = api.user.create(
             username="chuck",
             email="chuck@norris.org",
-            password="secret",
+            password="secretpw",
         )
 
         portal = api.portal.get()

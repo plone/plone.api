@@ -88,7 +88,7 @@ Otherwise a random 8-character alphanumeric password will be generated.
 user = api.user.create(
     username='noob',
     email='noob@plone.org',
-    password='secret',
+    password='secretpw',
 )
 ```
 
