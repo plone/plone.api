@@ -5,6 +5,7 @@ from OFS.SimpleItem import SimpleItem
 from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_PASSWORD
 
 import AccessControl
 import unittest
@@ -88,21 +89,21 @@ class TestPloneApiEnv(unittest.TestCase):
         api.user.create(
             username="worker",
             email="ordinary_person@example.com",
-            password="password1",
+            password=TEST_USER_PASSWORD,
             roles=("Member",),
         )
 
         api.user.create(
             username="boss",
             email="important_person@example.com",
-            password="123456",
+            password=TEST_USER_PASSWORD,
             roles=("Member", "VIP"),
         )
 
         api.user.create(
             username="superhuman",
             email="xavier@example.com",
-            password="think_carefully",
+            password=TEST_USER_PASSWORD,
             roles=("Member", "Manager"),
         )
 
