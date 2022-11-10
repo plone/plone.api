@@ -1,0 +1,3 @@
+Trigger a new deploy of core Plone documentation when plone.api documentation is updated.
+[esteele]
+
