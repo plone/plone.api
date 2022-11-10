@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0b4 (2022-11-11)
+--------------------
+
+Bug fixes:
+
+
+- Trigger a new deploy of core Plone documentation when plone.api documentation is updated.
+  [esteele] (#496)
+
+
 2.0.0b3 (2022-10-03)
 --------------------
 

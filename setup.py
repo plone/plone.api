@@ -12,7 +12,7 @@ long_description = (
     read("README.md") + "\n\n" + read("CHANGES.rst") + "\n\n" + read("LICENSE")
 )
 
-version = "2.0.0b4.dev0"
+version = "2.0.0b4"
 
 setup(
     name="plone.api",
