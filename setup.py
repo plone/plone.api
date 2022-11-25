@@ -29,6 +29,7 @@ setup(
     zip_safe=False,
     url="https://github.com/plone/plone.api",
     keywords="plone api",
+    python_requires=">=3.8",
     install_requires=[
         "Products.statusmessages",
         "decorator",
