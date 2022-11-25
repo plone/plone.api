@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0 (2022-11-26)
+------------------
+
+Bug fixes:
+
+
+- Require Python 3.8 or higher.  [maurits] (#600)
+
+
 2.0.0b4 (2022-11-11)
 --------------------
 
