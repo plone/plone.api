@@ -193,9 +193,9 @@ For every feature you add to the codebase, you should also add documentation of 
 
 After adding or modifying documentation, run `tox -e plone6docs` to re-generate your documentation.
 
-Publicly available documentation on [6.dev-docs.plone.org/plone.api](https://6.dev-docs.plone.org/plone.api) is automatically generated from these source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
+Publicly available documentation on [6.docs.plone.org/plone.api](https://6.docs.plone.org/plone.api) is automatically generated from these source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
 
-For writing narrative documentation, read the [General Guide to Writing Documentation](https://6.dev-docs.plone.org/contributing/writing-docs-guide.html).
+For writing narrative documentation, read the [General Guide to Writing Documentation](https://6.docs.plone.org/contributing/writing-docs-guide.html).
 
 ### Adding a function to an existing module
 
