@@ -1,8 +1,8 @@
 ---
 myst:
   html_meta:
-    "description": "How to set up your develoment environment to contribute"
-    "property=og:description": "How to set up your develoment environment to contribute"
+    "description": "How to set up your development environment to contribute"
+    "property=og:description": "How to set up your development environment to contribute"
     "property=og:title": "Development environment"
     "keywords": "contribute, Plone, API, development"
 ---
@@ -23,7 +23,7 @@ Plone does run on Windows, but it's not completely trivial to set it up.
 
 ## Locations of information and tools
 
-- [Documentation @ docs.plone.org](https://docs.plone.org)
+- [Documentation @ 6.docs.plone.org](https://6.docs.plone.org)
 - [Source code @ GitHub](https://github.com/plone/plone.api)
 - [Issues @ GitHub](https://github.com/plone/plone.api/issues)
 - [Code Coverage @ Coveralls.io](https://coveralls.io/github/plone/plone.api)
@@ -55,7 +55,7 @@ tox automation
 
 If you experience problems, read through the following links as almost all of the above steps are required for a default Plone development environment:
 
-- <https://docs.plone.org/manage/index.html>
+- <https://5.docs.plone.org/manage/index.html>
 - <https://pypi.org/project/zc.buildout/>
 - <https://pypi.org/project/setuptools/>
 - <https://plone.org/download>
@@ -81,7 +81,7 @@ Use `git rebase --interactive` to squash all commits that you think are unnecess
 
 ## Creating and using the development environment
 
-Go to your projects folder and download the lastest `plone.api` code:
+Go to your projects folder and download the latest `plone.api` code:
 
 ```shell
 cd <your_work_folder>
@@ -141,7 +141,7 @@ git push origin issue_17  # push my branch to GitHub
 At this point, others can see your changes, but they don't get affected by them.
 In other words, others can comment on your code without your code changing their development environments.
 
-Read more about Git branching at <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches> and on our Git workflow at [Working with Git and GitHub](https://docs.plone.org/develop/coredev/docs/git.html).
+Read more about Git branching at <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches> and on our Git workflow at [Working with Git and GitHub](https://5.docs.plone.org/develop/coredev/docs/git.html).
 
 Once you are done with your work and you would like us to merge your changes into master, go to GitHub to do a *pull request*.
 Open a browser and point it to `https://github.com/plone/plone.api/tree/issue_<ISSUE_NUMBER>`.
@@ -195,7 +195,7 @@ After adding or modifying documentation, run `tox -e plone6docs` to re-generate 
 
 Publicly available documentation on [6.docs.plone.org/plone.api](https://6.docs.plone.org/plone.api) is automatically generated from these source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
 
-For writing narrative documentation, read the [General Guide to Writing Documentation](https://6.docs.plone.org/contributing/writing-docs-guide.html).
+For writing documentation, read [Contributing to documentation](https://6.docs.plone.org/contributing/index.html).
 
 ### Adding a function to an existing module
 
