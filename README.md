@@ -29,8 +29,8 @@ Recipes try to assume the user does not have extensive knowledge about Plone int
 
 
 Contributors
-    Please read the document [Process for Plone core's development](https://docs.plone.org/develop/coredev/docs/index.html).
-    Also consult the section about contribution in the [plone.api contributors documentation](https://docs.plone.org/develop/plone.api/docs/contribute/index.html).
+    Please read the document [Process for Plone core's development](https://5.docs.plone.org/develop/coredev/docs/index.html).
+    Also consult the section about contribution in the [plone.api contributors documentation](https://5.docs.plone.org/develop/plone.api/docs/contribute/index.html).
 
 Source Code
     at the [Plone code repository hosted at GitHub](https://github.com/plone/plone.api).

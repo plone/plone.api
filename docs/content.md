@@ -196,7 +196,7 @@ documents = api.content.find(
 % self.assertGreater(len(documents), 0)
 
 More information about how to use the catalog may be found in the
-[Plone Documentation](https://docs.plone.org/develop/plone/searching_and_indexing/index.html).
+[Plone Documentation](https://5.docs.plone.org/develop/plone/searching_and_indexing/index.html).
 
 Note that the catalog returns *brains* (metadata stored in indexes) and not objects.
 However, calling `getObject()` on brains does in fact give you the object.

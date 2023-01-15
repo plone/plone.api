@@ -1,1 +1,1 @@
-Please see https://docs.plone.org/develop/coredev/docs/guidelines.html
+Please see https://5.docs.plone.org/develop/coredev/docs/guidelines.html

@@ -469,8 +469,8 @@ Fixes:
   [thet]
 
 - Remove the Plone APIs conventions. They are moved to
-  https://docs.plone.org/develop/styleguide
-  and https://docs.plone.org/develop/coredev/docs/git.html
+  https://5.docs.plone.org/develop/styleguide
+  and https://5.docs.plone.org/develop/coredev/docs/git.html
   [thet]
 
 - Cleanup code to match Plone's style guide.
