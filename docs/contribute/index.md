@@ -11,7 +11,7 @@ myst:
 
 ## Conventions
 
-For rules and guidelines on syntax style, development process, repository workflow, etc see [The Plone Styleguides](https://docs.plone.org/develop/styleguide/) and [Working with Git and GitHub](https://docs.plone.org/develop/coredev/docs/git.html)
+For rules and guidelines on syntax style, development process, repository workflow, etc see [The Plone Styleguides](https://5.docs.plone.org/develop/styleguide/) and [Working with Git and GitHub](https://5.docs.plone.org/develop/coredev/docs/git.html)
 
 ## Local development environment
 
