@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.1 (2023-01-26)
+------------------
+
+Documentation:
+
+
+- Switch to 6.docs.plone.org (was 6.dev-docs.plone.org)
+  [ksuess] (#497)
+- Fix links to appropriate versions of docs, in preparation for redirecting docs.plone.org to 6.docs.plone.org. Fix a few typos. Use renamed tox configuration option. [stevepiercy] (#498)
+- Pin Sphinx<5,>=3 due to sphinx-book-theme 0.3.3 requirement. [stevepiercy] (#499)
+- Update links to docs to use correct versions. [stevepiercy] (#500)
+
+
 2.0.0 (2022-11-26)
 ------------------
 
