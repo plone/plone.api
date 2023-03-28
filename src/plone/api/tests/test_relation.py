@@ -272,6 +272,150 @@ class TestPloneApiRelation(unittest.TestCase):
         self.assertEqual(len(api.relation.get(source=self.about)), 2)
         self.assertEqual(len(self.about.relatedItems), 1)
 
+    def test_delete_by_relation(self):
+        """Test deleting relations by relation name."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.about,
+            target=self.events,
+            relationship="relatedItems",
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 2)
+
+        api.relation.delete(
+            relationship="relatedItems",
+        )
+        self.assertEqual(len(api.relation.get(source=self.about)), 0)
+        self.assertEqual(len(self.about.relatedItems), 0)
+
+    def test_delete_by_source_and_relation(self):
+        """Test deleting relations by source and relation name."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.about,
+            target=self.events,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.blog,
+            target=self.events,
+            relationship="relatedItems",
+        )
+        self.assertEqual(len(api.relation.get(relationship="relatedItems")), 3)
+
+        api.relation.delete(
+            source=self.about,
+            relationship="relatedItems",
+        )
+        self.assertEqual(len(api.relation.get(relationship="relatedItems")), 1)
+
+    def test_delete_by_target_and_relation(self):
+        """Test deleting relations by target and relation name."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.about,
+            target=self.events,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.blog,
+            target=self.events,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.blog,
+            target=self.events,
+            relationship="link",
+        )
+        self.assertEqual(len(api.relation.get(relationship="relatedItems")), 3)
+        self.assertEqual(len(api.relation.get(relationship="link")), 1)
+
+        api.relation.delete(
+            target=self.events,
+            relationship="relatedItems",
+        )
+        self.assertEqual(len(api.relation.get(relationship="relatedItems")), 1)
+        self.assertEqual(len(api.relation.get(relationship="link")), 1)
+
+    def test_delete_by_source(self):
+        """Test deleting relations by source."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.blog,
+            target=self.events,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship="link",
+        )
+        api.relation.create(
+            source=self.blog,
+            target=self.events,
+            relationship="link",
+        )
+        self.assertEqual(len(api.relation.get(relationship="relatedItems")), 2)
+        self.assertEqual(len(api.relation.get(relationship="link")), 2)
+
+        api.relation.delete(
+            source=self.about,
+        )
+        self.assertEqual(len(api.relation.get(relationship="relatedItems")), 1)
+        self.assertEqual(len(api.relation.get(relationship="link")), 1)
+
+    def test_delete_by_target(self):
+        """Test deleting relations by target."""
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.blog,
+            target=self.events,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.team,
+            target=self.events,
+            relationship="relatedItems",
+        )
+        api.relation.create(
+            source=self.about,
+            target=self.blog,
+            relationship="link",
+        )
+        api.relation.create(
+            source=self.blog,
+            target=self.events,
+            relationship="link",
+        )
+        self.assertEqual(len(api.relation.get(relationship="relatedItems")), 3)
+        self.assertEqual(len(api.relation.get(relationship="link")), 2)
+
+        api.relation.delete(
+            target=self.events,
+        )
+        self.assertEqual(len(api.relation.get(relationship="relatedItems")), 1)
+        self.assertEqual(len(api.relation.get(relationship="link")), 1)
+
     def test_deleted_relation_is_purged(self):
         """Test that relations that have the name of a non-relation-field are purged."""
         relation_catalog = getUtility(ICatalog)

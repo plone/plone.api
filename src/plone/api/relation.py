@@ -281,7 +281,8 @@ def delete(source=None, target=None, relationship=None):
         query["to_id"] = intids.getId(target)
     if relationship is not None:
         query["from_attribute"] = relationship
-    for rel in relation_catalog.findRelations(query):
+    # We'll change the bucket in the loop
+    for rel in [rel for rel in relation_catalog.findRelations(query)]:
         source = rel.from_object
         from_attribute = rel.from_attribute
         field_and_schema = _get_field_and_schema_for_fieldname(
@@ -292,7 +293,7 @@ def delete(source=None, target=None, relationship=None):
             # The relationship is not the name of a dexterity field.
             # Only purge relation from relation-catalog.
             relation_catalog.unindex(rel)
-            return
+            continue
 
         target = rel.to_object
         field, _schema = field_and_schema
