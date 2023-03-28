@@ -37,7 +37,6 @@ HAS_PLONE5 = parse_version(env.plone_version()) >= parse_version("5.0b2")
 
 
 class IMyRegistrySettings(Interface):
-
     field_one = schema.TextLine(
         title="something",
         description="something else",
@@ -50,7 +49,6 @@ class IMyRegistrySettings(Interface):
 
 
 class IMyOtherRegistrySettings(Interface):
-
     field_three = schema.TextLine(
         title="something",
         description="something else",

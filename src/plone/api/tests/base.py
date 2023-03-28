@@ -11,7 +11,6 @@ from plone.app.testing import TEST_USER_NAME
 
 
 class PloneApiLayer(PloneSandboxLayer):
-
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
