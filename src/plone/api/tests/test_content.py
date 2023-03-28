@@ -1129,7 +1129,6 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertEqual(len(documents), 0)
 
     def test_find_parse_object_provides_query(self):
-
         parse = api.content._parse_object_provides_query
 
         # single interface

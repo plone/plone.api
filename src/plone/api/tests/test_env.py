@@ -33,7 +33,6 @@ class TestException(Exception):
 
 
 class HasProtectedMethods(SimpleItem):
-
     security = AccessControl.ClassSecurityInfo()
 
     def __init__(self, id):

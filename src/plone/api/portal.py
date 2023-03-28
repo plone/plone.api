@@ -103,7 +103,6 @@ def get_tool(name=None):
     try:
         return getToolByName(get(), name)
     except AttributeError:
-
         # get a list of all tools to display their names in the error msg
         portal = get()
         tools = []
@@ -365,7 +364,6 @@ def set_registry_record(name=None, value=None, interface=None):
             )
 
     elif isinstance(name, str):
-
         # confirm that the record exists before setting the value
         get_registry_record(name)
 
