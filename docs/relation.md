@@ -139,4 +139,4 @@ If a deleted relation is based on a `RelationChoice` or `RelationList` field on 
 ## Further reading
 
 For more information on possible flags and usage options please see the full {ref}`plone-api-relation` specification.
-For more information on relations read the relevant [chapter in the Mastering Plone training](https://training.plone.org/5/mastering-plone/relations.html).
+For more information on relations read the relevant [chapter in the Mastering Plone training](https://training.plone.org/mastering-plone/relations.html).
