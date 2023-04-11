@@ -1406,7 +1406,6 @@ class TestPloneApiContent(unittest.TestCase):
         should_be_theres = (
             "adapter",
             "authenticator",
-            "checkDocument",
             "get_macros",
             "history",
             "plone",
