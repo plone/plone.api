@@ -8,6 +8,21 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.2 (2023-04-14)
+------------------
+
+Bug fixes:
+
+
+- Fix deletion of relations by relation name. @ksuess (#501)
+
+
+Documentation:
+
+
+- Update link for Training. @stevepiercy (#503)
+
+
 2.0.1 (2023-01-26)
 ------------------
 
