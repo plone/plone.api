@@ -100,7 +100,7 @@ class TestAPIAddon(unittest.TestCase):
         self.assertTrue(result.valid)
         self.assertEqual(
             result.description,
-            "Install to enable multilingual content support with plone.app.multilingual"
+            "Install to enable multilingual content support with plone.app.multilingual",
         )
         self.assertEqual(result.profile_type, "default")
         self.assertIsInstance(result.version, str)
