@@ -1,8 +1,8 @@
 """API to handle addon management."""
 from dataclasses import dataclass
 from functools import lru_cache
-from plone.api.exc import InvalidParameterError
 from plone.api import portal
+from plone.api.exc import InvalidParameterError
 from plone.api.validation import required_parameters
 from Products.CMFPlone.controlpanel.browser.quickinstaller import InstallerView
 from Products.CMFPlone.interfaces import INonInstallable
@@ -29,7 +29,7 @@ __all__ = [
     "get_version",
     "get",
     "install",
-    "uninstall"
+    "uninstall",
 ]
 
 
