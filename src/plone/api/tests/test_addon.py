@@ -56,12 +56,12 @@ class TestAPIAddonGetAddons(unittest.TestCase):
         with self.assertRaises(api.exc.InvalidParameterError) as cm:
             api.addon.get_addons(limit="foobar")
         self.assertIn(
-            "Value foobar for parameter mode is not valid.", str(cm.exception)
+            "Parameter limit='foobar' is not valid.", str(cm.exception)
         )
 
-    def test_api_get_addons_ids(self):
-        """Test api.addon.get_addons_ids."""
-        result = api.addon.get_addons_ids(limit="installed")
+    def test_api_get_addon_ids(self):
+        """Test api.addon.get_addon_ids."""
+        result = api.addon.get_addon_ids(limit="installed")
         self.assertEqual(len(result), 2)
         self.assertIn(ADDON, result)
 

@@ -25,7 +25,7 @@ __all__ = [
     "AddonInformation",
     "NonInstallableAddons",
     "get_addons",
-    "get_addons_ids",
+    "get_addon_ids",
     "get_version",
     "get",
     "install",
@@ -217,11 +217,11 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
     if limit in ("installed", "upgradable", "available"):
         addons = [addon for addon in addons if limit in addon.flags]
     elif limit != "":
-        raise InvalidParameterError(f"Value {limit} for parameter mode is not valid.")
+        raise InvalidParameterError(f"Parameter {limit=} is not valid.")
     return addons
 
 
-def get_addons_ids(limit: str = "") -> List[str]:
+def get_addon_ids(limit: str = "") -> List[str]:
     """List addons ids in this Plone site.
 
     :param limit: Limit list of addons.
