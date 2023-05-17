@@ -217,7 +217,7 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
     if limit in ("installed", "upgradable", "available"):
         addons = [addon for addon in addons if limit in addon.flags]
     elif limit != "":
-        raise InvalidParameterError(f"Parameter {limit=} is not valid.")
+        raise InvalidParameterError(f"Parameter limit='{limit}' is not valid.")
     return addons
 
 
