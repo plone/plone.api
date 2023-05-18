@@ -170,8 +170,9 @@ def create(source=None, target=None, relationship=None):
         "from_id": from_id,
         "to_id": to_id,
     }
+    has_relation = False
     for rel in relation_catalog.findRelations(query):
-        relation_catalog.unindex(rel)
+        has_relation = True
 
     if from_attribute == referencedRelationship:
         # Don't mess with linkintegrity-relations!
@@ -212,9 +213,10 @@ def create(source=None, target=None, relationship=None):
             source.absolute_url(),
             target.absolute_url(),
         )
-        existing_relations = getattr(source, from_attribute, [])
-        existing_relations.append(RelationValue(to_id))
-        setattr(source, from_attribute, existing_relations)
+        if not has_relation:
+            existing_relations = getattr(source, from_attribute, [])
+            existing_relations.append(RelationValue(to_id))
+            setattr(source, from_attribute, existing_relations)
         modified(source)
         return
 
@@ -225,7 +227,8 @@ def create(source=None, target=None, relationship=None):
             source.absolute_url(),
             target.absolute_url(),
         )
-        setattr(source, from_attribute, RelationValue(to_id))
+        if not has_relation:
+            setattr(source, from_attribute, RelationValue(to_id))
         modified(source)
         return
 
