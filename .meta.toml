@@ -1,12 +1,53 @@
 # Generated from:
 # https://github.com/plone/meta/tree/master/config/default
+[meta]
+template = "default"
+commit-id = "50c0e759"
+
+[editorconfig]
+extra_lines = """
+[*.bat]
+indent_style = tab
+end_of_line = crlf
+
+[LICENSE]
+insert_final_newline = false"""
+
+[setup]
+check_manifest_ignore = """
+    *.cfg
+    constraints_plone52.txt
+    constraints_plone60.txt
+    constraints.txt
+    fix-converted-myst.py
+    Makefile
+    netlify.toml
+    requirements-docs.txt
+    requirements.txt"""
+extra_lines = """
+[coverage:run]
+branch = True
+source =
+    src
+
+omit =
+    *.rst
+    */doctests/*
+    */tests/*
+
+[coverage:report]
+precision = 2
+include = src
+omit =
+    *.rst
+    */doctests/*
+    */tests/*
+
+[coverage:html]
+directory = _build/coverage"""
+
 [tox]
-# We need 4.4.0 for constrain_package_deps.
-min_version = 4.4.0
-envlist =
-    format
-    lint
-    test
+envlist_lines = """
     py{37,38,39}-plone{52}
     py{38,39}-plone{60}
     # towncrier
@@ -17,76 +58,10 @@ envlist =
 #    coverage-report
     linkcheck
     plone6docs
-    docs
-skip_missing_interpreters = True
-
-[testenv]
-allowlist_externals =
-    sh
-skip_install = True
-
-[testenv:format]
-description = automatically reformat code
-skip_install = true
-deps =
-    pre-commit
-commands =
-    pre-commit run -a pyupgrade
-    pre-commit run -a isort
-    pre-commit run -a black
-    pre-commit run -a zpretty
-
-[testenv:lint]
-description = run linters that will help improve the code style
-skip_install = true
-deps =
-    pre-commit
-commands =
-    pre-commit run -a
-
-[testenv:dependencies]
-description = check if the package defines all its dependencies
-skip_install = true
-deps =
-    build
-    z3c.dependencychecker==2.11
-commands =
-    python -m build --sdist --no-isolation
-    dependencychecker
-
-[testenv:dependencies-graph]
-description = generate a graph out of the package's dependencies
-deps =
-    pipdeptree==2.5.1
-    graphviz  # optional dependency of pipdeptree
-commands =
-    sh -c 'pipdeptree --exclude setuptools,wheel,pipdeptree,zope.interface,zope.component --graph-output svg > dependencies.svg'
-
-[testenv:test]
-use_develop = true
-constrain_package_deps = true
-set_env = ROBOT_BROWSER=headlesschrome
-deps =
-    zope.testrunner
-    -c https://dist.plone.org/release/6.0-dev/constraints.txt
-commands =
-    zope-testrunner --all --test-path={toxinidir}/src -s plone.api {posargs}
-extras =
-    test
-
-[testenv:coverage]
-use_develop = true
-constrain_package_deps = true
-set_env = ROBOT_BROWSER=headlesschrome
-deps =
-    coverage
-    zope.testrunner
-    -c https://dist.plone.org/release/6.0-dev/constraints.txt
-commands =
-    coverage run {envbindir}/zope-testrunner --quiet --all --test-path={toxinidir}/src -s plone.api {posargs}
-    coverage report -m --format markdown
-extras =
-    test
+    docs"""
+config_lines = "skip_missing_interpreters = True"
+testenv_lines = "skip_install = True"
+extra_lines = """
 [gh-actions]
 python =
     3.7: py37
@@ -241,4 +216,7 @@ deps=
     towncrier
 
 commands =
-    towncrier --draft
+    towncrier --draft"""
+
+[pre_commit]
+codespell_extra_lines = "        exclude: .*\\.po(t)*$"

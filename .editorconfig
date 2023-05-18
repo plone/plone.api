@@ -1,4 +1,7 @@
-# EditorConfig Configurtaion file, for more details see:
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+#
+# EditorConfig Configuration file, for more details see:
 # http://EditorConfig.org
 # EditorConfig is a convention description, that could be interpreted
 # by multiple editors to enforce common coding conventions for specific
@@ -7,6 +10,7 @@
 # top-most EditorConfig file:
 # Will ignore other EditorConfig files in Home directory or upper tree level.
 root = true
+
 
 [*]  # For All Files
 # Unix-style newlines with a newline ending every file
@@ -24,7 +28,7 @@ max_line_length = off
 # 4 space indentation
 indent_size = 4
 
-[*.{yml}]
+[*.{yml,zpt,pt,dtml,zcml}]
 # 2 space indentation
 indent_size = 2
 

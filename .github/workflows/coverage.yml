@@ -1,0 +1,17 @@
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+name: Coverage
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  coverage:
+    uses: plone/meta/.github/workflows/coverage.yml@master
