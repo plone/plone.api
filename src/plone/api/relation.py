@@ -170,9 +170,8 @@ def create(source=None, target=None, relationship=None):
         "from_id": from_id,
         "to_id": to_id,
     }
-    has_relation = False
-    for rel in relation_catalog.findRelations(query):
-        has_relation = True
+    has_relation = False if (
+        len([el for el in relation_catalog.findRelations(query)]) == 0) else True
 
     if from_attribute == referencedRelationship:
         # Don't mess with linkintegrity-relations!
