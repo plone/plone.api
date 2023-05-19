@@ -209,8 +209,8 @@ class TestPloneApiContent(unittest.TestCase):
         """Test create dexterity."""
         container = self.portal
 
-        # This section check for DX compatibilty. The custom DX types defined
-        # in plone.api are for Plone 4 compatiblity.
+        # This section check for DX compatibility. The custom DX types defined
+        # in plone.api are for Plone 4 compatibility.
 
         # Create a folder
         folder = api.content.create(
@@ -707,7 +707,7 @@ class TestPloneApiContent(unittest.TestCase):
             container["about"]["our-team"] and container["about"]["our-team"] == ourteam
         )
 
-        # When copying whithout target parameter should take source parent
+        # When copying without target parameter should take source parent
         api.content.copy(source=self.team, id="our-team-no-target")
         assert container["about"]["our-team-no-target"]
 

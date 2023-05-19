@@ -371,7 +371,7 @@ Bug fixes:
 - Simplify the ``plone.api.content.delete`` method.
   [thet]
 
-- content.copy with safe_id=False should raise it's own exeception. Fixes #340
+- content.copy with safe_id=False should raise it's own exception. Fixes #340
   [jaroel]
 
 
