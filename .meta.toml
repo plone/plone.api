@@ -2,7 +2,7 @@
 # https://github.com/plone/meta/tree/master/config/default
 [meta]
 template = "default"
-commit-id = "50c0e759"
+commit-id = "54c96fb5"
 
 [editorconfig]
 extra_lines = """
@@ -84,16 +84,6 @@ deps =
     pdbpp
     manuel
 
-# tox < 4.0.0
-whitelist_externals =
-    mkdir
-    echo
-
-# tox >= 4.0.0
-allowlist_externals =
-    mkdir
-    echo
-
 [testenv:coverage-report]
 basepython = python3.9
 deps = coverage
@@ -128,6 +118,9 @@ commands =
     mkdir -p {toxinidir}/_build/plone6docs
     sphinx-build -b html -d _build/plone6docs/doctrees docs _build/plone6docs/html
 
+allowlist_externals =
+    mkdir
+
 
 [testenv:docs]
 basepython = python3.9
@@ -144,7 +137,7 @@ commands =
     mkdir -p {toxinidir}/_build/docs
     sphinx-build -b html -D html_theme=alabaster -d _build/docs/doctrees docs _build/docs/html
 
-whitelist_externals =
+allowlist_externals =
     mkdir
 
 
@@ -160,6 +153,8 @@ commands =
     python -VV
     mkdir -p {toxinidir}/_build/plone6docs
     sphinx-build -b linkcheck -d _build/plone6docs/doctrees docs _build/plone6docs/linkcheck
+allowlist_externals =
+    mkdir
 
 
 [testenv:towncrier]
