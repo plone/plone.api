@@ -124,7 +124,7 @@ def get(path=None, UID=None):
     if path:
         site = portal.get()
         site_absolute_path = "/".join(site.getPhysicalPath())
-        if not path.startswith("{path}".format(path=site_absolute_path)):
+        if not path.startswith(f"{site_absolute_path}"):
             path = "{site_path}{relative_path}".format(
                 site_path=site_absolute_path,
                 relative_path=path,
@@ -294,7 +294,7 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
         breaches = linkintegrity_view.get_breaches(objects)
         if breaches:
             raise LinkIntegrityNotificationException(
-                "Linkintegrity-breaches: {}".format(breaches),
+                f"Linkintegrity-breaches: {breaches}",
             )
 
     for obj_ in objects:

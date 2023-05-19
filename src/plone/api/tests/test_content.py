@@ -461,7 +461,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test getting the team document by path that has portal id included
         team_by_path = api.content.get(
-            "/{}/about/team".format(self.portal.getId()),
+            f"/{self.portal.getId()}/about/team",
         )
         self.assertEqual(self.team, team_by_path)
 
