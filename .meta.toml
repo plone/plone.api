@@ -48,7 +48,7 @@ directory = _build/coverage"""
 
 [tox]
 envlist_lines = """
-    py{37,38,39}-plone{52}
+    py{38,39}-plone{52}
     py{38,39}-plone{60}
     # towncrier
 #    coverage-report
@@ -60,7 +60,6 @@ testenv_lines = "skip_install = True"
 extra_lines = """
 [gh-actions]
 python =
-    3.7: py37
     3.8: py38
     3.9: py39
 
