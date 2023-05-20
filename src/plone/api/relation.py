@@ -219,7 +219,7 @@ def create(source=None, target=None, relationship=None):
             existing_relations = getattr(source, from_attribute, [])
             existing_relations.append(RelationValue(to_id))
             setattr(source, from_attribute, existing_relations)
-        modified(source)
+            modified(source)
         return
 
     elif isinstance(field, (Relation, RelationChoice)):
@@ -231,7 +231,7 @@ def create(source=None, target=None, relationship=None):
         )
         if not has_relation:
             setattr(source, from_attribute, RelationValue(to_id))
-        modified(source)
+            modified(source)
         return
 
     # If we end up here, someone is making a relationship that
