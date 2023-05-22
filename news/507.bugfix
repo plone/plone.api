@@ -1,2 +1,0 @@
-Create relation only if there is no existing one with same source, target, relationname.
-But mark source as modified. @ksuess

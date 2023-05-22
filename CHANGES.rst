@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.3 (2023-05-22)
+------------------
+
+Bug fixes:
+
+
+- Create relation only if there is no existing one with same source, target, relationname.
+  But mark source as modified. @ksuess (#507)
+
+
 2.0.2 (2023-04-14)
 ------------------
 
