@@ -407,8 +407,9 @@ def translate(msgid, domain="plone", lang=None):
     Default to current negotiated language if no target language specified.
 
     :param msgid: [required] message to translate
-    :type msgid: string
-    :param domain: i18n domain to use
+    :type msgid: string | zope.i18nmessageid.Message
+    :param domain: i18n domain to use. When `msgid` is a instance of `Message`
+                   the Message' domain is used.
     :type domain: string
     :param lang: target language
     :type lang: string
