@@ -486,7 +486,7 @@ class TestPloneApiEnv(unittest.TestCase):
             api.env.adopt_roles()
 
     def test_debug_mode(self):
-        """Tests that the retured value is the same as
+        """Tests that the returned value is the same as
         getConfiguration.debug_mode."""
         from App.config import getConfiguration
         from plone.api.env import debug_mode
