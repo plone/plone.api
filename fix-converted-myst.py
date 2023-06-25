@@ -21,28 +21,27 @@ def replace_label_underscore(data):
     ->
     :Example: :ref:`portal-get-tool-example`
     """
-    regex_label_underscore = '(?<=:ref:`)(.*)(?=`)'
+    regex_label_underscore = "(?<=:ref:`)(.*)(?=`)"
 
     def _replace(mobj):
-        return mobj.group(0).replace('_', '-')
+        return mobj.group(0).replace("_", "-")
 
-    data = re.sub(
-        regex_label_underscore, _replace, data)
+    data = re.sub(regex_label_underscore, _replace, data)
     return data
 
 
 def remove_github_warning(data):
     """Remove 'GitHub-only' warning"""
-    regex_github_warning = r':::{admonition} GitHub-only([\S\s]*?):::\n\n'
-    data = re.sub(regex_github_warning, '', data, flags=re.DOTALL)
+    regex_github_warning = r":::{admonition} GitHub-only([\S\s]*?):::\n\n"
+    data = re.sub(regex_github_warning, "", data, flags=re.DOTALL)
     return data
 
 
-for root, dirs, files in (*os.walk('./src'), *os.walk('./docs')):
+for root, dirs, files in (*os.walk("./src"), *os.walk("./docs")):
     for name in files:
         if name.endswith(".py") or name.endswith(".md"):
             filename = os.path.join(root, name)
-            with open(filename, 'r+') as f:
+            with open(filename, "r+") as f:
                 data = f.read()
                 data = replace_label_underscore(data)
                 data = remove_github_warning(data)

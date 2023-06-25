@@ -3,8 +3,8 @@ from pkg_resources import get_distribution
 import sys
 
 
-project = 'plone.api'
-copyright = '2012, Plone Foundation'
+project = "plone.api"
+copyright = "2012, Plone Foundation"
 
 version = release = get_distribution(project).version
 
@@ -16,29 +16,31 @@ source_suffix = {
 }
 
 extensions = [
-    'sphinx.ext.doctest',
-    'sphinx.ext.coverage',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.autosummary',
+    "sphinx.ext.doctest",
+    "sphinx.ext.coverage",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.autosummary",
     "myst_parser",
     "sphinx.ext.todo",
 ]
-master_doc = 'index'
+master_doc = "index"
 
-locale_dirs = ['translated/']
-language = 'en'
+locale_dirs = ["translated/"]
+language = "en"
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual])
 # This enables PDF generation.
-latex_documents = [(
-    'index',
-    'ploneapi.tex',
-    'plone.api Documentation',
-    '',
-    'manual',
-)]
+latex_documents = [
+    (
+        "index",
+        "ploneapi.tex",
+        "plone.api Documentation",
+        "",
+        "manual",
+    )
+]
 
 
 class Mock:
@@ -50,8 +52,8 @@ class Mock:
 
     @classmethod
     def __getattr__(cls, name):
-        if name in ('__file__', '__path__'):
-            return '/dev/null'
+        if name in ("__file__", "__path__"):
+            return "/dev/null"
         elif name[0] == name[0].upper():
             mockType = type(name, (), {})
             mockType.__module__ = __name__
@@ -60,7 +62,7 @@ class Mock:
             return Mock()
 
 
-MOCK_MODULES = ['lxml']
+MOCK_MODULES = ["lxml"]
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
 
