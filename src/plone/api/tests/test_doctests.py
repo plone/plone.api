@@ -125,7 +125,7 @@ def test_suite():
             doctests.append(DocFileSuite(os.path.join(path, filename)))
         except OSError:
             logger.warning(
-                "test_doctest.py skipping {file}".format(file=filename),
+                f"test_doctest.py skipping {filename}",
             )
 
     return unittest.TestSuite(doctests)
