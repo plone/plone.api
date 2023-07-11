@@ -1,0 +1,5 @@
+Do not run GitHub Actions tests twice.
+Only run GitHub Actions tests when commiting directly against master or main or
+opening a pull request agains master or main. This avoids to run the same test
+suite for the same environment twice.
+[thet]

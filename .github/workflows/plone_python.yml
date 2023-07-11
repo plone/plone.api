@@ -2,7 +2,13 @@ name: Plone backend tests
 
 on:
   push:
+    branches:
+      - master
+      - main
   pull_request:
+    branches:
+      - master
+      - main
 
 jobs:
   plone_python:
