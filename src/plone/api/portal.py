@@ -408,7 +408,9 @@ def translate(msgid, domain="plone", lang=None):
 
     :param msgid: [required] message to translate
     :type msgid: string
-    :param domain: i18n domain to use
+    :type msgid: zope.i18nmessageid.Message
+    :param domain: i18n domain to use. When ``msgid`` is an instance of ``Message``,
+                   then the ``Message``'s domain is used.
     :type domain: string
     :param lang: target language
     :type lang: string
