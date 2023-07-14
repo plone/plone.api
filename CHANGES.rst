@@ -8,6 +8,30 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.4 (2023-07-14)
+------------------
+
+Bug fixes:
+
+
+- Do not run GitHub Actions tests twice.
+  Only run GitHub Actions tests when commiting directly against master or main or
+  opening a pull request agains master or main. This avoids to run the same test
+  suite for the same environment twice.
+  [thet] (#0)
+- Mockup TinyMCE settings: Remove unused AtD related views.
+
+  Fix a test which was checking for "checkDocument" among other available views.
+  "checkDocument" was a TinyMCE endpoint for unmaintained "After the Deadline"
+  plugin, which is now removed. (#504)
+
+
+Documentation:
+
+
+- Enhance API docs of `portal.translate` to show that the domain is optional in some cases. @thet (#510)
+
+
 2.0.3 (2023-05-22)
 ------------------
 
