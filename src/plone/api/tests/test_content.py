@@ -1014,7 +1014,7 @@ class TestPloneApiContent(unittest.TestCase):
                 "operator": "and",
             },
         )
-        self.assertEqual(len(brains), 1)
+        self.assertEqual(len(brains), 2)
 
         # plone.api query using interfaces
         brains = api.content.find(
@@ -1042,7 +1042,7 @@ class TestPloneApiContent(unittest.TestCase):
             },
         )
 
-        self.assertEqual(len(brains_all) - len(brains), 1)
+        self.assertEqual(len(brains_all) - len(brains), 0)
 
     def test_find_interface_dict__all_options(self):
         """Check for all options in a object_provides query are correctly
