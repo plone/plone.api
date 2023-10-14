@@ -514,14 +514,14 @@ class TestPloneApiEnv(unittest.TestCase):
         from plone.api.env import plone_version
 
         self.assertTrue(isinstance(plone_version(), str))
-        self.assertRegexpMatches(plone_version(), version_regexp)
+        self.assertRegex(plone_version(), version_regexp)
 
     def test_zope_version(self):
         """Tests that zope_version() returns Zope version."""
         from plone.api.env import zope_version
 
         self.assertTrue(isinstance(zope_version(), str))
-        self.assertRegexpMatches(zope_version(), version_regexp)
+        self.assertRegex(zope_version(), version_regexp)
 
     def test_adopt_user_different_username(self):
         user = api.user.get(userid=TEST_USER_ID)
