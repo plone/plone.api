@@ -1014,8 +1014,8 @@ class TestPloneApiContent(unittest.TestCase):
                 "operator": "and",
             },
         )
-        # Plone Site also implements the IContentish and INavigationRoot interfaces.
-        self.assertEqual(len(brains), 2)
+
+        self.assertEqual(len(brains), 1)
 
         # plone.api query using interfaces
         brains = api.content.find(
@@ -1024,7 +1024,7 @@ class TestPloneApiContent(unittest.TestCase):
                 "operator": "and",
             },
         )
-        self.assertEqual(len(brains), 2)
+        self.assertEqual(len(brains), 1)
 
     def test_find_interface_dict__include_not_query(self):
         """Check if not query in object_provides is functional."""
@@ -1042,8 +1042,7 @@ class TestPloneApiContent(unittest.TestCase):
                 "not": INavigationRoot.__identifier__,
             },
         )
-        # Plone Site also implements the IContentish and INavigationRoot interfaces.
-        self.assertEqual(len(brains_all) - len(brains), 2)
+        self.assertEqual(len(brains_all) - len(brains), 1)
 
     def test_find_interface_dict__all_options(self):
         """Check for all options in a object_provides query are correctly
