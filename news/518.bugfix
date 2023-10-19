@@ -1,1 +1,1 @@
-Update test assertions for object_provides index due to Plone Site changes. @Akshat2Jain
+Fixup tests because PloneSite gets IContentish again. @Akshat2Jain @jaroel
