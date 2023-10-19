@@ -1,5 +1,4 @@
 """Tests for plone.api.content."""
-
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
@@ -7,13 +6,13 @@ from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
 from plone.api.content import _parse_object_provides_query
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.app.contenttypes.interfaces import IFolder
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 from plone.app.textfield import RichTextValue
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
-from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.ZCatalog.interfaces import IZCatalog
 from unittest import mock
@@ -209,8 +208,8 @@ class TestPloneApiContent(unittest.TestCase):
         """Test create dexterity."""
         container = self.portal
 
-        # This section check for DX compatibilty. The custom DX types defined
-        # in plone.api are for Plone 4 compatiblity.
+        # This section check for DX compatibility. The custom DX types defined
+        # in plone.api are for Plone 4 compatibility.
 
         # Create a folder
         folder = api.content.create(
@@ -332,7 +331,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # register a title indexer that will force a UnicodeDecodeError
         # during content reindexing
-        @indexer(IContentish, IZCatalog)
+        @indexer(IFolder, IZCatalog)
         def force_unicode_error(object):
             raise UnicodeDecodeError(
                 "ascii",
@@ -446,7 +445,7 @@ class TestPloneApiContent(unittest.TestCase):
             api.content.get()
 
     def test_get(self):
-        """Test the getting of content in varios ways."""
+        """Test the getting of content in various ways."""
         # Test getting the about folder by path and UID
         about_by_path = api.content.get("/about")
         about_by_uid = api.content.get(UID=self.about.UID())
@@ -707,7 +706,7 @@ class TestPloneApiContent(unittest.TestCase):
             container["about"]["our-team"] and container["about"]["our-team"] == ourteam
         )
 
-        # When copying whithout target parameter should take source parent
+        # When copying without target parameter should take source parent
         api.content.copy(source=self.team, id="our-team-no-target")
         assert container["about"]["our-team-no-target"]
 
@@ -989,11 +988,11 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_find_interface(self):
         # Find documents by interface or it's identifier
-        identifier = IContentish.__identifier__
+        identifier = IFolder.__identifier__
         brains = api.content.find(object_provides=identifier)
         by_identifier = [x.getObject() for x in brains]
 
-        brains = api.content.find(object_provides=IContentish)
+        brains = api.content.find(object_provides=IFolder)
         by_interface = [x.getObject() for x in brains]
 
         self.assertEqual(by_identifier, by_interface)
@@ -1008,18 +1007,19 @@ class TestPloneApiContent(unittest.TestCase):
         brains = api.content.find(
             object_provides={
                 "query": [
-                    IContentish.__identifier__,
+                    IFolder.__identifier__,
                     INavigationRoot.__identifier__,
                 ],
                 "operator": "and",
             },
         )
+
         self.assertEqual(len(brains), 1)
 
         # plone.api query using interfaces
         brains = api.content.find(
             object_provides={
-                "query": [IContentish, INavigationRoot],
+                "query": [IFolder, INavigationRoot],
                 "operator": "and",
             },
         )
@@ -1029,7 +1029,7 @@ class TestPloneApiContent(unittest.TestCase):
         """Check if not query in object_provides is functional."""
 
         brains_all = api.content.find(
-            object_provides={"query": IContentish.__identifier__},
+            object_provides={"query": IFolder.__identifier__},
         )
 
         alsoProvides(self.portal.events, INavigationRoot)
@@ -1037,11 +1037,10 @@ class TestPloneApiContent(unittest.TestCase):
 
         brains = api.content.find(
             object_provides={
-                "query": IContentish.__identifier__,
+                "query": IFolder.__identifier__,
                 "not": INavigationRoot.__identifier__,
             },
         )
-
         self.assertEqual(len(brains_all) - len(brains), 1)
 
     def test_find_interface_dict__all_options(self):
@@ -1051,42 +1050,42 @@ class TestPloneApiContent(unittest.TestCase):
         parser = _parse_object_provides_query
 
         self.assertDictEqual(
-            parser({"query": IContentish}),
-            {"query": [IContentish.__identifier__], "operator": "or"},
+            parser({"query": IFolder}),
+            {"query": [IFolder.__identifier__], "operator": "or"},
         )
 
         self.assertDictEqual(
             parser(
                 {
-                    "query": [IContentish, INavigationRoot.__identifier__],
+                    "query": [IFolder, INavigationRoot.__identifier__],
                     "operator": "and",
                 },
             ),
             {
-                "query": [IContentish.__identifier__, INavigationRoot.__identifier__],
+                "query": [IFolder.__identifier__, INavigationRoot.__identifier__],
                 "operator": "and",
             },
         )
 
         self.assertDictEqual(
-            parser({"not": IContentish}),
-            {"not": [IContentish.__identifier__]},
+            parser({"not": IFolder}),
+            {"not": [IFolder.__identifier__]},
         )
 
         self.assertDictEqual(
-            parser({"not": [IContentish, INavigationRoot.__identifier__]}),
-            {"not": [IContentish.__identifier__, INavigationRoot.__identifier__]},
+            parser({"not": [IFolder, INavigationRoot.__identifier__]}),
+            {"not": [IFolder.__identifier__, INavigationRoot.__identifier__]},
         )
 
         self.assertDictEqual(
-            parser({"not": IContentish}),
-            {"not": [IContentish.__identifier__]},
+            parser({"not": IFolder}),
+            {"not": [IFolder.__identifier__]},
         )
 
         self.assertDictEqual(
-            parser({"query": IContentish, "operator": "and", "not": INavigationRoot}),
+            parser({"query": IFolder, "operator": "and", "not": INavigationRoot}),
             {
-                "query": [IContentish.__identifier__],
+                "query": [IFolder.__identifier__],
                 "operator": "and",
                 "not": [INavigationRoot.__identifier__],
             },
@@ -1133,38 +1132,38 @@ class TestPloneApiContent(unittest.TestCase):
 
         # single interface
         self.assertDictEqual(
-            parse(IContentish),
+            parse(IFolder),
             {
-                "query": [IContentish.__identifier__],
+                "query": [IFolder.__identifier__],
                 "operator": "or",
             },
         )
         # single identifier
         self.assertDictEqual(
-            parse(IContentish.__identifier__),
+            parse(IFolder.__identifier__),
             {
-                "query": [IContentish.__identifier__],
+                "query": [IFolder.__identifier__],
                 "operator": "or",
             },
         )
         # multiple interfaces/identifiers (mixed as list)
         self.assertDictEqual(
-            parse([INavigationRoot, IContentish.__identifier__]),
+            parse([INavigationRoot, IFolder.__identifier__]),
             {
                 "query": [
                     INavigationRoot.__identifier__,
-                    IContentish.__identifier__,
+                    IFolder.__identifier__,
                 ],
                 "operator": "or",
             },
         )
         # multiple interfaces/identifiers (mixed as tuple)
         self.assertDictEqual(
-            parse((INavigationRoot, IContentish.__identifier__)),
+            parse((INavigationRoot, IFolder.__identifier__)),
             {
                 "query": [
                     INavigationRoot.__identifier__,
-                    IContentish.__identifier__,
+                    IFolder.__identifier__,
                 ],
                 "operator": "or",
             },
@@ -1173,14 +1172,14 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertDictEqual(
             parse(
                 {
-                    "query": [INavigationRoot, IContentish.__identifier__],
+                    "query": [INavigationRoot, IFolder.__identifier__],
                     "operator": "and",
                 }
             ),
             {
                 "query": [
                     INavigationRoot.__identifier__,
-                    IContentish.__identifier__,
+                    IFolder.__identifier__,
                 ],
                 "operator": "and",
             },
@@ -1283,7 +1282,7 @@ class TestPloneApiContent(unittest.TestCase):
             "internally_published",
         )
 
-    def test_diable_roles_acquisition(self):
+    def test_disable_roles_acquisition(self):
         """Test disabling local roles acquisition."""
         # This should fail because an content item is mandatory
         from plone.api.exc import MissingParameterError
