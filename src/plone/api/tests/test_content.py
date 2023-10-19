@@ -1,5 +1,4 @@
 """Tests for plone.api.content."""
-
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
@@ -209,8 +208,8 @@ class TestPloneApiContent(unittest.TestCase):
         """Test create dexterity."""
         container = self.portal
 
-        # This section check for DX compatibilty. The custom DX types defined
-        # in plone.api are for Plone 4 compatiblity.
+        # This section check for DX compatibility. The custom DX types defined
+        # in plone.api are for Plone 4 compatibility.
 
         # Create a folder
         folder = api.content.create(
@@ -446,7 +445,7 @@ class TestPloneApiContent(unittest.TestCase):
             api.content.get()
 
     def test_get(self):
-        """Test the getting of content in varios ways."""
+        """Test the getting of content in various ways."""
         # Test getting the about folder by path and UID
         about_by_path = api.content.get("/about")
         about_by_uid = api.content.get(UID=self.about.UID())
@@ -707,7 +706,7 @@ class TestPloneApiContent(unittest.TestCase):
             container["about"]["our-team"] and container["about"]["our-team"] == ourteam
         )
 
-        # When copying whithout target parameter should take source parent
+        # When copying without target parameter should take source parent
         api.content.copy(source=self.team, id="our-team-no-target")
         assert container["about"]["our-team-no-target"]
 
@@ -1283,7 +1282,7 @@ class TestPloneApiContent(unittest.TestCase):
             "internally_published",
         )
 
-    def test_diable_roles_acquisition(self):
+    def test_disable_roles_acquisition(self):
         """Test disabling local roles acquisition."""
         # This should fail because an content item is mandatory
         from plone.api.exc import MissingParameterError
