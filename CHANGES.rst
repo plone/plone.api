@@ -8,6 +8,24 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.5 (2023-10-25)
+------------------
+
+Bug fixes:
+
+
+- Replace deprecated assert methods.
+  [gforcada] (#1)
+
+
+Internal:
+
+
+- Update GHA
+  [gforcada] (#1)
+- Fixup tests because PloneSite gets IContentish again. @Akshat2Jain @jaroel (#518)
+
+
 2.0.4 (2023-07-14)
 ------------------
 
