@@ -78,11 +78,13 @@ def create(
         types = [fti.getId() for fti in container.allowedContentTypes()]
 
         raise InvalidParameterError(
-            "Cannot add a '{obj_type}' object to the container.\n"
+            "Cannot add a '{obj_type}' object with id={obj_id} to the container {container_path}.\n"
             "Allowed types are:\n"
             "{allowed_types}\n"
             "{message}".format(
                 obj_type=type,
+                obj_id=content_id,
+                container_path="/".join(container.getPhysicalPath()),
                 allowed_types="\n".join(sorted(types)),
                 message=str(e),
             ),
