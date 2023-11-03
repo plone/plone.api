@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.6 (2023-11-03)
+------------------
+
+Bug fixes:
+
+
+- More informative error message in plone.api.content.create() [ajung] (#516)
+
+
 2.0.5 (2023-10-25)
 ------------------
 
