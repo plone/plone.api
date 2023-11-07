@@ -652,4 +652,7 @@ def find(context=None, depth=None, **kwargs):
     if not valid_indexes:
         return []
 
-    return catalog(**query)
+    if kwargs.get('unrestricted'):
+        return catalog.unrestrictedSearchResults(**query)
+    else:
+        return catalog(**query)
