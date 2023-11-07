@@ -912,6 +912,13 @@ class TestPloneApiContent(unittest.TestCase):
         documents = api.content.find(portal_type="Document")
         self.assertEqual(len(documents), 2)
 
+    def test_find(self):
+        """Test the finding of content in various ways."""
+
+        # Find documents
+        documents = api.content.find(portal_type="Document", unrestricted=True)
+        self.assertEqual(len(documents), 2)
+
     def test_find_empty_query(self):
         """Make sure an empty query yields no results"""
 
