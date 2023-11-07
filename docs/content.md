@@ -195,6 +195,21 @@ documents = api.content.find(
 %
 % self.assertGreater(len(documents), 0)
 
+Find all Documents, and use unrestrictedSearchResults:
+
+```python
+from plone import api
+documents = api.content.find(
+    context=api.portal.get(),
+    portal_type='Document',
+    unrestricted=True,
+)
+```
+
+% invisible-code-block: python
+%
+% self.assertGreater(len(documents), 0)
+
 More information about how to use the catalog may be found in the
 [Plone Documentation](https://5.docs.plone.org/develop/plone/searching_and_indexing/index.html).
 
