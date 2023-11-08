@@ -599,7 +599,7 @@ def _parse_object_provides_query(query):
     return result
 
 
-def find(context=None, depth=None, untestricted=False, **kwargs):
+def find(context=None, depth=None, unrestricted=False, **kwargs):
     """Find content in the portal.
 
     :param context: Context for the search
