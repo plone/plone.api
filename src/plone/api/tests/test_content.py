@@ -912,8 +912,8 @@ class TestPloneApiContent(unittest.TestCase):
         documents = api.content.find(portal_type="Document")
         self.assertEqual(len(documents), 2)
 
-    def test_find(self):
-        """Test the finding of content in various ways."""
+    def test_untrestricted_find(self):
+        """Test the finding of content in with unrestricted search."""
 
         # Find documents
         documents = api.content.find(portal_type="Document", unrestricted=True)

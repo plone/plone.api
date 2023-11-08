@@ -195,13 +195,13 @@ documents = api.content.find(
 %
 % self.assertGreater(len(documents), 0)
 
-Find all Documents, and use unrestrictedSearchResults:
+Find all `Document` content types, and use unrestricted search results:
 
 ```python
 from plone import api
 documents = api.content.find(
     context=api.portal.get(),
-    portal_type='Document',
+    portal_type="Document",
     unrestricted=True,
 )
 ```
