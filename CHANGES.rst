@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.7 (2023-11-30)
+------------------
+
+Documentation:
+
+
+- Use the preferred `git switch -c` command. See https://www.infoq.com/news/2019/08/git-2-23-switch-restore/. @stevepiercy (#520)
+
+
 2.0.6 (2023-11-03)
 ------------------
 
