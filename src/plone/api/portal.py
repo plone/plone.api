@@ -19,7 +19,7 @@ from zope.globalrequest import getRequest
 from zope.interface.interfaces import IInterface
 
 import datetime as dtime
-
+import re
 
 logger = getLogger("plone.api.portal")
 
@@ -419,6 +419,8 @@ def translate(msgid, domain="plone", lang=None):
     :Example: :ref:`portal-translate-example`
     """
     translation_service = get_tool("translation_service")
+    if lang and re.match(r"\D{2}-\D{2}", lang):
+        lang = f"{lang[:2]}_{lang[-2:].upper()}"
     query = {
         "msgid": msgid,
         "domain": domain,
