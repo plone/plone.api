@@ -886,3 +886,20 @@ class TestPloneApiPortal(unittest.TestCase):
             ),
             "Avril",
         )
+
+    def test_translate_with_country_codes(self):
+        """Test translation."""
+        self.assertEqual(
+            portal.translate(
+                "Page",
+                lang="pt-br",
+            ),
+            "Página",
+        )
+        self.assertEqual(
+            portal.translate(
+                "Page",
+                lang="pt_BR",
+            ),
+            "Página",
+        )
