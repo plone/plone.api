@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.8 (2023-12-14)
+------------------
+
+Bug fixes:
+
+
+- Fix `api.portal.translate` usage with country-specific language codes [@ericof] (#524)
+
+
 2.0.7 (2023-11-30)
 ------------------
 
