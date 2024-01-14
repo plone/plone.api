@@ -17,6 +17,7 @@ from Products.PlonePAS.interfaces.plugins import ILocalRolesPlugin
 
 import random
 import string
+import uuid
 
 
 def create(
@@ -67,6 +68,9 @@ def create(
 
     registration = portal.get_tool("portal_registration")
     user_id = use_email_as_username and email or username
+    
+      # Generate a UUID for user_id
+    user_id = str(uuid.uuid4())
 
     # Generate a random 8-char password
     if not password:
