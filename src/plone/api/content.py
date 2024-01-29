@@ -532,16 +532,21 @@ def get_view(name=None, context=None, request=None):
     # and get their names.
     available_view_names = [view[0] for view in available_views]
 
-    # Raise an error if the requested view is not available.
-    if name not in available_view_names:
-        raise InvalidParameterError(
-            "Cannot find a view with name '{name}'.\n"
-            "Available views are:\n"
-            "{views}".format(
-                name=name,
-                views="\n".join(sorted(available_view_names)),
-            ),
-        )
+
+    try:
+        return getMultiAdapter((context, request), name=name)
+    except Exception:  
+    # Check if the requested view is available.
+        if name not in available_view_names:
+            # Raise an error if the requested view is not available.
+            raise InvalidParameterError(
+                "Cannot find a view with name '{name}'.\n"
+                "Available views are:\n"
+                "{views}".format(
+                    name=name,
+                    views="\n".join(sorted(available_view_names)),
+                ),
+            )
     return getMultiAdapter((context, request), name=name)
 
 
