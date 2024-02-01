@@ -523,20 +523,19 @@ def get_view(name=None, context=None, request=None):
     # available, because the __init__ of said view will contain
     # errors in client code.
 
-    # Get all available views...
-    sm = getSiteManager()
-    available_views = sm.adapters.lookupAll(
-        required=(providedBy(context), providedBy(request)),
-        provided=Interface,
-    )
-    # and get their names.
-    available_view_names = [view[0] for view in available_views]
-
-
     try:
-        return getMultiAdapter((context, request), name=name)
-    except Exception:  
-    # Check if the requested view is available.
+        adapter = getMultiAdapter((context, request), name=name)
+    except Exception: 
+
+        #Getting all available views
+        sm = getSiteManager()
+        available_views = sm.adapters.lookupAll(
+            required=(providedBy(context), providedBy(request)),
+            provided=Interface,
+        )
+        
+        # Check if the requested view is available by getting the names of all available views
+        available_view_names = [view[0] for view in available_views]
         if name not in available_view_names:
             # Raise an error if the requested view is not available.
             raise InvalidParameterError(
@@ -547,8 +546,7 @@ def get_view(name=None, context=None, request=None):
                     views="\n".join(sorted(available_view_names)),
                 ),
             )
-    return getMultiAdapter((context, request), name=name)
-
+    return adapter
 
 @required_parameters("obj")
 def get_uuid(obj=None):
