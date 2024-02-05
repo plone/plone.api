@@ -13,10 +13,12 @@ from Products.CMFCore.DynamicType import DynamicType
 from Products.CMFCore.WorkflowCore import WorkflowException
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
+from zope.component import ComponentLookupError
 from zope.container.interfaces import INameChooser
 from zope.globalrequest import getRequest
 from zope.interface import Interface
 from zope.interface import providedBy
+
 
 import random
 import transaction
@@ -525,8 +527,7 @@ def get_view(name=None, context=None, request=None):
 
     try:
         adapter = getMultiAdapter((context, request), name=name)
-    except Exception: 
-
+    except ComponentLookupError: 
         #Getting all available views
         sm = getSiteManager()
         available_views = sm.adapters.lookupAll(
