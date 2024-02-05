@@ -526,7 +526,7 @@ def get_view(name=None, context=None, request=None):
     # errors in client code.
 
     try:
-        adapter = getMultiAdapter((context, request), name=name)
+        return getMultiAdapter((context, request), name=name)
     except ComponentLookupError: 
         #Getting all available views
         sm = getSiteManager()
@@ -547,7 +547,6 @@ def get_view(name=None, context=None, request=None):
                     views="\n".join(sorted(available_view_names)),
                 ),
             )
-    return adapter
 
 @required_parameters("obj")
 def get_uuid(obj=None):
