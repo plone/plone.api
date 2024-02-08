@@ -11,14 +11,13 @@ from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.DynamicType import DynamicType
 from Products.CMFCore.WorkflowCore import WorkflowException
+from zope.component import ComponentLookupError
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
-from zope.component import ComponentLookupError
 from zope.container.interfaces import INameChooser
 from zope.globalrequest import getRequest
 from zope.interface import Interface
 from zope.interface import providedBy
-
 
 import random
 import transaction
@@ -527,14 +526,14 @@ def get_view(name=None, context=None, request=None):
 
     try:
         return getMultiAdapter((context, request), name=name)
-    except ComponentLookupError: 
-        #Getting all available views
+    except ComponentLookupError:
+        # Getting all available views
         sm = getSiteManager()
         available_views = sm.adapters.lookupAll(
             required=(providedBy(context), providedBy(request)),
             provided=Interface,
         )
-        
+
         # Check if the requested view is available
         # by getting the names of all available views
         available_view_names = [view[0] for view in available_views]
@@ -548,6 +547,7 @@ def get_view(name=None, context=None, request=None):
                     views="\n".join(sorted(available_view_names)),
                 ),
             )
+
 
 @required_parameters("obj")
 def get_uuid(obj=None):
