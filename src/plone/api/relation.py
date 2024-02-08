@@ -2,6 +2,7 @@
 
 Heavily inspired by collective.relationhelpers.
 """
+
 from AccessControl.SecurityManagement import getSecurityManager
 from collections import defaultdict
 from plone.api.exc import InvalidParameterError
