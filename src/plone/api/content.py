@@ -535,7 +535,8 @@ def get_view(name=None, context=None, request=None):
             provided=Interface,
         )
         
-        # Check if the requested view is available by getting the names of all available views
+        # Check if the requested view is available
+        # by getting the names of all available views
         available_view_names = [view[0] for view in available_views]
         if name not in available_view_names:
             # Raise an error if the requested view is not available.
