@@ -1,1 +1,0 @@
-Improved efficiency of view retrieval by deferring availability checks to error handling. @samriddhi99

@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.9 (2024-02-12)
+------------------
+
+Internal:
+
+
+- Improved efficiency of view retrieval by deferring availability checks to error handling. @samriddhi99 (#479)
+
+
 2.0.8 (2023-12-14)
 ------------------
 
