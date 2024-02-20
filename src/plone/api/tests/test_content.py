@@ -1,4 +1,5 @@
 """Tests for plone.api.content."""
+
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
