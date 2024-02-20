@@ -915,9 +915,17 @@ class TestPloneApiContent(unittest.TestCase):
     def test_untrestricted_find(self):
         """Test the finding of content in with unrestricted search."""
 
-        # Find documents
+        # Search as Anonymous user
+        from plone.app.testing import logout
+        logout()
+
+        # Find documents (unrestricted)
         documents = api.content.find(portal_type="Document", unrestricted=True)
         self.assertEqual(len(documents), 2)
+
+        # Find documents (restricted)
+        documents = api.content.find(portal_type="Document")
+        self.assertEqual(len(documents), 0)
 
     def test_find_empty_query(self):
         """Make sure an empty query yields no results"""
