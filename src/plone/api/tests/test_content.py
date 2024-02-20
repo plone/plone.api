@@ -917,6 +917,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Search as Anonymous user
         from plone.app.testing import logout
+
         logout()
 
         # Find documents (unrestricted)
