@@ -11,6 +11,7 @@ from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.DynamicType import DynamicType
 from Products.CMFCore.WorkflowCore import WorkflowException
+from zope.component import ComponentLookupError
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.container.interfaces import INameChooser
@@ -523,26 +524,29 @@ def get_view(name=None, context=None, request=None):
     # available, because the __init__ of said view will contain
     # errors in client code.
 
-    # Get all available views...
-    sm = getSiteManager()
-    available_views = sm.adapters.lookupAll(
-        required=(providedBy(context), providedBy(request)),
-        provided=Interface,
-    )
-    # and get their names.
-    available_view_names = [view[0] for view in available_views]
-
-    # Raise an error if the requested view is not available.
-    if name not in available_view_names:
-        raise InvalidParameterError(
-            "Cannot find a view with name '{name}'.\n"
-            "Available views are:\n"
-            "{views}".format(
-                name=name,
-                views="\n".join(sorted(available_view_names)),
-            ),
+    try:
+        return getMultiAdapter((context, request), name=name)
+    except ComponentLookupError:
+        # Getting all available views
+        sm = getSiteManager()
+        available_views = sm.adapters.lookupAll(
+            required=(providedBy(context), providedBy(request)),
+            provided=Interface,
         )
-    return getMultiAdapter((context, request), name=name)
+
+        # Check if the requested view is available
+        # by getting the names of all available views
+        available_view_names = [view[0] for view in available_views]
+        if name not in available_view_names:
+            # Raise an error if the requested view is not available.
+            raise InvalidParameterError(
+                "Cannot find a view with name '{name}'.\n"
+                "Available views are:\n"
+                "{views}".format(
+                    name=name,
+                    views="\n".join(sorted(available_view_names)),
+                ),
+            )
 
 
 @required_parameters("obj")
