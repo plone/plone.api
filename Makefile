@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+CURRENT_DIR:="$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))"
 
 version = 3
 
