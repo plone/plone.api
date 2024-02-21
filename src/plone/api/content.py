@@ -603,12 +603,13 @@ def _parse_object_provides_query(query):
     return result
 
 
-def find(context=None, depth=None, **kwargs):
+def find(context=None, depth=None, unrestricted=False, **kwargs):
     """Find content in the portal.
 
     :param context: Context for the search
     :type obj: Content object
     :param depth: How far in the content tree we want to search from context
+    :param unrestricted: Boolean, use unrestrictedSearchResults if True
     :type obj: Content object
     :returns: Catalog brains
     :rtype: List
@@ -656,4 +657,7 @@ def find(context=None, depth=None, **kwargs):
     if not valid_indexes:
         return []
 
-    return catalog(**query)
+    if unrestricted:
+        return catalog.unrestrictedSearchResults(**query)
+    else:
+        return catalog(**query)
