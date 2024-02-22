@@ -8,6 +8,21 @@ Changelog
 
 .. towncrier release notes start
 
+2.1.0 (2024-02-22)
+------------------
+
+New features:
+
+
+- Implemented unrestricted find of content types. @gogobd (#312)
+
+
+Internal:
+
+
+- Enhanced Makefile paths to address whitespace compatibility issues. @Vivek-04022001 (#530)
+
+
 2.0.9 (2024-02-12)
 ------------------
 

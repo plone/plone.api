@@ -1,1 +1,0 @@
-Implemented unrestricted find of content types. @gogobd
