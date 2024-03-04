@@ -77,7 +77,7 @@ class TestPloneApiGroup(unittest.TestCase):
         self.assertIn("Reviewer", ham_group.getMemberIds())
 
     def test_get_constraints(self):
-        """Test the constraints for geting a group."""
+        """Test the constraints for getting a group."""
         from plone.api.exc import MissingParameterError
 
         with self.assertRaises(MissingParameterError):

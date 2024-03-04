@@ -34,7 +34,7 @@ def create(
         is not used as a username.
     :type username: string
     :param password: Password for the new user. If it's not set we generate
-        a random 8-char alpha-numeric one.
+        a random 8-char alphanumeric one.
     :type password: string
     :param properties: User properties to assign to the new user. The list of
         available properties is available in ``portal_memberdata`` through ZMI.

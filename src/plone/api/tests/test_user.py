@@ -168,7 +168,7 @@ class TestPloneApiUser(unittest.TestCase):
         )
 
     def test_get_constraints(self):
-        """Test on raised exeption if no username is given when getting the user."""
+        """Test on raised exception if no username is given when getting the user."""
         from plone.api.exc import MissingParameterError
 
         with self.assertRaises(MissingParameterError):

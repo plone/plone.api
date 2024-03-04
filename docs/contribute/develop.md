@@ -70,7 +70,7 @@ Our repository on GitHub has the following layout:
 - **feature branches**: all development for new features must be done in
   dedicated branches, normally one branch per feature,
 - **master branch**: when features get completed they are merged into the
-  master branch; bugfixes are commited directly on the master branch,
+  master branch; bugfixes are committed directly on the master branch,
 - **tags**: whenever we create a new release we tag the repository so we can
   later re-trace our steps, re-release versions, etc.
 

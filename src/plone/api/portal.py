@@ -280,7 +280,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
         records = registry.forInterface(interface, check=False)
         _marker = object()
         if getattr(records, name, _marker) != _marker:
-            return registry["{}.{}".format(interface.__identifier__, name)]
+            return registry[f"{interface.__identifier__}.{name}"]
 
         if default is not MISSING:
             return default
@@ -307,7 +307,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
     # Show all records that 'look like' name.
     # We don't dump the whole list, because it 1500+ items.
-    msg = "Cannot find a record with name '{name}'".format(name=name)
+    msg = f"Cannot find a record with name '{name}'"
     records = [key for key in registry.records.keys() if name in key]
     if records:
         msg = (

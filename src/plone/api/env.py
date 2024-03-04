@@ -231,4 +231,4 @@ def zope_version():
     :returns: string denoting what release of Zope2 this distribution contains
     :Example: :ref:`env-zope-version-example`
     """
-    return get_distribution("Zope2").version
+    return get_distribution("Zope").version

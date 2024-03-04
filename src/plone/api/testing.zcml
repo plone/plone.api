@@ -1,17 +1,21 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="plone.api">
+    i18n_domain="plone.api"
+    >
 
-    <include package="Products.GenericSetup" file="meta.zcml"/>
+  <include
+      package="Products.GenericSetup"
+      file="meta.zcml"
+      />
 
-    <genericsetup:registerProfile
-        name="testfixture"
-        title="plone.api: Test fixture"
-        directory="profiles/testfixture"
-        description="Extension profile to configure a test fixture"
-        for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+  <genericsetup:registerProfile
+      name="testfixture"
+      title="plone.api: Test fixture"
+      description="Extension profile to configure a test fixture"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+      directory="profiles/testfixture"
+      />
 
 </configure>
