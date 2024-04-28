@@ -530,14 +530,15 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_roles_restored_after_exception(self):
         """Tests that roles are restored after an exception."""
-        self.assertFalse(api.user.has_permission("Manage portal content"))
+        permission = "Manage properties"
+        self.assertFalse(api.user.has_permission(permission))
         try:
             with api.env.adopt_roles(["Manager"]):
-                self.assertTrue(api.user.has_permission("Manage portal content"))
+                self.assertTrue(api.user.has_permission(permission))
                 raise TestException("Test exception")
         except TestException:
             pass
-        self.assertFalse(api.user.has_permission("Manage portal content"))
+        self.assertFalse(api.user.has_permission(permission))
 
     def test_user_restored_after_exception(self):
         """Tests that roles are restored after an exception."""
