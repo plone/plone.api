@@ -76,16 +76,16 @@ def get(
     :Example: :ref:`relation-get-example`
     """
     if source is not None and not base_hasattr(source, "portal_type"):
-        raise InvalidParameterError("{} has no portal_type".format(source))
+        raise InvalidParameterError(f"{source} has no portal_type")
 
     if target is not None and not base_hasattr(target, "portal_type"):
-        raise InvalidParameterError("{} has no portal_type".format(target))
+        raise InvalidParameterError(f"{target} has no portal_type")
 
     if relationship is not None and not isinstance(
         relationship,
         str,
     ):
-        raise InvalidParameterError("{} is no string".format(relationship))
+        raise InvalidParameterError(f"{relationship} is no string")
 
     intids = getUtility(IIntIds)
     relation_catalog = getUtility(ICatalog)
@@ -150,13 +150,13 @@ def create(source=None, target=None, relationship=None):
     :Example: :ref:`relation-create-example`
     """
     if source is not None and not base_hasattr(source, "portal_type"):
-        raise InvalidParameterError("{} has no portal_type".format(source))
+        raise InvalidParameterError(f"{source} has no portal_type")
 
     if target is not None and not base_hasattr(target, "portal_type"):
-        raise InvalidParameterError("{} has no portal_type".format(target))
+        raise InvalidParameterError(f"{target} has no portal_type")
 
     if not isinstance(relationship, str):
-        raise InvalidParameterError("{} is no string".format(relationship))
+        raise InvalidParameterError(f"{relationship} is no string")
 
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
@@ -267,16 +267,16 @@ def delete(source=None, target=None, relationship=None):
     :Example: :ref:`relation-delete-example`
     """
     if source is not None and not base_hasattr(source, "portal_type"):
-        raise InvalidParameterError("{} has no portal_type".format(source))
+        raise InvalidParameterError(f"{source} has no portal_type")
 
     if target is not None and not base_hasattr(target, "portal_type"):
-        raise InvalidParameterError("{} has no portal_type".format(target))
+        raise InvalidParameterError(f"{target} has no portal_type")
 
     if relationship is not None and not isinstance(
         relationship,
         str,
     ):
-        raise InvalidParameterError("{} is no string".format(relationship))
+        raise InvalidParameterError(f"{relationship} is no string")
 
     query = {}
     relation_catalog = getUtility(ICatalog)

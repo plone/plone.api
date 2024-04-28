@@ -84,8 +84,8 @@ Bug fixes:
 
 
 - Do not run GitHub Actions tests twice.
-  Only run GitHub Actions tests when commiting directly against master or main or
-  opening a pull request agains master or main. This avoids to run the same test
+  Only run GitHub Actions tests when committing directly against master or main or
+  opening a pull request against master or main. This avoids to run the same test
   suite for the same environment twice.
   [thet] (#0)
 - Mockup TinyMCE settings: Remove unused AtD related views.
@@ -474,7 +474,7 @@ Bug fixes:
 - Simplify the ``plone.api.content.delete`` method.
   [thet]
 
-- content.copy with safe_id=False should raise it's own exeception. Fixes #340
+- content.copy with safe_id=False should raise it's own exception. Fixes #340
   [jaroel]
 
 

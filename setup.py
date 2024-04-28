@@ -1,24 +1,22 @@
+from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
 
-import os
-
-
-def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
-
-
-long_description = (
-    read("README.md") + "\n\n" + read("CHANGES.rst") + "\n\n" + read("LICENSE")
-)
 
 version = "2.1.1.dev0"
+
+long_description = (
+    f"{Path('README.md').read_text()}\n"
+    f"{Path('CHANGES.rst').read_text()}\n"
+    f"{Path('LICENSE').read_text()}"
+)
 
 setup(
     name="plone.api",
     version=version,
     description="A Plone API.",
     long_description=long_description,
+    long_description_content_type="text/x-rst",
     author="Plone Foundation",
     author_email="plone-developers@lists.sourceforge.net",
     license="GPL version 2",
@@ -32,26 +30,40 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "Products.statusmessages",
+        "Products.PlonePAS",
+        "Products.CMFPlone",
         "decorator",
         "plone.app.uuid",
+        "plone.app.dexterity",
+        "plone.app.intid",
+        "plone.app.layout",
         "plone.app.linkintegrity",
+        "plone.dexterity",
+        "plone.i18n",
+        "plone.registry",
         "plone.uuid",
         "setuptools",
         "zope.globalrequest",
+        "Products.CMFCore",
+        "z3c.relationfield",
+        "zc.relation",
+        "Zope",
+        "zope.intid",
     ],
     extras_require={
         "test": [
-            "Products.CMFPlone",
+            "borg.localrole",
             "manuel>=1.11.2",
-            "plone.app.dexterity",
-            "plone.app.intid",
+            "plone.app.contenttypes",
+            "plone.app.textfield",
             "plone.app.testing",
+            "plone.testing",
             "plone.indexer",
             "plone.registry",
-            "z3c.relationfield",
-            "zope.testrunner",
         ],
     },
+    # Get more strings from
+    # https://pypi.org/classifiers/
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",

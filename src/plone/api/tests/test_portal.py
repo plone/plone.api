@@ -520,7 +520,7 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def test_get_invalid_registry_record_msg(self):
         """Test that the error message from trying to get a
-        nonexistant registry record produces an error message which
+        nonexistent registry record produces an error message which
         lists suggested registry records.
         """
         from plone.api.exc import InvalidParameterError
