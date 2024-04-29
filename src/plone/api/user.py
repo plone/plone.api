@@ -327,7 +327,18 @@ def has_permission(permission, username=None, user=None, obj=None):
         context = env.adopt_user(username, user)
 
     with context:
-        return bool(getSecurityManager().checkPermission(permission, obj))
+        return_value = bool(getSecurityManager().checkPermission(permission, obj))
+        if not return_value:
+            names = [x[0] for x in getPermissions()]
+            if permission not in names:
+                raise InvalidParameterError(
+                    "Cannot find a permission with name '{permission}'\n"
+                    "Available permissions are:\n"
+                    "{names}".format(
+                        permission=permission, names="\n".join(sorted(names))
+                    )
+                )
+        return return_value
 
 
 @required_parameters("roles")
