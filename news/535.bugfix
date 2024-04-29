@@ -1,0 +1,1 @@
+In relation.create: Fix edge case where existing RelationList value is None. @davisagli
