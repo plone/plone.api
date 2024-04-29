@@ -217,7 +217,7 @@ def create(source=None, target=None, relationship=None):
             target.absolute_url(),
         )
         if not has_relation:
-            existing_relations = getattr(source, from_attribute, [])
+            existing_relations = getattr(source, from_attribute, None) or []
             existing_relations.append(RelationValue(to_id))
             setattr(source, from_attribute, existing_relations)
             modified(source)
