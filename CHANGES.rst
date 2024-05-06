@@ -8,6 +8,30 @@ Changelog
 
 .. towncrier release notes start
 
+2.2.0 (2024-05-06)
+------------------
+
+New features:
+
+
+- Report if a permission does not exist
+  when calling `api.user.has_permission`.
+  [gforcada] (#515)
+
+
+Bug fixes:
+
+
+- In relation.create: Fix edge case where existing RelationList value is None. @davisagli (#535)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (cfffba8c)
+
+
 2.1.0 (2024-02-22)
 ------------------
 
