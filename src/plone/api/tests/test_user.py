@@ -42,13 +42,7 @@ class TestPloneApiUser(unittest.TestCase):
         self.assertNotEqual(userid, username)
 
     def _set_emaillogin(self, value):
-        from plone.api.exc import InvalidParameterError
-
-        try:
-            api.portal.set_registry_record("plone.use_email_as_login", value)
-        except InvalidParameterError:
-            portal = api.portal.get()
-            portal.portal_properties.site_properties.use_email_as_login = value
+        api.portal.set_registry_record("plone.use_email_as_login", value)
 
     def test_create_no_email(self):
         """Test that exception is raised if no email is given."""
