@@ -26,12 +26,7 @@ If your portal is configured to use emails as usernames, you just need to pass i
 % invisible-code-block: python
 %
 % from plone import api
-% from plone.api.exc import InvalidParameterError
-% try:
-%     api.portal.set_registry_record('plone.use_email_as_login', True)
-% except InvalidParameterError:
-%     portal = api.portal.get()
-%     portal.portal_properties.site_properties.use_email_as_login = True
+% api.portal.set_registry_record('plone.use_email_as_login', True)
 
 ```python
 from plone import api
@@ -47,11 +42,7 @@ Otherwise, you also need to pass in the username of the new user.
 
 % invisible-code-block: python
 %
-% try:
-%     api.portal.set_registry_record('plone.use_email_as_login', False)
-% except InvalidParameterError:
-%     portal = api.portal.get()
-%     portal.portal_properties.site_properties.use_email_as_login = False
+% api.portal.set_registry_record('plone.use_email_as_login', False)
 
 ```python
 user = api.user.create(email='jane@plone.org', username='jane')
