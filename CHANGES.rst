@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+2.2.1 (2024-06-26)
+------------------
+
+Bug fixes:
+
+
+- Removed `portal_properties` from documentation and tests.
+  [maurits] (#125)
+
+
 2.2.0 (2024-05-06)
 ------------------
 
