@@ -32,6 +32,23 @@ Install tox into your Python user space with the following command.
 python -m pip install --user tox
 ```
 
+### pre-commit
+
+`plone.api` uses [pre-commit](https://pre-commit.com/) to automate code quality checks before every commit.
+
+Install pre-commit either with your system package manager.
+Alternatively you can install pre-commit into your Python user.
+
+```shell
+python -m pip install --user pre-commit
+```
+
+Once installed, set up the git hook scripts to run on every commit.
+
+```shell
+pre-commit install
+```
+
 
 ## Create development environment
 
