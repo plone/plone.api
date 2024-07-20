@@ -79,17 +79,15 @@ allowlist_externals =
 [testenv:plone6docs]
 # New docs with sphinx-book-theme
 # See [testenv:docs] for classic documentation
-basepython = python3.9
+basepython = python3.11
 skip_install = False
-usedevelop = True
+package = editable
 allowlist_externals =
     mkdir
 extras =
     tests
-
 deps =
     -r requirements-docs.txt
-
 commands =
     python -VV
     mkdir -p {toxinidir}/_build/plone6docs
@@ -116,9 +114,9 @@ whitelist_externals =
     mkdir
 
 [testenv:linkcheck]
-basepython = python
+basepython = python3.11
 skip_install = False
-usedevelop = True
+package = editable
 allowlist_externals =
     mkdir
 extras =
