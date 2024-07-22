@@ -109,7 +109,7 @@ GitHub workflows are configured in the directory `.github/workflows` at the root
 
 ## Documentation
 
-For every feature change or addition to `plone.api`, you should add documentation of it.
+For every feature change or addition to `plone.api`, you must add documentation of it.
 `plone.api` uses [MyST](https://myst-parser.readthedocs.io/en/latest/) for documentation syntax.
 
 ```{seealso}
