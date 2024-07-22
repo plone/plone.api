@@ -131,7 +131,7 @@ tox -e livehtml
 The [`plone.api` documentation](https://6.docs.plone.org/plone.api) is automatically generated from the documentation source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
 
 
-### Add a function to an existing module
+## Add a function to an existing module
 
 This section describes how to add a new function `foo` to `plone.api`.
 
