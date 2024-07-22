@@ -20,7 +20,7 @@ Prepare your system by installing pre-requisites.
 
 ### System libraries
 
-See {ref}`plone:plone-pre-requisites-label`.
+You need to install system libraries, as described in {ref}`plone:plone-pre-requisites-label`, with the exception of GNU make.
 
 
 ### tox
