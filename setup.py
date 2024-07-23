@@ -80,4 +80,9 @@ setup(
         "Programming Language :: Python :: 3.11",
     ],
     platforms="Any",
+    project_urls={
+        "Documentation": "https://6.docs.plone.org/plone.api/index.html",
+        "Changelog": "https://github.com/plone/plone.api/blob/master/CHANGES.rst",
+        "Issue Tracker": "https://github.com/plone/plone.api/issues",
+    },
 )

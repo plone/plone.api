@@ -16,13 +16,14 @@ source_suffix = {
 }
 
 extensions = [
-    "sphinx.ext.doctest",
-    "sphinx.ext.coverage",
-    "sphinx.ext.autodoc",
-    "sphinx.ext.viewcode",
-    "sphinx.ext.autosummary",
     "myst_parser",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
 ]
 master_doc = "index"
 
@@ -67,11 +68,12 @@ for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
 
 
-# -- Options for myST markdown conversion to html -----------------------------
+# -- Options for MyST markdown conversion to HTML -----------------------------
 
 myst_enable_extensions = [
     "colon_fence",
     "deflist",
+    "linkify",  # Identify "bare" web URLs and add hyperlinks.
 ]
 
 
@@ -81,3 +83,25 @@ myst_enable_extensions = [
 # a list of builtin themes.
 #
 html_theme = "sphinx_book_theme"
+
+
+# -- Intersphinx configuration ----------------------------------
+
+# This extension can generate automatic links to the documentation of objects
+# in other projects. Usage is simple: whenever Sphinx encounters a
+# cross-reference that has no matching target in the current documentation set,
+# it looks for targets in the documentation sets configured in
+# intersphinx_mapping. A reference like :py:class:`zipfile.ZipFile` can then
+# linkto the Python documentation for the ZipFile class, without you having to
+# specify where it is located exactly.
+#
+# https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html
+#
+# Note that Plone Documentation imports documentation from several remote repositories.
+# These projects need to build their docs as part of their CI/CD and testing.
+# We use Intersphinx to resolve targets when either the individual project's or
+# the entire Plone Documentation is built.
+intersphinx_mapping = {
+    "plone": ("https://6.docs.plone.org/", None),  # for imported packages
+    "plone5": ("https://5.docs.plone.org/", None),
+}
