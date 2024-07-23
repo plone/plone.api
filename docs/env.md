@@ -9,7 +9,7 @@ myst:
 
 ```{eval-rst}
 .. module:: plone
-    :noindex:
+    :no-index:
 ```
 
 (chapter-env)=
