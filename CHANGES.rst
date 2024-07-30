@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+2.2.2 (2024-07-30)
+------------------
+
+Documentation:
+
+
+- Overhaul contributing documentation for Plone 6. @stevepiercy (#539)
+- Use correct syntax for `no-index` in documentation. @stevepiercy (#540)
+
+
 2.2.1 (2024-06-26)
 ------------------
 
