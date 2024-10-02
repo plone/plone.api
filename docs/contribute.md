@@ -13,14 +13,14 @@ This section describes how to contribute to the `plone.api` project.
 It extends {doc}`plone:contributing/index`.
 
 
-## Pre-requisites
+## Prerequisites
 
-Prepare your system by installing pre-requisites.
+Prepare your system by installing prerequisites.
 
 
 ### System libraries
 
-You need to install system libraries, as described in {ref}`plone:plone-pre-requisites-label`, with the exception of GNU make.
+You need to install system libraries, as described in {ref}`plone:plone-prerequisites-label`, with the exception of GNU make.
 
 
 ### tox
@@ -52,7 +52,7 @@ pre-commit install
 
 ## Create development environment
 
-After satisfying the pre-requisites, you are ready to create your development environment.
+After satisfying the prerequisites, you are ready to create your development environment.
 `plone.api` uses `tox` as a wrapper around `coredev.buildout` to simplify development, whereas Plone core uses `coredev.buildout` directly.
 
 Start by changing your working directory to your project folder, and download the latest `plone.api` source code.
