@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.2.3 (2024-10-23)
+------------------
+
+Documentation:
+
+
+- Fixed spelling of prerequisites. @stevepiercy (#541)
+
+
 2.2.2 (2024-07-30)
 ------------------
 
