@@ -21,6 +21,33 @@ from zope.interface import providedBy
 
 import random
 import transaction
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Add logging in create function to record when content creation is attempted
+def create(
+    container=None,
+    type=None,
+    id=None,
+    title=None,
+    safe_id=False,
+    **kwargs,
+):
+    logger.info(f"Attempting to create a content item of type '{type}' in container '{container}'")
+    content_id = not safe_id and id or str(random.randint(0, 99999999))
+    if title:
+        kwargs["title"] = title
+    try:
+        container.invokeFactory(type, content_id, **kwargs)
+        logger.info(f"Created content item with id '{content_id}' and title '{title}'")
+    except UnicodeDecodeError:
+        logger.error(f"Failed to create content item due to UnicodeDecodeError")
+        raise
+    except ValueError as e:
+        logger.error(f"Error while creating content: {str(e)}")
+        raise InvalidParameterError("Error while creating content.")
+
 
 
 _marker = []
@@ -107,6 +134,38 @@ def create(
         content.aq_parent.manage_renameObject(content_id, new_id)
 
     return content
+def duplicate_content(source, suffix="_copy"):
+    """Duplicate content and add a suffix to the ID.
+
+    :param source: The source object to duplicate.
+    :type source: Content object
+    :param suffix: Suffix to append to duplicated ID.
+    :type suffix: string
+    :returns: Duplicated content object.
+    """
+    source_id = source.getId()
+    target = source.aq_parent
+    copy_info = target.manage_pasteObjects(source.aq_parent.manage_copyObjects(source_id))
+    new_id = copy_info[0]["new_id"]
+    
+    # Rename with suffix
+    if suffix:
+        new_id_with_suffix = f"{new_id}{suffix}"
+        rename(target[new_id], new_id=new_id_with_suffix, safe_id=True)
+    
+    return target[new_id_with_suffix]
+def create(
+    container=None,
+    type=None,
+    id=None,
+    title=None,
+    safe_id=False,
+    **kwargs,
+):
+    if type not in [fti.getId() for fti in container.allowedContentTypes()]:
+        raise InvalidParameterError(f"Type '{type}' is not allowed in this container.")
+    
+
 
 
 @mutually_exclusive_parameters("path", "UID")
@@ -144,6 +203,14 @@ def get(path=None, UID=None):
     elif UID:
         return uuidToObject(UID)
 
+def delete(obj=None, objects=None, check_linkintegrity=True):
+    objects = [obj] if obj else objects
+
+    # Log deletion
+    for obj_ in objects:
+        logger.info(f"Deleting object with ID '{obj_.getId()}' in container '{obj_.aq_parent.getId()}'")
+
+    
 
 @required_parameters("source")
 @at_least_one_of("target", "id")
