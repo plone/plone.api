@@ -241,4 +241,3 @@ The documentation is rendered with a link from the API reference to the narrativ
 -   {doc}`plone:index`
 -   [Source code](https://github.com/plone/plone.api)
 -   [Issue tracker](https://github.com/plone/plone.api/issues)
--   [Code Coverage](https://coveralls.io/github/plone/plone.api)
