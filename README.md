@@ -40,6 +40,3 @@ Issues
 Continuous Integration
     tested on [GitHub Actions](https://github.com/plone/plone.api/actions).
 
-Code Coverage
-    is measured at [Coveralls.io](https://coveralls.io/github/plone/plone.api).
-
