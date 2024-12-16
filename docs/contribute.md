@@ -12,16 +12,13 @@ myst:
 This section describes how to contribute to the `plone.api` project.
 It extends {doc}`plone:contributing/index`.
 
-
 ## Prerequisites
 
 Prepare your system by installing prerequisites.
 
-
 ### System libraries
 
 You need to install system libraries, as described in {ref}`plone:plone-prerequisites-label`, with the exception of GNU make.
-
 
 ### tox
 
@@ -48,7 +45,6 @@ Once installed, set up the git hook scripts to run on every commit.
 ```shell
 pre-commit install
 ```
-
 
 ## Create development environment
 
@@ -81,7 +77,6 @@ tox -e livehtml       # build, serve, and reload changes to documentation
 tox -l                # list all tox environments
 ```
 
-
 (git-workflow)=
 
 ## git
@@ -89,23 +84,21 @@ tox -l                # list all tox environments
 Use the following git branches when contributing to `plone.api`.
 
 feature branches
-:   All development for a new feature or bug fix must be done on a new branch.
+: All development for a new feature or bug fix must be done on a new branch.
 
-`master`
-:   Pull requests should be made from a feature branch against the `master` branch.
-    When features and bug fixes are complete and approved, they are merged into the `master` branch.
+`main`
+: Pull requests should be made from a feature branch against the `main` branch.
+When features and bug fixes are complete and approved, they are merged into the `main` branch.
 
 ```{seealso}
 {ref}`plone:contributing-core-work-with-git-label`
 ```
 
-
 ## Continuous integration
 
 `plone.api` uses GitHub workflows for continuous integration.
-On every push to the `master` branch, GitHub runs its workflows for all tests and code quality checks.
+On every push to the `main` branch, GitHub runs its workflows for all tests and code quality checks.
 GitHub workflows are configured in the directory `.github/workflows` at the root of this package.
-
 
 ## Documentation
 
@@ -129,7 +122,6 @@ tox -e livehtml
 ```
 
 The [`plone.api` documentation](https://6.docs.plone.org/plone.api) is automatically generated from the documentation source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
-
 
 ## Add a function to an existing module
 
@@ -171,8 +163,8 @@ def foo(path=None, UID=None):
 %
 % from plone.api.exc import InvalidParameterError
 % self.assertRaises(
-%     InvalidParameterError,
-%     lambda: foo("/plone/blog", "abcd001")
+% InvalidParameterError,
+% lambda: foo("/plone/blog", "abcd001")
 % )
 
 Add documentation in {file}`docs/api/content.md`.
@@ -235,9 +227,8 @@ The function references the narrative documentation via the label `content-foo-e
 The narrative documentation references the API function documentation via `` {meth}`api.content.foo` ``.
 The documentation is rendered with a link from the API reference to the narrative documentation, which in turn links back to the API reference.
 
-
 ## Resources
 
--   {doc}`plone:index`
--   [Source code](https://github.com/plone/plone.api)
--   [Issue tracker](https://github.com/plone/plone.api/issues)
+- {doc}`plone:index`
+- [Source code](https://github.com/plone/plone.api)
+- [Issue tracker](https://github.com/plone/plone.api/issues)
