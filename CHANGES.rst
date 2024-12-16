@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.2.4 (2024-12-16)
+------------------
+
+Documentation:
+
+
+- Remove references to unused Coveralls. @stevepiercy (#543)
+
+
 2.2.3 (2024-10-23)
 ------------------
 
