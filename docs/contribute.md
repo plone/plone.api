@@ -91,9 +91,9 @@ Use the following git branches when contributing to `plone.api`.
 feature branches
 :   All development for a new feature or bug fix must be done on a new branch.
 
-`master`
-:   Pull requests should be made from a feature branch against the `master` branch.
-    When features and bug fixes are complete and approved, they are merged into the `master` branch.
+`main`
+:   Pull requests should be made from a feature branch against the `main` branch.
+    When features and bug fixes are complete and approved, they are merged into the `main` branch.
 
 ```{seealso}
 {ref}`plone:contributing-core-work-with-git-label`
@@ -103,7 +103,7 @@ feature branches
 ## Continuous integration
 
 `plone.api` uses GitHub workflows for continuous integration.
-On every push to the `master` branch, GitHub runs its workflows for all tests and code quality checks.
+On every push to the `main` branch, GitHub runs its workflows for all tests and code quality checks.
 GitHub workflows are configured in the directory `.github/workflows` at the root of this package.
 
 
