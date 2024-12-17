@@ -23,5 +23,5 @@ build:
         exit 183;
       fi
     - pip install -r requirements.txt
-    - pip install -r requirements-docs.txt
-    - tox -e plone6docs
+#    - pip install -r requirements-docs.txt
+    - tox -e rtd-preview
