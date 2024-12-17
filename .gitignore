@@ -18,7 +18,6 @@ dist/
 docs/_build
 __pycache__/
 .tox
-.vscode/
 node_modules/
 
 # venv / buildout related
