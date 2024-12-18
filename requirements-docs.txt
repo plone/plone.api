@@ -1,12 +1,5 @@
-lesscpy
 linkify-it-py
 myst-parser
 plone-sphinx-theme
 sphinx-autobuild
-sphinx-copybutton
-sphinx-sitemap
-sphinx-togglebutton
-sphinxcontrib-spelling
-sphinxext-opengraph
-sphinxcontrib-video
-vale==2.30.0
+sphinx-reredirects
