@@ -19,7 +19,6 @@ check_manifest_ignores = """
     "constraints.txt",
     "fix-converted-myst.py",
     "Makefile",
-    "netlify.toml",
     "requirements-docs.txt",
     "requirements.txt",
 """
