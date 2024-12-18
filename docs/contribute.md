@@ -121,6 +121,12 @@ Alternatively, you can automatically reload changes to the documentation as you 
 tox -e livehtml
 ```
 
+You can run a link checker on documentation.
+
+```shell
+tox -e linkcheck
+```
+
 The [`plone.api` documentation](https://6.docs.plone.org/plone.api) is automatically generated from the documentation source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
 
 ## Add a function to an existing module

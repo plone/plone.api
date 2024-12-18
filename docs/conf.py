@@ -24,6 +24,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "sphinx_copybutton",
 ]
 master_doc = "index"
 
@@ -82,7 +83,7 @@ myst_enable_extensions = [
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_book_theme"
+html_theme = "plone_sphinx_theme"
 
 
 # -- Intersphinx configuration ----------------------------------
