@@ -157,7 +157,12 @@ def get(path=None, UID=None):
             )
 
         try:
-            return site.restrictedTraverse(path)
+            path = path.split('/')
+            if len(path) > 1:
+                parent = site.unrestrictedTraverse(path[:-1])
+                return parent.restrictedTraverse(path[-1])
+            else:
+                return site.restrictedTraverse(path[-1])
         except (KeyError, AttributeError):
             return None  # When no object is found don't raise an error
 
