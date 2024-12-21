@@ -133,24 +133,22 @@ ignore-packages = ['Products.PrintingMailHost', 'plone.app.iterate',]
 
 [tool.check-manifest]
 ignore = [
+    "*.cfg",
     ".editorconfig",
     ".flake8",
     ".meta.toml",
     ".pre-commit-config.yaml",
-    "dependabot.yml",
-    "mx.ini",
-    "tox.ini",
-    ".editorconfig",
-    "*.cfg",
+    ".readthedocs.yaml",
+    "Makefile",
+    "constraints.txt",
     "constraints_plone52.txt",
     "constraints_plone60.txt",
-    "constraints.txt",
+    "dependabot.yml",
     "fix-converted-myst.py",
-    "Makefile",
-    "netlify.toml",
+    "mx.ini",
     "requirements-docs.txt",
     "requirements.txt",
-
+    "tox.ini",
 ]
 
 ##
