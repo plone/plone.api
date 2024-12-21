@@ -1,0 +1,2 @@
+Fix api.content.get(path=path) when a item in the path is not accessible to the user.
+[pbauer]

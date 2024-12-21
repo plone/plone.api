@@ -478,6 +478,16 @@ class TestPloneApiContent(unittest.TestCase):
         # title is an attribute
         self.assertIsNone(api.content.get("/about/team/title"))
 
+    def test_get_of_content_in_inaccessible_container(self):
+        """Test getting items in a inaccessible container.
+        Worked in Plone 5.1 but raised Unauthorized since 5.2."""
+        api.content.transition(obj=self.team, transition="publish")
+        with api.env.adopt_roles(["Member"]):
+            team_by_path = api.content.get("/about/team")
+            self.assertEqual(self.team, team_by_path)
+            team_by_uid = api.content.get(UID=self.team.UID())
+            self.assertEqual(self.team, team_by_uid)
+
     def test_move_constraints(self):
         """Test the constraints for moving content."""
         from plone.api.exc import MissingParameterError
