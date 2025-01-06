@@ -12,8 +12,10 @@ codespell_extra_lines = """
 
 [pyproject]
 check_manifest_ignores = """
-    ".editorconfig",
+    # From `.meta.toml`, pyproject.check_manifest_ignores.
     "*.cfg",
+    ".editorconfig",
+    ".readthedocs.yaml",
     "constraints_plone52.txt",
     "constraints_plone60.txt",
     "constraints.txt",
@@ -76,7 +78,7 @@ allowlist_externals =
     echo
 
 [testenv:plone6docs]
-# New docs with sphinx-book-theme
+# New docs with plone-sphinx-theme
 # See [testenv:docs] for classic documentation
 basepython = python3.11
 skip_install = False
@@ -91,6 +93,18 @@ commands =
     python -VV
     mkdir -p {toxinidir}/_build/plone6docs
     sphinx-build -b html -d _build/plone6docs/doctrees docs _build/plone6docs/html
+
+[testenv:rtd-preview]
+# Build docs on Read the Docs to preview pull requests using plone-sphinx-theme
+basepython = python3.11
+skip_install = False
+extras =
+    tests
+deps =
+    -r requirements-docs.txt
+commands =
+    python -VV
+    sphinx-build -b html -d "{env:READTHEDOCS_OUTPUT}"/doctrees/ docs "{env:READTHEDOCS_OUTPUT}"/html/
 
 [testenv:docs]
 basepython = python3.9
@@ -126,6 +140,21 @@ commands =
     python -VV
     mkdir -p {toxinidir}/_build/plone6docs
     sphinx-build -b linkcheck -d _build/plone6docs/doctrees docs _build/plone6docs/linkcheck
+
+[testenv:livehtml]
+basepython = python3.11
+skip_install = False
+package = editable
+allowlist_externals =
+    mkdir
+extras =
+    {[testenv:plone6docs]extras}
+deps =
+    {[testenv:plone6docs]deps}
+commands =
+    python -VV
+    mkdir -p {toxinidir}/_build/plone6docs
+    sphinx-autobuild -b html -d _build/plone6docs/doctrees docs _build/plone6docs/html
 """
 
 [github]
