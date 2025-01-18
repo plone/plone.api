@@ -7,7 +7,7 @@ from plone.api import content
 from plone.api import env
 from plone.api import portal
 from plone.api.tests.base import INTEGRATION_TESTING
-from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.base.interfaces import INavigationRoot
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record

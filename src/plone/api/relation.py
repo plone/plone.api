@@ -10,8 +10,8 @@ from plone.api.validation import at_least_one_of
 from plone.api.validation import required_parameters
 from plone.app.linkintegrity.handlers import modifiedContent
 from plone.app.linkintegrity.utils import referencedRelationship
+from plone.base.utils import base_hasattr
 from plone.dexterity.utils import iterSchemataForType
-from Products.CMFPlone.utils import base_hasattr
 from z3c.relationfield import event
 from z3c.relationfield import RelationValue
 from z3c.relationfield.schema import Relation
