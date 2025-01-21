@@ -45,7 +45,7 @@ Assuming there is a document `english_page` in a folder `en`, which is the navig
 % invisible-code-block: python
 %
 % from plone import api
-% from plone.app.layout.navigation.interfaces import INavigationRoot
+% from plone.base.interfaces import INavigationRoot
 % from zope.interface import alsoProvides
 %
 % portal = api.portal.get()
