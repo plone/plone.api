@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+1.11.2 (2025-01-24)
+-------------------
+
+Bug fixes:
+
+
+- Backport fix for #549
+  [pbauer] (#551)
+
+
 1.11.1 (2021-10-07)
 -------------------
 
