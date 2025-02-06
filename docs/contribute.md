@@ -87,8 +87,13 @@ feature branches
 : All development for a new feature or bug fix must be done on a new branch.
 
 `main`
+<<<<<<< HEAD
 : Pull requests should be made from a feature branch against the `main` branch.
 When features and bug fixes are complete and approved, they are merged into the `main` branch.
+=======
+:   Pull requests should be made from a feature branch against the `main` branch.
+    When features and bug fixes are complete and approved, they are merged into the `main` branch.
+>>>>>>> 65159b92238f6ffa4da722e2b83dfff54ddc9264
 
 ```{seealso}
 {ref}`plone:contributing-core-work-with-git-label`
