@@ -178,10 +178,7 @@ class _GlobalRoleOverridingContext:
         return None
 
     def getWrappedOwner(self):
-        return None
-
-
-def debug_mode():
+        return None... def debug_mode():
     """Return True if your zope instance is running in debug mode.
 
     :Example: :ref:`env-debug-mode-example`

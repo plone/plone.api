@@ -2,8 +2,7 @@ import logging
 import os
 import re
 
-
-logging.basicConfig()
+logging.basicConfig(encoding='utf-8')  # Add encoding for proper character handling
 logger = logging.getLogger("fix converted MyST documentation")
 logger.setLevel(logging.INFO)
 
@@ -41,16 +40,25 @@ for root, dirs, files in (*os.walk("./src"), *os.walk("./docs")):
     for name in files:
         if name.endswith(".py") or name.endswith(".md"):
             filename = os.path.join(root, name)
-            with open(filename, "r+") as f:
-                data = f.read()
-                data = replace_label_underscore(data)
-                data = remove_github_warning(data)
-                f.seek(0)
-                f.write(data)
-                f.truncate()
-                count_files["modified"] += 1
-                logger.info(f"{filename} modified.")
+            try:
+                with open(filename, "r+") as f:
+                    original_data = f.read()
+                    modified_data = replace_label_underscore(original_data)
+                    modified_data = remove_github_warning(modified_data)
 
+                    if modified_data != original_data:
+                        f.seek(0)
+                        f.write(modified_data)
+                        f.truncate()
+                        count_files["modified"] += 1
+                        logger.info(f"{filename} modified.")
+                    else:
+                        count_files["unmodified"] += 1
+                        logger.info(f"{filename} unmodified.")
+
+
+            except IOError as e:
+                logger.error(f"Error processing {filename}: {e}")
 
 logger.info(f'MyST modified for {count_files["modified"]} files.')
 logger.info(f'{count_files["unmodified"]} files unmodified.')

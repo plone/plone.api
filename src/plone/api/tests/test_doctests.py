@@ -123,9 +123,9 @@ def test_suite():
     for filename in os.listdir(docs_path):
         try:
             doctests.append(DocFileSuite(os.path.join(path, filename)))
-        except OSError:
+        except OSError as e:  # Capture the OSError instance as 'e'
             logger.warning(
-                f"test_doctest.py skipping {filename}",
+                f"test_doctest.py skipping {filename}: {e}",  # Include the error message
             )
 
     return unittest.TestSuite(doctests)
