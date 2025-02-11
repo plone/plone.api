@@ -3,7 +3,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "2.2.5.dev0"
+version = "2.2.6.dev0"
 
 long_description = (
     f"{Path('README.md').read_text()}\n"
@@ -36,8 +36,8 @@ setup(
         "plone.app.uuid",
         "plone.app.dexterity",
         "plone.app.intid",
-        "plone.app.layout",
         "plone.app.linkintegrity",
+        "plone.base",
         "plone.dexterity",
         "plone.i18n",
         "plone.registry",

@@ -8,9 +8,9 @@ from plone import api
 from plone.api.content import _parse_object_provides_query
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.contenttypes.interfaces import IFolder
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 from plone.app.textfield import RichTextValue
+from plone.base.interfaces import INavigationRoot
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
@@ -192,7 +192,7 @@ class TestPloneApiContent(unittest.TestCase):
             folder.setConstrainTypesMode(ENABLED)
             folder.setLocallyAllowedTypes(("News Item",))
         else:  # DX
-            from Products.CMFPlone.interfaces import ISelectableConstrainTypes
+            from plone.base.interfaces import ISelectableConstrainTypes
 
             constraints = ISelectableConstrainTypes(folder)
             constraints.setConstrainTypesMode(ENABLED)

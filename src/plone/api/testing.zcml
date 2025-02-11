@@ -14,7 +14,7 @@
       title="plone.api: Test fixture"
       description="Extension profile to configure a test fixture"
       provides="Products.GenericSetup.interfaces.EXTENSION"
-      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+      for="plone.base.interfaces.ITestCasePloneSiteRoot"
       directory="profiles/testfixture"
       />
 

@@ -8,6 +8,29 @@ Changelog
 
 .. towncrier release notes start
 
+2.2.5 (2025-01-24)
+------------------
+
+Bug fixes:
+
+
+- Fix api.content.get(path=path) when a item in the path is not accessible to the user.
+  [pbauer] (#549)
+- Fix DeprecationWarnings. [maurits] (#4090)
+
+
+Documentation:
+
+
+- Preview docs on Read the Docs instead of Netlify. @stevepiercy (#545)
+- Remove Netlify stuff, follow up to #545. @stevepiercy
+  - Sort and remove duplicate entries in `pyproject.toml`
+  - Remove unused docs requirements.
+  - Fix comments and remove unnecessary steps from `tox.ini`.
+  - Enable copy button for code blocks.
+  - Add linkcheck to documentation of documentation. (#546)
+
+
 2.2.4 (2024-12-16)
 ------------------
 

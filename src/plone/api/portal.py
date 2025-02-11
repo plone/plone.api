@@ -7,7 +7,7 @@ from logging import getLogger
 from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import required_parameters
-from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.base.navigationroot import get_navigation_root_object
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -86,7 +86,7 @@ def get_navigation_root(context=None):
     :Example: :ref:`portal-get-navigation-root-example`
     """
     context = aq_inner(context)
-    return getNavigationRootObject(context, get())
+    return get_navigation_root_object(context, get())
 
 
 @required_parameters("name")
