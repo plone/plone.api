@@ -460,7 +460,6 @@ portal = api.portal.get()
 api.content.transition(obj=portal['about'], transition='reject', comment='You had a typo on your page.')
 ```
 
-
 (content-disable-roles-acquisition-example)=
 
 ## Disable local roles acquisition
@@ -535,6 +534,65 @@ view = api.content.get_view(
 % invisible-code-block: python
 %
 % self.assertEqual(view.__name__, u'plone')
+
+(content-get-vocabulary-example)=
+
+## Get vocabulary
+
+To get a vocabulary by name, use {meth}`api.content.get_vocabulary`.
+
+```python
+from plone import api
+
+# Get vocabulary using default portal context
+vocab = api.content.get_vocabulary(name='plone.app.vocabularies.PortalTypes')
+
+# Get vocabulary with specific context
+context = api.portal.get()['about']
+states_vocab = api.content.get_vocabulary(
+    name='plone.app.vocabularies.WorkflowStates',
+    context=context
+)
+
+# Access vocabulary terms
+for term in vocab:
+    print(f"Value: {term.value}, Title: {term.title}")
+```
+
+% invisible-code-block: python
+%
+% self.assertTrue(vocab)
+% self.assertTrue(hasattr(vocab, '__iter__'))
+% self.assertTrue(states_vocab)
+
+(content-get-vocabularies-names-example)=
+
+## Get all vocabulary names
+
+To get a list of all available vocabulary names in your Plone site, use {meth}`api.content.get_vocabularies_names`.
+
+```python
+from plone import api
+
+# Get all vocabulary names
+vocab_names = api.content.get_vocabularies_names()
+
+# Common vocabularies that should be available
+common_vocabs = [
+    'plone.app.vocabularies.PortalTypes',
+    'plone.app.vocabularies.WorkflowStates',
+    'plone.app.vocabularies.WorkflowTransitions'
+]
+
+for vocab_name in common_vocabs:
+    assert vocab_name in vocab_names
+```
+
+% invisible-code-block: python
+%
+% self.assertTrue(isinstance(vocab_names, list))
+% self.assertTrue(len(vocab_names) > 0)
+% self.assertTrue('plone.app.vocabularies.PortalTypes' in vocab_names)
 
 ## Further reading
 

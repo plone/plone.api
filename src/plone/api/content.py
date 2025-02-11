@@ -14,10 +14,13 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from zope.component import ComponentLookupError
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
+from zope.component import getUtilitiesFor
+from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 from zope.globalrequest import getRequest
 from zope.interface import Interface
 from zope.interface import providedBy
+from zope.schema.interfaces import IVocabularyFactory
 
 import random
 import transaction
@@ -666,3 +669,29 @@ def find(context=None, depth=None, unrestricted=False, **kwargs):
         return catalog.unrestrictedSearchResults(**query)
     else:
         return catalog(**query)
+
+
+@required_parameters("name")
+def get_vocabulary(name=None, context=None):
+    """Return a vocabulary object with given name.
+
+    :param name: Name of the vocabulary.
+    :param context: Context to be applied to the vocabulary. Default: portal root
+    :return: A vocabulary that implements the IVocabularyTokenized interface.
+    """
+    if not context:
+        context = portal.get()
+    try:
+        vocab = getUtility(IVocabularyFactory, name)
+    except ComponentLookupError:
+        raise InvalidParameterError(f"No vocabulary with name '{name}' available.")
+    return vocab(context)
+
+
+def get_vocabularies_names():
+    """Return a list of vocabularies names.
+
+    :return: A list of vocabularies names.
+    """
+    all_vocabs = getUtilitiesFor(IVocabularyFactory)
+    return [v[0] for v in all_vocabs]

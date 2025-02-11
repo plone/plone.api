@@ -1447,3 +1447,90 @@ class TestPloneApiContent(unittest.TestCase):
 
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + "\n"), str(cm.exception))
+
+    def test_get_vocabulary(self):
+        """Test getting a vocabulary by name."""
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
+
+        # The vocabulary name must be given as parameter
+        with self.assertRaises(MissingParameterError):
+            api.content.get_vocabulary()
+
+        # Test getting a commonly available vocabulary
+        vocab = api.content.get_vocabulary(name="plone.app.vocabularies.PortalTypes")
+        self.assertTrue(vocab)
+        self.assertTrue(hasattr(vocab, "__iter__"))  # Verify it's iterable
+
+        # Test with invalid vocabulary name
+        with self.assertRaises(InvalidParameterError) as cm:
+            api.content.get_vocabulary(name="non.existing.vocabulary")
+
+        self.assertEqual(
+            str(cm.exception),
+            "No vocabulary with name 'non.existing.vocabulary' available.",
+        )
+
+        # Test with context
+        vocab_with_context = api.content.get_vocabulary(
+            name="plone.app.vocabularies.PortalTypes", context=self.portal
+        )
+        self.assertTrue(vocab_with_context)
+
+    def test_get_vocabularies_names(self):
+        """Test getting list of vocabulary names."""
+        names = api.content.get_vocabularies_names()
+
+        # Test we get a list of strings
+        self.assertIsInstance(names, list)
+        self.assertTrue(len(names) > 0)
+        self.assertIsInstance(names[0], str)
+
+        # Test that common vocabularies are included
+        common_vocabs = [
+            "plone.app.vocabularies.PortalTypes",
+            "plone.app.vocabularies.WorkflowStates",
+            "plone.app.vocabularies.WorkflowTransitions",
+        ]
+
+        for vocab_name in common_vocabs:
+            self.assertIn(vocab_name, names)
+
+    def test_vocabulary_terms(self):
+        """Test the actual content of retrieved vocabularies."""
+        # Get portal types vocabulary
+        types_vocab = api.content.get_vocabulary("plone.app.vocabularies.PortalTypes")
+
+        # Check that we have some common content types
+        types = [term.value for term in types_vocab]
+        self.assertIn("Document", types)
+        self.assertIn("Folder", types)
+
+        # Get workflow states vocabulary
+        states_vocab = api.content.get_vocabulary(
+            "plone.app.vocabularies.WorkflowStates"
+        )
+
+        # Check that we have some common workflow states
+        states = [term.value for term in states_vocab]
+        self.assertIn("private", states)
+        self.assertIn("published", states)
+
+    def test_vocabulary_context_sensitivity(self):
+        """Test that vocabularies respect their context."""
+        # Create some content to test with
+        folder = api.content.create(
+            container=self.portal, type="Folder", id="test-folder"
+        )
+
+        # Get vocabulary in different contexts
+        root_vocab = api.content.get_vocabulary(
+            name="plone.app.vocabularies.PortalTypes", context=self.portal
+        )
+        folder_vocab = api.content.get_vocabulary(
+            name="plone.app.vocabularies.PortalTypes", context=folder
+        )
+
+        # Both vocabularies should be valid
+        self.assertTrue(root_vocab)
+        self.assertTrue(folder_vocab)
