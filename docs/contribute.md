@@ -20,62 +20,35 @@ Prepare your system by installing prerequisites.
 
 You need to install system libraries, as described in {ref}`plone:plone-prerequisites-label`, with the exception of GNU make.
 
-### tox
-
-[tox](https://tox.wiki/en/stable/index.html) automates and standardizes testing in Python.
-Install tox into your Python user space with the following command.
-
-```shell
-python -m pip install --user tox
-```
-
-### pre-commit
-
-`plone.api` uses [pre-commit](https://pre-commit.com/) to automate code quality checks before every commit.
-
-Install pre-commit either with your system package manager.
-Alternatively you can install pre-commit into your Python user.
-
-```shell
-python -m pip install --user pre-commit
-```
-
-Once installed, set up the git hook scripts to run on every commit.
-
-```shell
-pre-commit install
-```
 
 ## Create development environment
 
 After satisfying the prerequisites, you are ready to create your development environment.
 `plone.api` uses `tox` as a wrapper around `coredev.buildout` to simplify development, whereas Plone core uses `coredev.buildout` directly.
 
-Start by changing your working directory to your project folder, and download the latest `plone.api` source code.
+Start by changing your working directory to your project folder, and check out the latest `plone.api` source code.
 
 ```shell
 cd <your_project_folder>
 git clone https://github.com/plone/plone.api.git
 ```
 
-Next go into the newly created directory, and build your environment.
+Run `make help` to see the available `make` commands.
 
 ```shell
-cd plone.api
-tox
+check                          Check code base according to Plone standards
+clean                          Clean environment
+help                           This help message
+livehtml                       Build docs and watch for changes
+test                           Run tests
 ```
 
-Go make some tea while `tox` runs all tasks listed by issuing the command `tox -l`.
-
-Open `tox.ini` in your code editor to see all configured commands and what they do.
-Some helpful `tox` commands are shown below.
+Test your code changes with
 
 ```shell
-tox -e py39-plone-60  # run all tests for Python 3.9 and Plone 6
-tox -e plone6docs     # build documentation
-tox -e livehtml       # build, serve, and reload changes to documentation
-tox -l                # list all tox environments
+make test
 ```
+
 
 (git-workflow)=
 
@@ -109,16 +82,11 @@ For every feature change or addition to `plone.api`, you must add documentation 
 {doc}`plone:contributing/documentation/index`
 ```
 
-After adding or modifying documentation, you can build the documentation with the following command.
+When adding or modifying documentation, you can build the documentation with the following command.
+The started process automatically reloads changes to the documentation as you edit it in a web browser.
 
 ```shell
-tox -e plone6docs
-```
-
-Alternatively, you can automatically reload changes to the documentation as you edit it in a web browser.
-
-```shell
-tox -e livehtml
+make livehtml
 ```
 
 You can run a link checker on documentation.
