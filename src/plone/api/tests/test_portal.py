@@ -907,9 +907,7 @@ class TestPloneApiPortal(unittest.TestCase):
 
         # Test getting a commonly available vocabulary
         vocabulary = portal.get_vocabulary(name="plone.app.vocabularies.PortalTypes")
-        self.assertIsInstance(
-            vocabulary, SimpleVocabulary
-        )
+        self.assertIsInstance(vocabulary, SimpleVocabulary)
 
         # Test with invalid vocabulary name
         with self.assertRaises(InvalidParameterError) as cm:
