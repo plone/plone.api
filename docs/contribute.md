@@ -18,7 +18,7 @@ Prepare your system by installing prerequisites.
 
 ### System libraries
 
-You need to install system libraries, as described in {ref}`plone:plone-prerequisites-label`, with the exception of GNU make.
+You need to install system libraries, as described in {ref}`plone:plone-prerequisites-label`.
 
 
 ## Create development environment
@@ -35,7 +35,7 @@ git clone https://github.com/plone/plone.api.git
 
 Run `make help` to see the available `make` commands.
 
-```shell
+```console
 check                          Check code base according to Plone standards
 clean                          Clean environment
 help                           This help message
@@ -43,7 +43,7 @@ livehtml                       Build docs and watch for changes
 test                           Run tests
 ```
 
-Test your code changes with
+Test your code changes with the following command.
 
 ```shell
 make test
@@ -83,7 +83,7 @@ For every feature change or addition to `plone.api`, you must add documentation 
 ```
 
 When adding or modifying documentation, you can build the documentation with the following command.
-The started process automatically reloads changes to the documentation as you edit it in a web browser.
+As you edit the documentation, the started process automatically reloads your changes in the web browser.
 
 ```shell
 make livehtml
