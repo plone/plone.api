@@ -416,6 +416,68 @@ api.portal.set_registry_record('field_one', 'new value', interface=IMyRegistrySe
 %     'new value'
 % )
 
+(portal-get-vocabulary-example)=
+
+## Get vocabulary
+
+To get a vocabulary by name, use {meth}`api.portal.get_vocabulary`.
+
+```python
+from plone import api
+
+# Get vocabulary using default portal context
+vocabulary = api.portal.get_vocabulary(name='plone.app.vocabularies.PortalTypes')
+
+# Get vocabulary with specific context
+context = api.portal.get()
+states_vocabulary = api.portal.get_vocabulary(
+    name='plone.app.vocabularies.WorkflowStates',
+    context=context
+)
+
+# Verify vocabulary functionality
+terms = list(vocabulary)
+assert len(terms) > 0, "Vocabulary should not be empty."
+for term in terms:
+    assert hasattr(term, "value"), "Each term should have a 'value' attribute."
+    assert hasattr(term, "title"), "Each term should have a 'title' attribute."
+```
+
+% invisible-code-block: python
+%
+% self.assertTrue(vocabulary)
+% self.assertTrue(hasattr(vocabulary, '__iter__'))
+% self.assertTrue(states_vocabulary)
+
+(portal-get-vocabularies-names-example)=
+
+## Get all vocabulary names
+
+To get a list of all available vocabulary names in your Plone site, use {meth}`api.portal.get_vocabularies_names`.
+
+```python
+from plone import api
+
+# Get all vocabulary names
+vocabulary_names = api.portal.get_vocabularies_names()
+
+# Common vocabularies that should be available
+common_vocabularies = [
+    'plone.app.vocabularies.PortalTypes',
+    'plone.app.vocabularies.WorkflowStates',
+    'plone.app.vocabularies.WorkflowTransitions'
+]
+
+for vocabulary_name in common_vocabularies:
+    assert vocabulary_name in vocabulary_names
+```
+
+% invisible-code-block: python
+%
+% self.assertTrue(isinstance(vocabulary_names, list))
+% self.assertTrue(len(vocabulary_names) > 0)
+% self.assertTrue('plone.app.vocabularies.PortalTypes' in vocabulary_names)
+
 ## Further reading
 
 For more information on possible flags and usage options please see the full {ref}`plone-api-portal` specification.
