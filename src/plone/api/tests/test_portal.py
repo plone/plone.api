@@ -909,7 +909,7 @@ class TestPloneApiPortal(unittest.TestCase):
         vocabulary = portal.get_vocabulary(name="plone.app.vocabularies.PortalTypes")
         self.assertIsInstance(
             vocabulary, SimpleVocabulary
-        )  # Check for correct interface
+        )
 
         # Test with invalid vocabulary name
         with self.assertRaises(InvalidParameterError) as cm:

@@ -434,20 +434,7 @@ states_vocabulary = api.portal.get_vocabulary(
     name='plone.app.vocabularies.WorkflowStates',
     context=context
 )
-
-# Verify vocabulary functionality
-terms = list(vocabulary)
-assert len(terms) > 0, "Vocabulary should not be empty."
-for term in terms:
-    assert hasattr(term, "value"), "Each term should have a 'value' attribute."
-    assert hasattr(term, "title"), "Each term should have a 'title' attribute."
 ```
-
-% invisible-code-block: python
-%
-% self.assertTrue(vocabulary)
-% self.assertTrue(hasattr(vocabulary, '__iter__'))
-% self.assertTrue(states_vocabulary)
 
 (portal-get-vocabularies-names-example)=
 
@@ -471,12 +458,6 @@ common_vocabularies = [
 for vocabulary_name in common_vocabularies:
     assert vocabulary_name in vocabulary_names
 ```
-
-% invisible-code-block: python
-%
-% self.assertTrue(isinstance(vocabulary_names, list))
-% self.assertTrue(len(vocabulary_names) > 0)
-% self.assertTrue('plone.app.vocabularies.PortalTypes' in vocabulary_names)
 
 ## Further reading
 
