@@ -61,7 +61,7 @@ test: $(BIN_FOLDER)/tox ## Run tests
 	$(BIN_FOLDER)/tox -e test
 
 .PHONY: livehtml
-livehtml: ## Build docs and watch for changes
+livehtml: $(BIN_FOLDER)/tox ## Build docs and watch for changes
 	@echo "$(GREEN)==> Building docs$(RESET)"
 	$(BIN_FOLDER)/tox -e livehtml
 
