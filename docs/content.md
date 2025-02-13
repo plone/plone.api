@@ -460,7 +460,6 @@ portal = api.portal.get()
 api.content.transition(obj=portal['about'], transition='reject', comment='You had a typo on your page.')
 ```
 
-
 (content-disable-roles-acquisition-example)=
 
 ## Disable local roles acquisition
