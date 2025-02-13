@@ -448,7 +448,7 @@ def get_vocabulary(name=None, context=None):
     :rtype: zope.schema.vocabulary.SimpleVocabulary
     :Example: :ref:`portal-get-vocabulary-example`
     """
-    if not context:
+    if context is None:
         context = get()
     try:
         vocabulary = getUtility(IVocabularyFactory, name)
