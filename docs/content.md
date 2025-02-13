@@ -78,7 +78,7 @@ plone (portal root)
 % api.content.create(container=events, type='Event', id='conference')
 % api.content.create(container=events, type='Event', id='sprint')
 
-The following operations will get objects from the structure above, including using {meth}`api.content.get`.
+The following operations will get objects from the structure above, using {meth}`api.content.get`.
 
 ```python
 # let's first get the portal object
@@ -118,7 +118,7 @@ not_found = api.content.get(UID='notfound')
 
 ## Find content objects
 
-You can use the find function to search for content.
+You can use the {meth}`api.content.find` method to search for content.
 
 Finding all Documents:
 
