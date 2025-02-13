@@ -37,7 +37,7 @@ VENV_FOLDER=$(BACKEND_FOLDER)/.venv
 BIN_FOLDER=$(VENV_FOLDER)/bin
 
 
-all: build
+all: help
 
 # Add the following 'help' target to your Makefile
 # And add help text after each target name starting with '\#\#'
