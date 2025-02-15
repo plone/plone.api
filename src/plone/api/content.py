@@ -569,6 +569,36 @@ def get_uuid(obj=None):
     return IUUID(obj)
 
 
+@required_parameters("obj")
+def get_path(obj=None, relative_to_portal=False):
+    """Get the path of an object.
+
+    :param obj: [required] Object we want to get the path for
+    :type obj: Content object
+    :param relative_to_portal: Return a relative path from the portal root
+    :type relative_to_portal: boolean
+    :returns: Path to the object
+    :rtype: string
+    :raises:
+        InvalidParameterError
+    :Example: :ref:`content-get-path-example`
+    """
+    if not hasattr(obj, "getPhysicalPath"):
+        raise InvalidParameterError(f"Cannot get path of object of type {type(obj)}")
+
+    if relative_to_portal:
+        site = portal.get()
+        site_path = site.getPhysicalPath()
+        obj_path = obj.getPhysicalPath()
+        if obj_path[: len(site_path)] != site_path:
+            raise InvalidParameterError(
+                "Object not in portal path. Object path: {}".format("/".join(obj_path))
+            )
+        rel_path = obj_path[len(site_path) :]
+        return "/" + "/".join(rel_path) if rel_path else "/"
+    return "/" + "/".join(obj.getPhysicalPath()[1:])
+
+
 def _parse_object_provides_query(query):
     """Create a query for the object_provides index.
 

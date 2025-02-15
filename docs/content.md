@@ -536,6 +536,57 @@ view = api.content.get_view(
 %
 % self.assertEqual(view.__name__, u'plone')
 
+(content-get-path-example)=
+
+## Get content path
+
+To get the path of a content object, use {meth}`api.content.get_path`. This method returns either an absolute path from the Zope root or a relative path from the portal root.
+
+To get absolute path from the Zope root.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+folder = portal['events']['training']
+path = api.content.get_path(obj=folder)
+assert path == '/plone/events/training'
+```
+
+To get portal-relative path.
+
+```python
+rel_path = api.content.get_path(obj=folder, relative_to_portal=True)
+assert rel_path == '/events/training'
+```
+
+If the API is used to fetch an object outside portal, with {meth}`relative_to_portal` parameter as `True`, it throws a `InvalidParameterError`
+
+% invisible-code-block: python
+%
+% # Setup an object outside portal for testing error case
+% app = portal.aq_parent
+% app.manage_addFolder('outside_folder')
+%
+% # Test that getting relative path for object outside portal raises error
+% from plone.api.exc import InvalidParameterError
+% with self.assertRaises(InvalidParameterError):
+%     api.content.get_path(obj=app.outside_folder, relative_to_portal=True)
+
+```python
+from plone.api.exc import InvalidParameterError
+
+# Getting path of an object outside portal raises InvalidParameterError
+try:
+    outside_path = api.content.get_path(
+        obj=app.outside_folder,
+        relative_to_portal=True
+    )
+    assert False, "Should raise InvalidParameterError & not reach this code"
+except InvalidParameterError as e:
+    assert "Object not in portal path" in str(e)
+```
+
 ## Further reading
 
 For more information on possible flags and usage options please see the full {ref}`plone-api-content` specification.

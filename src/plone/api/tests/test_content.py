@@ -1447,3 +1447,53 @@ class TestPloneApiContent(unittest.TestCase):
 
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + "\n"), str(cm.exception))
+
+    def test_get_path(self):
+        """Test getting the path of a content object."""
+        from plone.api.exc import InvalidParameterError
+
+        portal = self.layer["portal"]
+
+        # Test portal root
+        self.assertEqual(
+            api.content.get_path(portal), "/plone"  # This assumes default Plone site id
+        )
+        self.assertEqual(api.content.get_path(portal, relative_to_portal=True), "/")
+
+        # Test folder structure
+        folder = api.content.create(container=portal, type="Folder", id="test-folder")
+        self.assertEqual(api.content.get_path(folder), "/plone/test-folder")
+        self.assertEqual(
+            api.content.get_path(folder, relative_to_portal=True), "/test-folder"
+        )
+
+        # Test nested content
+        document = api.content.create(
+            container=folder, type="Document", id="test-document"
+        )
+        self.assertEqual(
+            api.content.get_path(document), "/plone/test-folder/test-document"
+        )
+        self.assertEqual(
+            api.content.get_path(document, relative_to_portal=True),
+            "/test-folder/test-document",
+        )
+
+        # Test invalid object
+        invalid_obj = object()
+        with self.assertRaises(InvalidParameterError) as cm:
+            api.content.get_path(invalid_obj)
+        self.assertEqual(
+            str(cm.exception), "Cannot get path of object of type <class 'object'>"
+        )
+
+        # Test object outside portal
+
+        class FauxObject:
+            def getPhysicalPath(self):
+                return ("", "foo", "bar")
+
+        outside_obj = FauxObject()
+        with self.assertRaises(InvalidParameterError) as cm:
+            api.content.get_path(outside_obj, relative_to_portal=True)
+        self.assertIn("Object not in portal path", str(cm.exception))
