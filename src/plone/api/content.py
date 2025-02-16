@@ -573,7 +573,7 @@ def get_uuid(obj=None):
 def get_path(obj=None, relative_to_portal=False):
     """Get the path of an object.
 
-    :param obj: [required] Object we want to get the path for
+    :param obj: [required] Object for which to get its path
     :type obj: Content object
     :param relative_to_portal: Return a relative path from the portal root
     :type relative_to_portal: boolean

@@ -1,3 +1,1 @@
-Added one new content API helper function:
-- `api.content.get_path`: Get path of an object. Optionally receive absolute path from Zope root.
-@ujsquared
+Added the content API helper function ``api.content.get_path``, which gets either the relative or absolute path of an object. @ujsquared
