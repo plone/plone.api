@@ -40,13 +40,13 @@ BIN_FOLDER=$(VENV_FOLDER)/bin
 all: help
 
 # Add the following 'help' target to your Makefile
-# And add help text after each target name starting with '\#\#'
+# And add help text after each target name starting with '##'
 .PHONY: help
 help: ## This help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 $(BIN_FOLDER)/pip $(BIN_FOLDER)/tox $(BIN_FOLDER)/pipx $(BIN_FOLDER)/uv $(BIN_FOLDER)/mxdev:
-	@echo "$(GREEN)==> Setup Virtual Env$(RESET)"
+	@echo "$(GREEN)==> Setup Python virtual environment$(RESET)"
 	$(PYTHON) -m venv $(VENV_FOLDER)
 	$(BIN_FOLDER)/pip install -U "pip" "uv" "wheel" "pipx" "tox" "pre-commit"
 	if [ -d $(GIT_FOLDER) ]; then $(BIN_FOLDER)/pre-commit install; else echo "$(RED) Not installing pre-commit$(RESET)";fi

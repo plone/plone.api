@@ -25,6 +25,7 @@ You need to install system libraries, as described in {ref}`plone:plone-prerequi
 
 After satisfying the prerequisites, you are ready to create your development environment.
 `plone.api` uses `tox` as a wrapper around `coredev.buildout` to simplify development, whereas Plone core uses `coredev.buildout` directly.
+Additionally `plone.api` uses `make` commands that invoke the `tox` commands as a convenience and for consistency across Plone packages.
 
 Start by changing your working directory to your project folder, and check out the latest `plone.api` source code.
 
@@ -43,6 +44,8 @@ linkcheck                      Check links in documentation
 livehtml                       Build docs and watch for changes
 test                           Run tests
 ```
+
+The `make` commands `check`, `livehtml`, and `test` will create a development environment, if it does not already exist.
 
 Test your code changes with the following command.
 
