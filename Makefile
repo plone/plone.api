@@ -65,6 +65,11 @@ livehtml: $(BIN_FOLDER)/tox ## Build docs and watch for changes
 	@echo "$(GREEN)==> Building docs$(RESET)"
 	$(BIN_FOLDER)/tox -e livehtml
 
+.PHONY: linkcheck
+linkcheck: $(BIN_FOLDER)/tox ## Check links in documentation
+	@echo "$(GREEN)==> Checking links in documentation$(RESET)"
+	$(BIN_FOLDER)/tox -e linkcheck
+
 .PHONY: clean
 clean: ## Clean environment
 	@echo "$(RED)==> Cleaning environment and build$(RESET)"

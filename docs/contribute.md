@@ -39,6 +39,7 @@ Run `make help` to see the available `make` commands.
 check                          Check code base according to Plone standards
 clean                          Clean environment
 help                           This help message
+linkcheck                      Check links in documentation
 livehtml                       Build docs and watch for changes
 test                           Run tests
 ```
@@ -92,7 +93,7 @@ make livehtml
 You can run a link checker on documentation.
 
 ```shell
-tox -e linkcheck
+make linkcheck
 ```
 
 The [`plone.api` documentation](https://6.docs.plone.org/plone.api) is automatically generated from the documentation source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
