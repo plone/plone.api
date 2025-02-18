@@ -115,7 +115,7 @@ def DocFileSuite(
 
 
 def test_suite():
-    """Find .rst files and test code examples in them."""
+    """Find .md files and test code examples in them."""
     path = "doctests"
     doctests = []
     docs_path = os.path.join(os.path.dirname(__file__), path)

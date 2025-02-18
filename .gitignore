@@ -11,6 +11,7 @@
 
 # tools related
 build/
+_build/
 .coverage
 .*project
 coverage.xml
