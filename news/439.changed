@@ -1,0 +1,1 @@
+When creating dexterity object with api.content.create use the dexterity machinery to not have the object renamed after it is initially created.
