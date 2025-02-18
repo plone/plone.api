@@ -144,6 +144,10 @@ def foo(path=None, UID=None):
 % InvalidParameterError,
 % lambda: foo("/plone/blog", "abcd001")
 % )
+% 
+% # Make it available for testing below
+% from plone import api
+% api.content.foo = foo
 
 Add documentation in {file}`docs/api/content.md`.
 Narrative documentation should describe what your function does.
@@ -170,7 +174,8 @@ blog_foo = api.content.foo(path="/plone/blog")
 
 % invisible-code-block: python
 %
-% self.assertEqual(blog_foo,"foo")
+% self.assertEqual(blog_foo, "foo")
+
 ````
 
 Code blocks are rendered in documentation.
@@ -187,7 +192,7 @@ Invisible code blocks are not rendered in documentation and can be used for test
 ```markdown
 % invisible-code-block: python
 %
-% self.assertEqual(blog_foo,"foo")
+% self.assertEqual(blog_foo, "foo")
 ```
 
 Invisible code blocks are also handy for enriching the namespace without cluttering the narrative documentation.
