@@ -420,7 +420,7 @@ api.portal.set_registry_record('field_one', 'new value', interface=IMyRegistrySe
 
 ## Get vocabulary
 
-To get a vocabulary by name, use {meth}`api.portal.get_vocabulary`.
+To get a vocabulary by name, use {func}`api.portal.get_vocabulary`.
 
 ```python
 from plone import api
