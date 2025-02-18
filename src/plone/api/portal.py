@@ -12,11 +12,14 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
+from zope.component import ComponentLookupError
+from zope.component import getUtilitiesFor
 from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.interface.interfaces import IInterface
+from zope.schema.interfaces import IVocabularyFactory
 
 import datetime as dtime
 import re
@@ -431,3 +434,41 @@ def translate(msgid, domain="plone", lang=None):
         # Pass the request, so zope.i18n.translate can negotiate the language.
         query["context"] = getRequest()
     return translation_service.utranslate(**query)
+
+
+@required_parameters("name")
+def get_vocabulary(name=None, context=None):
+    """Return a vocabulary object with the given name.
+
+    :param name: Name of the vocabulary.
+    :type name: str
+    :param context: Context to be applied to the vocabulary. Default: portal root.
+    :type context: object
+    :returns: A SimpleVocabulary instance that implements IVocabularyTokenized.
+    :rtype: zope.schema.vocabulary.SimpleVocabulary
+    :Example: :ref:`portal-get-vocabulary-example`
+    """
+    if context is None:
+        context = get()
+    try:
+        vocabulary = getUtility(IVocabularyFactory, name)
+    except ComponentLookupError:
+        raise InvalidParameterError(
+            "Cannot find a vocabulary with name '{name}'.\n"
+            "Available vocabularies are:\n"
+            "{vocabularies}".format(
+                name=name,
+                vocabularies="\n".join(get_vocabulary_names()),
+            ),
+        )
+    return vocabulary(context)
+
+
+def get_vocabulary_names():
+    """Return a list of vocabulary names.
+
+    :returns: A sorted list of vocabulary names.
+    :rtype: list[str]
+    :Example: :ref:`portal-get-all-vocabulary-names-example`
+    """
+    return sorted([name for name, vocabulary in getUtilitiesFor(IVocabularyFactory)])

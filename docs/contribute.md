@@ -144,7 +144,7 @@ def foo(path=None, UID=None):
 % InvalidParameterError,
 % lambda: foo("/plone/blog", "abcd001")
 % )
-% 
+%
 % # Make it available for testing below
 % from plone import api
 % api.content.foo = foo
