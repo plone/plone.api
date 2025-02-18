@@ -118,7 +118,7 @@ not_found = api.content.get(UID='notfound')
 
 ## Find content objects
 
-You can use the {meth}`api.content.find` method to search for content.
+You can use the {meth}`api.content.find` function to search for content.
 
 Finding all Documents:
 
