@@ -469,6 +469,6 @@ def get_vocabulary_names():
 
     :returns: A sorted list of vocabulary names.
     :rtype: list[str]
-    :Example: :ref:`portal-get-vocabulary-names-example`
+    :Example: :ref:`portal-get-all-vocabulary-names-example`
     """
     return sorted([name for name, vocabulary in getUtilitiesFor(IVocabularyFactory)])

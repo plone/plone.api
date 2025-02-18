@@ -436,7 +436,7 @@ states_vocabulary = api.portal.get_vocabulary(
 )
 ```
 
-(portal-get-vocabulary-names-example)=
+(portal-get-all-vocabulary-names-example)=
 
 ## Get all vocabulary names
 
