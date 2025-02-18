@@ -436,17 +436,17 @@ states_vocabulary = api.portal.get_vocabulary(
 )
 ```
 
-(portal-get-vocabularies-names-example)=
+(portal-get-vocabulary-names-example)=
 
 ## Get all vocabulary names
 
-To get a list of all available vocabulary names in your Plone site, use {meth}`api.portal.get_vocabularies_names`.
+To get a list of all available vocabulary names in your Plone site, use {meth}`api.portal.get_vocabulary_names`.
 
 ```python
 from plone import api
 
 # Get all vocabulary names
-vocabulary_names = api.portal.get_vocabularies_names()
+vocabulary_names = api.portal.get_vocabulary_names()
 
 # Common vocabularies that should be available
 common_vocabularies = [

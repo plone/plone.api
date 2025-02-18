@@ -925,9 +925,9 @@ class TestPloneApiPortal(unittest.TestCase):
         )
         self.assertIsInstance(vocabulary_with_context, SimpleVocabulary)
 
-    def test_get_vocabularies_names(self):
+    def test_get_vocabulary_names(self):
         """Test getting list of vocabulary names."""
-        names = portal.get_vocabularies_names()
+        names = portal.get_vocabulary_names()
 
         # Test we get a list of strings
         self.assertIsInstance(names, list)

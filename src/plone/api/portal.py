@@ -458,17 +458,17 @@ def get_vocabulary(name=None, context=None):
             "Available vocabularies are:\n"
             "{vocabularies}".format(
                 name=name,
-                vocabularies="\n".join(get_vocabularies_names()),
+                vocabularies="\n".join(get_vocabulary_names()),
             ),
         )
     return vocabulary(context)
 
 
-def get_vocabularies_names():
+def get_vocabulary_names():
     """Return a list of vocabulary names.
 
     :returns: A sorted list of vocabulary names.
     :rtype: list[str]
-    :Example: :ref:`portal-get-vocabularies-names-example`
+    :Example: :ref:`portal-get-vocabulary-names-example`
     """
     return sorted([name for name, vocabulary in getUtilitiesFor(IVocabularyFactory)])
