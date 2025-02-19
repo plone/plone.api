@@ -550,7 +550,7 @@ portal = api.portal.get()
 
 folder = portal['events']['training']
 path = api.content.get_path(obj=folder)
-assert path == 'plone/events/training'
+assert path == '/plone/events/training'
 ```
 
 The following example shows how to get the portal-relative path.

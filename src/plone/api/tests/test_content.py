@@ -1456,19 +1456,19 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test portal root
         self.assertEqual(
-            api.content.get_path(portal), "plone"  # This assumes default Plone site id
+            api.content.get_path(portal), "/plone"  # This assumes default Plone site id
         )
 
         # Test folder structure
         folder = api.content.create(container=portal, type="Folder", id="test-folder")
-        self.assertEqual(api.content.get_path(folder), "plone/test-folder")
+        self.assertEqual(api.content.get_path(folder), "/plone/test-folder")
 
         # Test nested content
         document = api.content.create(
             container=folder, type="Document", id="test-document"
         )
         self.assertEqual(
-            api.content.get_path(document), "plone/test-folder/test-document"
+            api.content.get_path(document), "/plone/test-folder/test-document"
         )
 
         # Test invalid object

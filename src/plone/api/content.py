@@ -586,17 +586,17 @@ def get_path(obj=None, relative=False):
     if not hasattr(obj, "getPhysicalPath"):
         raise InvalidParameterError(f"Cannot get path of object of type {type(obj)}")
 
-    if relative:
-        site = portal.get()
-        site_path = site.getPhysicalPath()
-        obj_path = obj.getPhysicalPath()
-        if obj_path[: len(site_path)] != site_path:
-            raise InvalidParameterError(
-                "Object not in portal path. Object path: {}".format("/".join(obj_path))
-            )
-        rel_path = obj_path[len(site_path) :]
-        return "/".join(rel_path) if rel_path else ""
-    return "/".join(obj.getPhysicalPath()[1:])
+    if not relative:
+        return "/".join(obj.getPhysicalPath())
+    site = portal.get()
+    site_path = site.getPhysicalPath()
+    obj_path = obj.getPhysicalPath()
+    if not "/".join(obj_path).startswith("/".join(site_path)):
+        raise InvalidParameterError(
+            "Object not in portal path. Object path: {}".format("/".join(obj_path))
+        )
+    rel_path = obj_path[len(site_path) :]
+    return "/".join(rel_path) if rel_path else ""
 
 
 def _parse_object_provides_query(query):
