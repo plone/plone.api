@@ -678,7 +678,7 @@ def get_parents(obj: None, predicate: None, interface: None):
     :param predicate: Optional callable that takes an object and returns a boolean.
         Used to filter the parents.
     :type predicate: callable
-    :param interface: Optional interface that the parents must provide.
+    :param interface: Optional interface to filter the parents.
     :type interface: zope.interface.Interface
     :returns: List of parent objects, from immediate to site root.
     :rtype: list
@@ -705,9 +705,9 @@ def get_closed_parent(obj=None, predicate=None, interface= None):
     :param predicate: Optional callable that takes an object and returns a boolean.
         Used to filter the parents.
     :type predicate: callable
-    :param interface: Optional interface that the parent must provide.
+    :param interface: Optional interface to filter the parents.
     :type interface: zope.interface.Interface
-    :returns: Parent object that satisfies the criteria.
+    :returns: Closest matching parents object or None if no match found.
     :rtype: Content object
     :Example: :ref:`content-get-closed-parent-example`
 
