@@ -570,13 +570,13 @@ def get_uuid(obj=None):
 
 
 @required_parameters("obj")
-def get_path(obj=None, relative_to_portal=False):
+def get_path(obj=None, relative=False):
     """Get the path of an object.
 
     :param obj: [required] Object for which to get its path
     :type obj: Content object
-    :param relative_to_portal: Return a relative path from the portal root
-    :type relative_to_portal: boolean
+    :param relative: Return a relative path from the portal root
+    :type relative: boolean
     :returns: Path to the object
     :rtype: string
     :raises:
@@ -586,7 +586,7 @@ def get_path(obj=None, relative_to_portal=False):
     if not hasattr(obj, "getPhysicalPath"):
         raise InvalidParameterError(f"Cannot get path of object of type {type(obj)}")
 
-    if relative_to_portal:
+    if relative:
         site = portal.get()
         site_path = site.getPhysicalPath()
         obj_path = obj.getPhysicalPath()
@@ -595,8 +595,8 @@ def get_path(obj=None, relative_to_portal=False):
                 "Object not in portal path. Object path: {}".format("/".join(obj_path))
             )
         rel_path = obj_path[len(site_path) :]
-        return "/" + "/".join(rel_path) if rel_path else "/"
-    return "/" + "/".join(obj.getPhysicalPath()[1:])
+        return "/".join(rel_path) if rel_path else ""
+    return "/".join(obj.getPhysicalPath()[1:])
 
 
 def _parse_object_provides_query(query):

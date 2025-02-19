@@ -550,17 +550,17 @@ portal = api.portal.get()
 
 folder = portal['events']['training']
 path = api.content.get_path(obj=folder)
-assert path == '/plone/events/training'
+assert path == 'plone/events/training'
 ```
 
 The following example shows how to get the portal-relative path.
 
 ```python
-rel_path = api.content.get_path(obj=folder, relative_to_portal=True)
-assert rel_path == '/events/training'
+rel_path = api.content.get_path(obj=folder, relative=True)
+assert rel_path == 'events/training'
 ```
 
-If the API is used to fetch an object outside the portal with the {meth}`relative_to_portal` parameter set as `True`, it throws a `InvalidParameterError`.
+If the API is used to fetch an object outside the portal with the {meth}`relative` parameter set as `True`, it throws a `InvalidParameterError`.
 
 % invisible-code-block: python
 %
@@ -571,7 +571,7 @@ If the API is used to fetch an object outside the portal with the {meth}`relativ
 % # Test that getting relative path for object outside portal raises error
 % from plone.api.exc import InvalidParameterError
 % with self.assertRaises(InvalidParameterError):
-%     api.content.get_path(obj=app.outside_folder, relative_to_portal=True)
+%     api.content.get_path(obj=app.outside_folder, relative=True)
 
 ```python
 from plone.api.exc import InvalidParameterError
@@ -580,7 +580,7 @@ from plone.api.exc import InvalidParameterError
 try:
     outside_path = api.content.get_path(
         obj=app.outside_folder,
-        relative_to_portal=True
+        relative=True
     )
     assert False, "Should raise InvalidParameterError & not reach this code"
 except InvalidParameterError as e:
