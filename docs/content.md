@@ -118,7 +118,7 @@ not_found = api.content.get(UID='notfound')
 
 ## Find content objects
 
-You can use the {meth}`api.content.find` function to search for content.
+You can use the {func}`api.content.find` function to search for content.
 
 Finding all Documents:
 
@@ -459,7 +459,6 @@ from plone import api
 portal = api.portal.get()
 api.content.transition(obj=portal['about'], transition='reject', comment='You had a typo on your page.')
 ```
-
 
 (content-disable-roles-acquisition-example)=
 
