@@ -19,6 +19,7 @@ from zope import schema
 from zope.component import getUtility
 from zope.component.hooks import setSite
 from zope.interface import Interface
+from zope.schema.vocabulary import SimpleVocabulary
 from zope.site import LocalSiteManager
 
 import DateTime
@@ -894,3 +895,71 @@ class TestPloneApiPortal(unittest.TestCase):
             ),
             "Página",
         )
+
+    def test_get_vocabulary(self):
+        """Test getting a vocabulary by name."""
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
+
+        # The vocabulary name must be given as parameter
+        with self.assertRaises(MissingParameterError):
+            portal.get_vocabulary()
+
+        # Test getting a commonly available vocabulary
+        vocabulary = portal.get_vocabulary(name="plone.app.vocabularies.PortalTypes")
+        self.assertIsInstance(vocabulary, SimpleVocabulary)
+
+        # Test with invalid vocabulary name
+        with self.assertRaises(InvalidParameterError) as cm:
+            portal.get_vocabulary(name="non.existing.vocabulary")
+
+        expected_msg = (
+            "Cannot find a vocabulary with name 'non.existing.vocabulary'.\n"
+            "Available vocabularies are:\n"
+        )
+        self.assertTrue(str(cm.exception).startswith(expected_msg))
+
+        # Test with context
+        vocabulary_with_context = portal.get_vocabulary(
+            name="plone.app.vocabularies.PortalTypes", context=self.portal
+        )
+        self.assertIsInstance(vocabulary_with_context, SimpleVocabulary)
+
+    def test_get_vocabulary_names(self):
+        """Test getting list of vocabulary names."""
+        names = portal.get_vocabulary_names()
+
+        # Test we get a list of strings
+        self.assertIsInstance(names, list)
+        self.assertTrue(len(names) > 0)
+        self.assertIsInstance(names[0], str)
+
+        # Test that common vocabularies are included
+        common_vocabularies = [
+            "plone.app.vocabularies.PortalTypes",
+            "plone.app.vocabularies.WorkflowStates",
+            "plone.app.vocabularies.WorkflowTransitions",
+        ]
+
+        for vocabulary_name in common_vocabularies:
+            self.assertIn(vocabulary_name, names)
+
+    def test_vocabulary_terms(self):
+        """Test the actual content of retrieved vocabularies."""
+        # Get portal types vocabulary
+        types_vocabulary = portal.get_vocabulary("plone.app.vocabularies.PortalTypes")
+
+        # Check that we have some common content types
+        types = [term.value for term in types_vocabulary]
+        self.assertIn("Document", types)
+        self.assertIn("Folder", types)
+
+        # Get workflow states vocabulary
+        states_vocabulary = portal.get_vocabulary(
+            "plone.app.vocabularies.WorkflowStates"
+        )
+
+        # Check that we have some common workflow states
+        states = [term.value for term in states_vocabulary]
+        self.assertIn("private", states)
+        self.assertIn("published", states)

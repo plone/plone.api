@@ -18,64 +18,41 @@ Prepare your system by installing prerequisites.
 
 ### System libraries
 
-You need to install system libraries, as described in {ref}`plone:plone-prerequisites-label`, with the exception of GNU make.
+You need to install system libraries, as described in {ref}`plone:plone-prerequisites-label`.
 
-### tox
-
-[tox](https://tox.wiki/en/stable/index.html) automates and standardizes testing in Python.
-Install tox into your Python user space with the following command.
-
-```shell
-python -m pip install --user tox
-```
-
-### pre-commit
-
-`plone.api` uses [pre-commit](https://pre-commit.com/) to automate code quality checks before every commit.
-
-Install pre-commit either with your system package manager.
-Alternatively you can install pre-commit into your Python user.
-
-```shell
-python -m pip install --user pre-commit
-```
-
-Once installed, set up the git hook scripts to run on every commit.
-
-```shell
-pre-commit install
-```
 
 ## Create development environment
 
 After satisfying the prerequisites, you are ready to create your development environment.
 `plone.api` uses `tox` as a wrapper around `coredev.buildout` to simplify development, whereas Plone core uses `coredev.buildout` directly.
+Additionally `plone.api` uses `make` commands that invoke the `tox` commands as a convenience and for consistency across Plone packages.
 
-Start by changing your working directory to your project folder, and download the latest `plone.api` source code.
+Start by changing your working directory to your project folder, and check out the latest `plone.api` source code.
 
 ```shell
 cd <your_project_folder>
 git clone https://github.com/plone/plone.api.git
 ```
 
-Next go into the newly created directory, and build your environment.
+Run `make help` to see the available `make` commands.
 
-```shell
-cd plone.api
-tox
+```console
+check                          Check code base according to Plone standards
+clean                          Clean environment
+help                           This help message
+linkcheck                      Check links in documentation
+livehtml                       Build docs and watch for changes
+test                           Run tests
 ```
 
-Go make some tea while `tox` runs all tasks listed by issuing the command `tox -l`.
+The `make` commands `check`, `livehtml`, and `test` will create a development environment, if it does not already exist.
 
-Open `tox.ini` in your code editor to see all configured commands and what they do.
-Some helpful `tox` commands are shown below.
+Test your code changes with the following command.
 
 ```shell
-tox -e py39-plone-60  # run all tests for Python 3.9 and Plone 6
-tox -e plone6docs     # build documentation
-tox -e livehtml       # build, serve, and reload changes to documentation
-tox -l                # list all tox environments
+make test
 ```
+
 
 (git-workflow)=
 
@@ -109,22 +86,17 @@ For every feature change or addition to `plone.api`, you must add documentation 
 {doc}`plone:contributing/documentation/index`
 ```
 
-After adding or modifying documentation, you can build the documentation with the following command.
+When adding or modifying documentation, you can build the documentation with the following command.
+As you edit the documentation, the started process automatically reloads your changes in the web browser.
 
 ```shell
-tox -e plone6docs
-```
-
-Alternatively, you can automatically reload changes to the documentation as you edit it in a web browser.
-
-```shell
-tox -e livehtml
+make livehtml
 ```
 
 You can run a link checker on documentation.
 
 ```shell
-tox -e linkcheck
+make linkcheck
 ```
 
 The [`plone.api` documentation](https://6.docs.plone.org/plone.api) is automatically generated from the documentation source files when its submodule is updated in the [main Plone `documentation` repository](https://github.com/plone/documentation/).
@@ -172,6 +144,10 @@ def foo(path=None, UID=None):
 % InvalidParameterError,
 % lambda: foo("/plone/blog", "abcd001")
 % )
+%
+% # Make it available for testing below
+% from plone import api
+% api.content.foo = foo
 
 Add documentation in {file}`docs/api/content.md`.
 Narrative documentation should describe what your function does.
@@ -198,7 +174,8 @@ blog_foo = api.content.foo(path="/plone/blog")
 
 % invisible-code-block: python
 %
-% self.assertEqual(blog_foo,"foo")
+% self.assertEqual(blog_foo, "foo")
+
 ````
 
 Code blocks are rendered in documentation.
@@ -215,7 +192,7 @@ Invisible code blocks are not rendered in documentation and can be used for test
 ```markdown
 % invisible-code-block: python
 %
-% self.assertEqual(blog_foo,"foo")
+% self.assertEqual(blog_foo, "foo")
 ```
 
 Invisible code blocks are also handy for enriching the namespace without cluttering the narrative documentation.
