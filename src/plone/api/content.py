@@ -1,5 +1,6 @@
 """Module that provides functionality for content manipulation."""
 
+from Acquisition import aq_chain
 from copy import copy as _copy
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
@@ -666,3 +667,52 @@ def find(context=None, depth=None, unrestricted=False, **kwargs):
         return catalog.unrestrictedSearchResults(**query)
     else:
         return catalog(**query)
+
+
+@required_parameters("obj")
+def get_parents(obj: None, predicate: None, interface: None):
+    """ Get all parents of an object, with optional filtering. 
+    
+    :param obj: [required] Object for which we want to get the parents.
+    :type obj: Content object
+    :param predicate: Optional callable that takes an object and returns a boolean.
+        Used to filter the parents.
+    :type predicate: callable
+    :param interface: Optional interface that the parents must provide.
+    :type interface: zope.interface.Interface
+    :returns: List of parent objects, from immediate to site root.
+    :rtype: list
+    :Example: :ref:`content-get-parents-example`
+    
+    """
+    chain= aq_chain(obj)[1:]
+
+    if interface is not None:
+        chain = [obj for obj in chain if interface.providedBy(obj)]
+
+    if predicate is not None:
+        chain = [obj for obj in chain if predicate(obj)]
+    
+    return chain
+
+
+@required_parameters("obj")
+def get_closed_parent(obj=None, predicate=None, interface= None):
+    """ Get the closest parent of an object that satisfies the given criteria.
+
+    :param obj: [required] Object for which we want to get the parent.
+    :type obj: Content object
+    :param predicate: Optional callable that takes an object and returns a boolean.
+        Used to filter the parents.
+    :type predicate: callable
+    :param interface: Optional interface that the parent must provide.
+    :type interface: zope.interface.Interface
+    :returns: Parent object that satisfies the criteria.
+    :rtype: Content object
+    :Example: :ref:`content-get-closed-parent-example`
+
+    """
+    parents = get_parents(obj=obj, predicate=predicate, interface=interface)
+    if parents:
+        return parents[0]
+    return None
