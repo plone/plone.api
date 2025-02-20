@@ -540,9 +540,11 @@ view = api.content.get_view(
 ## Get content path
 
 To get the path of a content object, use {func}`api.content.get_path`.
-This method returns either an absolute path from the Zope root or a relative path from the portal root.
+This function accepts an object for which you want to get its path as the required parameter `obj`, and an optional boolean parameter `relative` whose default is `False`.
 
-The following example shows how to get the absolute path from the Zope root
+It returns either an absolute path from the Zope root when `relative` is set to `True`, or a relative path from the portal root by default or when `relative` is set to `False`.
+
+The following example shows how to get the absolute path from the Zope root.
 
 ```python
 from plone import api
@@ -582,7 +584,7 @@ try:
         obj=app.outside_folder,
         relative=True
     )
-    assert False, "Should raise InvalidParameterError & not reach this code"
+    assert False, "Should raise InvalidParameterError and not reach this code"
 except InvalidParameterError as e:
     assert "Object not in portal path" in str(e)
 ```
