@@ -552,9 +552,7 @@ parents = api.content.get_parents(obj=team)
 
 % invisible-code-block: python
 %
-% self.assertEqual(len(parents), 2)
-% self.assertEqual(parents[0].id, 'about')
-% self.assertEqual(parents[1].id, 'plone')
+% self.assertListEqual(parents, ['about', 'plone'])
 
 You can filter parent objects by interface:
 
@@ -570,9 +568,7 @@ folder_parents = api.content.get_parents(obj=team, interface=IFolderish)
 
 % invisible-code-block: python
 %
-% self.assertEqual(len(folder_parents), 2)
-% self.assertEqual(folder_parents[0].id, 'about')
-% self.assertEqual(folder_parents[1].id, 'plone')
+% self.assertListEqual(folder_parents, ['about', 'plone'])
 
 You can also filter parents using a custom predicate function:
 
