@@ -6,6 +6,7 @@ from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
 from plone.api.content import _parse_object_provides_query
+from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.contenttypes.interfaces import IFolder
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
@@ -15,6 +16,7 @@ from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFCore.interfaces import IFolderish
 from Products.ZCatalog.interfaces import IZCatalog
 from unittest import mock
 from zExceptions import BadRequest
@@ -1447,3 +1449,148 @@ class TestPloneApiContent(unittest.TestCase):
 
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + "\n"), str(cm.exception))
+
+    def test_get_parents_required_parameter(self):
+        """Test that get_parents requires an obj parameter"""
+
+        with self.assertRaises(MissingParameterError):
+            api.content.get_parents()
+
+    def test_get_parents_basic(self):
+        """Test getting all parents without filter"""
+
+        # Test nested content (in sprint folder)    
+        parents= api.content.get_parents(self.sprint)
+        self.assertEqual(len(parents), 2)
+        self.assertEqual(parents[0].getId(), "events")
+        self.assertEqual(parents[1], self.portal)
+
+        # Test nested content (in team folder)
+        parents= api.content.get_parents(self.team)
+        self.assertEqual(len(parents), 2)
+        self.assertEqual(parents[0].getId(), "about")
+        self.assertEqual(parents[1], self.portal)
+
+    def test_get_parents_with_interface_filter(self):
+        """Test getting all parents with an interface filter"""
+
+        # Test content in nested folder
+        parents= api.content.get_parents(
+            self.sprint,
+            IFolderish
+        )
+
+        # Should return [events, portal] as both are folders
+        self.assertEqual(len(parents), 2)
+        self.assertTrue(IFolderish.providedBy(parents[0]))
+        self.assertTrue(IFolderish.providedBy(parents[1]))
+
+        # Test content with a mixed parent type
+        parents= api.content.get_parents(
+            self.image,
+            IFolderish
+        )
+
+        # Should return [portal] as only parent folder
+        self.assertEqual(len(parents), 1)
+        self.assertEqual(parents[0], self.portal)
+
+    
+    def test_get_parents_with_predicate_filter(self):
+        """Test getting all parents with a predicate filter"""
+
+        # Set event to published state
+        api.content.transition(self.events, to_state="published")
+
+        # Test get only the published parents
+        parents= api.content.get_parents(
+            self.sprint,
+            predicate=lambda x: api.content.get_state(x) == "published"
+        )
+
+        # Should return [events]
+        self.assertEqual(len(parents), 1)
+        self.assertEqual(parents[0].getId(), "events")
+
+    def test_get_parent_with_both_filters(self):
+        """Test getting all parents with both filters"""
+
+        # Set event to published state
+        api.content.transition(self.events, to_state="published")
+
+        # Get only published folder parents
+        parents= api.content.get_parents(
+            self.sprint,
+            interface=IFolderish,
+            predicate=lambda x: api.content.get_state(x) == "published"
+        )
+
+        # Should return events
+        self.assertEqual(len(parents), 1)
+        self.assertEqual(parents[0].getId(), "events")
+        self.assertTrue(IFolderish.providedBy(parents[0]))
+
+    
+    def test_get_parents_root_level(self):
+        """Test getting all parents at the root level"""
+
+        # Test root level content
+        parents= api.content.get_parents(self.blog)
+        self.assertEqual(len(parents), 1)
+        self.assertEqual(parents[0], self.portal)
+
+    def test_closest_parent_requires_parameter(self):
+        """Test that closest_parent requires an obj parameter"""
+
+        with self.assertRaises(MissingParameterError):
+            api.content.get_closed_parent()
+
+    def test_closest_parent_basic(self):
+        """Test getting closest parent without filters"""
+
+        # Test nested content (in event folder)    
+        parent= api.content.get_closed_parent(self.sprint)
+        self.assertEqual(parent.getId(), "events")
+
+        # Test nested content (in team folder)
+        parent= api.content.get_closed_parent(self.team)
+        self.assertEqual(parent.getId(), "about")
+
+    def test_closest_parent_interface_folder(self):
+        """Test getting closest parent with an interface filter"""
+
+        # Test nested content (in event folder)    
+        parent= api.content.get_closed_parent(
+            self.sprint, 
+            interface=IFolderish
+        )
+        self.assertTrue(IFolderish.providedBy(parent))
+        self.assertEqual(parent.getId(), "events")
+
+    def test_closest_parent_predicate_filter(self):
+        """Test getting closest parent with a predicate filter"""
+
+        api.content.transition(self.portal, to_state="published")
+
+        # Test nested content (in event folder)    
+        parent= api.content.get_closed_parent(
+            self.sprint, 
+            predicate=lambda x: api.content.get_state(x) == "published"
+        )
+        self.assertEqual(parent, self.portal)
+
+    def test_closes_parent_no_match(self):
+        """Test getting closest parents when no parents is found"""
+
+        parents= api.content.get_closed_parent(
+            self.sprint,
+            predicate= lambda x: False
+        )
+        self.assertIsNone(parents)
+
+    def test_closest_parent_root_level(self):
+        """Test getting closest parent at the root level"""
+
+        # Test root level content
+        parent= api.content.get_closed_parent(self.blog)
+        self.assertEqual(parent, self.portal)
