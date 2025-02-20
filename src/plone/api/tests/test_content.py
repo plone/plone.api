@@ -1536,24 +1536,24 @@ class TestPloneApiContent(unittest.TestCase):
         """Test that closest_parent requires an obj parameter"""
 
         with self.assertRaises(MissingParameterError):
-            api.content.get_closed_parent()
+            api.content.get_closest_parent()
 
     def test_closest_parent_basic(self):
         """Test getting closest parent without filters"""
 
         # Test nested content (in event folder)    
-        parent= api.content.get_closed_parent(self.sprint)
+        parent= api.content.get_closest_parent(self.sprint)
         self.assertEqual(parent.getId(), "events")
 
         # Test nested content (in team folder)
-        parent= api.content.get_closed_parent(self.team)
+        parent= api.content.get_closest_parent(self.team)
         self.assertEqual(parent.getId(), "about")
 
     def test_closest_parent_interface_folder(self):
         """Test getting closest parent with an interface filter"""
 
         # Test nested content (in event folder)    
-        parent= api.content.get_closed_parent(
+        parent= api.content.get_closest_parent(
             self.sprint, 
             interface=IFolderish
         )
@@ -1566,7 +1566,7 @@ class TestPloneApiContent(unittest.TestCase):
         api.content.transition(self.portal, to_state="published")
 
         # Test nested content (in event folder)    
-        parent= api.content.get_closed_parent(
+        parent= api.content.get_closest_parent(
             self.sprint, 
             predicate=lambda x: api.content.get_state(x) == "published"
         )
@@ -1575,7 +1575,7 @@ class TestPloneApiContent(unittest.TestCase):
     def test_closes_parent_no_match(self):
         """Test getting closest parents when no parents is found"""
 
-        parents= api.content.get_closed_parent(
+        parents= api.content.get_closest_parent(
             self.sprint,
             predicate= lambda x: False
         )
@@ -1585,5 +1585,5 @@ class TestPloneApiContent(unittest.TestCase):
         """Test getting closest parent at the root level"""
 
         # Test root level content
-        parent= api.content.get_closed_parent(self.blog)
+        parent= api.content.get_closest_parent(self.blog)
         self.assertEqual(parent, self.portal)

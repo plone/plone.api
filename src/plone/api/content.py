@@ -697,7 +697,7 @@ def get_parents(obj: None, predicate: None, interface: None):
 
 
 @required_parameters("obj")
-def get_closed_parent(obj=None, predicate=None, interface= None):
+def get_closest_parent(obj=None, predicate=None, interface= None):
     """ Get the closest parent of an object that satisfies the given criteria.
 
     :param obj: [required] Object for which we want to get the parent.
