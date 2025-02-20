@@ -1461,15 +1461,12 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test nested content (in sprint folder)    
         parents= api.content.get_parents(self.sprint)
-        self.assertEqual(len(parents), 2)
-        self.assertEqual(parents[0].getId(), "events")
-        self.assertEqual(parents[1], self.portal)
+        self.assertListEqual(parents, [self.events, self.portal])
 
         # Test nested content (in team folder)
         parents= api.content.get_parents(self.team)
         self.assertEqual(len(parents), 2)
-        self.assertEqual(parents[0].getId(), "about")
-        self.assertEqual(parents[1], self.portal)
+        self.assertListEqual(parents, [self.about, self.portal])
 
     def test_get_parents_with_interface_filter(self):
         """Test getting all parents with an interface filter"""
@@ -1482,8 +1479,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Should return [events, portal] as both are folders
         self.assertEqual(len(parents), 2)
-        self.assertTrue(IFolderish.providedBy(parents[0]))
-        self.assertTrue(IFolderish.providedBy(parents[1]))
+        self.assertListEqual(parents, [self.events, self.portal])
 
         # Test content with a mixed parent type
         parents= api.content.get_parents(
@@ -1492,8 +1488,7 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
         # Should return [portal] as only parent folder
-        self.assertEqual(len(parents), 1)
-        self.assertEqual(parents[0], self.portal)
+        self.assertListEqual(parents, [self.portal])
 
     
     def test_get_parents_with_predicate_filter(self):
@@ -1509,8 +1504,7 @@ class TestPloneApiContent(unittest.TestCase):
         )
 
         # Should return [events]
-        self.assertEqual(len(parents), 1)
-        self.assertEqual(parents[0].getId(), "events")
+        self.assertListEqual(parents, [self.events])
 
     def test_get_parent_with_both_filters(self):
         """Test getting all parents with both filters"""
@@ -1527,7 +1521,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Should return events
         self.assertEqual(len(parents), 1)
-        self.assertEqual(parents[0].getId(), "events")
+        self.assertListEqual(parents, [self.events])
         self.assertTrue(IFolderish.providedBy(parents[0]))
 
     
@@ -1536,8 +1530,7 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test root level content
         parents= api.content.get_parents(self.blog)
-        self.assertEqual(len(parents), 1)
-        self.assertEqual(parents[0], self.portal)
+        self.assertListEqual(parents, [self.portal])
 
     def test_closest_parent_requires_parameter(self):
         """Test that closest_parent requires an obj parameter"""
