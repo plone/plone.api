@@ -29,6 +29,7 @@ setup(
     keywords="plone api",
     python_requires=">=3.8",
     install_requires=[
+        "Acquisition",
         "Products.statusmessages",
         "Products.PlonePAS",
         "Products.CMFPlone",
