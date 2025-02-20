@@ -542,7 +542,7 @@ view = api.content.get_view(
 To get the path of a content object, use {func}`api.content.get_path`.
 This function accepts an object for which you want to get its path as the required parameter `obj`, and an optional boolean parameter `relative` whose default is `False`.
 
-It returns either an absolute path from the Zope root when `relative` is set to `True`, or a relative path from the portal root by default or when `relative` is set to `False`.
+It returns either an absolute path from the Zope root by default or when `relative` is set to `False`, or a relative path from the portal root when `relative` is set to `True`.
 
 The following example shows how to get the absolute path from the Zope root.
 
