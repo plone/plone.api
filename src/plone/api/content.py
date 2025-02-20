@@ -1,6 +1,6 @@
 """Module that provides functionality for content manipulation."""
 
-from Acquisition import aq_chain
+from Acquisition import aq_chain, aq_inner
 from copy import copy as _copy
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
@@ -685,15 +685,15 @@ def get_parents(obj: None, predicate: None, interface: None):
     :Example: :ref:`content-get-parents-example`
     
     """
-    chain= aq_chain(obj)[1:]
+    chain= aq_chain(aq_inner(obj))[1:]
 
     if interface is not None:
-        chain = [obj for obj in chain if interface.providedBy(obj)]
+        chain = (obj for obj in chain if interface.providedBy(obj)) 
 
     if predicate is not None:
-        chain = [obj for obj in chain if predicate(obj)]
+        chain = map(predicate, chain)
     
-    return chain
+    return list(chain)
 
 
 @required_parameters("obj")
@@ -708,7 +708,7 @@ def get_closed_parent(obj=None, predicate=None, interface= None):
     :param interface: Optional interface to filter the parents.
     :type interface: zope.interface.Interface
     :returns: Closest matching parents object or None if no match found.
-    :rtype: Content object
+    :rtype: Content object or None
     :Example: :ref:`content-get-closed-parent-example`
 
     """
