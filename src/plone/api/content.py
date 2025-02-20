@@ -584,14 +584,14 @@ def get_path(obj=None, relative=False):
     :Example: :ref:`content-get-path-example`
     """
     if not hasattr(obj, "getPhysicalPath"):
-        raise InvalidParameterError(f"Cannot get path of object of type {type(obj)}")
+        raise InvalidParameterError(f"Cannot get path of object {obj!r}")
 
     if not relative:
         return "/".join(obj.getPhysicalPath())
     site = portal.get()
     site_path = site.getPhysicalPath()
     obj_path = obj.getPhysicalPath()
-    if not "/".join(obj_path).startswith("/".join(site_path)):
+    if obj_path[: len(site_path)] != site_path:
         raise InvalidParameterError(
             "Object not in portal path. Object path: {}".format("/".join(obj_path))
         )

@@ -1473,10 +1473,11 @@ class TestPloneApiContent(unittest.TestCase):
 
         # Test invalid object
         invalid_obj = object()
-        with self.assertRaises(InvalidParameterError) as cm:
+        with self.assertRaises(InvalidParameterError):
             api.content.get_path(invalid_obj)
-        self.assertEqual(
-            str(cm.exception), "Cannot get path of object of type <class 'object'>"
+        self.assertRaisesRegex(
+            InvalidParameterError,
+            r"^Cannot get path of object <object object at 0x[0-9a-f]+>$",
         )
 
     def test_get_path_relative(self):

@@ -539,7 +539,7 @@ view = api.content.get_view(
 
 ## Get content path
 
-To get the path of a content object, use {meth}`api.content.get_path`.
+To get the path of a content object, use {func}`api.content.get_path`.
 This method returns either an absolute path from the Zope root or a relative path from the portal root.
 
 The following example shows how to get the absolute path from the Zope root
@@ -560,7 +560,7 @@ rel_path = api.content.get_path(obj=folder, relative=True)
 assert rel_path == 'events/training'
 ```
 
-If the API is used to fetch an object outside the portal with the {meth}`relative` parameter set as `True`, it throws a `InvalidParameterError`.
+If the API is used to fetch an object with the `relative` parameter set as `True`, and the object is outside the portal, it throws an `InvalidParameterError` error.
 
 % invisible-code-block: python
 %
