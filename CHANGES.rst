@@ -8,6 +8,25 @@ Changelog
 
 .. towncrier release notes start
 
+2.3.0 (2025-02-21)
+------------------
+
+New features:
+
+
+- Added the content API helper function ``api.content.get_path``, which gets either the relative or absolute path of an object. @ujsquared (#532)
+- Added two new portal API functions:
+  - ``api.portal.get_vocabulary``: Get a vocabulary by name
+  - ``api.portal.get_vocabulary_names``: Get a list of all available vocabulary names
+  @ujsquared (#533)
+
+
+Internal:
+
+
+- Making it easier for new contributors to get started with a simple Makefile and a tidy 'contributing' chapter. @ksuess (#558)
+
+
 2.2.5 (2025-01-24)
 ------------------
 
