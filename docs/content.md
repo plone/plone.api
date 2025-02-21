@@ -535,6 +535,94 @@ view = api.content.get_view(
 %
 % self.assertEqual(view.__name__, u'plone')
 
+(content-get-parents-example)=
+
+## Get parent objects
+
+You can get all parents of a content object (from immediate parent to the portal root) using the {func}`api.content.get_parents` function.
+
+```python
+from plone import api
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get all parents
+parents = api.content.get_parents(obj=team)
+```
+
+% invisible-code-block: python
+%
+% self.assertListEqual(parents, ['about', 'plone'])
+
+You can filter parent objects by interface:
+
+```python
+from plone import api
+from Products.CMFCore.interfaces import IFolderish
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get folder parents only
+folder_parents = api.content.get_parents(obj=team, interface=IFolderish)
+```
+
+% invisible-code-block: python
+%
+% self.assertListEqual(folder_parents, ['about', 'plone'])
+
+You can also filter parents using a custom predicate function:
+
+```python
+from plone import api
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get only published parents
+def is_published(obj):
+    return api.content.get_state(obj=obj) == 'published'
+
+published_parents = api.content.get_parents(obj=team, predicate=is_published)
+```
+
+(content-get-closed-parent-example)=
+
+## Get closest parent
+
+To get the closest parent object that matches certain criteria, use the {func}`api.content.get_closest_parent` function.
+
+```python
+from plone import api
+from Products.CMFCore.interfaces import IFolderish
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get immediate parent folder
+parent_folder = api.content.get_closed_parent(obj=team, interface=IFolderish)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(parent_folder.id, 'about')
+
+You can also use a predicate function to find the closest parent matching custom criteria:
+
+```python
+from plone import api
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get closest published parent
+def is_published(obj):
+    return api.content.get_state(obj=obj) == 'published'
+
+closest_published = api.content.get_closed_parent(obj=team, predicate=is_published)
+```
+
+% invisible-code-block: python
+%
+% # Assuming 'about' folder is published
+% self.assertEqual(closest_published.id, 'about')
+
 ## Further reading
 
 For more information on possible flags and usage options please see the full {ref}`plone-api-content` specification.
