@@ -671,7 +671,7 @@ def find(context=None, depth=None, unrestricted=False, **kwargs):
 
 
 @required_parameters("obj")
-def get_parents(obj: None, predicate: None, interface: None):
+def get_parents(obj=None, predicate=None, interface=None):
     """Get all parents of an object, with optional filtering.
 
     :param obj: [required] Object for which we want to get the parents.
