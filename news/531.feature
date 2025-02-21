@@ -1,1 +1,1 @@
-Add get_parents and get_closed_parent functions for content hierarchy retrieval @rohnsha0
+Add `get_parents` and `get_closest_parent` functions for content hierarchy retrieval @rohnsha0

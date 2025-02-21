@@ -539,7 +539,7 @@ view = api.content.get_view(
 
 ## Get parent objects
 
-You can get all parents of a content object (from immediate parent to the portal root) using the {meth}`api.content.get_parents` method.
+You can get all parents of a content object (from immediate parent to the portal root) using the {func}`api.content.get_parents` function.
 
 ```python
 from plone import api
@@ -588,7 +588,7 @@ published_parents = api.content.get_parents(obj=team, predicate=is_published)
 
 ## Get closest parent
 
-To get the closest parent object that matches certain criteria, use the {meth}`api.content.get_closed_parent` method.
+To get the closest parent object that matches certain criteria, use the {func}`api.content.get_closest_parent` function.
 
 ```python
 from plone import api
