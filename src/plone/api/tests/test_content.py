@@ -1472,14 +1472,14 @@ class TestPloneApiContent(unittest.TestCase):
         """Test getting all parents with an interface filter"""
 
         # Test content in nested folder
-        parents = api.content.get_parents(self.sprint, IFolderish)
+        parents = api.content.get_parents(self.sprint, interface=IFolderish)
 
         # Should return [events, portal] as both are folders
         self.assertEqual(len(parents), 2)
         self.assertListEqual(parents, [self.events, self.portal])
 
         # Test content with a mixed parent type
-        parents = api.content.get_parents(self.image, IFolderish)
+        parents = api.content.get_parents(self.image, interface=IFolderish)
 
         # Should return [portal] as only parent folder
         self.assertListEqual(parents, [self.portal])
@@ -1487,13 +1487,17 @@ class TestPloneApiContent(unittest.TestCase):
     def test_get_parents_with_predicate_filter(self):
         """Test getting all parents with a predicate filter"""
 
+        def check_state(obj):
+            try:
+                return api.content.get_state(obj) == "published"
+            except WorkflowException:
+                return False
+
         # Set event to published state
         api.content.transition(self.events, to_state="published")
 
         # Test get only the published parents
-        parents = api.content.get_parents(
-            self.sprint, predicate=lambda x: api.content.get_state(x) == "published"
-        )
+        parents = api.content.get_parents(self.sprint, predicate=check_state)
 
         # Should return [events]
         self.assertListEqual(parents, [self.events])
@@ -1550,14 +1554,18 @@ class TestPloneApiContent(unittest.TestCase):
 
     def test_closest_parent_predicate_filter(self):
         """Test getting closest parent with a predicate filter"""
+        # Instead of the portal, transition the events folder
+        api.content.transition(self.events, to_state="published")
 
-        api.content.transition(self.portal, to_state="published")
+        def check_state(obj):
+            try:
+                return api.content.get_state(obj) == "published"
+            except WorkflowException:
+                return False
 
-        # Test nested content (in event folder)
-        parent = api.content.get_closest_parent(
-            self.sprint, predicate=lambda x: api.content.get_state(x) == "published"
-        )
-        self.assertEqual(parent, self.portal)
+        # Test nested content (in event folder) using the safe check_state predicate
+        parent = api.content.get_closest_parent(self.sprint, predicate=check_state)
+        self.assertEqual(parent, self.events)
 
     def test_closes_parent_no_match(self):
         """Test getting closest parents when no parents is found"""

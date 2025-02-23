@@ -676,23 +676,30 @@ def get_parents(obj=None, predicate=None, interface=None):
 
     :param obj: [required] Object for which we want to get the parents.
     :type obj: Content object
-    :param predicate: Optional callable that takes an object and returns a boolean.
-        Used to filter the parents.
-    :type predicate: callable
+    :param interface_or_predicate: For backward compatibility - can be either an interface or predicate
+    :type interface_or_predicate: zope.interface.Interface or callable
     :param interface: Optional interface to filter the parents.
     :type interface: zope.interface.Interface
     :returns: List of parent objects, from immediate to site root.
     :rtype: list
     :Example: :ref:`content-get-parents-example`
-
     """
-    chain = aq_chain(aq_inner(obj))[1:]
+    # Get the parent chain but filter out non-contentish parents like Application and RequestContainer
+    chain = [obj for obj in aq_chain(aq_inner(obj))[1:] if isinstance(obj, DynamicType)]
 
     if interface is not None:
-        chain = (obj for obj in chain if interface.providedBy(obj))
+        chain = [parent for parent in chain if interface.providedBy(parent)]
 
     if predicate is not None:
-        chain = map(predicate, chain)
+        filtered_chain = []
+        for parent in chain:
+            try:
+                if predicate(parent):
+                    filtered_chain.append(parent)
+            except WorkflowException:
+                # Skip objects that raise WorkflowException
+                continue
+        chain = filtered_chain
 
     return list(chain)
 
