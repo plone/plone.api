@@ -580,7 +580,10 @@ team = portal['about']['team']
 
 # Get only published parents
 def is_published(obj):
-    return api.content.get_state(obj=obj) == 'published'
+    try:
+        return api.content.get_state(obj=obj) == 'published'
+    except:
+        return False
 
 published_parents = api.content.get_parents(obj=team, predicate=is_published)
 ```
@@ -614,7 +617,10 @@ team = portal['about']['team']
 
 # Get closest published parent
 def is_published(obj):
-    return api.content.get_state(obj=obj) == 'published'
+    try:
+        return api.content.get_state(obj=obj) == 'published'
+    except:
+        return False
 
 closest_published = api.content.get_closest_parent(obj=team, predicate=is_published)
 ```

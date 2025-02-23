@@ -1502,23 +1502,54 @@ class TestPloneApiContent(unittest.TestCase):
         # Should return [events]
         self.assertListEqual(parents, [self.events])
 
+    def _get_published_state_predicate(self, obj):
+        """Example of a properly implemented predicate that handles WorkflowException.
+
+        :param obj: Content object to check state
+        :return: True if object is published, False otherwise or if workflow check fails
+        """
+        try:
+            return api.content.get_state(obj) == "published"
+        except WorkflowException:
+            return False
+
     def test_get_parent_with_both_filters(self):
         """Test getting all parents with both filters"""
-
         # Set event to published state
         api.content.transition(self.events, to_state="published")
 
-        # Get only published folder parents
+        # Get only published folder parents using a properly handled predicate
         parents = api.content.get_parents(
             self.sprint,
             interface=IFolderish,
-            predicate=lambda x: api.content.get_state(x) == "published",
+            predicate=self._get_published_state_predicate,
         )
 
         # Should return events
         self.assertEqual(len(parents), 1)
         self.assertListEqual(parents, [self.events])
         self.assertTrue(IFolderish.providedBy(parents[0]))
+
+
+def test_get_parent_with_workflow_exception(self):
+    """Test that parents without workflow don't break the chain"""
+    # Create a custom folder that might not have workflow
+    no_workflow_folder = api.content.create(
+        container=self.portal, type="Folder", id="no-workflow"
+    )
+
+    # Create a test item in the no-workflow folder
+    test_item = api.content.create(
+        container=no_workflow_folder, type="Document", id="test-item"
+    )
+
+    # This should not raise WorkflowException
+    parents = api.content.get_parents(
+        test_item, interface=IFolderish, predicate=self._get_published_state_predicate
+    )
+
+    # Should return empty list since no parents match the predicate
+    self.assertEqual(len(parents), 0)
 
     def test_get_parents_root_level(self):
         """Test getting all parents at the root level"""

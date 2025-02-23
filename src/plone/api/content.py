@@ -707,7 +707,8 @@ def get_parents(obj=None, predicate=None, interface=None):
     :param obj: [required] Object for which we want to get the parents.
     :type obj: Content object
     :param predicate: Optional callable that takes an object and returns a boolean.
-        Used to filter the parents.
+                     The predicate should handle its own exceptions and return False
+                     for any cases where the object should be filtered out.
     :type predicate: callable
     :param interface: Optional interface to filter the parents.
     :type interface: zope.interface.Interface
@@ -721,18 +722,10 @@ def get_parents(obj=None, predicate=None, interface=None):
     ]
 
     if interface is not None:
-        chain = [parent for parent in chain if interface.providedBy(parent)]
+        chain = (parent for parent in chain if interface.providedBy(parent))
 
     if predicate is not None:
-        filtered_chain = []
-        for parent in chain:
-            try:
-                if predicate(parent):
-                    filtered_chain.append(parent)
-            except WorkflowException:
-                # Skip objects that raise WorkflowException
-                continue
-        chain = filtered_chain
+        chain = (parent for parent in chain if predicate(parent))
 
     return list(chain)
 
