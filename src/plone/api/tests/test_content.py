@@ -1450,7 +1450,6 @@ class TestPloneApiContent(unittest.TestCase):
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + "\n"), str(cm.exception))
 
-
     def test_get_parents_required_parameter(self):
         """Test that get_parents requires an obj parameter"""
 
@@ -1643,4 +1642,3 @@ class TestPloneApiContent(unittest.TestCase):
         with self.assertRaises(InvalidParameterError) as cm:
             api.content.get_path(outside_obj, relative=True)
         self.assertIn("Object not in portal path", str(cm.exception))
-

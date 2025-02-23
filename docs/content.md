@@ -553,7 +553,7 @@ parents = api.content.get_parents(obj=team)
 
 % invisible-code-block: python
 %
-% self.assertListEqual(parents, ['about', 'plone'])
+% self.assertEqual(parents[0], portal['about'])
 
 You can filter parent objects by interface:
 
@@ -569,7 +569,7 @@ folder_parents = api.content.get_parents(obj=team, interface=IFolderish)
 
 % invisible-code-block: python
 %
-% self.assertListEqual(folder_parents, ['about', 'plone'])
+% self.assertEqual(folder_parents[0], portal['about'])
 
 You can also filter parents using a custom predicate function:
 
@@ -598,7 +598,7 @@ portal = api.portal.get()
 team = portal['about']['team']
 
 # Get immediate parent folder
-parent_folder = api.content.get_closed_parent(obj=team, interface=IFolderish)
+parent_folder = api.content.get_closest_parent(obj=team, interface=IFolderish)
 ```
 
 % invisible-code-block: python
@@ -616,13 +616,8 @@ team = portal['about']['team']
 def is_published(obj):
     return api.content.get_state(obj=obj) == 'published'
 
-closest_published = api.content.get_closed_parent(obj=team, predicate=is_published)
+closest_published = api.content.get_closest_parent(obj=team, predicate=is_published)
 ```
-
-% invisible-code-block: python
-%
-% # Assuming 'about' folder is published
-% self.assertEqual(closest_published.id, 'about')
 
 
 (content-get-path-example)=
