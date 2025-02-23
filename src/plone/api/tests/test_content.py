@@ -1450,6 +1450,7 @@ class TestPloneApiContent(unittest.TestCase):
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + "\n"), str(cm.exception))
 
+
     def test_get_parents_required_parameter(self):
         """Test that get_parents requires an obj parameter"""
 
@@ -1579,3 +1580,67 @@ class TestPloneApiContent(unittest.TestCase):
         # Test root level content
         parent = api.content.get_closest_parent(self.blog)
         self.assertEqual(parent, self.portal)
+
+    def test_get_path_absolute(self):
+        """Test getting the path of a content object with relative parameter set to False."""
+        from plone.api.exc import InvalidParameterError
+
+        portal = self.layer["portal"]
+
+        # Test portal root
+        self.assertEqual(
+            api.content.get_path(portal), "/plone"  # This assumes default Plone site id
+        )
+
+        # Test folder structure
+        folder = api.content.create(container=portal, type="Folder", id="test-folder")
+        self.assertEqual(api.content.get_path(folder), "/plone/test-folder")
+
+        # Test nested content
+        document = api.content.create(
+            container=folder, type="Document", id="test-document"
+        )
+        self.assertEqual(
+            api.content.get_path(document), "/plone/test-folder/test-document"
+        )
+
+        # Test invalid object
+        invalid_obj = object()
+        with self.assertRaises(InvalidParameterError):
+            api.content.get_path(invalid_obj)
+        self.assertRaisesRegex(
+            InvalidParameterError,
+            r"^Cannot get path of object <object object at 0x[0-9a-f]+>$",
+        )
+
+    def test_get_path_relative(self):
+        from plone.api.exc import InvalidParameterError
+
+        portal = self.layer["portal"]
+
+        # Test portal root
+        self.assertEqual(api.content.get_path(portal, relative=True), "")
+
+        # Test folder structure
+        folder = api.content.create(container=portal, type="Folder", id="test-folder")
+        self.assertEqual(api.content.get_path(folder, relative=True), "test-folder")
+
+        # Test nested content
+        document = api.content.create(
+            container=folder, type="Document", id="test-document"
+        )
+        self.assertEqual(
+            api.content.get_path(document, relative=True),
+            "test-folder/test-document",
+        )
+
+        # Test object outside portal
+        class FauxObject:
+            def getPhysicalPath(self):
+                return ("", "foo", "bar")
+
+        outside_obj = FauxObject()
+        with self.assertRaises(InvalidParameterError) as cm:
+            api.content.get_path(outside_obj, relative=True)
+        self.assertIn("Object not in portal path", str(cm.exception))
+
