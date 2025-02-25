@@ -7,7 +7,7 @@ from plone.api.tests.base import INTEGRATION_TESTING
 import unittest
 
 
-ADDON = "plone.app.multilingual"
+ADDON = "plone.session"
 
 
 class TestAPIAddonGetAddons(unittest.TestCase):
@@ -97,10 +97,7 @@ class TestAPIAddon(unittest.TestCase):
         self.assertIsInstance(result, AddonInformation)
         self.assertEqual(result.id, ADDON)
         self.assertTrue(result.valid)
-        self.assertEqual(
-            result.description,
-            "Install to enable multilingual content support with plone.app.multilingual",
-        )
+        self.assertEqual(result.description, "Optional plone.session refresh support.")
         self.assertEqual(result.profile_type, "default")
         self.assertIsInstance(result.version, str)
         self.assertIsInstance(result.install_profile, dict)

@@ -54,7 +54,7 @@ To get information about a specific addon.
 ```python
 from plone import api
 
-addon = api.addon.get('plone.app.multilingual')
+addon = api.addon.get('plone.session')
 print(addon.id)           # ID of the addon
 print(addon.version)      # Version string
 print(addon.title)        # Display title
@@ -69,7 +69,7 @@ To install an addon:
 ```python
 from plone import api
 
-success = api.addon.install('plone.app.multilingual')
+success = api.addon.install('plone.session')
 ```
 
 To uninstall an addon:
@@ -77,7 +77,7 @@ To uninstall an addon:
 ```python
 from plone import api
 
-success = api.addon.uninstall('plone.app.multilingual')
+success = api.addon.uninstall('plone.session')
 ```
 
 ## Get addon version
@@ -87,7 +87,7 @@ To get the version of an addon.
 ```python
 from plone import api
 
-version = api.addon.get_version('plone.app.multilingual')
+version = api.addon.get_version('plone.session')
 ```
 
 (addons-exceptions)=
