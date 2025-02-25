@@ -1,4 +1,5 @@
 """Tests for plone.api.redirection methods."""
+
 from plone import api
 from plone.api.addon import AddonInformation
 from plone.api.tests.base import INTEGRATION_TESTING

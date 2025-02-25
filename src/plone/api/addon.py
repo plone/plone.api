@@ -1,16 +1,13 @@
-"""API to handle addon management."""
+"""Module that provides functionality to handle addon management."""
+
 from dataclasses import dataclass
 from functools import lru_cache
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import required_parameters
-from Products.CMFPlone.controlpanel.browser.quickinstaller import InstallerView
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.CMFPlone.utils import get_installer
 from Products.GenericSetup import EXTENSION
-from typing import Dict
-from typing import List
-from typing import Tuple
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.globalrequest import getRequest
 
@@ -37,8 +34,9 @@ __all__ = [
 class NonInstallableAddons:
     """Set of addons not available for installation."""
 
-    profiles: List[str]
-    products: List[str]
+    profiles: list[str]
+    products: list[str]
+    pass
 
 
 @dataclass
@@ -49,28 +47,28 @@ class AddonInformation:
     version: str
     title: str
     description: str
-    upgrade_profiles: Dict
-    other_profiles: List[Dict]
-    install_profile: Dict
-    uninstall_profile: Dict
+    upgrade_profiles: dict
+    other_profiles: list[dict]
+    install_profile: dict
+    uninstall_profile: dict
     profile_type: str
-    upgrade_info: Dict
+    upgrade_info: dict
     valid: bool
-    flags: List[str]
+    flags: list[str]
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         """Return a string representation of this object."""
         return f"<AddonInformation id='{self.id}' flags='{self.flags}'>"
 
 
-def _get_installer() -> InstallerView:
+def _get_installer():
     """Return the InstallerView."""
     portal_obj = portal.get()
     return get_installer(portal_obj, getRequest())
 
 
 @lru_cache(maxsize=1)
-def _get_non_installable_addons() -> NonInstallableAddons:
+def _get_non_installable_addons():
     """Return information about non installable addons.
 
     We cache this on first use, as those utilities are registered
@@ -95,10 +93,11 @@ def _get_non_installable_addons() -> NonInstallableAddons:
 
 
 @lru_cache(maxsize=1)
-def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
+def _cached_addons():
     """Return information about addons in this installation.
 
     :returns: Tuple of tuples with addon id and AddonInformation.
+    :rtype: Tuple
     """
     installer = _get_installer()
     setup_tool = installer.ps
@@ -164,10 +163,17 @@ def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
     return tuple(addons.items())
 
 
-def _update_addon_info(
-    installer: InstallerView, addon: AddonInformation
-) -> AddonInformation:
-    """Update information about an addon."""
+def _update_addon_info(addon, installer):
+    """Update information about an addon.
+
+    :param addon: [required] Addon object that is to be updated
+    :type addon: AddonInformation object
+    :param installer: InstallerView object that will be checked for addon info
+    :type installer: InstallerView object
+
+    :returns: Updated AddonInformation object.
+    :rtype: AddonInformation object
+    """
     addon_id = addon.id
     if addon.valid:
         flags = []
@@ -185,20 +191,21 @@ def _update_addon_info(
     return addon
 
 
-def _get_addons() -> List[AddonInformation]:
+def _get_addons():
     """Return an updated list of addon information.
 
     :returns: List of AddonInformation.
+    :rtype: List
     """
     installer = _get_installer()
     addons = dict(_cached_addons())
     result = []
     for addon in addons.values():
-        result.append(_update_addon_info(installer, addon))
+        result.append(_update_addon_info(addon, installer))
     return result
 
 
-def get_addons(limit: str = "") -> List[AddonInformation]:
+def get_addons(limit=None):
     """List addons in this Plone site.
 
     :param limit: Limit list of addons.
@@ -207,7 +214,11 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
         'available': products that are not installed but could be
         'non_installable': Non installable products
         'broken': uninstallable products with broken dependencies
+    :type limit: string
     :returns: List of AddonInformation.
+    :raises:
+        InvalidParameterError
+    :Example: :ref:'addon-get-addons'
     """
     addons = _get_addons()
     if limit in ("non_installable", "broken"):
@@ -216,12 +227,12 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
     addons = [addon for addon in addons if addon.valid]
     if limit in ("installed", "upgradable", "available"):
         addons = [addon for addon in addons if limit in addon.flags]
-    elif limit != "":
+    elif limit != ("" or None):
         raise InvalidParameterError(f"Parameter limit='{limit}' is not valid.")
     return addons
 
 
-def get_addon_ids(limit: str = "") -> List[str]:
+def get_addon_ids(limit):
     """List addons ids in this Plone site.
 
     :param limit: Limit list of addons.
@@ -230,6 +241,7 @@ def get_addon_ids(limit: str = "") -> List[str]:
         'available': products that are not installed but could be
         'non_installable': Non installable products
         'broken': uninstallable products with broken dependencies
+    :type limit: string
     :returns: List of addon ids.
     """
     addons = get_addons(limit=limit)
@@ -237,7 +249,7 @@ def get_addon_ids(limit: str = "") -> List[str]:
 
 
 @required_parameters("addon")
-def get_version(addon: str) -> str:
+def get_version(addon):
     """Return the version of the product (package)."""
     try:
         dist = pkg_resources.get_distribution(addon)
@@ -249,20 +261,21 @@ def get_version(addon: str) -> str:
 
 
 @required_parameters("addon")
-def get(addon: str) -> AddonInformation:
+def get(addon):
     """Information about an Addon.
 
     :param addon: ID of the addon to be retrieved.
     :returns: Addon information.
+    :rtype: string
     """
     addons = dict(_cached_addons())
     if addon not in addons:
         raise InvalidParameterError(f"No addon {addon} found.")
-    return _update_addon_info(_get_installer(), addons.get(addon))
+    return _update_addon_info(addons.get(addon), _get_installer())
 
 
 @required_parameters("addon")
-def install(addon: str) -> bool:
+def install(addon):
     """Install an addon.
 
     :param addon: ID of the addon to be installed.
@@ -273,11 +286,12 @@ def install(addon: str) -> bool:
 
 
 @required_parameters("addon")
-def uninstall(addon: str) -> bool:
+def uninstall(addon):
     """Uninstall an addon.
 
     :param addon: ID of the addon to be uninstalled.
     :returns: Status of the uninstallation.
+    :rtype: Boolean value representing the status of the uninstallation.
     """
     installer = _get_installer()
     return installer.uninstall_product(addon)

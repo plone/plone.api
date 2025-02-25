@@ -44,6 +44,7 @@ content
 user
 group
 env
+addon
 relation
 ```
 
@@ -65,6 +66,7 @@ api/index
 -   [`plone.api.env`](api/env)
 -   [`plone.api.relation`](api/relation)
 -   [`plone.api.exceptions`](api/exceptions)
+-   [`plone.api.addon`](api/addon)
 
 
 ## Contribute
