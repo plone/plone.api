@@ -1,1 +1,1 @@
-Add `get_parents` and `get_closest_parent` functions for content hierarchy retrieval @rohnsha0
+Add the ``api.content.iter_ancestors`` function for iterating over an object acquisition chain @rohnsha0, @ale-rt

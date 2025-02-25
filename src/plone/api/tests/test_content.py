@@ -1450,167 +1450,6 @@ class TestPloneApiContent(unittest.TestCase):
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + "\n"), str(cm.exception))
 
-    def test_get_parents_required_parameter(self):
-        """Test that get_parents requires an obj parameter"""
-
-        with self.assertRaises(MissingParameterError):
-            api.content.get_parents()
-
-    def test_get_parents_basic(self):
-        """Test getting all parents without filter"""
-
-        # Test nested content (in sprint folder)
-        parents = api.content.get_parents(self.sprint)
-        self.assertListEqual(parents, [self.events, self.portal])
-
-        # Test nested content (in team folder)
-        parents = api.content.get_parents(self.team)
-        self.assertEqual(len(parents), 2)
-        self.assertListEqual(parents, [self.about, self.portal])
-
-    def test_get_parents_with_interface_filter(self):
-        """Test getting all parents with an interface filter"""
-
-        # Test content in nested folder
-        parents = api.content.get_parents(self.sprint, interface=IFolderish)
-
-        # Should return [events, portal] as both are folders
-        self.assertEqual(len(parents), 2)
-        self.assertListEqual(parents, [self.events, self.portal])
-
-        # Test content with a mixed parent type
-        parents = api.content.get_parents(self.image, interface=IFolderish)
-
-        # Should return [portal] as only parent folder
-        self.assertListEqual(parents, [self.portal])
-
-    def test_get_parents_with_predicate_filter(self):
-        """Test getting all parents with a predicate filter"""
-
-        def check_state(obj):
-            try:
-                return api.content.get_state(obj) == "published"
-            except WorkflowException:
-                return False
-
-        # Set event to published state
-        api.content.transition(self.events, to_state="published")
-
-        # Test get only the published parents
-        parents = api.content.get_parents(self.sprint, predicate=check_state)
-
-        # Should return [events]
-        self.assertListEqual(parents, [self.events])
-
-    def _get_published_state_predicate(self, obj):
-        """Example of a properly implemented predicate that handles WorkflowException.
-
-        :param obj: Content object to check state
-        :return: True if object is published, False otherwise or if workflow check fails
-        """
-        try:
-            return api.content.get_state(obj) == "published"
-        except WorkflowException:
-            return False
-
-    def test_get_parent_with_both_filters(self):
-        """Test getting all parents with both filters"""
-        # Set event to published state
-        api.content.transition(self.events, to_state="published")
-
-        # Get only published folder parents using a properly handled predicate
-        parents = api.content.get_parents(
-            self.sprint,
-            interface=IFolderish,
-            predicate=self._get_published_state_predicate,
-        )
-
-        # Should return events
-        self.assertEqual(len(parents), 1)
-        self.assertListEqual(parents, [self.events])
-        self.assertTrue(IFolderish.providedBy(parents[0]))
-
-
-def test_get_parent_with_workflow_exception(self):
-    """Test that parents without workflow don't break the chain"""
-    # Create a custom folder that might not have workflow
-    no_workflow_folder = api.content.create(
-        container=self.portal, type="Folder", id="no-workflow"
-    )
-
-    # Create a test item in the no-workflow folder
-    test_item = api.content.create(
-        container=no_workflow_folder, type="Document", id="test-item"
-    )
-
-    # This should not raise WorkflowException
-    parents = api.content.get_parents(
-        test_item, interface=IFolderish, predicate=self._get_published_state_predicate
-    )
-
-    # Should return empty list since no parents match the predicate
-    self.assertEqual(len(parents), 0)
-
-    def test_get_parents_root_level(self):
-        """Test getting all parents at the root level"""
-
-        # Test root level content
-        parents = api.content.get_parents(self.blog)
-        self.assertListEqual(parents, [self.portal])
-
-    def test_closest_parent_requires_parameter(self):
-        """Test that closest_parent requires an obj parameter"""
-
-        with self.assertRaises(MissingParameterError):
-            api.content.get_closest_parent()
-
-    def test_closest_parent_basic(self):
-        """Test getting closest parent without filters"""
-
-        # Test nested content (in event folder)
-        parent = api.content.get_closest_parent(self.sprint)
-        self.assertEqual(parent.getId(), "events")
-
-        # Test nested content (in team folder)
-        parent = api.content.get_closest_parent(self.team)
-        self.assertEqual(parent.getId(), "about")
-
-    def test_closest_parent_interface_folder(self):
-        """Test getting closest parent with an interface filter"""
-
-        # Test nested content (in event folder)
-        parent = api.content.get_closest_parent(self.sprint, interface=IFolderish)
-        self.assertTrue(IFolderish.providedBy(parent))
-        self.assertEqual(parent.getId(), "events")
-
-    def test_closest_parent_predicate_filter(self):
-        """Test getting closest parent with a predicate filter"""
-        # Instead of the portal, transition the events folder
-        api.content.transition(self.events, to_state="published")
-
-        def check_state(obj):
-            try:
-                return api.content.get_state(obj) == "published"
-            except WorkflowException:
-                return False
-
-        # Test nested content (in event folder) using the safe check_state predicate
-        parent = api.content.get_closest_parent(self.sprint, predicate=check_state)
-        self.assertEqual(parent, self.events)
-
-    def test_closes_parent_no_match(self):
-        """Test getting closest parents when no parents is found"""
-
-        parents = api.content.get_closest_parent(self.sprint, predicate=lambda x: False)
-        self.assertIsNone(parents)
-
-    def test_closest_parent_root_level(self):
-        """Test getting closest parent at the root level"""
-
-        # Test root level content
-        parent = api.content.get_closest_parent(self.blog)
-        self.assertEqual(parent, self.portal)
-
     def test_get_path_absolute(self):
         """Test getting the path of a content object with relative parameter set to False."""
         from plone.api.exc import InvalidParameterError
@@ -1673,3 +1512,89 @@ def test_get_parent_with_workflow_exception(self):
         with self.assertRaises(InvalidParameterError) as cm:
             api.content.get_path(outside_obj, relative=True)
         self.assertIn("Object not in portal path", str(cm.exception))
+
+    def test_iter_ancestors_required_parameter(self):
+        """Test that iter_ancestors requires an obj parameter"""
+        with self.assertRaises(MissingParameterError):
+            api.content.iter_ancestors()
+
+    def test_iter_ancestors(self):
+        """Test iterating over all the ancestors until the portal root"""
+        self.assertTupleEqual(
+            tuple(api.content.iter_ancestors(self.team)), (self.about, self.portal)
+        )
+
+    def test_iter_ancestors_deep(self):
+        """Test iterating over all the ancestors of the acquisition chain"""
+        app = self.layer["app"]
+        self.assertTupleEqual(
+            tuple(api.content.iter_ancestors(self.team, stop_at=False)),
+            (self.about, self.portal, app, app.aq_parent),
+        )
+
+    def test_iter_ancestors_stop_at(self):
+        """Test iterating over all the ancestors until a specific object"""
+        app = self.layer["app"]
+        self.assertTupleEqual(
+            tuple(api.content.iter_ancestors(self.team, stop_at=app)),
+            (self.about, self.portal, app),
+        )
+
+    def test_iter_ancestors_with_interface(self):
+        """Test iterating over all the ancestors with an interface filter"""
+        self.assertTupleEqual(
+            tuple(
+                api.content.iter_ancestors(
+                    self.team, interface=IFolderish, stop_at=False
+                )
+            ),
+            (self.about, self.portal),
+        )
+
+    def test_iter_ancestors_with_function(self):
+        """Test iterating over all the ancestors with a function filter"""
+        self.assertTupleEqual(
+            tuple(
+                api.content.iter_ancestors(
+                    self.team, function=lambda x: x.id == "about"
+                )
+            ),
+            (self.about,),
+        )
+
+    def test_iter_ancestors_with_both_filters(self):
+        """Test getting all parents with both filters"""
+        self.assertTupleEqual(
+            tuple(
+                api.content.iter_ancestors(
+                    self.sprint,
+                    interface=IFolderish,
+                    function=lambda x: x.id == "events",
+                )
+            ),
+            (self.events,),
+        )
+
+    def test_iter_ancestors_for_portal(self):
+        """Test iterating over all the ancestors of the portal"""
+        self.assertTupleEqual(tuple(api.content.iter_ancestors(self.portal)), ())
+
+    def test_iter_ancestors_bogus_stop_at(self):
+        """Check that when we pass to the ``stop_at`` parameter something
+        that is not in the acquisition chain, we raise an error."""
+        with self.assertRaises(api.exc.InvalidParameterError) as cm:
+            tuple(api.content.iter_ancestors(self.team, stop_at=self.sprint))
+
+        self.assertEqual(
+            str(cm.exception),
+            (
+                "The object <Event at /plone/events/sprint> "
+                "is not in the acquisition chain of <Document at /plone/about/team>"
+            ),
+        )
+
+    def test_iter_ancestors_not_acquisition_aware_object(self):
+        """Test that iter_ancestors requires an obj parameter"""
+        self.assertTupleEqual(
+            tuple(api.content.iter_ancestors(object(), stop_at=False)), ()
+        )

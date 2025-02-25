@@ -3,6 +3,7 @@
 from Acquisition import aq_chain
 from Acquisition import aq_inner
 from copy import copy as _copy
+from itertools import islice
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
@@ -701,52 +702,63 @@ def find(context=None, depth=None, unrestricted=False, **kwargs):
 
 
 @required_parameters("obj")
-def get_parents(obj=None, predicate=None, interface=None):
-    """Get all parents of an object, with optional filtering.
+def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
+    """Iterate over the object ancestors.
 
-    :param obj: [required] Object for which we want to get the parents.
+    Optionally filter the ancestors:
+
+    1. by a custom function.
+    2. by interface.
+
+    The iteration will stop by default at the portal root.
+    If you want to stop at a specific object, pass it as the ``stop_at`` parameter.
+    If you want to return all the matching objects in the acquisition chain, pass
+    ``False`` as the value of the ``stop_at`` parameter.
+
+    :param obj: [required] Object for which we want to iterate over the ancestors.
     :type obj: Content object
-    :param predicate: Optional callable that takes an object and returns a boolean.
-                     The predicate should handle its own exceptions and return False
-                     for any cases where the object should be filtered out.
-    :type predicate: callable
-    :param interface: Optional interface to filter the parents.
+    :param function: Optional callable that takes an object and returns a boolean.
+    :type function: callable
+    :param interface: Optional interface that should be provided by the parent.
     :type interface: zope.interface.Interface
-    :returns: List of parent objects, from immediate to site root.
-    :rtype: list
-    :Example: :ref:`content-get-parents-example`
+    :param stop_at: Optional object at which to stop the iteration. If ``False``
+        is passed as the value, we will return all the matching objects in the
+        acquisition chain
+    :type stop_at: Content object or False
+    :returns: Iterator of parent objects, from immediate to site root.
+    :rtype: iterator
+    :Example: :ref:`content-iter-ancestors-example`
     """
-    # Get the parent chain but filter out non-contentish parents like Application
-    chain = [
-        obj for obj in aq_chain(aq_inner(obj))[1:] if getattr(obj, "portal_type", None)
-    ]
+    if stop_at is _marker:
+        stop_at = portal.get()
+
+    if obj is stop_at:
+        # We should iterate over the ancestors of obj but obj is also
+        # the object at which we should stop checking for ancestors.
+        # So we should return an empty iterator.
+        #
+        # This is useful if we want to have an empty iterator when checking
+        # for ancestors in the portal.
+        return iter(())
+
+    chain = aq_chain(aq_inner(obj))
+
+    if stop_at:
+        try:
+            end = chain.index(stop_at) + 1
+        except ValueError:
+            raise InvalidParameterError(
+                f"The object {stop_at!r} is not in the acquisition chain of {obj!r}"
+            )
+    else:
+        end = None
+
+    ancestors = islice(chain, 1, end)
 
     if interface is not None:
-        chain = (parent for parent in chain if interface.providedBy(parent))
+        ancestors = filter(interface.providedBy, ancestors)
 
-    if predicate is not None:
-        chain = (parent for parent in chain if predicate(parent))
+    if function is not None:
+        ancestors = filter(function, ancestors)
 
-    return list(chain)
-
-
-@required_parameters("obj")
-def get_closest_parent(obj=None, predicate=None, interface=None):
-    """Get the closest parent of an object that satisfies the given criteria.
-
-    :param obj: [required] Object for which we want to get the parent.
-    :type obj: Content object
-    :param predicate: Optional callable that takes an object and returns a boolean.
-        Used to filter the parents.
-    :type predicate: callable
-    :param interface: Optional interface to filter the parents.
-    :type interface: zope.interface.Interface
-    :returns: Closest matching parents object or None if no match found.
-    :rtype: Content object or None
-    :Example: :ref:`content-get-closed-parent-example`
-
-    """
-    parents = get_parents(obj=obj, predicate=predicate, interface=interface)
-    if parents:
-        return parents[0]
-    return None
+    yield from ancestors
