@@ -11,6 +11,7 @@ from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.DynamicType import DynamicType
 from Products.CMFCore.WorkflowCore import WorkflowException
+from zope.component import ComponentLookupError
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.container.interfaces import INameChooser
@@ -33,7 +34,7 @@ def create(
     id=None,
     title=None,
     safe_id=False,
-    **kwargs  # NOQA: C816, S101
+    **kwargs,  # NOQA: C816, S101
 ):
     """Create a new content item.
 
@@ -78,11 +79,13 @@ def create(
         types = [fti.getId() for fti in container.allowedContentTypes()]
 
         raise InvalidParameterError(
-            "Cannot add a '{obj_type}' object to the container.\n"
+            "Cannot add a '{obj_type}' object with id={obj_id} to the container {container_path}.\n"
             "Allowed types are:\n"
             "{allowed_types}\n"
             "{message}".format(
                 obj_type=type,
+                obj_id=content_id,
+                container_path="/".join(container.getPhysicalPath()),
                 allowed_types="\n".join(sorted(types)),
                 message=str(e),
             ),
@@ -124,13 +127,18 @@ def get(path=None, UID=None):
     if path:
         site = portal.get()
         site_absolute_path = "/".join(site.getPhysicalPath())
-        if not path.startswith("{path}".format(path=site_absolute_path)):
+        if not path.startswith(f"{site_absolute_path}"):
             path = "{site_path}{relative_path}".format(
                 site_path=site_absolute_path,
                 relative_path=path,
             )
         try:
-            content = site.restrictedTraverse(path)
+            path = path.split("/")
+            if len(path) > 1:
+                parent = site.unrestrictedTraverse(path[:-1])
+                content = parent.restrictedTraverse(path[-1])
+            else:
+                content = site.restrictedTraverse(path[-1])
         except (KeyError, AttributeError):
             return None  # When no object is found don't raise an error
         else:
@@ -294,7 +302,7 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
         breaches = linkintegrity_view.get_breaches(objects)
         if breaches:
             raise LinkIntegrityNotificationException(
-                "Linkintegrity-breaches: {}".format(breaches),
+                f"Linkintegrity-breaches: {breaches}",
             )
 
     for obj_ in objects:
@@ -521,26 +529,29 @@ def get_view(name=None, context=None, request=None):
     # available, because the __init__ of said view will contain
     # errors in client code.
 
-    # Get all available views...
-    sm = getSiteManager()
-    available_views = sm.adapters.lookupAll(
-        required=(providedBy(context), providedBy(request)),
-        provided=Interface,
-    )
-    # and get their names.
-    available_view_names = [view[0] for view in available_views]
-
-    # Raise an error if the requested view is not available.
-    if name not in available_view_names:
-        raise InvalidParameterError(
-            "Cannot find a view with name '{name}'.\n"
-            "Available views are:\n"
-            "{views}".format(
-                name=name,
-                views="\n".join(sorted(available_view_names)),
-            ),
+    try:
+        return getMultiAdapter((context, request), name=name)
+    except ComponentLookupError:
+        # Getting all available views
+        sm = getSiteManager()
+        available_views = sm.adapters.lookupAll(
+            required=(providedBy(context), providedBy(request)),
+            provided=Interface,
         )
-    return getMultiAdapter((context, request), name=name)
+
+        # Check if the requested view is available
+        # by getting the names of all available views
+        available_view_names = [view[0] for view in available_views]
+        if name not in available_view_names:
+            # Raise an error if the requested view is not available.
+            raise InvalidParameterError(
+                "Cannot find a view with name '{name}'.\n"
+                "Available views are:\n"
+                "{views}".format(
+                    name=name,
+                    views="\n".join(sorted(available_view_names)),
+                ),
+            )
 
 
 @required_parameters("obj")
@@ -556,6 +567,36 @@ def get_uuid(obj=None):
     :Example: :ref:`content-get-uuid-example`
     """
     return IUUID(obj)
+
+
+@required_parameters("obj")
+def get_path(obj=None, relative=False):
+    """Get the path of an object.
+
+    :param obj: [required] Object for which to get its path
+    :type obj: Content object
+    :param relative: Return a relative path from the portal root
+    :type relative: boolean
+    :returns: Path to the object
+    :rtype: string
+    :raises:
+        InvalidParameterError
+    :Example: :ref:`content-get-path-example`
+    """
+    if not hasattr(obj, "getPhysicalPath"):
+        raise InvalidParameterError(f"Cannot get path of object {obj!r}")
+
+    if not relative:
+        return "/".join(obj.getPhysicalPath())
+    site = portal.get()
+    site_path = site.getPhysicalPath()
+    obj_path = obj.getPhysicalPath()
+    if obj_path[: len(site_path)] != site_path:
+        raise InvalidParameterError(
+            "Object not in portal path. Object path: {}".format("/".join(obj_path))
+        )
+    rel_path = obj_path[len(site_path) :]
+    return "/".join(rel_path) if rel_path else ""
 
 
 def _parse_object_provides_query(query):
@@ -597,12 +638,13 @@ def _parse_object_provides_query(query):
     return result
 
 
-def find(context=None, depth=None, **kwargs):
+def find(context=None, depth=None, unrestricted=False, **kwargs):
     """Find content in the portal.
 
     :param context: Context for the search
     :type obj: Content object
     :param depth: How far in the content tree we want to search from context
+    :param unrestricted: Boolean, use unrestrictedSearchResults if True
     :type obj: Content object
     :returns: Catalog brains
     :rtype: List
@@ -650,4 +692,7 @@ def find(context=None, depth=None, **kwargs):
     if not valid_indexes:
         return []
 
-    return catalog(**query)
+    if unrestricted:
+        return catalog.unrestrictedSearchResults(**query)
+    else:
+        return catalog(**query)

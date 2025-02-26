@@ -1,0 +1,167 @@
+# Generated from:
+# https://github.com/plone/meta/tree/main/config/default
+# See the inline comments on how to expand/tweak this configuration file
+[meta]
+template = "default"
+commit-id = "1c2155e4"
+
+[pre_commit]
+codespell_extra_lines = """
+        exclude: docs/locale/.*.pot
+"""
+
+[pyproject]
+check_manifest_ignores = """
+    # From `.meta.toml`, pyproject.check_manifest_ignores.
+    "*.cfg",
+    ".editorconfig",
+    ".readthedocs.yaml",
+    "constraints_plone52.txt",
+    "constraints_plone60.txt",
+    "constraints.txt",
+    "fix-converted-myst.py",
+    "Makefile",
+    "requirements-docs.txt",
+    "requirements.txt",
+"""
+dependencies_ignores = "['Products.PrintingMailHost', 'plone.app.iterate',]"
+codespell_ignores = "manuel"
+
+[tox]
+envlist_lines = """
+    py{38,39,310,311}-plone{60}
+    linkcheck
+    plone6docs
+    docs
+"""
+config_lines = """
+skip_missing_interpreters = True
+
+[gh-actions]
+python =
+    3.8: py38
+    3.9: py39
+    3.10: py310
+    3.11: py311
+
+[gh-actions:env]
+PLONE =
+    60: plone60
+"""
+extra_lines = """
+[testenv:py{38,39,310,311}-plone{60}]
+skip_install = True
+
+commands =
+    python -VV
+    pip install -r requirements.txt
+    pip list
+    {envbindir}/buildout -c /{toxinidir}/{env:BUILDOUT_FILE} buildout:directory={envdir} buildout:develop={toxinidir} install test
+    {envbindir}/buildout -c {toxinidir}/{env:BUILDOUT_FILE} buildout:directory={envdir} buildout:develop={toxinidir} annotate
+    {envbindir}/test
+
+setenv =
+    BUILDOUT_FILE=test_plone-60.cfg
+
+deps =
+    pdbpp
+    manuel
+
+# tox < 4.0.0
+whitelist_externals =
+    mkdir
+    echo
+
+# tox >= 4.0.0
+allowlist_externals =
+    mkdir
+    echo
+
+[testenv:plone6docs]
+# New docs with plone-sphinx-theme
+# See [testenv:docs] for classic documentation
+basepython = python3.11
+skip_install = False
+package = editable
+allowlist_externals =
+    mkdir
+extras =
+    tests
+deps =
+    -r requirements-docs.txt
+commands =
+    python -VV
+    mkdir -p {toxinidir}/_build/plone6docs
+    sphinx-build -b html -d _build/plone6docs/doctrees docs _build/plone6docs/html
+
+[testenv:rtd-preview]
+# Build docs on Read the Docs to preview pull requests using plone-sphinx-theme
+basepython = python3.11
+skip_install = False
+extras =
+    tests
+deps =
+    -r requirements-docs.txt
+commands =
+    python -VV
+    sphinx-build -b html -d "{env:READTHEDOCS_OUTPUT}"/doctrees/ docs "{env:READTHEDOCS_OUTPUT}"/html/
+
+[testenv:docs]
+basepython = python3.9
+skip_install = False
+usedevelop = True
+allowlist_externals =
+    mkdir
+extras =
+    tests
+
+deps =
+    -r requirements-docs.txt
+
+commands =
+    python -VV
+    mkdir -p {toxinidir}/_build/docs
+    sphinx-build -b html -D html_theme=alabaster -d _build/docs/doctrees docs _build/docs/html
+
+whitelist_externals =
+    mkdir
+
+[testenv:linkcheck]
+basepython = python3.11
+skip_install = False
+package = editable
+allowlist_externals =
+    mkdir
+extras =
+    {[testenv:plone6docs]extras}
+deps =
+    {[testenv:plone6docs]deps}
+commands =
+    python -VV
+    mkdir -p {toxinidir}/_build/plone6docs
+    sphinx-build -b linkcheck -d _build/plone6docs/doctrees docs _build/plone6docs/linkcheck
+
+[testenv:livehtml]
+basepython = python3.11
+skip_install = False
+package = editable
+allowlist_externals =
+    mkdir
+extras =
+    {[testenv:plone6docs]extras}
+deps =
+    {[testenv:plone6docs]deps}
+commands =
+    python -VV
+    mkdir -p {toxinidir}/_build/plone6docs
+    sphinx-autobuild -b html -d _build/plone6docs/doctrees docs _build/plone6docs/html
+"""
+
+[github]
+jobs = [
+    "qa",
+    "test",
+    "coverage",
+    "dependencies",
+    "release_ready",
+    ]

@@ -78,7 +78,7 @@ plone (portal root)
 % api.content.create(container=events, type='Event', id='conference')
 % api.content.create(container=events, type='Event', id='sprint')
 
-The following operations will get objects from the structure above, including using {meth}`api.content.get`.
+The following operations will get objects from the structure above, using {meth}`api.content.get`.
 
 ```python
 # let's first get the portal object
@@ -118,7 +118,7 @@ not_found = api.content.get(UID='notfound')
 
 ## Find content objects
 
-You can use the find function to search for content.
+You can use the {func}`api.content.find` function to search for content.
 
 Finding all Documents:
 
@@ -188,6 +188,21 @@ documents = api.content.find(
     depth=2,
     object_provides=IContentish,
     SearchableText='Team',
+)
+```
+
+% invisible-code-block: python
+%
+% self.assertGreater(len(documents), 0)
+
+Find all `Document` content types, and use unrestricted search results:
+
+```python
+from plone import api
+documents = api.content.find(
+    context=api.portal.get(),
+    portal_type="Document",
+    unrestricted=True,
 )
 ```
 
@@ -445,7 +460,6 @@ portal = api.portal.get()
 api.content.transition(obj=portal['about'], transition='reject', comment='You had a typo on your page.')
 ```
 
-
 (content-disable-roles-acquisition-example)=
 
 ## Disable local roles acquisition
@@ -520,6 +534,60 @@ view = api.content.get_view(
 % invisible-code-block: python
 %
 % self.assertEqual(view.__name__, u'plone')
+
+(content-get-path-example)=
+
+## Get content path
+
+To get the path of a content object, use {func}`api.content.get_path`.
+This function accepts an object for which you want to get its path as the required parameter `obj`, and an optional boolean parameter `relative` whose default is `False`.
+
+It returns either an absolute path from the Zope root by default or when `relative` is set to `False`, or a relative path from the portal root when `relative` is set to `True`.
+
+The following example shows how to get the absolute path from the Zope root.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+folder = portal['events']['training']
+path = api.content.get_path(obj=folder)
+assert path == '/plone/events/training'
+```
+
+The following example shows how to get the portal-relative path.
+
+```python
+rel_path = api.content.get_path(obj=folder, relative=True)
+assert rel_path == 'events/training'
+```
+
+If the API is used to fetch an object with the `relative` parameter set as `True`, and the object is outside the portal, it throws an `InvalidParameterError` error.
+
+% invisible-code-block: python
+%
+% # Setup an object outside portal for testing error case
+% app = portal.aq_parent
+% app.manage_addFolder('outside_folder')
+%
+% # Test that getting relative path for object outside portal raises error
+% from plone.api.exc import InvalidParameterError
+% with self.assertRaises(InvalidParameterError):
+%     api.content.get_path(obj=app.outside_folder, relative=True)
+
+```python
+from plone.api.exc import InvalidParameterError
+
+# Getting path of an object outside portal raises InvalidParameterError
+try:
+    outside_path = api.content.get_path(
+        obj=app.outside_folder,
+        relative=True
+    )
+    assert False, "Should raise InvalidParameterError and not reach this code"
+except InvalidParameterError as e:
+    assert "Object not in portal path" in str(e)
+```
 
 ## Further reading
 

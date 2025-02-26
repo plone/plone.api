@@ -74,7 +74,7 @@ api/index
 ```{toctree}
 :maxdepth: 2
 
-contribute/index
+contribute
 ```
 
 ## Indices and tables

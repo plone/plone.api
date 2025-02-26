@@ -34,7 +34,7 @@ def create(
         is not used as a username.
     :type username: string
     :param password: Password for the new user. If it's not set we generate
-        a random 8-char alpha-numeric one.
+        a random 8-char alphanumeric one.
     :type password: string
     :param properties: User properties to assign to the new user. The list of
         available properties is available in ``portal_memberdata`` through ZMI.
@@ -327,7 +327,18 @@ def has_permission(permission, username=None, user=None, obj=None):
         context = env.adopt_user(username, user)
 
     with context:
-        return bool(getSecurityManager().checkPermission(permission, obj))
+        return_value = bool(getSecurityManager().checkPermission(permission, obj))
+        if not return_value:
+            names = [x[0] for x in getPermissions()]
+            if permission not in names:
+                raise InvalidParameterError(
+                    "Cannot find a permission with name '{permission}'\n"
+                    "Available permissions are:\n"
+                    "{names}".format(
+                        permission=permission, names="\n".join(sorted(names))
+                    )
+                )
+        return return_value
 
 
 @required_parameters("roles")

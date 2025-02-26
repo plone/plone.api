@@ -1,3 +1,12 @@
+# Generated from:
+# https://github.com/plone/meta/tree/main/config/default
+# See the inline comments on how to expand/tweak this configuration file
+# python related
+*.egg-info
+*.pyc
+*.pyo
+
+# translation related
 *.mo
 
 # tools related
@@ -10,7 +19,6 @@ dist/
 docs/_build
 __pycache__/
 .tox
-.vscode
 node_modules/
 
 # venv / buildout related
@@ -34,7 +42,15 @@ local.cfg
 /.make-sentinels/
 /*-mxdev.txt
 /reports/
-/pip-selfcheck.json
-/_build/
-/.tox/
-pyvenv.cfg
+/sources/
+/venv/
+.installed.txt
+
+
+##
+# Add extra configuration options in .meta.toml:
+#  [gitignore]
+#  extra_lines = """
+#  _your own configuration lines_
+#  """
+##

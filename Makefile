@@ -1,7 +1,12 @@
-SHELL := /bin/bash
-CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-
-version = 3
+### Defensive settings for make:
+#     https://tech.davis-hansson.com/p/make/
+SHELL:=bash
+.ONESHELL:
+.SHELLFLAGS:=-xeu -o pipefail -O inherit_errexit -c
+.SILENT:
+.DELETE_ON_ERROR:
+MAKEFLAGS+=--warn-undefined-variables
+MAKEFLAGS+=--no-builtin-rules
 
 # We like colors
 # From: https://coderwall.com/p/izxssa/colored-makefile-for-golang-projects
@@ -10,53 +15,63 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
+# Python checks
+PYTHON?=python3
 
-# all: .installed.cfg
+# installed?
+ifeq (, $(shell which $(PYTHON) ))
+  $(error "PYTHON=$(PYTHON) not found in $(PATH)")
+endif
+
+# version ok?
+PYTHON_VERSION_MIN=3.10
+PYTHON_VERSION_OK=$(shell $(PYTHON) -c "import sys; print((int(sys.version_info[0]), int(sys.version_info[1])) >= tuple(map(int, '$(PYTHON_VERSION_MIN)'.split('.'))))")
+ifeq ($(PYTHON_VERSION_OK),0)
+  $(error "Need python $(PYTHON_VERSION) >= $(PYTHON_VERSION_MIN)")
+endif
+
+BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+
+GIT_FOLDER=$(BACKEND_FOLDER)/.git
+VENV_FOLDER=$(BACKEND_FOLDER)/.venv
+BIN_FOLDER=$(VENV_FOLDER)/bin
+
+
+all: help
 
 # Add the following 'help' target to your Makefile
-# And add help text after each target name starting with '\#\#'
+# And add help text after each target name starting with '##'
 .PHONY: help
 help: ## This help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+$(BIN_FOLDER)/pip $(BIN_FOLDER)/tox $(BIN_FOLDER)/pipx $(BIN_FOLDER)/uv $(BIN_FOLDER)/mxdev:
+	@echo "$(GREEN)==> Setup Python virtual environment$(RESET)"
+	$(PYTHON) -m venv $(VENV_FOLDER)
+	$(BIN_FOLDER)/pip install -U "pip" "uv" "wheel" "pipx" "tox" "pre-commit"
+	if [ -d $(GIT_FOLDER) ]; then $(BIN_FOLDER)/pre-commit install; else echo "$(RED) Not installing pre-commit$(RESET)";fi
 
+.PHONY: check
+check: $(BIN_FOLDER)/tox ## Check and fix code base according to Plone standards
+	@echo "$(GREEN)==> Format codebase$(RESET)"
+	$(BIN_FOLDER)/tox -e lint
 
-bin/python bin/pip:
-	python$(version) -m venv . || virtualenv --python=python$(version) .
-	bin/python -m pip install --upgrade pip
-
-
-# Documentation
-# ----------------------------------------------------------------------
-
-# TODO Remove complete Makefile when Netlify build command is switched from 'make netlify' to 'tox -e docs'.
-
-# Just a developer helper. Can be replaced by 'tox -e docs' ('tox -e plone6docs') 
-.PHONY: docs-html
-docs-html: bin/python bin/pip ## Build documentation
-	bin/pip install tox
-	bin/tox -e plone6docs
-	@echo
-	@echo "Build of documentation finished. The HTML pages are in _build/plone6docs/html."
+.PHONY: test
+test: $(BIN_FOLDER)/tox ## Run tests
+	$(BIN_FOLDER)/tox -e test
 
 .PHONY: livehtml
-livehtml:
-	sphinx-autobuild  -b html -d _build/plone6docs/doctrees docs _build/plone6docs/html $(O)
+livehtml: $(BIN_FOLDER)/tox ## Build docs and watch for changes
+	@echo "$(GREEN)==> Building docs$(RESET)"
+	$(BIN_FOLDER)/tox -e livehtml
 
-# TODO Remove when Netlify build command is switched from 'make netlify' to 'tox -e docs'.
-.PHONY: netlify
-netlify: bin/python bin/pip ## Build documentation (Netlfy style)
-	bin/pip install tox
-	bin/tox -e plone6docs
-	@echo
-	@echo "Build of documentation finished. The HTML pages are in _build/plone6docs/html."
+.PHONY: linkcheck
+linkcheck: $(BIN_FOLDER)/tox ## Check links in documentation
+	@echo "$(GREEN)==> Checking links in documentation$(RESET)"
+	$(BIN_FOLDER)/tox -e linkcheck
 
-## Run conversion of documentation from restructuredText to myST
-# TODO Remove later when MyST documentation is settled.
-.PHONY: conversion-to-myst
-conversion-to-myst: bin/python bin/pip
-	bin/pip install "rst-to-myst[sphinx]"
-	-bin/rst2myst convert -R docs/*.rst
-	-bin/rst2myst convert -R docs/**/*.rst
-	python fix-converted-myst.py
-	make netlify
+.PHONY: clean
+clean: ## Clean environment
+	@echo "$(RED)==> Cleaning environment and build$(RESET)"
+	rm -rf $(VENV_FOLDER) pyvenv.cfg .tox .venv _build
+

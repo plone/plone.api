@@ -486,7 +486,7 @@ class TestPloneApiEnv(unittest.TestCase):
             api.env.adopt_roles()
 
     def test_debug_mode(self):
-        """Tests that the retured value is the same as
+        """Tests that the returned value is the same as
         getConfiguration.debug_mode."""
         from App.config import getConfiguration
         from plone.api.env import debug_mode
@@ -514,14 +514,14 @@ class TestPloneApiEnv(unittest.TestCase):
         from plone.api.env import plone_version
 
         self.assertTrue(isinstance(plone_version(), str))
-        self.assertRegexpMatches(plone_version(), version_regexp)
+        self.assertRegex(plone_version(), version_regexp)
 
     def test_zope_version(self):
         """Tests that zope_version() returns Zope version."""
         from plone.api.env import zope_version
 
         self.assertTrue(isinstance(zope_version(), str))
-        self.assertRegexpMatches(zope_version(), version_regexp)
+        self.assertRegex(zope_version(), version_regexp)
 
     def test_adopt_user_different_username(self):
         user = api.user.get(userid=TEST_USER_ID)
@@ -530,14 +530,15 @@ class TestPloneApiEnv(unittest.TestCase):
 
     def test_roles_restored_after_exception(self):
         """Tests that roles are restored after an exception."""
-        self.assertFalse(api.user.has_permission("Manage portal content"))
+        permission = "Manage properties"
+        self.assertFalse(api.user.has_permission(permission))
         try:
             with api.env.adopt_roles(["Manager"]):
-                self.assertTrue(api.user.has_permission("Manage portal content"))
+                self.assertTrue(api.user.has_permission(permission))
                 raise TestException("Test exception")
         except TestException:
             pass
-        self.assertFalse(api.user.has_permission("Manage portal content"))
+        self.assertFalse(api.user.has_permission(permission))
 
     def test_user_restored_after_exception(self):
         """Tests that roles are restored after an exception."""

@@ -13,6 +13,8 @@ global-exclude *.pyc
 include pyproject.toml
 recursive-exclude news *
 exclude news
+recursive-exclude .vscode *
+exclude .readthedocs.yaml
 
 # added by check-manifest
 recursive-include src *.py
