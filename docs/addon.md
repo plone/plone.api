@@ -40,6 +40,7 @@ The function accepts an optional `limit` parameter to filter the returned add-on
 
 `upgradable`
 :   Only products with upgrades.
+
 The following examples demonstrate usage of the {func}`api.addon.get_addons` function.
 
 ```python
