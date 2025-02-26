@@ -1,4 +1,4 @@
-"""Tests for plone.api.redirection methods."""
+"""Tests for plone.api.addon methods."""
 
 from plone import api
 from plone.api.addon import AddonInformation
@@ -8,6 +8,7 @@ import unittest
 
 
 ADDON = "plone.session"
+
 
 class TestAPIAddonGetAddons(unittest.TestCase):
     """TestCase for plone.api.addon.get_addons."""
