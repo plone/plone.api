@@ -1,4 +1,4 @@
-"""Module that provides functionality to handle addon management."""
+"""Module that manages add-ons."""
 
 from dataclasses import dataclass
 from functools import lru_cache
@@ -99,9 +99,9 @@ def _get_non_installable_addons() -> NonInstallableAddons:
 
 @lru_cache(maxsize=1)
 def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
-    """Return information about addons in this installation.
+    """Return information about add-ons in this installation.
 
-    :returns: Tuple of tuples with addon id and AddonInformation.
+    :returns: Tuple of tuples with add-on id and AddonInformation.
     :rtype: Tuple
     """
     installer = _get_installer()
@@ -171,14 +171,14 @@ def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
 def _update_addon_info(
     addon: AddonInformation, installer: InstallerView
 ) -> AddonInformation:
-    """Update information about an addon.
+    """Update information about an add-on.
 
-    :param addon: [required] Addon object that is to be updated
+    :param addon: [required] Add-on object to be updated
     :type addon: AddonInformation object
-    :param installer: InstallerView object that will be checked for addon info
+    :param installer: InstallerView object to check for add-on info
     :type installer: InstallerView object
 
-    :returns: Updated AddonInformation object.
+    :returns: Updated AddonInformation object
     :rtype: AddonInformation object
     """
     addon_id = addon.id
@@ -199,7 +199,7 @@ def _update_addon_info(
 
 
 def _get_addons() -> List[AddonInformation]:
-    """Return an updated list of addon information.
+    """Return an updated list of add-on information.
 
     :returns: List of AddonInformation.
     :rtype: List
@@ -225,7 +225,7 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
     :returns: List of AddonInformation.
     :raises:
         InvalidParameterError
-    :Example: :ref:'addon-get-addons'
+    :Example: :ref:`addon-get-addons`
     """
     addons = _get_addons()
     if limit in ("non_installable", "broken"):
