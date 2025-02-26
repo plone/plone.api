@@ -1,1 +1,1 @@
-Implement plone.api.addons module [@ericof]
+Redo the changes made by @erifof [@ujsquared]
