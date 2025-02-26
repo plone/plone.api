@@ -1,4 +1,4 @@
-from pkg_resources import get_distribution
+from importlib.metadata import version
 
 import sys
 
@@ -6,7 +6,7 @@ import sys
 project = "plone.api"
 copyright = "2012, Plone Foundation"
 
-version = release = get_distribution(project).version
+version = release = version("plone.api")
 
 
 # The suffix of source filenames.
