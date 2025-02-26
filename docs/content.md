@@ -535,97 +535,6 @@ view = api.content.get_view(
 %
 % self.assertEqual(view.__name__, u'plone')
 
-
-(content-get-parents-example)=
-
-## Get parent objects
-
-You can get all parents of a content object (from immediate parent to the portal root) using the {func}`api.content.get_parents` function.
-
-```python
-from plone import api
-portal = api.portal.get()
-team = portal['about']['team']
-
-# Get all parents
-parents = api.content.get_parents(obj=team)
-```
-
-% invisible-code-block: python
-%
-% self.assertEqual(parents[0], portal['about'])
-
-You can filter parent objects by interface:
-
-```python
-from plone import api
-from Products.CMFCore.interfaces import IFolderish
-portal = api.portal.get()
-team = portal['about']['team']
-
-# Get folder parents only
-folder_parents = api.content.get_parents(obj=team, interface=IFolderish)
-```
-
-% invisible-code-block: python
-%
-% self.assertEqual(folder_parents[0], portal['about'])
-
-You can also filter parents using a custom predicate function:
-
-```python
-from plone import api
-portal = api.portal.get()
-team = portal['about']['team']
-
-# Get only published parents
-def is_published(obj):
-    try:
-        return api.content.get_state(obj=obj) == 'published'
-    except:
-        return False
-
-published_parents = api.content.get_parents(obj=team, predicate=is_published)
-```
-
-(content-get-closed-parent-example)=
-
-## Get closest parent
-
-To get the closest parent object that matches certain criteria, use the {func}`api.content.get_closest_parent` function.
-
-```python
-from plone import api
-from Products.CMFCore.interfaces import IFolderish
-portal = api.portal.get()
-team = portal['about']['team']
-
-# Get immediate parent folder
-parent_folder = api.content.get_closest_parent(obj=team, interface=IFolderish)
-```
-
-% invisible-code-block: python
-%
-% self.assertEqual(parent_folder.id, 'about')
-
-You can also use a predicate function to find the closest parent matching custom criteria:
-
-```python
-from plone import api
-portal = api.portal.get()
-team = portal['about']['team']
-
-# Get closest published parent
-def is_published(obj):
-    try:
-        return api.content.get_state(obj=obj) == 'published'
-    except:
-        return False
-
-closest_published = api.content.get_closest_parent(obj=team, predicate=is_published)
-```
-
-
 (content-get-path-example)=
 
 ## Get content path
@@ -641,16 +550,16 @@ The following example shows how to get the absolute path from the Zope root.
 from plone import api
 portal = api.portal.get()
 
-folder = portal['events']['training']
+folder = portal["events"]["training"]
 path = api.content.get_path(obj=folder)
-assert path == '/plone/events/training'
+assert path == "/plone/events/training"
 ```
 
 The following example shows how to get the portal-relative path.
 
 ```python
 rel_path = api.content.get_path(obj=folder, relative=True)
-assert rel_path == 'events/training'
+assert rel_path == "events/training"
 ```
 
 If the API is used to fetch an object with the `relative` parameter set as `True`, and the object is outside the portal, it throws an `InvalidParameterError` error.
@@ -659,7 +568,7 @@ If the API is used to fetch an object with the `relative` parameter set as `True
 %
 % # Setup an object outside portal for testing error case
 % app = portal.aq_parent
-% app.manage_addFolder('outside_folder')
+% app.manage_addFolder("outside_folder")
 %
 % # Test that getting relative path for object outside portal raises error
 % from plone.api.exc import InvalidParameterError
@@ -679,6 +588,67 @@ try:
 except InvalidParameterError as e:
     assert "Object not in portal path" in str(e)
 ```
+
+(content-iter-ancestors-example)=
+
+## Iterate over object ancestors
+
+To iterate over the ancestors in the object tree, use the {func}`api.content.iter_ancestors` function.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+# Get all ancestors of the team object
+ancestors = api.content.iter_ancestors(portal.about.team)
+```
+
+% invisible-code-block: python
+%
+% self.assertTupleEqual(tuple(ancestors), (portal.about, portal))
+
+To iterate over the ancestors that implement one interface, use the {func}`api.content.iter_ancestors` function with the `interface` argument.
+
+```python
+from plone import api
+from Products.CMFCore.interfaces import ISiteRoot
+portal = api.portal.get()
+
+# Get all ancestors of the team object that implement the ISiteRoot interface
+ancestors = api.content.iter_ancestors(portal.about.team, interface=ISiteRoot)
+```
+
+% invisible-code-block: python
+%
+% self.assertTupleEqual(tuple(ancestors), (portal,))
+
+To iterate over the ancestors using a custom filter you can use the {func}`api.content.iter_ancestors` function with the `function` argument.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+# Get all ancestors of the team object with the id 'about'
+ancestors = api.content.iter_ancestors(portal.about.team, function=lambda obj: obj.id == "about")
+```
+
+% invisible-code-block: python
+%
+% self.assertTupleEqual(tuple(ancestors), (portal.about,))
+
+To iterate over the ancestors until an object is found, use the {func}`api.content.iter_ancestors` function with the `stop_at` argument.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+# Get all ancestors of the team object until the object 'about'
+ancestors = api.content.iter_ancestors(portal.about.team, stop_at=portal.about)
+```
+
+% invisible-code-block: python
+%
+% self.assertTupleEqual(tuple(ancestors), (portal.about,))
 
 
 ## Further reading
