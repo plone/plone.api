@@ -1,4 +1,4 @@
-"""API to handle addon management."""
+"""Module that manages add-ons."""
 
 from dataclasses import dataclass
 from functools import lru_cache
@@ -40,6 +40,7 @@ class NonInstallableAddons:
 
     profiles: List[str]
     products: List[str]
+    pass
 
 
 @dataclass
@@ -50,8 +51,9 @@ class AddonInformation:
     version: str
     title: str
     description: str
+
     upgrade_profiles: Dict
-    other_profiles: List[Dict]
+    other_profiles: List[List]
     install_profile: Dict
     uninstall_profile: Dict
     profile_type: str
@@ -97,9 +99,10 @@ def _get_non_installable_addons() -> NonInstallableAddons:
 
 @lru_cache(maxsize=1)
 def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
-    """Return information about addons in this installation.
+    """Return information about add-ons in this installation.
 
-    :returns: Tuple of tuples with addon id and AddonInformation.
+    :returns: Tuple of tuples with add-on id and AddonInformation.
+    :rtype: Tuple
     """
     installer = _get_installer()
     setup_tool = installer.ps
@@ -166,9 +169,18 @@ def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
 
 
 def _update_addon_info(
-    installer: InstallerView, addon: AddonInformation
+    addon: AddonInformation, installer: InstallerView
 ) -> AddonInformation:
-    """Update information about an addon."""
+    """Update information about an add-on.
+
+    :param addon: [required] Add-on object to be updated
+    :type addon: AddonInformation object
+    :param installer: InstallerView object to check for add-on info
+    :type installer: InstallerView object
+
+    :returns: Updated AddonInformation object
+    :rtype: AddonInformation object
+    """
     addon_id = addon.id
     if addon.valid:
         flags = []
@@ -187,15 +199,16 @@ def _update_addon_info(
 
 
 def _get_addons() -> List[AddonInformation]:
-    """Return an updated list of addon information.
+    """Return an updated list of add-on information.
 
     :returns: List of AddonInformation.
+    :rtype: List
     """
     installer = _get_installer()
     addons = dict(_cached_addons())
     result = []
     for addon in addons.values():
-        result.append(_update_addon_info(installer, addon))
+        result.append(_update_addon_info(addon, installer))
     return result
 
 
@@ -208,7 +221,11 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
         'available': products that are not installed but could be
         'non_installable': Non installable products
         'broken': uninstallable products with broken dependencies
+    :type limit: string
     :returns: List of AddonInformation.
+    :raises:
+        InvalidParameterError
+    :Example: :ref:`addon-get-addons`
     """
     addons = _get_addons()
     if limit in ("non_installable", "broken"):
@@ -231,6 +248,7 @@ def get_addon_ids(limit: str = "") -> List[str]:
         'available': products that are not installed but could be
         'non_installable': Non installable products
         'broken': uninstallable products with broken dependencies
+    :type limit: string
     :returns: List of addon ids.
     """
     addons = get_addons(limit=limit)
@@ -255,11 +273,12 @@ def get(addon: str) -> AddonInformation:
 
     :param addon: ID of the addon to be retrieved.
     :returns: Addon information.
+    :rtype: string
     """
     addons = dict(_cached_addons())
     if addon not in addons:
         raise InvalidParameterError(f"No addon {addon} found.")
-    return _update_addon_info(_get_installer(), addons.get(addon))
+    return _update_addon_info(addons.get(addon), _get_installer())
 
 
 @required_parameters("addon")
@@ -279,6 +298,7 @@ def uninstall(addon: str) -> bool:
 
     :param addon: ID of the addon to be uninstalled.
     :returns: Status of the uninstallation.
+    :rtype: Boolean value representing the status of the uninstallation.
     """
     installer = _get_installer()
     return installer.uninstall_product(addon)
