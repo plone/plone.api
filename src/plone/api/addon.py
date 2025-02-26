@@ -1,4 +1,5 @@
 """API to handle addon management."""
+
 from dataclasses import dataclass
 from functools import lru_cache
 from plone.api import portal
