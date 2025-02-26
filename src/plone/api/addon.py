@@ -47,6 +47,7 @@ class AddonInformation:
     version: str
     title: str
     description: str
+
     upgrade_profiles: dict
     other_profiles: list[dict]
     install_profile: dict
@@ -68,6 +69,7 @@ def _get_installer():
 
 
 @lru_cache(maxsize=1)
+
 def _get_non_installable_addons():
     """Return information about non installable addons.
 

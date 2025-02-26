@@ -9,7 +9,6 @@ import unittest
 
 ADDON = "plone.session"
 
-
 class TestAPIAddonGetAddons(unittest.TestCase):
     """TestCase for plone.api.addon.get_addons."""
 
