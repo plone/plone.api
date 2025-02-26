@@ -9,7 +9,7 @@ myst:
 
 ```{eval-rst}
 .. module:: plone
-    :noindex:
+    :no-index:
 ```
 
 (chapter-portal)=
@@ -45,7 +45,7 @@ Assuming there is a document `english_page` in a folder `en`, which is the navig
 % invisible-code-block: python
 %
 % from plone import api
-% from plone.app.layout.navigation.interfaces import INavigationRoot
+% from plone.base.interfaces import INavigationRoot
 % from zope.interface import alsoProvides
 %
 % portal = api.portal.get()
@@ -415,6 +415,49 @@ api.portal.set_registry_record('field_one', 'new value', interface=IMyRegistrySe
 %     api.portal.get_registry_record('field_one', interface=IMyRegistrySettings),
 %     'new value'
 % )
+
+(portal-get-vocabulary-example)=
+
+## Get vocabulary
+
+To get a vocabulary by name, use {func}`api.portal.get_vocabulary`.
+
+```python
+from plone import api
+
+# Get vocabulary using default portal context
+vocabulary = api.portal.get_vocabulary(name='plone.app.vocabularies.PortalTypes')
+
+# Get vocabulary with specific context
+context = api.portal.get()
+states_vocabulary = api.portal.get_vocabulary(
+    name='plone.app.vocabularies.WorkflowStates',
+    context=context
+)
+```
+
+(portal-get-all-vocabulary-names-example)=
+
+## Get all vocabulary names
+
+To get a list of all available vocabulary names in your Plone site, use {meth}`api.portal.get_vocabulary_names`.
+
+```python
+from plone import api
+
+# Get all vocabulary names
+vocabulary_names = api.portal.get_vocabulary_names()
+
+# Common vocabularies that should be available
+common_vocabularies = [
+    'plone.app.vocabularies.PortalTypes',
+    'plone.app.vocabularies.WorkflowStates',
+    'plone.app.vocabularies.WorkflowTransitions'
+]
+
+for vocabulary_name in common_vocabularies:
+    assert vocabulary_name in vocabulary_names
+```
 
 ## Further reading
 

@@ -7,7 +7,7 @@ from plone.api import content
 from plone.api import env
 from plone.api import portal
 from plone.api.tests.base import INTEGRATION_TESTING
-from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.base.interfaces import INavigationRoot
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
@@ -19,6 +19,7 @@ from zope import schema
 from zope.component import getUtility
 from zope.component.hooks import setSite
 from zope.interface import Interface
+from zope.schema.vocabulary import SimpleVocabulary
 from zope.site import LocalSiteManager
 
 import DateTime
@@ -100,32 +101,23 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def _set_localization_date_format(self):
         """Set the expected localized date format."""
-        from plone.api.exc import InvalidParameterError
-
         name_root = "Products.CMFPlone.i18nl10n.override_dateformat."
-        try:
-            portal.set_registry_record(
-                name=name_root + "Enabled",
-                value=True,
-            )
-            portal.set_registry_record(
-                name=name_root + "date_format_long",
-                value="%b %d, %Y %I:%M %p",
-            )
-            portal.set_registry_record(
-                name=name_root + "time_format",
-                value="%I:%M %p",
-            )
-            portal.set_registry_record(
-                name=name_root + "date_format_short",
-                value="%b %d, %Y",
-            )
-        except InvalidParameterError:
-            # before Plone 4.3, date formats were stored in portal_properties
-            properties = portal.get_tool("portal_properties")
-            properties.localLongTimeFormat = "%b %d, %Y %I:%M %p"
-            properties.localTimeOnlyFormat = "%I:%M %p"
-            properties.localTimeFormat = "%b %d, %Y"
+        portal.set_registry_record(
+            name=name_root + "Enabled",
+            value=True,
+        )
+        portal.set_registry_record(
+            name=name_root + "date_format_long",
+            value="%b %d, %Y %I:%M %p",
+        )
+        portal.set_registry_record(
+            name=name_root + "time_format",
+            value="%I:%M %p",
+        )
+        portal.set_registry_record(
+            name=name_root + "date_format_short",
+            value="%b %d, %Y",
+        )
 
     def test_get(self):
         """Test getting the portal object."""
@@ -520,7 +512,7 @@ class TestPloneApiPortal(unittest.TestCase):
 
     def test_get_invalid_registry_record_msg(self):
         """Test that the error message from trying to get a
-        nonexistant registry record produces an error message which
+        nonexistent registry record produces an error message which
         lists suggested registry records.
         """
         from plone.api.exc import InvalidParameterError
@@ -886,3 +878,88 @@ class TestPloneApiPortal(unittest.TestCase):
             ),
             "Avril",
         )
+
+    def test_translate_with_country_codes(self):
+        """Test translation."""
+        self.assertEqual(
+            portal.translate(
+                "Page",
+                lang="pt-br",
+            ),
+            "Página",
+        )
+        self.assertEqual(
+            portal.translate(
+                "Page",
+                lang="pt_BR",
+            ),
+            "Página",
+        )
+
+    def test_get_vocabulary(self):
+        """Test getting a vocabulary by name."""
+        from plone.api.exc import InvalidParameterError
+        from plone.api.exc import MissingParameterError
+
+        # The vocabulary name must be given as parameter
+        with self.assertRaises(MissingParameterError):
+            portal.get_vocabulary()
+
+        # Test getting a commonly available vocabulary
+        vocabulary = portal.get_vocabulary(name="plone.app.vocabularies.PortalTypes")
+        self.assertIsInstance(vocabulary, SimpleVocabulary)
+
+        # Test with invalid vocabulary name
+        with self.assertRaises(InvalidParameterError) as cm:
+            portal.get_vocabulary(name="non.existing.vocabulary")
+
+        expected_msg = (
+            "Cannot find a vocabulary with name 'non.existing.vocabulary'.\n"
+            "Available vocabularies are:\n"
+        )
+        self.assertTrue(str(cm.exception).startswith(expected_msg))
+
+        # Test with context
+        vocabulary_with_context = portal.get_vocabulary(
+            name="plone.app.vocabularies.PortalTypes", context=self.portal
+        )
+        self.assertIsInstance(vocabulary_with_context, SimpleVocabulary)
+
+    def test_get_vocabulary_names(self):
+        """Test getting list of vocabulary names."""
+        names = portal.get_vocabulary_names()
+
+        # Test we get a list of strings
+        self.assertIsInstance(names, list)
+        self.assertTrue(len(names) > 0)
+        self.assertIsInstance(names[0], str)
+
+        # Test that common vocabularies are included
+        common_vocabularies = [
+            "plone.app.vocabularies.PortalTypes",
+            "plone.app.vocabularies.WorkflowStates",
+            "plone.app.vocabularies.WorkflowTransitions",
+        ]
+
+        for vocabulary_name in common_vocabularies:
+            self.assertIn(vocabulary_name, names)
+
+    def test_vocabulary_terms(self):
+        """Test the actual content of retrieved vocabularies."""
+        # Get portal types vocabulary
+        types_vocabulary = portal.get_vocabulary("plone.app.vocabularies.PortalTypes")
+
+        # Check that we have some common content types
+        types = [term.value for term in types_vocabulary]
+        self.assertIn("Document", types)
+        self.assertIn("Folder", types)
+
+        # Get workflow states vocabulary
+        states_vocabulary = portal.get_vocabulary(
+            "plone.app.vocabularies.WorkflowStates"
+        )
+
+        # Check that we have some common workflow states
+        states = [term.value for term in states_vocabulary]
+        self.assertIn("private", states)
+        self.assertIn("published", states)

@@ -7,18 +7,22 @@ from logging import getLogger
 from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import required_parameters
-from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.base.navigationroot import get_navigation_root_object
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
+from zope.component import ComponentLookupError
+from zope.component import getUtilitiesFor
 from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.interface.interfaces import IInterface
+from zope.schema.interfaces import IVocabularyFactory
 
 import datetime as dtime
+import re
 
 
 logger = getLogger("plone.api.portal")
@@ -85,7 +89,7 @@ def get_navigation_root(context=None):
     :Example: :ref:`portal-get-navigation-root-example`
     """
     context = aq_inner(context)
-    return getNavigationRootObject(context, get())
+    return get_navigation_root_object(context, get())
 
 
 @required_parameters("name")
@@ -279,7 +283,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
         records = registry.forInterface(interface, check=False)
         _marker = object()
         if getattr(records, name, _marker) != _marker:
-            return registry["{}.{}".format(interface.__identifier__, name)]
+            return registry[f"{interface.__identifier__}.{name}"]
 
         if default is not MISSING:
             return default
@@ -306,7 +310,7 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
     # Show all records that 'look like' name.
     # We don't dump the whole list, because it 1500+ items.
-    msg = "Cannot find a record with name '{name}'".format(name=name)
+    msg = f"Cannot find a record with name '{name}'"
     records = [key for key in registry.records.keys() if name in key]
     if records:
         msg = (
@@ -408,7 +412,9 @@ def translate(msgid, domain="plone", lang=None):
 
     :param msgid: [required] message to translate
     :type msgid: string
-    :param domain: i18n domain to use
+    :type msgid: zope.i18nmessageid.Message
+    :param domain: i18n domain to use. When ``msgid`` is an instance of ``Message``,
+                   then the ``Message``'s domain is used.
     :type domain: string
     :param lang: target language
     :type lang: string
@@ -417,6 +423,8 @@ def translate(msgid, domain="plone", lang=None):
     :Example: :ref:`portal-translate-example`
     """
     translation_service = get_tool("translation_service")
+    if lang and re.match(r"\D{2}-\D{2}", lang):
+        lang = f"{lang[:2]}_{lang[-2:].upper()}"
     query = {
         "msgid": msgid,
         "domain": domain,
@@ -426,3 +434,41 @@ def translate(msgid, domain="plone", lang=None):
         # Pass the request, so zope.i18n.translate can negotiate the language.
         query["context"] = getRequest()
     return translation_service.utranslate(**query)
+
+
+@required_parameters("name")
+def get_vocabulary(name=None, context=None):
+    """Return a vocabulary object with the given name.
+
+    :param name: Name of the vocabulary.
+    :type name: str
+    :param context: Context to be applied to the vocabulary. Default: portal root.
+    :type context: object
+    :returns: A SimpleVocabulary instance that implements IVocabularyTokenized.
+    :rtype: zope.schema.vocabulary.SimpleVocabulary
+    :Example: :ref:`portal-get-vocabulary-example`
+    """
+    if context is None:
+        context = get()
+    try:
+        vocabulary = getUtility(IVocabularyFactory, name)
+    except ComponentLookupError:
+        raise InvalidParameterError(
+            "Cannot find a vocabulary with name '{name}'.\n"
+            "Available vocabularies are:\n"
+            "{vocabularies}".format(
+                name=name,
+                vocabularies="\n".join(get_vocabulary_names()),
+            ),
+        )
+    return vocabulary(context)
+
+
+def get_vocabulary_names():
+    """Return a list of vocabulary names.
+
+    :returns: A sorted list of vocabulary names.
+    :rtype: list[str]
+    :Example: :ref:`portal-get-all-vocabulary-names-example`
+    """
+    return sorted([name for name, vocabulary in getUtilitiesFor(IVocabularyFactory)])

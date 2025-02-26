@@ -70,12 +70,7 @@ In general, importing and using an API looks something like this:
 % invisible-code-block: python
 %
 % from plone import api
-% from plone.api.exc import InvalidParameterError
-% try:
-%     api.portal.set_registry_record('plone.use_email_as_login', True)
-% except InvalidParameterError:
-%     portal = api.portal.get()
-%     portal.portal_properties.site_properties.use_email_as_login = True
+% api.portal.set_registry_record('plone.use_email_as_login', True)
 
 ```python
 from plone import api

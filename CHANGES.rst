@@ -8,6 +8,213 @@ Changelog
 
 .. towncrier release notes start
 
+2.3.0 (2025-02-21)
+------------------
+
+New features:
+
+
+- Added the content API helper function ``api.content.get_path``, which gets either the relative or absolute path of an object. @ujsquared (#532)
+- Added two new portal API functions:
+  - ``api.portal.get_vocabulary``: Get a vocabulary by name
+  - ``api.portal.get_vocabulary_names``: Get a list of all available vocabulary names
+  @ujsquared (#533)
+
+
+Internal:
+
+
+- Making it easier for new contributors to get started with a simple Makefile and a tidy 'contributing' chapter. @ksuess (#558)
+
+
+2.2.5 (2025-01-24)
+------------------
+
+Bug fixes:
+
+
+- Fix api.content.get(path=path) when a item in the path is not accessible to the user.
+  [pbauer] (#549)
+- Fix DeprecationWarnings. [maurits] (#4090)
+
+
+Documentation:
+
+
+- Preview docs on Read the Docs instead of Netlify. @stevepiercy (#545)
+- Remove Netlify stuff, follow up to #545. @stevepiercy
+  - Sort and remove duplicate entries in `pyproject.toml`
+  - Remove unused docs requirements.
+  - Fix comments and remove unnecessary steps from `tox.ini`.
+  - Enable copy button for code blocks.
+  - Add linkcheck to documentation of documentation. (#546)
+
+
+2.2.4 (2024-12-16)
+------------------
+
+Documentation:
+
+
+- Remove references to unused Coveralls. @stevepiercy (#543)
+
+
+2.2.3 (2024-10-23)
+------------------
+
+Documentation:
+
+
+- Fixed spelling of prerequisites. @stevepiercy (#541)
+
+
+2.2.2 (2024-07-30)
+------------------
+
+Documentation:
+
+
+- Overhaul contributing documentation for Plone 6. @stevepiercy (#539)
+- Use correct syntax for `no-index` in documentation. @stevepiercy (#540)
+
+
+2.2.1 (2024-06-26)
+------------------
+
+Bug fixes:
+
+
+- Removed `portal_properties` from documentation and tests.
+  [maurits] (#125)
+
+
+2.2.0 (2024-05-06)
+------------------
+
+New features:
+
+
+- Report if a permission does not exist
+  when calling `api.user.has_permission`.
+  [gforcada] (#515)
+
+
+Bug fixes:
+
+
+- In relation.create: Fix edge case where existing RelationList value is None. @davisagli (#535)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (cfffba8c)
+
+
+2.1.0 (2024-02-22)
+------------------
+
+New features:
+
+
+- Implemented unrestricted find of content types. @gogobd (#312)
+
+
+Internal:
+
+
+- Enhanced Makefile paths to address whitespace compatibility issues. @Vivek-04022001 (#530)
+
+
+2.0.9 (2024-02-12)
+------------------
+
+Internal:
+
+
+- Improved efficiency of view retrieval by deferring availability checks to error handling. @samriddhi99 (#479)
+
+
+2.0.8 (2023-12-14)
+------------------
+
+Bug fixes:
+
+
+- Fix `api.portal.translate` usage with country-specific language codes [@ericof] (#524)
+
+
+2.0.7 (2023-11-30)
+------------------
+
+Documentation:
+
+
+- Use the preferred `git switch -c` command. See https://www.infoq.com/news/2019/08/git-2-23-switch-restore/. @stevepiercy (#520)
+
+
+2.0.6 (2023-11-03)
+------------------
+
+Bug fixes:
+
+
+- More informative error message in plone.api.content.create() [ajung] (#516)
+
+
+2.0.5 (2023-10-25)
+------------------
+
+Bug fixes:
+
+
+- Replace deprecated assert methods.
+  [gforcada] (#1)
+
+
+Internal:
+
+
+- Update GHA
+  [gforcada] (#1)
+- Fixup tests because PloneSite gets IContentish again. @Akshat2Jain @jaroel (#518)
+
+
+2.0.4 (2023-07-14)
+------------------
+
+Bug fixes:
+
+
+- Do not run GitHub Actions tests twice.
+  Only run GitHub Actions tests when committing directly against master or main or
+  opening a pull request against master or main. This avoids to run the same test
+  suite for the same environment twice.
+  [thet] (#0)
+- Mockup TinyMCE settings: Remove unused AtD related views.
+
+  Fix a test which was checking for "checkDocument" among other available views.
+  "checkDocument" was a TinyMCE endpoint for unmaintained "After the Deadline"
+  plugin, which is now removed. (#504)
+
+
+Documentation:
+
+
+- Enhance API docs of `portal.translate` to show that the domain is optional in some cases. @thet (#510)
+
+
+2.0.3 (2023-05-22)
+------------------
+
+Bug fixes:
+
+
+- Create relation only if there is no existing one with same source, target, relationname.
+  But mark source as modified. @ksuess (#507)
+
+
 2.0.2 (2023-04-14)
 ------------------
 
@@ -371,7 +578,7 @@ Bug fixes:
 - Simplify the ``plone.api.content.delete`` method.
   [thet]
 
-- content.copy with safe_id=False should raise it's own exeception. Fixes #340
+- content.copy with safe_id=False should raise it's own exception. Fixes #340
   [jaroel]
 
 
