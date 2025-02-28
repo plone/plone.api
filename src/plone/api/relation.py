@@ -5,6 +5,8 @@ Heavily inspired by collective.relationhelpers.
 
 from AccessControl.SecurityManagement import getSecurityManager
 from collections import defaultdict
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
 from plone.api.validation import required_parameters
@@ -23,12 +25,11 @@ from zope.intid.interfaces import IIntIds
 from zope.lifecycleevent import modified
 
 import logging
-import pkg_resources
 
 
 try:
-    pkg_resources.get_distribution("plone.app.iterate")
-except pkg_resources.DistributionNotFound:
+    distribution("plone.app.iterate")
+except PackageNotFoundError:
     ITERATE_RELATION_NAME = None
     StagingRelationValue = None
 else:
