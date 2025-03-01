@@ -6,7 +6,7 @@ from AccessControl.SecurityManagement import setSecurityManager
 from App.config import getConfiguration
 from contextlib import closing
 from contextlib import contextmanager
-from pkg_resources import get_distribution
+from importlib.metadata import version
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import UserNotFoundError
@@ -222,7 +222,7 @@ def plone_version():
     :returns: string denoting what release of Plone this distribution contains
     :Example: :ref:`env-plone-version-example`
     """
-    return get_distribution("Products.CMFPlone").version
+    return version("Products.CMFPlone")
 
 
 def zope_version():
@@ -231,4 +231,4 @@ def zope_version():
     :returns: string denoting what release of Zope2 this distribution contains
     :Example: :ref:`env-zope-version-example`
     """
-    return get_distribution("Zope").version
+    return version("Zope")
