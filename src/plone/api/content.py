@@ -1,5 +1,7 @@
 """Module that provides functionality for content manipulation."""
 
+from Acquisition import aq_chain
+from Acquisition import aq_inner
 from copy import copy as _copy
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
@@ -696,3 +698,55 @@ def find(context=None, depth=None, unrestricted=False, **kwargs):
         return catalog.unrestrictedSearchResults(**query)
     else:
         return catalog(**query)
+
+
+@required_parameters("obj")
+def get_parents(obj=None, predicate=None, interface=None):
+    """Get all parents of an object, with optional filtering.
+
+    :param obj: [required] Object for which we want to get the parents.
+    :type obj: Content object
+    :param predicate: Optional callable that takes an object and returns a boolean.
+                     The predicate should handle its own exceptions and return False
+                     for any cases where the object should be filtered out.
+    :type predicate: callable
+    :param interface: Optional interface to filter the parents.
+    :type interface: zope.interface.Interface
+    :returns: List of parent objects, from immediate to site root.
+    :rtype: list
+    :Example: :ref:`content-get-parents-example`
+    """
+    # Get the parent chain but filter out non-contentish parents like Application
+    chain = [
+        obj for obj in aq_chain(aq_inner(obj))[1:] if getattr(obj, "portal_type", None)
+    ]
+
+    if interface is not None:
+        chain = (parent for parent in chain if interface.providedBy(parent))
+
+    if predicate is not None:
+        chain = (parent for parent in chain if predicate(parent))
+
+    return list(chain)
+
+
+@required_parameters("obj")
+def get_closest_parent(obj=None, predicate=None, interface=None):
+    """Get the closest parent of an object that satisfies the given criteria.
+
+    :param obj: [required] Object for which we want to get the parent.
+    :type obj: Content object
+    :param predicate: Optional callable that takes an object and returns a boolean.
+        Used to filter the parents.
+    :type predicate: callable
+    :param interface: Optional interface to filter the parents.
+    :type interface: zope.interface.Interface
+    :returns: Closest matching parents object or None if no match found.
+    :rtype: Content object or None
+    :Example: :ref:`content-get-closed-parent-example`
+
+    """
+    parents = get_parents(obj=obj, predicate=predicate, interface=interface)
+    if parents:
+        return parents[0]
+    return None

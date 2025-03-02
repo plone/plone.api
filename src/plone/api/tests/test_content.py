@@ -6,6 +6,7 @@ from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
 from plone.api.content import _parse_object_provides_query
+from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.contenttypes.interfaces import IFolder
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
@@ -14,6 +15,7 @@ from plone.base.interfaces import INavigationRoot
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
+from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.ZCatalog.interfaces import IZCatalog
 from unittest import mock
@@ -1447,6 +1449,167 @@ class TestPloneApiContent(unittest.TestCase):
 
         for should_be_there in should_be_theres:
             self.assertIn((should_be_there + "\n"), str(cm.exception))
+
+    def test_get_parents_required_parameter(self):
+        """Test that get_parents requires an obj parameter"""
+
+        with self.assertRaises(MissingParameterError):
+            api.content.get_parents()
+
+    def test_get_parents_basic(self):
+        """Test getting all parents without filter"""
+
+        # Test nested content (in sprint folder)
+        parents = api.content.get_parents(self.sprint)
+        self.assertListEqual(parents, [self.events, self.portal])
+
+        # Test nested content (in team folder)
+        parents = api.content.get_parents(self.team)
+        self.assertEqual(len(parents), 2)
+        self.assertListEqual(parents, [self.about, self.portal])
+
+    def test_get_parents_with_interface_filter(self):
+        """Test getting all parents with an interface filter"""
+
+        # Test content in nested folder
+        parents = api.content.get_parents(self.sprint, interface=IFolderish)
+
+        # Should return [events, portal] as both are folders
+        self.assertEqual(len(parents), 2)
+        self.assertListEqual(parents, [self.events, self.portal])
+
+        # Test content with a mixed parent type
+        parents = api.content.get_parents(self.image, interface=IFolderish)
+
+        # Should return [portal] as only parent folder
+        self.assertListEqual(parents, [self.portal])
+
+    def test_get_parents_with_predicate_filter(self):
+        """Test getting all parents with a predicate filter"""
+
+        def check_state(obj):
+            try:
+                return api.content.get_state(obj) == "published"
+            except WorkflowException:
+                return False
+
+        # Set event to published state
+        api.content.transition(self.events, to_state="published")
+
+        # Test get only the published parents
+        parents = api.content.get_parents(self.sprint, predicate=check_state)
+
+        # Should return [events]
+        self.assertListEqual(parents, [self.events])
+
+    def _get_published_state_predicate(self, obj):
+        """Example of a properly implemented predicate that handles WorkflowException.
+
+        :param obj: Content object to check state
+        :return: True if object is published, False otherwise or if workflow check fails
+        """
+        try:
+            return api.content.get_state(obj) == "published"
+        except WorkflowException:
+            return False
+
+    def test_get_parent_with_both_filters(self):
+        """Test getting all parents with both filters"""
+        # Set event to published state
+        api.content.transition(self.events, to_state="published")
+
+        # Get only published folder parents using a properly handled predicate
+        parents = api.content.get_parents(
+            self.sprint,
+            interface=IFolderish,
+            predicate=self._get_published_state_predicate,
+        )
+
+        # Should return events
+        self.assertEqual(len(parents), 1)
+        self.assertListEqual(parents, [self.events])
+        self.assertTrue(IFolderish.providedBy(parents[0]))
+
+
+def test_get_parent_with_workflow_exception(self):
+    """Test that parents without workflow don't break the chain"""
+    # Create a custom folder that might not have workflow
+    no_workflow_folder = api.content.create(
+        container=self.portal, type="Folder", id="no-workflow"
+    )
+
+    # Create a test item in the no-workflow folder
+    test_item = api.content.create(
+        container=no_workflow_folder, type="Document", id="test-item"
+    )
+
+    # This should not raise WorkflowException
+    parents = api.content.get_parents(
+        test_item, interface=IFolderish, predicate=self._get_published_state_predicate
+    )
+
+    # Should return empty list since no parents match the predicate
+    self.assertEqual(len(parents), 0)
+
+    def test_get_parents_root_level(self):
+        """Test getting all parents at the root level"""
+
+        # Test root level content
+        parents = api.content.get_parents(self.blog)
+        self.assertListEqual(parents, [self.portal])
+
+    def test_closest_parent_requires_parameter(self):
+        """Test that closest_parent requires an obj parameter"""
+
+        with self.assertRaises(MissingParameterError):
+            api.content.get_closest_parent()
+
+    def test_closest_parent_basic(self):
+        """Test getting closest parent without filters"""
+
+        # Test nested content (in event folder)
+        parent = api.content.get_closest_parent(self.sprint)
+        self.assertEqual(parent.getId(), "events")
+
+        # Test nested content (in team folder)
+        parent = api.content.get_closest_parent(self.team)
+        self.assertEqual(parent.getId(), "about")
+
+    def test_closest_parent_interface_folder(self):
+        """Test getting closest parent with an interface filter"""
+
+        # Test nested content (in event folder)
+        parent = api.content.get_closest_parent(self.sprint, interface=IFolderish)
+        self.assertTrue(IFolderish.providedBy(parent))
+        self.assertEqual(parent.getId(), "events")
+
+    def test_closest_parent_predicate_filter(self):
+        """Test getting closest parent with a predicate filter"""
+        # Instead of the portal, transition the events folder
+        api.content.transition(self.events, to_state="published")
+
+        def check_state(obj):
+            try:
+                return api.content.get_state(obj) == "published"
+            except WorkflowException:
+                return False
+
+        # Test nested content (in event folder) using the safe check_state predicate
+        parent = api.content.get_closest_parent(self.sprint, predicate=check_state)
+        self.assertEqual(parent, self.events)
+
+    def test_closes_parent_no_match(self):
+        """Test getting closest parents when no parents is found"""
+
+        parents = api.content.get_closest_parent(self.sprint, predicate=lambda x: False)
+        self.assertIsNone(parents)
+
+    def test_closest_parent_root_level(self):
+        """Test getting closest parent at the root level"""
+
+        # Test root level content
+        parent = api.content.get_closest_parent(self.blog)
+        self.assertEqual(parent, self.portal)
 
     def test_get_path_absolute(self):
         """Test getting the path of a content object with relative parameter set to False."""

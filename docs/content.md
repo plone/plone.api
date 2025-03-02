@@ -535,6 +535,97 @@ view = api.content.get_view(
 %
 % self.assertEqual(view.__name__, u'plone')
 
+
+(content-get-parents-example)=
+
+## Get parent objects
+
+You can get all parents of a content object (from immediate parent to the portal root) using the {func}`api.content.get_parents` function.
+
+```python
+from plone import api
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get all parents
+parents = api.content.get_parents(obj=team)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(parents[0], portal['about'])
+
+You can filter parent objects by interface:
+
+```python
+from plone import api
+from Products.CMFCore.interfaces import IFolderish
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get folder parents only
+folder_parents = api.content.get_parents(obj=team, interface=IFolderish)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(folder_parents[0], portal['about'])
+
+You can also filter parents using a custom predicate function:
+
+```python
+from plone import api
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get only published parents
+def is_published(obj):
+    try:
+        return api.content.get_state(obj=obj) == 'published'
+    except:
+        return False
+
+published_parents = api.content.get_parents(obj=team, predicate=is_published)
+```
+
+(content-get-closed-parent-example)=
+
+## Get closest parent
+
+To get the closest parent object that matches certain criteria, use the {func}`api.content.get_closest_parent` function.
+
+```python
+from plone import api
+from Products.CMFCore.interfaces import IFolderish
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get immediate parent folder
+parent_folder = api.content.get_closest_parent(obj=team, interface=IFolderish)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(parent_folder.id, 'about')
+
+You can also use a predicate function to find the closest parent matching custom criteria:
+
+```python
+from plone import api
+portal = api.portal.get()
+team = portal['about']['team']
+
+# Get closest published parent
+def is_published(obj):
+    try:
+        return api.content.get_state(obj=obj) == 'published'
+    except:
+        return False
+
+closest_published = api.content.get_closest_parent(obj=team, predicate=is_published)
+```
+
+
 (content-get-path-example)=
 
 ## Get content path
@@ -588,6 +679,7 @@ try:
 except InvalidParameterError as e:
     assert "Object not in portal path" in str(e)
 ```
+
 
 ## Further reading
 
