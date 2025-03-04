@@ -669,7 +669,7 @@ ancestor = api.content.get_closest_ancestor(portal.about.team, interface=ISiteRo
 %
 % self.assertEqual(ancestor, portal)
 
-To get the closest ancestor that using a custom filter, use the {func}`api.content.get_closest_ancestor` function with the `function` argument.
+To get the closest ancestor by using a custom filter, use the {func}`api.content.get_closest_ancestor` function with the `function` argument.
 
 ```python
 from plone import api
