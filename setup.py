@@ -55,6 +55,7 @@ setup(
         "test": [
             "borg.localrole",
             "manuel>=1.11.2",
+            "packaging",
             "plone.app.contenttypes",
             "plone.app.textfield",
             "plone.app.testing",

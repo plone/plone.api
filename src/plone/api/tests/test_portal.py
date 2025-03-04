@@ -2,7 +2,7 @@
 
 from datetime import date
 from datetime import datetime
-from pkg_resources import parse_version
+from packaging import version
 from plone.api import content
 from plone.api import env
 from plone.api import portal
@@ -34,7 +34,7 @@ except ImportError:
     from email import message_from_string as message_from_bytes
 
 
-HAS_PLONE5 = parse_version(env.plone_version()) >= parse_version("5.0b2")
+HAS_PLONE5 = version.parse(env.plone_version()) >= version.parse("5.0b2")
 
 
 class IMyRegistrySettings(Interface):
