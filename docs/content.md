@@ -650,6 +650,38 @@ ancestors = api.content.iter_ancestors(portal.about.team, stop_at=portal.about)
 %
 % self.assertTupleEqual(tuple(ancestors), (portal.about,))
 
+(content-get-closest-ancestor-example)=
+
+## Get closest ancestor
+
+To get the closest ancestor in the object tree, use the {func}`api.content.get_closest_ancestor` function.
+
+```python
+from plone import api
+from Products.CMFCore.interfaces import ISiteRoot
+portal = api.portal.get()
+
+# Get the closest ancestor of the team object that implements the ISiteRoot interface
+ancestor = api.content.get_closest_ancestor(portal.about.team, interface=ISiteRoot)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(ancestor, portal)
+
+To get the closest ancestor that using a custom filter, use the {func}`api.content.get_closest_ancestor` function with the `function` argument.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+# Get the closest ancestor of the team object with the id 'about'
+ancestor = api.content.get_closest_ancestor(portal.about.team, function=lambda obj: obj.id == "about")
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(ancestor, portal.about)
 
 ## Further reading
 

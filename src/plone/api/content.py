@@ -719,13 +719,13 @@ def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
     :type obj: Content object
     :param function: Optional callable that takes an object and returns a boolean.
     :type function: callable
-    :param interface: Optional interface that should be provided by the parent.
+    :param interface: Optional interface that should be provided by the ancestor.
     :type interface: zope.interface.Interface
     :param stop_at: Optional object at which to stop the iteration. If ``False``
         is passed as the value, we will return all the matching objects in the
         acquisition chain
     :type stop_at: Content object or False
-    :returns: Iterator of parent objects, from immediate to site root.
+    :returns: Iterator of ancestor objects, from immediate to site root.
     :rtype: iterator
     :Example: :ref:`content-iter-ancestors-example`
     """
@@ -762,3 +762,31 @@ def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
         ancestors = filter(function, ancestors)
 
     yield from ancestors
+
+
+@required_parameters("obj")
+def get_closest_ancestor(obj=None, function=None, interface=None, stop_at=_marker):
+    """Get the closest ancestor that matches the criteria.
+
+    See :func:`~plone.api.content.iter_ancestors` for more information on the parameters.
+
+    :param obj: [required] Object for which we want to get the ancestor.
+    :type obj: Content object
+    :param function: Optional callable that takes an object and returns a boolean.
+    :type function: callable
+    :param interface: Optional interface that should be provided by the ancestor.
+    :type interface: zope.interface.Interface
+    :param stop_at: Optional object at which to stop the iteration. If ``False``
+        is passed as the value, we will return all the matching objects in the
+        acquisition chain
+    :type stop_at: Content object or False
+    :returns: Iterator of ancestor objects, from immediate to site root.
+    :rtype: iterator
+    :Example: :ref:`get-closest-ancestors-example`
+    """
+    return next(
+        iter_ancestors(
+            obj=obj, function=function, interface=interface, stop_at=stop_at
+        ),
+        None,
+    )

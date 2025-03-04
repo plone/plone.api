@@ -1598,3 +1598,61 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertTupleEqual(
             tuple(api.content.iter_ancestors(object(), stop_at=False)), ()
         )
+
+    def test_get_closest_ancestor_required_parameter(self):
+        """Test that get_closest_ancestor requires an obj parameter"""
+        with self.assertRaises(MissingParameterError):
+            api.content.get_closest_ancestor()
+
+    def test_get_closest_ancestor(self):
+        """Test getting the closest ancestor of an object"""
+        self.assertEqual(api.content.get_closest_ancestor(self.team), self.about)
+
+    def test_get_closest_ancestor_with_interface(self):
+        """Test getting the closest ancestor of an object with an interface filter"""
+        self.assertEqual(
+            api.content.get_closest_ancestor(self.team, interface=IFolderish),
+            self.about,
+        )
+
+    def test_get_closest_ancestor_with_function(self):
+        """Test getting the closest ancestor of an object with a function filter"""
+        self.assertEqual(
+            api.content.get_closest_ancestor(
+                self.team, function=lambda x: x.id == "about"
+            ),
+            self.about,
+        )
+
+    def test_get_closest_ancestor_with_both_filters(self):
+        """Test getting the closest ancestor of an object with both filters"""
+        self.assertEqual(
+            api.content.get_closest_ancestor(
+                self.sprint,
+                interface=IFolderish,
+                function=lambda x: x.id == "events",
+            ),
+            self.events,
+        )
+
+    def test_get_closest_ancestor_for_portal(self):
+        """Test getting the closest ancestor of the portal"""
+        self.assertIsNone(api.content.get_closest_ancestor(self.portal))
+
+    def test_get_closest_ancestor_bogus_stop_at(self):
+        """Check that when we pass to the ``stop_at`` parameter something
+        that is not in the acquisition chain, we raise an error."""
+        with self.assertRaises(api.exc.InvalidParameterError) as cm:
+            api.content.get_closest_ancestor(self.team, stop_at=self.sprint)
+
+        self.assertEqual(
+            str(cm.exception),
+            (
+                "The object <Event at /plone/events/sprint> "
+                "is not in the acquisition chain of <Document at /plone/about/team>"
+            ),
+        )
+
+    def test_get_closest_ancestor_not_acquisition_aware_object(self):
+        """Test that get_closest_ancestor requires an obj parameter"""
+        self.assertIsNone(api.content.get_closest_ancestor(object(), stop_at=False))
