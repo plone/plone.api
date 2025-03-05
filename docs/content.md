@@ -550,16 +550,16 @@ The following example shows how to get the absolute path from the Zope root.
 from plone import api
 portal = api.portal.get()
 
-folder = portal['events']['training']
+folder = portal["events"]["training"]
 path = api.content.get_path(obj=folder)
-assert path == '/plone/events/training'
+assert path == "/plone/events/training"
 ```
 
 The following example shows how to get the portal-relative path.
 
 ```python
 rel_path = api.content.get_path(obj=folder, relative=True)
-assert rel_path == 'events/training'
+assert rel_path == "events/training"
 ```
 
 If the API is used to fetch an object with the `relative` parameter set as `True`, and the object is outside the portal, it throws an `InvalidParameterError` error.
@@ -568,7 +568,7 @@ If the API is used to fetch an object with the `relative` parameter set as `True
 %
 % # Setup an object outside portal for testing error case
 % app = portal.aq_parent
-% app.manage_addFolder('outside_folder')
+% app.manage_addFolder("outside_folder")
 %
 % # Test that getting relative path for object outside portal raises error
 % from plone.api.exc import InvalidParameterError
