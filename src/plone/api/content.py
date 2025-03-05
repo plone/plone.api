@@ -1,6 +1,9 @@
 """Module that provides functionality for content manipulation."""
 
+from Acquisition import aq_chain
+from Acquisition import aq_inner
 from copy import copy as _copy
+from itertools import islice
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import at_least_one_of
@@ -696,3 +699,94 @@ def find(context=None, depth=None, unrestricted=False, **kwargs):
         return catalog.unrestrictedSearchResults(**query)
     else:
         return catalog(**query)
+
+
+@required_parameters("obj")
+def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
+    """Iterate over the object ancestors.
+
+    Optionally filter the ancestors:
+
+    1. by a custom function.
+    2. by interface.
+
+    The iteration will stop by default at the portal root.
+    If you want to stop at a specific object, pass it as the ``stop_at`` parameter.
+    If you want to return all the matching objects in the acquisition chain, pass
+    ``False`` as the value of the ``stop_at`` parameter.
+
+    :param obj: [required] Object for which we want to iterate over the ancestors.
+    :type obj: Content object
+    :param function: Optional callable that takes an object and returns a boolean.
+    :type function: callable
+    :param interface: Optional interface that should be provided by the ancestor.
+    :type interface: zope.interface.Interface
+    :param stop_at: Optional object at which to stop the iteration. If ``False``
+        is passed as the value, we will return all the matching objects in the
+        acquisition chain
+    :type stop_at: Content object or False
+    :returns: Iterator of ancestor objects, from immediate to site root.
+    :rtype: iterator
+    :Example: :ref:`content-iter-ancestors-example`
+    """
+    if stop_at is _marker:
+        stop_at = portal.get()
+
+    if obj is stop_at:
+        # We should iterate over the ancestors of obj but obj is also
+        # the object at which we should stop checking for ancestors.
+        # So we should return an empty iterator.
+        #
+        # This is useful if we want to have an empty iterator when checking
+        # for ancestors in the portal.
+        return iter(())
+
+    chain = aq_chain(aq_inner(obj))
+
+    if stop_at:
+        try:
+            end = chain.index(stop_at) + 1
+        except ValueError:
+            raise InvalidParameterError(
+                f"The object {stop_at!r} is not in the acquisition chain of {obj!r}"
+            )
+    else:
+        end = None
+
+    ancestors = islice(chain, 1, end)
+
+    if interface is not None:
+        ancestors = filter(interface.providedBy, ancestors)
+
+    if function is not None:
+        ancestors = filter(function, ancestors)
+
+    yield from ancestors
+
+
+@required_parameters("obj")
+def get_closest_ancestor(obj=None, function=None, interface=None, stop_at=_marker):
+    """Get the closest ancestor that matches the criteria.
+
+    See :func:`~plone.api.content.iter_ancestors` for more information on the parameters.
+
+    :param obj: [required] Object for which we want to get the ancestor.
+    :type obj: Content object
+    :param function: Optional callable that takes an object and returns a boolean.
+    :type function: callable
+    :param interface: Optional interface that should be provided by the ancestor.
+    :type interface: zope.interface.Interface
+    :param stop_at: Optional object at which to stop the iteration. If ``False``
+        is passed as the value, we will return all the matching objects in the
+        acquisition chain
+    :type stop_at: Content object or False
+    :returns: Iterator of ancestor objects, from immediate to site root.
+    :rtype: iterator
+    :Example: :ref:`get-closest-ancestors-example`
+    """
+    return next(
+        iter_ancestors(
+            obj=obj, function=function, interface=interface, stop_at=stop_at
+        ),
+        None,
+    )

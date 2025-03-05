@@ -6,6 +6,7 @@ from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
 from plone import api
 from plone.api.content import _parse_object_provides_query
+from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.contenttypes.interfaces import IFolder
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
@@ -14,6 +15,7 @@ from plone.base.interfaces import INavigationRoot
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
+from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.ZCatalog.interfaces import IZCatalog
 from unittest import mock
@@ -1510,3 +1512,147 @@ class TestPloneApiContent(unittest.TestCase):
         with self.assertRaises(InvalidParameterError) as cm:
             api.content.get_path(outside_obj, relative=True)
         self.assertIn("Object not in portal path", str(cm.exception))
+
+    def test_iter_ancestors_required_parameter(self):
+        """Test that iter_ancestors requires an obj parameter"""
+        with self.assertRaises(MissingParameterError):
+            api.content.iter_ancestors()
+
+    def test_iter_ancestors(self):
+        """Test iterating over all the ancestors until the portal root"""
+        self.assertTupleEqual(
+            tuple(api.content.iter_ancestors(self.team)), (self.about, self.portal)
+        )
+
+    def test_iter_ancestors_deep(self):
+        """Test iterating over all the ancestors of the acquisition chain"""
+        app = self.layer["app"]
+        self.assertTupleEqual(
+            tuple(api.content.iter_ancestors(self.team, stop_at=False)),
+            (self.about, self.portal, app, app.aq_parent),
+        )
+
+    def test_iter_ancestors_stop_at(self):
+        """Test iterating over all the ancestors until a specific object"""
+        app = self.layer["app"]
+        self.assertTupleEqual(
+            tuple(api.content.iter_ancestors(self.team, stop_at=app)),
+            (self.about, self.portal, app),
+        )
+
+    def test_iter_ancestors_with_interface(self):
+        """Test iterating over all the ancestors with an interface filter"""
+        self.assertTupleEqual(
+            tuple(
+                api.content.iter_ancestors(
+                    self.team, interface=IFolderish, stop_at=False
+                )
+            ),
+            (self.about, self.portal),
+        )
+
+    def test_iter_ancestors_with_function(self):
+        """Test iterating over all the ancestors with a function filter"""
+        self.assertTupleEqual(
+            tuple(
+                api.content.iter_ancestors(
+                    self.team, function=lambda x: x.id == "about"
+                )
+            ),
+            (self.about,),
+        )
+
+    def test_iter_ancestors_with_both_filters(self):
+        """Test getting all parents with both filters"""
+        self.assertTupleEqual(
+            tuple(
+                api.content.iter_ancestors(
+                    self.sprint,
+                    interface=IFolderish,
+                    function=lambda x: x.id == "events",
+                )
+            ),
+            (self.events,),
+        )
+
+    def test_iter_ancestors_for_portal(self):
+        """Test iterating over all the ancestors of the portal"""
+        self.assertTupleEqual(tuple(api.content.iter_ancestors(self.portal)), ())
+
+    def test_iter_ancestors_bogus_stop_at(self):
+        """Check that when we pass to the ``stop_at`` parameter something
+        that is not in the acquisition chain, we raise an error."""
+        with self.assertRaises(api.exc.InvalidParameterError) as cm:
+            tuple(api.content.iter_ancestors(self.team, stop_at=self.sprint))
+
+        self.assertEqual(
+            str(cm.exception),
+            (
+                "The object <Event at /plone/events/sprint> "
+                "is not in the acquisition chain of <Document at /plone/about/team>"
+            ),
+        )
+
+    def test_iter_ancestors_not_acquisition_aware_object(self):
+        """Test that iter_ancestors requires an obj parameter"""
+        self.assertTupleEqual(
+            tuple(api.content.iter_ancestors(object(), stop_at=False)), ()
+        )
+
+    def test_get_closest_ancestor_required_parameter(self):
+        """Test that get_closest_ancestor requires an obj parameter"""
+        with self.assertRaises(MissingParameterError):
+            api.content.get_closest_ancestor()
+
+    def test_get_closest_ancestor(self):
+        """Test getting the closest ancestor of an object"""
+        self.assertEqual(api.content.get_closest_ancestor(self.team), self.about)
+
+    def test_get_closest_ancestor_with_interface(self):
+        """Test getting the closest ancestor of an object with an interface filter"""
+        self.assertEqual(
+            api.content.get_closest_ancestor(self.team, interface=IFolderish),
+            self.about,
+        )
+
+    def test_get_closest_ancestor_with_function(self):
+        """Test getting the closest ancestor of an object with a function filter"""
+        self.assertEqual(
+            api.content.get_closest_ancestor(
+                self.team, function=lambda x: x.id == "about"
+            ),
+            self.about,
+        )
+
+    def test_get_closest_ancestor_with_both_filters(self):
+        """Test getting the closest ancestor of an object with both filters"""
+        self.assertEqual(
+            api.content.get_closest_ancestor(
+                self.sprint,
+                interface=IFolderish,
+                function=lambda x: x.id == "events",
+            ),
+            self.events,
+        )
+
+    def test_get_closest_ancestor_for_portal(self):
+        """Test getting the closest ancestor of the portal"""
+        self.assertIsNone(api.content.get_closest_ancestor(self.portal))
+
+    def test_get_closest_ancestor_bogus_stop_at(self):
+        """Check that when we pass to the ``stop_at`` parameter something
+        that is not in the acquisition chain, we raise an error."""
+        with self.assertRaises(api.exc.InvalidParameterError) as cm:
+            api.content.get_closest_ancestor(self.team, stop_at=self.sprint)
+
+        self.assertEqual(
+            str(cm.exception),
+            (
+                "The object <Event at /plone/events/sprint> "
+                "is not in the acquisition chain of <Document at /plone/about/team>"
+            ),
+        )
+
+    def test_get_closest_ancestor_not_acquisition_aware_object(self):
+        """Test that get_closest_ancestor requires an obj parameter"""
+        self.assertIsNone(api.content.get_closest_ancestor(object(), stop_at=False))
