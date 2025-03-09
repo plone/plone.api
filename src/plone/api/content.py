@@ -28,6 +28,9 @@ import transaction
 
 _marker = []
 
+# Maximum number of attempts to generate a unique random ID
+MAX_UNIQUE_ID_ATTEMPTS = 100
+
 
 @required_parameters("container", "type")
 @at_least_one_of("id", "title")
@@ -67,7 +70,18 @@ def create(
     :Example: :ref:`content-create-example`
     """
     # Create a temporary id if the id is not given
-    content_id = not safe_id and id or str(random.randint(0, 99999999))
+    if not safe_id and id:
+        content_id = id
+    else:
+        # Try to generate a unique random ID
+        attempts = 0
+        while attempts < MAX_UNIQUE_ID_ATTEMPTS:
+            content_id = str(random.randint(0, 99999999))
+            if content_id not in container.keys():
+                break
+            attempts += 1
+        # If we couldn't find a unique ID after max attempts, use the last one anyway
+        # This maintains the original behavior if all attempts fail
 
     if title:
         kwargs["title"] = title
