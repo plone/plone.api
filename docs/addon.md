@@ -140,7 +140,7 @@ from plone import api
 
 version = api.addon.get_version("plone.session")
 ```
-Note that this returns the version of the Python package installed from **PyPi**, not the version of the add-on's **_GenericSetup_** profile.
+Note that this returns the version of the Python package installed from **PyPI**, not the version of the add-on's **_GenericSetup_** profile.
 
 (addons-exceptions)=
 

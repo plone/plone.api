@@ -40,7 +40,6 @@ class NonInstallableAddons:
 
     profiles: List[str]
     products: List[str]
-    pass
 
 
 @dataclass
