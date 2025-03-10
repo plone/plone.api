@@ -1,5 +1,7 @@
 """Boilerplate for doctest functional tests."""
 
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from logging import getLogger
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_INTEGRATION_TESTING
@@ -16,7 +18,6 @@ import manuel.doctest
 import manuel.myst.codeblock
 import manuel.testing
 import os
-import pkg_resources
 import re
 import unittest
 
@@ -24,11 +25,10 @@ import unittest
 logger = getLogger(__name__)
 
 try:
-    pkg_resources.get_distribution("plone.app.contenttypes")
-except pkg_resources.DistributionNotFound:
-    HAS_PA_CONTENTTYPES = False
-else:
+    distribution("plone.app.contenttypes")
     HAS_PA_CONTENTTYPES = True
+except PackageNotFoundError:
+    HAS_PA_CONTENTTYPES = False
 
 FLAGS = (
     doctest.NORMALIZE_WHITESPACE
