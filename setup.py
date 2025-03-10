@@ -29,6 +29,7 @@ setup(
     keywords="plone api",
     python_requires=">=3.8",
     install_requires=[
+        "Acquisition",
         "Products.statusmessages",
         "Products.PlonePAS",
         "Products.CMFPlone",
@@ -54,6 +55,7 @@ setup(
         "test": [
             "borg.localrole",
             "manuel>=1.11.2",
+            "packaging",
             "plone.app.contenttypes",
             "plone.app.textfield",
             "plone.app.testing",

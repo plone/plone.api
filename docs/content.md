@@ -550,16 +550,16 @@ The following example shows how to get the absolute path from the Zope root.
 from plone import api
 portal = api.portal.get()
 
-folder = portal['events']['training']
+folder = portal["events"]["training"]
 path = api.content.get_path(obj=folder)
-assert path == '/plone/events/training'
+assert path == "/plone/events/training"
 ```
 
 The following example shows how to get the portal-relative path.
 
 ```python
 rel_path = api.content.get_path(obj=folder, relative=True)
-assert rel_path == 'events/training'
+assert rel_path == "events/training"
 ```
 
 If the API is used to fetch an object with the `relative` parameter set as `True`, and the object is outside the portal, it throws an `InvalidParameterError` error.
@@ -568,7 +568,7 @@ If the API is used to fetch an object with the `relative` parameter set as `True
 %
 % # Setup an object outside portal for testing error case
 % app = portal.aq_parent
-% app.manage_addFolder('outside_folder')
+% app.manage_addFolder("outside_folder")
 %
 % # Test that getting relative path for object outside portal raises error
 % from plone.api.exc import InvalidParameterError
@@ -588,6 +588,100 @@ try:
 except InvalidParameterError as e:
     assert "Object not in portal path" in str(e)
 ```
+
+(content-iter-ancestors-example)=
+
+## Iterate over object ancestors
+
+To iterate over the ancestors in the object tree, use the {func}`api.content.iter_ancestors` function.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+# Get all ancestors of the team object
+ancestors = api.content.iter_ancestors(portal.about.team)
+```
+
+% invisible-code-block: python
+%
+% self.assertTupleEqual(tuple(ancestors), (portal.about, portal))
+
+To iterate over the ancestors that implement one interface, use the {func}`api.content.iter_ancestors` function with the `interface` argument.
+
+```python
+from plone import api
+from Products.CMFCore.interfaces import ISiteRoot
+portal = api.portal.get()
+
+# Get all ancestors of the team object that implement the ISiteRoot interface
+ancestors = api.content.iter_ancestors(portal.about.team, interface=ISiteRoot)
+```
+
+% invisible-code-block: python
+%
+% self.assertTupleEqual(tuple(ancestors), (portal,))
+
+To iterate over the ancestors using a custom filter you can use the {func}`api.content.iter_ancestors` function with the `function` argument.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+# Get all ancestors of the team object with the id 'about'
+ancestors = api.content.iter_ancestors(portal.about.team, function=lambda obj: obj.id == "about")
+```
+
+% invisible-code-block: python
+%
+% self.assertTupleEqual(tuple(ancestors), (portal.about,))
+
+To iterate over the ancestors until an object is found, use the {func}`api.content.iter_ancestors` function with the `stop_at` argument.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+# Get all ancestors of the team object until the object 'about'
+ancestors = api.content.iter_ancestors(portal.about.team, stop_at=portal.about)
+```
+
+% invisible-code-block: python
+%
+% self.assertTupleEqual(tuple(ancestors), (portal.about,))
+
+(content-get-closest-ancestor-example)=
+
+## Get closest ancestor
+
+To get the closest ancestor in the object tree, use the {func}`api.content.get_closest_ancestor` function.
+
+```python
+from plone import api
+from Products.CMFCore.interfaces import ISiteRoot
+portal = api.portal.get()
+
+# Get the closest ancestor of the team object that implements the ISiteRoot interface
+ancestor = api.content.get_closest_ancestor(portal.about.team, interface=ISiteRoot)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(ancestor, portal)
+
+To get the closest ancestor by using a custom filter, use the {func}`api.content.get_closest_ancestor` function with the `function` argument.
+
+```python
+from plone import api
+portal = api.portal.get()
+
+# Get the closest ancestor of the team object with the id 'about'
+ancestor = api.content.get_closest_ancestor(portal.about.team, function=lambda obj: obj.id == "about")
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(ancestor, portal.about)
 
 ## Further reading
 
