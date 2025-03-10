@@ -1,4 +1,4 @@
-"""Module that manages add-ons."""
+"""API to handle addon management."""
 
 from dataclasses import dataclass
 from functools import lru_cache
@@ -36,7 +36,7 @@ __all__ = [
 
 @dataclass
 class NonInstallableAddons:
-    """Set of addons not available for installation."""
+    """Set of add-ons not available for installation."""
 
     profiles: List[str]
     products: List[str]
@@ -74,7 +74,7 @@ def _get_installer() -> InstallerView:
 
 @lru_cache(maxsize=1)
 def _get_non_installable_addons() -> NonInstallableAddons:
-    """Return information about non installable addons.
+    """Return information about non installable add-ons.
 
     We cache this on first use, as those utilities are registered
     during the application startup
@@ -213,9 +213,9 @@ def _get_addons() -> List[AddonInformation]:
 
 
 def get_addons(limit: str = "") -> List[AddonInformation]:
-    """List addons in this Plone site.
+    """List add-ons in this Plone site.
 
-    :param limit: Limit list of addons.
+    :param limit: Limit list of add-ons.
         'installed': only products that are installed and not hidden
         'upgradable': only products with upgrades
         'available': products that are not installed but could be
@@ -240,7 +240,7 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
 
 
 def get_addon_ids(limit: str = "") -> List[str]:
-    """List addons ids in this Plone site.
+    """List add-ons ids in this Plone site.
 
     :param limit: Limit list of addons.
         'installed': only products that are installed and not hidden
@@ -249,7 +249,7 @@ def get_addon_ids(limit: str = "") -> List[str]:
         'non_installable': Non installable products
         'broken': uninstallable products with broken dependencies
     :type limit: string
-    :returns: List of addon ids.
+    :returns: List of add-on ids.
     """
     addons = get_addons(limit=limit)
     return [addon.id for addon in addons]
@@ -271,7 +271,7 @@ def get_version(addon: str) -> str:
 def get(addon: str) -> AddonInformation:
     """Information about an Addon.
 
-    :param addon: ID of the addon to be retrieved.
+    :param addon: ID of the add-on to be retrieved.
     :returns: Addon information.
     :rtype: string
     """
@@ -283,7 +283,7 @@ def get(addon: str) -> AddonInformation:
 
 @required_parameters("addon")
 def install(addon: str) -> bool:
-    """Install an addon.
+    """Install an add-on.
 
     :param addon: ID of the addon to be installed.
     :returns: Status of the installation.
@@ -294,7 +294,7 @@ def install(addon: str) -> bool:
 
 @required_parameters("addon")
 def uninstall(addon: str) -> bool:
-    """Uninstall an addon.
+    """Uninstall an add-on.
 
     :param addon: ID of the addon to be uninstalled.
     :returns: Status of the uninstallation.

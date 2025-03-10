@@ -29,26 +29,26 @@ class TestAPIAddonGetAddons(unittest.TestCase):
         self.assertIn(ADDON, addon_ids)
 
     def test_api_get_addons_limit_broken(self):
-        """Test api.addon.get_addons filtering for broken addons."""
+        """Test api.addon.get_addons filtering for broken add-ons."""
         result = api.addon.get_addons(limit="broken")
         self.assertEqual(len(result), 0)
 
     def test_api_get_addons_limit_non_installable(self):
-        """Test api.addon.get_addons filtering for non_installable addons."""
+        """Test api.addon.get_addons filtering for non_installable add-ons."""
         result = api.addon.get_addons(limit="non_installable")
         self.assertNotEqual(len(result), 0)
         addon_ids = [addon.id for addon in result]
         self.assertIn("plone.app.dexterity", addon_ids)
 
     def test_api_get_addons_limit_installed(self):
-        """Test api.addon.get_addons filtering for installed addons."""
+        """Test api.addon.get_addons filtering for installed add-ons."""
         result = api.addon.get_addons(limit="installed")
         self.assertEqual(len(result), 2)
         addon_ids = [addon.id for addon in result]
         self.assertIn(ADDON, addon_ids)
 
     def test_api_get_addons_limit_upgradable(self):
-        """Test api.addon.get_addons filtering for addons with upgradable."""
+        """Test api.addon.get_addons filtering for add-ons with upgradable."""
         result = api.addon.get_addons(limit="upgradable")
         self.assertEqual(len(result), 0)
 
@@ -81,13 +81,14 @@ class TestAPIAddon(unittest.TestCase):
 
     def test_api_uninstall(self):
         """Test api.addon.uninstall."""
-        # First install the addon
+        # First install the add-on
         api.addon.install(ADDON)
+        # Then uninstall the add-on
         result = api.addon.uninstall(ADDON)
         self.assertTrue(result)
 
     def test_api_uninstall_unavailable(self):
-        """Test api.addon.uninstall unavailable addon."""
+        """Test api.addon.uninstall unavailable add-on."""
         result = api.addon.uninstall("Foobar")
         self.assertFalse(result)
 

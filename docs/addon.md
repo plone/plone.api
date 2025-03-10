@@ -63,7 +63,7 @@ broken = api.addon.get_addons(limit="broken")
 
 ## Get add-on IDs
 
-To get all the add-ons' IDs present in the current Plone site, use the {func}`api.addon.get_addon_ids` function.
+To get the IDs of all the add-ons present in the current Plone site, use the {func}`api.addon.get_addon_ids` function.
 The function accepts an optional `limit` parameter to filter the returned add-ons, exactly the same as the {func}`api.addon.get_addons` function.
 `limit` may be one of the following strings.
 
@@ -112,6 +112,11 @@ from plone import api
 
 success = api.addon.install("plone.session")
 ```
+This function returns a `false` boolean value in the following cases.
+- The installation fails due to an error.
+- The add-on is already installed.
+- The add-on is not found among the available add-ons.
+
 
 To uninstall an add-on, use the {func}`api.addon.uninstall` function, passing in the name of the add-on as a string, as shown in the following example.
 
@@ -122,6 +127,10 @@ from plone import api
 success = api.addon.uninstall("plone.session")
 ```
 
+This function returns a `false` boolean value in the following cases.
+- The removal of add-on fails due to an error.
+- The add-on is not installed.
+
 ## Get add-on version
 
 To get the version of an add-on, use the {func}`api.addon.get_version` function, passing in the name of the add-on as a string, as shown in the following example.
@@ -131,6 +140,7 @@ from plone import api
 
 version = api.addon.get_version("plone.session")
 ```
+Note that this returns the version of the Python package installed from **PyPi**, not the version of the add-on's **_GenericSetup_** profile.
 
 (addons-exceptions)=
 
@@ -141,4 +151,3 @@ The {exc}`~plone.api.exc.InvalidParameterError` exception may be raised in the f
 
 - When using the {func}`api.addon.get` function, trying to get information about a non-existent add-on.
 - When using either function {func}`api.addon.get_addons` or {func}`api.addon.get_addon_ids`, using an invalid `limit` parameter value.
-
