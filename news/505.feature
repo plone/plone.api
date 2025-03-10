@@ -1,1 +1,1 @@
-Implement plone.api.addons module [@ericof]
+Implement `plone.api.addon` module. @ericof, @ujsquared
