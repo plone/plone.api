@@ -782,7 +782,7 @@ def get_closest_ancestor(obj=None, function=None, interface=None, stop_at=_marke
     :type stop_at: Content object or False
     :returns: Iterator of ancestor objects, from immediate to site root.
     :rtype: iterator
-    :Example: :ref:`get-closest-ancestors-example`
+    :Example: :ref:`get-closest-ancestor-example`
     """
     return next(
         iter_ancestors(
