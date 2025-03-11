@@ -77,7 +77,7 @@ def create(
         attempts = 0
         while attempts < MAX_UNIQUE_ID_ATTEMPTS:
             content_id = str(random.randint(0, 99999999))
-            if content_id not in container.keys():
+            if content_id not in container:
                 break
             attempts += 1
         # If we couldn't find a unique ID after max attempts, use the last one anyway
