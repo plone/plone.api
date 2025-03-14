@@ -24,6 +24,7 @@ from zope.interface import providedBy
 
 import random
 import transaction
+import uuid
 
 
 _marker = []
@@ -73,10 +74,10 @@ def create(
     if not safe_id and id:
         content_id = id
     else:
-        # Try to generate a unique random ID
+        # Try to generate a unique random ID using UUID4
         attempts = 0
         while attempts < MAX_UNIQUE_ID_ATTEMPTS:
-            content_id = str(random.randint(0, 99999999))
+            content_id = str(uuid.uuid4())
             if content_id not in container:
                 break
             attempts += 1
