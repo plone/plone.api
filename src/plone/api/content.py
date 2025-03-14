@@ -22,7 +22,6 @@ from zope.globalrequest import getRequest
 from zope.interface import Interface
 from zope.interface import providedBy
 
-import random
 import transaction
 import uuid
 
