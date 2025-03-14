@@ -80,8 +80,9 @@ def create(
             if content_id not in container:
                 break
             attempts += 1
-        # If we couldn't find a unique ID after max attempts, use the last one anyway
-        # This maintains the original behavior if all attempts fail
+        # If we couldn't find a unique ID after max attempts, raise ValueError
+        if attempts >= MAX_UNIQUE_ID_ATTEMPTS:
+            raise ValueError("Could not find unique id while creating content.")
 
     if title:
         kwargs["title"] = title
