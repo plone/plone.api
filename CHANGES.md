@@ -9,6 +9,31 @@
 
 <!-- towncrier release notes start -->
 
+## 2.4.0 (2025-03-14)
+
+
+### New features:
+
+- Add the `api.content.iter_ancestors` function for iterating over an object acquisition chain. @rohnsha0, @ale-rt #531
+
+
+### Bug fixes:
+
+- Replace `pkg_resources` with `importlib.metadata` @gforcada #4126
+
+
+### Internal:
+
+- Fix CI. @davisagli #571
+
+
+### Documentation:
+
+- Fix pull request preview builds on Read the Docs by replacing deprecated `pkg_resources` with `importlib.metadata`. @stevepiercy #565
+- Improve code style in the documentation snippets #568
+- Add `src` files in the check to determine whether to build a pull request preview on Read the Docs. @stevepiercy #574
+- Fix link in README to Contributing to `plone.api`. @stevepiercy #575
+
 ## 2.3.0 (2025-02-21)
 
 New features:

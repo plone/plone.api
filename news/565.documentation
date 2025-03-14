@@ -1,1 +1,0 @@
-Fix pull request preview builds on Read the Docs by replacing deprecated `pkg_resources` with `importlib.metadata`. @stevepiercy
