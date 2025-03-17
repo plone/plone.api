@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.4.1 (2025-03-17)
+
+
+### Bug fixes:
+
+- Attempt to generate a random temporary id for a content type up to 100 times, else continue to raise a `zExceptions.BadRequest` error. @rohnsha0 #445
+
 ## 2.4.0 (2025-03-14)
 
 
