@@ -8,7 +8,7 @@ myst:
 ---
 
 ```{eval-rst}
-.. module:: plone.api.addon
+.. module:: plone
 ```
 
 (chapter-addons)=
@@ -82,12 +82,13 @@ The function accepts an optional `limit` parameter to filter the returned add-on
 `upgradable`
 :   Only products with upgrades.
 
-The following examples demonstrates usage of the {func}`api.addon.get_addon_ids` function.
+The following example demonstrates usage of the {func}`api.addon.get_addon_ids` function.
 
 ```python
 # Get IDs of installed add-ons
 addon_ids = api.addon.get_addon_ids(limit="installed")
 ```
+
 ## Get add-on information
 
 To get information about a specific add-on, use the {func}`api.addon.get` function, passing in the name of the add-on as a string.
@@ -112,6 +113,7 @@ from plone import api
 
 success = api.addon.install("plone.session")
 ```
+
 This function returns a `false` boolean value in the following cases.
 - The installation fails due to an error.
 - The add-on is already installed.
@@ -140,7 +142,8 @@ from plone import api
 
 version = api.addon.get_version("plone.session")
 ```
-Note that this returns the version of the Python package installed from **PyPI**, not the version of the add-on's **_GenericSetup_** profile.
+
+Note that this returns the version of the Python package installed from _PyPI_, not the version of the add-on's _GenericSetup_ profile.
 
 (addons-exceptions)=
 
