@@ -149,7 +149,6 @@ Note that this returns the version of the Python package installed from _PyPI_, 
 
 ## Exceptions
 
-
 The {exc}`~plone.api.exc.InvalidParameterError` exception may be raised in the following cases.
 
 - When using the {func}`api.addon.get` function, trying to get information about a non-existent add-on.
