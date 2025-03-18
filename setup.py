@@ -3,12 +3,10 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "2.3.1.dev0"
+version = "2.4.2.dev0"
 
-long_description = (
-    f"{Path('README.md').read_text()}\n"
-    f"{Path('CHANGES.rst').read_text()}\n"
-    f"{Path('LICENSE').read_text()}"
+long_description = "\n".join(
+    [Path("README.md").read_text(), Path("CHANGES.md").read_text()]
 )
 
 setup(
@@ -16,7 +14,7 @@ setup(
     version=version,
     description="A Plone API.",
     long_description=long_description,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     author="Plone Foundation",
     author_email="plone-developers@lists.sourceforge.net",
     license="GPL version 2",
@@ -84,7 +82,7 @@ setup(
     platforms="Any",
     project_urls={
         "Documentation": "https://6.docs.plone.org/plone.api/index.html",
-        "Changelog": "https://github.com/plone/plone.api/blob/main/CHANGES.rst",
+        "Changelog": "https://github.com/plone/plone.api/blob/main/CHANGES.md",
         "Issue Tracker": "https://github.com/plone/plone.api/issues",
     },
 )

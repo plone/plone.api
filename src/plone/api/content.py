@@ -22,11 +22,14 @@ from zope.globalrequest import getRequest
 from zope.interface import Interface
 from zope.interface import providedBy
 
-import random
 import transaction
+import uuid
 
 
 _marker = []
+
+# Maximum number of attempts to generate a unique random ID
+MAX_UNIQUE_ID_ATTEMPTS = 100
 
 
 @required_parameters("container", "type")
@@ -67,7 +70,19 @@ def create(
     :Example: :ref:`content-create-example`
     """
     # Create a temporary id if the id is not given
-    content_id = not safe_id and id or str(random.randint(0, 99999999))
+    if not safe_id and id:
+        content_id = id
+    else:
+        # Try to generate a unique random ID using UUID4
+        attempts = 0
+        while attempts < MAX_UNIQUE_ID_ATTEMPTS:
+            content_id = str(uuid.uuid4())
+            if content_id not in container:
+                break
+            attempts += 1
+        # If we couldn't find a unique ID after max attempts, raise ValueError
+        if attempts >= MAX_UNIQUE_ID_ATTEMPTS:
+            raise ValueError("Could not find unique id while creating content.")
 
     if title:
         kwargs["title"] = title
@@ -782,7 +797,7 @@ def get_closest_ancestor(obj=None, function=None, interface=None, stop_at=_marke
     :type stop_at: Content object or False
     :returns: Iterator of ancestor objects, from immediate to site root.
     :rtype: iterator
-    :Example: :ref:`get-closest-ancestors-example`
+    :Example: :ref:`content-get-closest-ancestor-example`
     """
     return next(
         iter_ancestors(
