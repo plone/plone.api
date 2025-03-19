@@ -3,3 +3,4 @@ myst-parser
 plone-sphinx-theme
 sphinx-autobuild
 sphinx-copybutton
+plone.staticresources==2.1.17
