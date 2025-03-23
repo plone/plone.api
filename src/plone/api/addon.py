@@ -224,7 +224,7 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
     :returns: List of AddonInformation.
     :raises:
         InvalidParameterError
-    :Example: :ref:`addon-get-addons`
+    :Example: :ref:`addons-get-addons`
     """
     addons = _get_addons()
     if limit in ("non_installable", "broken"):
