@@ -23,6 +23,4 @@ build:
       then
         exit 183;
       fi
-    - pip install -r requirements.txt
-    - pip install -r requirements-docs.txt
     - tox -e rtd-preview
