@@ -82,6 +82,7 @@ allowlist_externals =
 # See [testenv:docs] for classic documentation
 basepython = python3.11
 skip_install = False
+constrain_package_deps = True
 package = editable
 allowlist_externals =
     mkdir
@@ -98,6 +99,7 @@ commands =
 # Build docs on Read the Docs to preview pull requests using plone-sphinx-theme
 basepython = python3.11
 skip_install = False
+constrain_package_deps = True
 extras =
     tests
 deps =
@@ -120,7 +122,7 @@ deps =
 
 commands =
     python -VV
-    mkdir -p {toxinidir}/_build/docs
+    mkdir -p {toxinidir}/_build/docsk
     sphinx-build -b html -D html_theme=alabaster -d _build/docs/doctrees docs _build/docs/html
 
 whitelist_externals =
@@ -129,6 +131,7 @@ whitelist_externals =
 [testenv:linkcheck]
 basepython = python3.11
 skip_install = False
+constrain_package_deps = True
 package = editable
 allowlist_externals =
     mkdir
@@ -144,6 +147,7 @@ commands =
 [testenv:livehtml]
 basepython = python3.11
 skip_install = False
+constrain_package_deps = True
 package = editable
 allowlist_externals =
     mkdir
