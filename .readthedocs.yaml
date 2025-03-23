@@ -23,5 +23,5 @@ build:
       then
         exit 183;
       fi
-    - pip install tox setuptools==75.8.2
+    - pip install tox
     - tox -e rtd-preview
