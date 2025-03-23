@@ -24,5 +24,6 @@ build:
         exit 183;
       fi
     - pip install tox setuptools zc.buildout Pillow>=8.3.2
+    - pip install -c https://dist.plone.org/release/6.0-dev/constraints.txt
     - pip freeze
     - tox -e rtd-preview
