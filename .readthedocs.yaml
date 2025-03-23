@@ -19,7 +19,7 @@ build:
     # This is a special exit code on Read the Docs that will cancel the build immediately.
     - |
       if [ "$READTHEDOCS_VERSION_TYPE" = "external" ] && git diff --quiet origin/main -- docs/ \
-        .readthedocs.yaml requirements-docs.txt requirements.txt src/plone/api/*.py;
+        .readthedocs.yaml requirements-docs.txt src/plone/api/*.py;
       then
         exit 183;
       fi
