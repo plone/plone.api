@@ -23,5 +23,6 @@ build:
       then
         exit 183;
       fi
-    - pip install tox -r requirements-docs.txt
+    - pip install -r requirements.txt -r requirements-docs.txt
+    - pip freeze
     - tox -e rtd-preview
