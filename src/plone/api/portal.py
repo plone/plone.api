@@ -22,6 +22,7 @@ from zope.interface.interfaces import IInterface
 from zope.schema.interfaces import IVocabularyFactory
 
 import datetime as dtime
+import logging
 import re
 
 
@@ -472,3 +473,62 @@ def get_vocabulary_names():
     :Example: :ref:`portal-get-all-vocabulary-names-example`
     """
     return sorted([name for name, vocabulary in getUtilitiesFor(IVocabularyFactory)])
+
+@required_parameters("wanted_indexes")
+def add_catalog_indexes(wanted_indexes, reindex=True, logger=None):
+    """
+    Add the specified indexes to portal_catalog if they don't already exist.
+    
+    Parameters:
+    - wanted_indexes: List of tuples in format (index_name, index_type)
+    - reindex: Boolean indicating if newly added indexes should be reindexed
+    - logger: Optional logger instance
+    
+    Returns:
+    - List of newly added index names
+    """
+    if logger is None:
+        logger = logging.getLogger('plone.api.portal')
+    
+    catalog = get_tool('portal_catalog')
+    existing_indexes = catalog.indexes()
+    
+    added_indexes = []
+    for name, meta_type in wanted_indexes:
+        if name not in existing_indexes:
+            catalog.addIndex(name, meta_type)
+            added_indexes.append(name)
+            logger.info('Added %s index for field %s.', meta_type, name)
+    
+    if reindex and added_indexes:
+        logger.info('Reindexing new indexes: %s', ', '.join(added_indexes))
+        catalog.manage_reindexIndex(ids=added_indexes)
+    
+    return added_indexes
+
+@required_parameters("wanted_columns")
+def add_catalog_metadata(wanted_columns, logger=None):
+    """
+    Add the specified metadata columns to portal_catalog if they don't already exist.
+    
+    Parameters:
+    - wanted_columns: List of column names to add
+    - logger: Optional logger instance
+    
+    Returns:
+    - List of newly added column names
+    """
+    if logger is None:
+        logger = logging.getLogger('plone.api.portal')
+    
+    catalog = get_tool('portal_catalog')
+    existing_columns = catalog.schema()
+    
+    added_columns = []
+    for name in wanted_columns:
+        if name not in existing_columns:
+            catalog.addColumn(name)
+            added_columns.append(name)
+            logger.info('Added metadata column: %s', name)
+    
+    return added_columns
