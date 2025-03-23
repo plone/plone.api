@@ -122,7 +122,7 @@ deps =
 
 commands =
     python -VV
-    mkdir -p {toxinidir}/_build/docsk
+    mkdir -p {toxinidir}/_build/docs
     sphinx-build -b html -D html_theme=alabaster -d _build/docs/doctrees docs _build/docs/html
 
 whitelist_externals =
