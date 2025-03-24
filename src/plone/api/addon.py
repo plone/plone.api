@@ -1,4 +1,4 @@
-"""API to handle addon management."""
+"""API to handle add-on management."""
 
 from dataclasses import dataclass
 from functools import lru_cache
@@ -44,7 +44,7 @@ class NonInstallableAddons:
 
 @dataclass
 class AddonInformation:
-    """Addon information."""
+    """Add-on information."""
 
     id: str  # noQA
     version: str
@@ -241,7 +241,7 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
 def get_addon_ids(limit: str = "") -> List[str]:
     """List add-ons ids in this Plone site.
 
-    :param limit: Limit list of addons.
+    :param limit: Limit list of add-ons.
         'installed': only products that are installed and not hidden
         'upgradable': only products with upgrades
         'available': products that are not installed but could be
@@ -268,15 +268,15 @@ def get_version(addon: str) -> str:
 
 @required_parameters("addon")
 def get(addon: str) -> AddonInformation:
-    """Information about an Addon.
+    """Information about an Add-on.
 
     :param addon: ID of the add-on to be retrieved.
-    :returns: Addon information.
+    :returns: Add-on information.
     :rtype: string
     """
     addons = dict(_cached_addons())
     if addon not in addons:
-        raise InvalidParameterError(f"No addon {addon} found.")
+        raise InvalidParameterError(f"No add-on {addon} found.")
     return _update_addon_info(addons.get(addon), _get_installer())
 
 
@@ -284,7 +284,7 @@ def get(addon: str) -> AddonInformation:
 def install(addon: str) -> bool:
     """Install an add-on.
 
-    :param addon: ID of the addon to be installed.
+    :param addon: ID of the add-on to be installed.
     :returns: Status of the installation.
     """
     installer = _get_installer()
@@ -295,7 +295,7 @@ def install(addon: str) -> bool:
 def uninstall(addon: str) -> bool:
     """Uninstall an add-on.
 
-    :param addon: ID of the addon to be uninstalled.
+    :param addon: ID of the add-on to be uninstalled.
     :returns: Status of the uninstallation.
     :rtype: Boolean value representing the status of the uninstallation.
     """
