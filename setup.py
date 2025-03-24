@@ -28,6 +28,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "Acquisition",
+        "Products.ZCTextIndex",
         "Products.statusmessages",
         "Products.PlonePAS",
         "Products.CMFPlone",
