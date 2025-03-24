@@ -459,6 +459,80 @@ for vocabulary_name in common_vocabularies:
     assert vocabulary_name in vocabulary_names
 ```
 
+(portal-add-catalog-indexes-example)=
+
+## Add catalog indexes
+
+To add new indexes to the portal catalog if they don't already exist, use {meth}`api.portal.add_catalog_indexes`.
+
+```python
+from plone import api
+
+# Add new indexes with default logging
+indexes = [
+    ('custom_field', 'FieldIndex'),
+    ('review_date', 'DateIndex')
+]
+api.portal.add_catalog_indexes(wanted_indexes=indexes)
+
+# Add indexes but skip reindexing
+api.portal.add_catalog_indexes(
+    wanted_indexes=[('modified_by', 'FieldIndex')],
+    reindex=False
+)
+
+# Add indexes with custom logger
+import logging
+custom_logger = logging.getLogger('my.package')
+api.portal.add_catalog_indexes(
+    wanted_indexes=[('creation_user', 'FieldIndex')],
+    logger=custom_logger
+)
+```
+
+% invisible-code-block: python
+%
+% # Verify the indexes were added to the catalog
+% catalog = api.portal.get_tool('portal_catalog')
+% self.assertIn('custom_field', catalog.indexes())
+% self.assertIn('review_date', catalog.indexes())
+% self.assertIn('modified_by', catalog.indexes())
+% self.assertIn('creation_user', catalog.indexes())
+
+This function returns a list of the names of the indexes that were added.
+
+(portal-add-catalog-metadata-example)=
+
+## Add catalog metadata columns
+
+To add new metadata columns to the portal catalog if they don't already exist, use {meth}`api.portal.add_catalog_metadata`.
+
+```python
+from plone import api
+
+# Add new metadata columns with default logging
+columns = ['custom_metadata', 'author_email']
+api.portal.add_catalog_metadata(wanted_columns=columns)
+
+# Add columns with custom logger
+import logging
+custom_logger = logging.getLogger('my.package')
+api.portal.add_catalog_metadata(
+    wanted_columns=['publication_date'],
+    logger=custom_logger
+)
+```
+
+% invisible-code-block: python
+%
+% # Verify the columns were added to the catalog
+% catalog = api.portal.get_tool('portal_catalog')
+% self.assertIn('custom_metadata', catalog.schema())
+% self.assertIn('author_email', catalog.schema())
+% self.assertIn('publication_date', catalog.schema())
+
+This function returns a list of the names of the columns that were added. Note that adding metadata columns only makes them available for storage - you still need to reindex your content to populate the values.
+
 ## Further reading
 
 For more information on possible flags and usage options please see the full {ref}`plone-api-portal` specification.

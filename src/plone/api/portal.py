@@ -510,15 +510,15 @@ def add_catalog_indexes(wanted_indexes, reindex=True, logger=None):
 
 @required_parameters("wanted_columns")
 def add_catalog_metadata(wanted_columns, logger=None):
-    """
-    Add the specified metadata columns to portal_catalog if they don't already exist.
+    """Add the specified metadata columns to portal_catalog if they don't already exist.
 
-    Parameters:
-    - wanted_columns: List of column names to add
-    - logger: Optional logger instance
-
-    Returns:
-    - List of newly added column names
+    :param wanted_columns: [required] List of column names to add
+    :type wanted_columns: list
+    :param logger: Optional custom logger instance
+    :type logger: logging.Logger
+    :returns: List of names of columns that were added
+    :rtype: list
+    :Example: :ref:`portal-add-catalog-metadata-example`
     """
     if logger is None:
         logger = logging.getLogger("plone.api.portal")
