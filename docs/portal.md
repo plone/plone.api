@@ -463,7 +463,10 @@ for vocabulary_name in common_vocabularies:
 
 ## Add catalog indexes
 
-To add new indexes to the portal catalog if they don't already exist, use {meth}`api.portal.add_catalog_indexes`.
+To add indexes to the portal catalog, use {meth}`api.portal.add_catalog_indexes`.
+This function returns a list of the names of the indexes that were added.
+
+The following collection of code snippets demonstrate how to add indexes and either use default logging, to skip reindexing, or to use a customer logger.
 
 ```python
 from plone import api
@@ -497,7 +500,15 @@ The function returns a list of the names of the indexes that were added.
 
 ## Add catalog metadata columns
 
-To add new metadata columns to the portal catalog if they don't already exist, use {meth}`api.portal.add_catalog_metadata`.
+To add metadata columns to the portal catalog, use {meth}`api.portal.add_catalog_metadata`.
+This function returns a list of the names of the columns that were added.
+
+```{note}
+Adding metadata columns only makes them available for storage.
+You still need to reindex your content to populate the values.
+```
+
+The following collection of code snippets adds metadata columns with either the default logger or a custom logger.
 
 ```python
 from plone import api
@@ -523,7 +534,6 @@ api.portal.add_catalog_metadata(
 % self.assertIn('author_email', catalog.schema())
 % self.assertIn('publication_date', catalog.schema())
 
-This function returns a list of the names of the columns that were added. Note that adding metadata columns only makes them available for storage - you still need to reindex your content to populate the values.
 
 ## Further reading
 

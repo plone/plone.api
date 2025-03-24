@@ -547,7 +547,7 @@ def add_catalog_indexes(wanted_indexes, reindex=True, logger=None):
 
 @required_parameters("wanted_columns")
 def add_catalog_metadata(wanted_columns, logger=None):
-    """Add the specified metadata columns to portal_catalog if they don't already exist.
+    """Add the specified metadata columns to portal_catalog.
 
     :param wanted_columns: [required] List of column names to add
     :type wanted_columns: list
