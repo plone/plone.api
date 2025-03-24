@@ -39,6 +39,8 @@ exceptions
     api.portal.send_email
     api.portal.show_message
     api.portal.get_registry_record
+    api.portal.add_catalog_indexes
+    api.portal.add_catalog_metadata
 
 ```
 
