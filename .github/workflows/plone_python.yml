@@ -22,7 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install system libraries
-        run: sudo apt-get install libxml2-dev libxslt1-dev libjpeg-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install libxml2-dev libxslt1-dev libjpeg-dev
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
