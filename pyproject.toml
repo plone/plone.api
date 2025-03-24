@@ -2,7 +2,7 @@
 # https://github.com/plone/meta/tree/main/config/default
 # See the inline comments on how to expand/tweak this configuration file
 [build-system]
-requires = ["setuptools>=68.2"]
+requires = ["setuptools>=68.2,<77"]
 
 [tool.towncrier]
 directory = "news/"
