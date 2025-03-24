@@ -39,12 +39,13 @@ Backward-incompatible changes to the API will be restricted to major versions (1
 :maxdepth: 2
 
 about
-portal
+addon
 content
-user
-group
 env
+group
+portal
 relation
+user
 ```
 
 
@@ -58,13 +59,14 @@ api/index
 ```
 
 -   {doc}`api/index`
--   [`plone.api.portal`](api/portal)
+-   [`plone.api.addon`](api/addon)
 -   [`plone.api.content`](api/content)
--   [`plone.api.user`](api/user)
--   [`plone.api.group`](api/group)
 -   [`plone.api.env`](api/env)
--   [`plone.api.relation`](api/relation)
 -   [`plone.api.exceptions`](api/exceptions)
+-   [`plone.api.group`](api/group)
+-   [`plone.api.portal`](api/portal)
+-   [`plone.api.relation`](api/relation)
+-   [`plone.api.user`](api/user)
 
 
 ## Contribute

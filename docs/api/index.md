@@ -23,6 +23,7 @@ user
 group
 env
 relation
+addon
 exceptions
 ```
 
