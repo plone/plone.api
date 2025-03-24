@@ -477,27 +477,64 @@ def get_vocabulary_names():
 
 @required_parameters("wanted_indexes")
 def add_catalog_indexes(wanted_indexes, reindex=True, logger=None):
-    """
-    Add the specified indexes to portal_catalog if they don't already exist.
+    """Add the specified indexes to portal_catalog if they don't already exist.
 
-    Parameters:
-    - wanted_indexes: List of tuples in format (index_name, index_type)
-    - reindex: Boolean indicating if newly added indexes should be reindexed
-    - logger: Optional logger instance
+    :param wanted_indexes: [required] List of tuples in format (index_name, index_type)
+    :type wanted_indexes: list
+    :param reindex: Boolean indicating if newly added indexes should be reindexed
+    :type reindex: bool
+    :param logger: Optional logger instance
+    :type logger: logging.Logger
+    :returns: List of newly added index names
+    :rtype: list
+    :Example: :ref:`portal-add-catalog-indexes-example`
 
-    Returns:
-    - List of newly added index names
+    Note: ZCTextIndex indexes require special handling with additional parameters.
+    The function automatically configures lexicon_id, index_type and doc_attr
+    parameters when adding a ZCTextIndex and creates a minimal lexicon if needed.
     """
     if logger is None:
         logger = logging.getLogger("plone.api.portal")
 
     catalog = get_tool("portal_catalog")
     existing_indexes = catalog.indexes()
-
     added_indexes = []
+
+    # Import required classes for ZCTextIndex
+    from Products.ZCTextIndex.Lexicon import Lexicon
+
     for name, meta_type in wanted_indexes:
         if name not in existing_indexes:
-            catalog.addIndex(name, meta_type)
+            if meta_type == "ZCTextIndex":
+                # Ensure a proper configuration for ZCTextIndex
+                extra = {
+                    "lexicon_id": "plone_lexicon",
+                    "index_type": "Okapi BM25 Rank",
+                    "doc_attr": name,
+                }
+
+                # Try to get the existing lexicon or create a minimal one
+                try:
+                    # Try to find the lexicon in the catalog
+                    lexicon = getattr(catalog, "plone_lexicon", None)
+
+                    # If lexicon doesn't exist, create a minimal one
+                    if lexicon is None:
+                        from Products.ZCTextIndex.ZCTextIndex import PLexicon
+
+                        lexicon = PLexicon("plone_lexicon", "Plone Lexicon", Lexicon())
+                        catalog._setObject("plone_lexicon", lexicon)
+
+                    # Add the index with the extra parameters
+                    catalog.addIndex(name, meta_type, extra)
+
+                except Exception as e:
+                    logger.error(f"Error adding ZCTextIndex {name}: {str(e)}")
+                    continue
+            else:
+                # For non-ZCTextIndex types, use standard addIndex
+                catalog.addIndex(name, meta_type)
+
             added_indexes.append(name)
             logger.info("Added %s index for field %s.", meta_type, name)
 

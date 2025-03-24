@@ -468,38 +468,30 @@ To add new indexes to the portal catalog if they don't already exist, use {meth}
 ```python
 from plone import api
 
-# Add new indexes with default logging
-indexes = [
-    ('custom_field', 'FieldIndex'),
-    ('review_date', 'DateIndex')
+# Add a single field index
+api.portal.add_catalog_indexes([('my_custom_field', 'FieldIndex')])
+
+# Add multiple indexes with different types
+indexes_to_add = [
+    ('text_content', 'ZCTextIndex'),
+    ('tags', 'KeywordIndex')
 ]
-api.portal.add_catalog_indexes(wanted_indexes=indexes)
+api.portal.add_catalog_indexes(indexes_to_add)
 
-# Add indexes but skip reindexing
-api.portal.add_catalog_indexes(
-    wanted_indexes=[('modified_by', 'FieldIndex')],
-    reindex=False
-)
-
-# Add indexes with custom logger
-import logging
-custom_logger = logging.getLogger('my.package')
-api.portal.add_catalog_indexes(
-    wanted_indexes=[('creation_user', 'FieldIndex')],
-    logger=custom_logger
-)
+# Add indexes without reindexing
+api.portal.add_catalog_indexes([('quick_field', 'FieldIndex')], reindex=False)
 ```
 
-% invisible-code-block: python
-%
-% # Verify the indexes were added to the catalog
-% catalog = api.portal.get_tool('portal_catalog')
-% self.assertIn('custom_field', catalog.indexes())
-% self.assertIn('review_date', catalog.indexes())
-% self.assertIn('modified_by', catalog.indexes())
-% self.assertIn('creation_user', catalog.indexes())
+### ZCTextIndex Special Handling
 
-This function returns a list of the names of the indexes that were added.
+When adding a `ZCTextIndex`, the function automatically applies additional parameters:
+- `lexicon_id`: Set to 'plone_lexicon' by default
+- `index_type`: Set to 'Okapi BM25 Rank'
+- `doc_attr`: Set to the index name provided
+
+This ensures proper configuration for text-based searching and indexing in Plone.
+
+The function returns a list of the names of the indexes that were added.
 
 (portal-add-catalog-metadata-example)=
 

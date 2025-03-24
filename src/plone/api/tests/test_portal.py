@@ -1031,6 +1031,31 @@ class TestPloneApiPortal(unittest.TestCase):
         self.assertIn("Added FieldIndex index for field test_field5", log_output)
         self.assertIn("Reindexing new indexes: test_field5", log_output)
 
+    def test_add_catalog_indexes_zctext_index(self):
+        """Test adding a ZCTextIndex type index with appropriate extra parameters."""
+        from plone.api import portal
+
+        # Mock the catalog
+        catalog_mock = mock.Mock()
+        catalog_mock.indexes = mock.Mock(return_value=[])
+
+        # Replace the get_tool function to return our mock
+        with mock.patch.object(portal, "get_tool", return_value=catalog_mock):
+            # Call the function with a ZCTextIndex
+            portal.add_catalog_indexes([("myindex", "ZCTextIndex")], reindex=False)
+
+            # Verify that addIndex was called with the correct extra parameters
+            catalog_mock.addIndex.assert_called_once()
+            name, meta_type, extra = catalog_mock.addIndex.call_args[0]
+            self.assertEqual(name, "myindex")
+            self.assertEqual(meta_type, "ZCTextIndex")
+            self.assertEqual(extra["lexicon_id"], "plone_lexicon")
+            self.assertEqual(extra["index_type"], "Okapi BM25 Rank")
+            self.assertEqual(extra["doc_attr"], "myindex")
+
+            # Verify that manage_reindexIndex wasn't called (reindex=False)
+            catalog_mock.manage_reindexIndex.assert_not_called()
+
     def test_add_catalog_metadata(self):
         """Test adding catalog metadata columns."""
         from plone.api.portal import add_catalog_metadata
