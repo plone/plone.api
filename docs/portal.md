@@ -484,6 +484,14 @@ api.portal.add_catalog_indexes(indexes_to_add)
 # Add indexes without reindexing
 api.portal.add_catalog_indexes([('quick_field', 'FieldIndex')], reindex=False)
 ```
+% invisible-code-block: python
+%
+% # Verify the indexes were added to the catalog
+% catalog = api.portal.get_tool('portal_catalog')
+% self.assertIn('my_custom_field', catalog.indexes())
+% self.assertIn('tags', catalog.indexes())
+% self.assertIn('quick_field', catalog.indexes())
+
 
 ### ZCTextIndex Special Handling
 
