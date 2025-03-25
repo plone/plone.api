@@ -963,3 +963,128 @@ class TestPloneApiPortal(unittest.TestCase):
         states = [term.value for term in states_vocabulary]
         self.assertIn("private", states)
         self.assertIn("published", states)
+
+    def test_add_catalog_indexes(self):
+        """Test adding catalog indexes."""
+        import logging
+
+        catalog = portal.get_tool("portal_catalog")
+
+        # Test adding new indexes
+        test_indexes = [
+            ("test_field1", "FieldIndex"),
+            ("test_field2", "KeywordIndex"),
+        ]
+
+        added = portal.add_catalog_indexes(test_indexes)
+
+        # Verify indexes were added
+        self.assertEqual(len(added), 2)
+        self.assertIn("test_field1", added)
+        self.assertIn("test_field2", added)
+        self.assertIn("test_field1", catalog.indexes())
+        self.assertIn("test_field2", catalog.indexes())
+
+        # Test adding already existing indexes
+        added = portal.add_catalog_indexes(test_indexes)
+        self.assertEqual(len(added), 0)  # No new indexes should be added
+
+        # Test with reindex=False
+        test_indexes2 = [
+            ("test_field3", "FieldIndex"),
+        ]
+
+        # Create a mock for catalog.manage_reindexIndex to verify it's called or not
+        original_reindex = catalog.manage_reindexIndex
+
+        try:
+            reindex_called = [False]
+
+            def mock_reindex(ids=None):
+                reindex_called[0] = True
+                self.assertEqual(ids, ["test_field3"])
+                original_reindex(ids)
+
+            catalog.manage_reindexIndex = mock_reindex
+
+            portal.add_catalog_indexes(test_indexes2, reindex=True)
+            self.assertTrue(reindex_called[0])
+
+            # Reset flag and test with reindex=False
+            reindex_called[0] = False
+            portal.add_catalog_indexes([("test_field4", "FieldIndex")], reindex=False)
+            self.assertFalse(reindex_called[0])
+
+        finally:
+            # Restore original method
+            catalog.manage_reindexIndex = original_reindex
+
+        # Test with custom logger
+        test_logger = logging.getLogger("test.plone.api.portal")
+
+        with self.assertLogs("test.plone.api.portal", level="INFO") as cm:
+            portal.add_catalog_indexes(
+                [("test_field5", "FieldIndex")], logger=test_logger
+            )
+
+        log_output = "\n".join(cm.output)
+        self.assertIn("Added FieldIndex index for field test_field5", log_output)
+        self.assertIn("Reindexing new indexes: test_field5", log_output)
+
+    def test_add_catalog_indexes_zctext_index(self):
+        """Test adding a ZCTextIndex type index with appropriate extra parameters."""
+        from plone.api import portal
+
+        # Mock the catalog
+        catalog_mock = mock.Mock()
+        catalog_mock.indexes = mock.Mock(return_value=[])
+
+        # Replace the get_tool function to return our mock
+        with mock.patch.object(portal, "get_tool", return_value=catalog_mock):
+            # Call the function with a ZCTextIndex
+            portal.add_catalog_indexes([("myindex", "ZCTextIndex")], reindex=False)
+
+            # Verify that addIndex was called with the correct extra parameters
+            catalog_mock.addIndex.assert_called_once()
+            name, meta_type, extra = catalog_mock.addIndex.call_args[0]
+            self.assertEqual(name, "myindex")
+            self.assertEqual(meta_type, "ZCTextIndex")
+            self.assertEqual(extra["lexicon_id"], "plone_lexicon")
+            self.assertEqual(extra["index_type"], "Okapi BM25 Rank")
+            self.assertEqual(extra["doc_attr"], "myindex")
+
+            # Verify that manage_reindexIndex wasn't called (reindex=False)
+            catalog_mock.manage_reindexIndex.assert_not_called()
+
+    def test_add_catalog_metadata(self):
+        """Test adding catalog metadata columns."""
+        from plone.api.portal import add_catalog_metadata
+
+        import logging
+
+        catalog = portal.get_tool("portal_catalog")
+
+        # Test adding new columns
+        test_columns = ["test_col1", "test_col2"]
+
+        added = add_catalog_metadata(test_columns)
+
+        # Verify columns were added
+        self.assertEqual(len(added), 2)
+        self.assertIn("test_col1", added)
+        self.assertIn("test_col2", added)
+        self.assertIn("test_col1", catalog.schema())
+        self.assertIn("test_col2", catalog.schema())
+
+        # Test adding already existing columns
+        added = add_catalog_metadata(test_columns)
+        self.assertEqual(len(added), 0)  # No new columns should be added
+
+        # Test with custom logger
+        test_logger = logging.getLogger("test.plone.api.portal")
+
+        with self.assertLogs("test.plone.api.portal", level="INFO") as cm:
+            add_catalog_metadata(["test_col3"], logger=test_logger)
+
+        log_output = "\n".join(cm.output)
+        self.assertIn("Added metadata column: test_col3", log_output)

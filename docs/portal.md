@@ -459,6 +459,92 @@ for vocabulary_name in common_vocabularies:
     assert vocabulary_name in vocabulary_names
 ```
 
+(portal-add-catalog-indexes-example)=
+
+## Add catalog indexes
+
+To add indexes to the portal catalog, use {meth}`api.portal.add_catalog_indexes`.
+This function returns a list of the names of the indexes that were added.
+
+The following collection of code snippets demonstrate how to add indexes and either use default logging, to skip reindexing, or to use a customer logger.
+
+```python
+from plone import api
+
+# Add a single field index
+api.portal.add_catalog_indexes([('my_custom_field', 'FieldIndex')])
+
+# Add multiple indexes with different types
+indexes_to_add = [
+    ('text_content', 'ZCTextIndex'),
+    ('tags', 'KeywordIndex')
+]
+api.portal.add_catalog_indexes(indexes_to_add)
+
+# Add indexes without reindexing
+api.portal.add_catalog_indexes([('quick_field', 'FieldIndex')], reindex=False)
+```
+
+% invisible-code-block: python
+%
+% # Verify the indexes were added to the catalog
+% catalog = api.portal.get_tool('portal_catalog')
+% self.assertIn('my_custom_field', catalog.indexes())
+% self.assertIn('tags', catalog.indexes())
+% self.assertIn('quick_field', catalog.indexes())
+
+
+### ZCTextIndex Special Handling
+
+When adding a `ZCTextIndex`, the function automatically applies additional parameters:
+
+- `lexicon_id`: Set to `plone_lexicon` by default
+- `index_type`: Set to `Okapi BM25 Rank`
+- `doc_attr`: Set to the index name provided
+
+This ensures proper configuration for text-based searching and indexing in Plone.
+
+The function returns a list of the names of the indexes that were added.
+
+(portal-add-catalog-metadata-example)=
+
+## Add catalog metadata columns
+
+To add metadata columns to the portal catalog, use {meth}`api.portal.add_catalog_metadata`.
+This function returns a list of the names of the columns that were added.
+
+```{note}
+Adding metadata columns only makes them available for storage.
+You still need to reindex your content to populate the values.
+```
+
+The following collection of code snippets adds metadata columns with either the default logger or a custom logger.
+
+```python
+from plone import api
+
+# Add new metadata columns with default logging
+columns = ['custom_metadata', 'author_email']
+api.portal.add_catalog_metadata(columns_to_add=columns)
+
+# Add columns with custom logger
+import logging
+custom_logger = logging.getLogger('my.package')
+api.portal.add_catalog_metadata(
+    columns_to_add=['publication_date'],
+    logger=custom_logger
+)
+```
+
+% invisible-code-block: python
+%
+% # Verify the columns were added to the catalog
+% catalog = api.portal.get_tool('portal_catalog')
+% self.assertIn('custom_metadata', catalog.schema())
+% self.assertIn('author_email', catalog.schema())
+% self.assertIn('publication_date', catalog.schema())
+
+
 ## Further reading
 
 For more information on possible flags and usage options please see the full {ref}`plone-api-portal` specification.

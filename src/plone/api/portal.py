@@ -22,6 +22,7 @@ from zope.interface.interfaces import IInterface
 from zope.schema.interfaces import IVocabularyFactory
 
 import datetime as dtime
+import logging
 import re
 
 
@@ -472,3 +473,101 @@ def get_vocabulary_names():
     :Example: :ref:`portal-get-all-vocabulary-names-example`
     """
     return sorted([name for name, vocabulary in getUtilitiesFor(IVocabularyFactory)])
+
+
+@required_parameters("indexes_to_add")
+def add_catalog_indexes(indexes_to_add, reindex=True, logger=None):
+    """Add the specified indexes to portal_catalog if they don't already exist.
+
+    :param indexes_to_add: [required] List of tuples in format (index_name, index_type)
+    :type indexes_to_add: list
+    :param reindex: Boolean indicating if newly added indexes should be reindexed
+    :type reindex: bool
+    :param logger: Optional logger instance
+    :type logger: logging.Logger
+    :returns: List of newly added index names
+    :rtype: list
+    :Example: :ref:`portal-add-catalog-indexes-example`
+
+    Note: ZCTextIndex indexes require special handling with additional parameters.
+    The function automatically configures lexicon_id, index_type, and doc_attr
+    parameters when adding a ZCTextIndex and creates a minimal lexicon if needed.
+    """
+    if logger is None:
+        logger = logging.getLogger("plone.api.portal")
+
+    catalog = get_tool("portal_catalog")
+    existing_indexes = catalog.indexes()
+    added_indexes = []
+
+    # Import required classes for ZCTextIndex
+    from Products.ZCTextIndex.Lexicon import Lexicon
+
+    for name, meta_type in indexes_to_add:
+        if name not in existing_indexes:
+            if meta_type == "ZCTextIndex":
+                # Ensure a proper configuration for ZCTextIndex
+                extra = {
+                    "lexicon_id": "plone_lexicon",
+                    "index_type": "Okapi BM25 Rank",
+                    "doc_attr": name,
+                }
+
+                # Try to get the existing lexicon or create a minimal one
+                try:
+                    # Try to find the lexicon in the catalog
+                    lexicon = getattr(catalog, "plone_lexicon", None)
+
+                    # If lexicon doesn't exist, create a minimal one
+                    if lexicon is None:
+                        from Products.ZCTextIndex.ZCTextIndex import PLexicon
+
+                        lexicon = PLexicon("plone_lexicon", "Plone Lexicon", Lexicon())
+                        catalog._setObject("plone_lexicon", lexicon)
+
+                    # Add the index with the extra parameters
+                    catalog.addIndex(name, meta_type, extra)
+
+                except Exception as e:
+                    logger.error(f"Error adding ZCTextIndex {name}: {str(e)}")
+                    continue
+            else:
+                # For non-ZCTextIndex types, use standard addIndex
+                catalog.addIndex(name, meta_type)
+
+            added_indexes.append(name)
+            logger.info("Added %s index for field %s.", meta_type, name)
+
+    if reindex and added_indexes:
+        logger.info("Reindexing new indexes: %s", ", ".join(added_indexes))
+        catalog.manage_reindexIndex(ids=added_indexes)
+
+    return added_indexes
+
+
+@required_parameters("columns_to_add")
+def add_catalog_metadata(columns_to_add, logger=None):
+    """Add the specified metadata columns to portal_catalog.
+
+    :param columns_to_add: [required] List of column names to add
+    :type columns_to_add: list
+    :param logger: Optional custom logger instance
+    :type logger: logging.Logger
+    :returns: List of names of columns that were added
+    :rtype: list
+    :Example: :ref:`portal-add-catalog-metadata-example`
+    """
+    if logger is None:
+        logger = logging.getLogger("plone.api.portal")
+
+    catalog = get_tool("portal_catalog")
+    existing_columns = catalog.schema()
+
+    added_columns = []
+    for name in columns_to_add:
+        if name not in existing_columns:
+            catalog.addColumn(name)
+            added_columns.append(name)
+            logger.info("Added metadata column: %s", name)
+
+    return added_columns
