@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.5.0 (2025-03-25)
+
+
+### New features:
+
+- Implement `plone.api.addon` module. @ericof, @ujsquared, @stevepiercy #505
+
 ## 2.4.1 (2025-03-17)
 
 
