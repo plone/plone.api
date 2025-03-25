@@ -490,7 +490,7 @@ def add_catalog_indexes(wanted_indexes, reindex=True, logger=None):
     :Example: :ref:`portal-add-catalog-indexes-example`
 
     Note: ZCTextIndex indexes require special handling with additional parameters.
-    The function automatically configures lexicon_id, index_type and doc_attr
+    The function automatically configures lexicon_id, index_type, and doc_attr
     parameters when adding a ZCTextIndex and creates a minimal lexicon if needed.
     """
     if logger is None:

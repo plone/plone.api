@@ -496,8 +496,9 @@ api.portal.add_catalog_indexes([('quick_field', 'FieldIndex')], reindex=False)
 ### ZCTextIndex Special Handling
 
 When adding a `ZCTextIndex`, the function automatically applies additional parameters:
-- `lexicon_id`: Set to 'plone_lexicon' by default
-- `index_type`: Set to 'Okapi BM25 Rank'
+
+- `lexicon_id`: Set to `plone_lexicon` by default
+- `index_type`: Set to `Okapi BM25 Rank`
 - `doc_attr`: Set to the index name provided
 
 This ensures proper configuration for text-based searching and indexing in Plone.
