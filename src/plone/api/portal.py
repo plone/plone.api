@@ -475,12 +475,12 @@ def get_vocabulary_names():
     return sorted([name for name, vocabulary in getUtilitiesFor(IVocabularyFactory)])
 
 
-@required_parameters("wanted_indexes")
-def add_catalog_indexes(wanted_indexes, reindex=True, logger=None):
+@required_parameters("indexes_to_add")
+def add_catalog_indexes(indexes_to_add, reindex=True, logger=None):
     """Add the specified indexes to portal_catalog if they don't already exist.
 
-    :param wanted_indexes: [required] List of tuples in format (index_name, index_type)
-    :type wanted_indexes: list
+    :param indexes_to_add: [required] List of tuples in format (index_name, index_type)
+    :type indexes_to_add: list
     :param reindex: Boolean indicating if newly added indexes should be reindexed
     :type reindex: bool
     :param logger: Optional logger instance
@@ -503,7 +503,7 @@ def add_catalog_indexes(wanted_indexes, reindex=True, logger=None):
     # Import required classes for ZCTextIndex
     from Products.ZCTextIndex.Lexicon import Lexicon
 
-    for name, meta_type in wanted_indexes:
+    for name, meta_type in indexes_to_add:
         if name not in existing_indexes:
             if meta_type == "ZCTextIndex":
                 # Ensure a proper configuration for ZCTextIndex
@@ -545,12 +545,12 @@ def add_catalog_indexes(wanted_indexes, reindex=True, logger=None):
     return added_indexes
 
 
-@required_parameters("wanted_columns")
-def add_catalog_metadata(wanted_columns, logger=None):
+@required_parameters("columns_to_add")
+def add_catalog_metadata(columns_to_add, logger=None):
     """Add the specified metadata columns to portal_catalog.
 
-    :param wanted_columns: [required] List of column names to add
-    :type wanted_columns: list
+    :param columns_to_add: [required] List of column names to add
+    :type columns_to_add: list
     :param logger: Optional custom logger instance
     :type logger: logging.Logger
     :returns: List of names of columns that were added
@@ -564,7 +564,7 @@ def add_catalog_metadata(wanted_columns, logger=None):
     existing_columns = catalog.schema()
 
     added_columns = []
-    for name in wanted_columns:
+    for name in columns_to_add:
         if name not in existing_columns:
             catalog.addColumn(name)
             added_columns.append(name)

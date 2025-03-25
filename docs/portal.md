@@ -524,13 +524,13 @@ from plone import api
 
 # Add new metadata columns with default logging
 columns = ['custom_metadata', 'author_email']
-api.portal.add_catalog_metadata(wanted_columns=columns)
+api.portal.add_catalog_metadata(columns_to_add=columns)
 
 # Add columns with custom logger
 import logging
 custom_logger = logging.getLogger('my.package')
 api.portal.add_catalog_metadata(
-    wanted_columns=['publication_date'],
+    columns_to_add=['publication_date'],
     logger=custom_logger
 )
 ```
