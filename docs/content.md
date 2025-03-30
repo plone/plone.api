@@ -9,6 +9,7 @@ myst:
 
 ```{eval-rst}
 .. module:: plone
+    :no-index:
 ```
 
 (chapter-content)=
