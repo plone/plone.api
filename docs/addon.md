@@ -8,8 +8,9 @@ myst:
 ---
 
 ```{eval-rst}
-.. module:: plone
+.. currentmodule:: plone.api.addon
 ```
+% The Sphinx directive `currentmodule` is used to both run `code-block` examples via [Manuel](https://manuel.readthedocs.io/en/latest/#code-blocks-1) and to avoid duplicating an index entry that is already provided by its counterpart in `docs/api/*.md`.
 
 (chapter-addons)=
 

@@ -1,0 +1,1 @@
+Resolve Sphinx warning `duplicate object description of plone` by using `currentmodule` instead of `module`. This avoids creating duplicate entries in the index. They are already documented in the `docs/api/*.md` files. @stevepiercy
