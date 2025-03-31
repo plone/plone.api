@@ -8,7 +8,7 @@ myst:
 ---
 
 ```{eval-rst}
-.. module:: plone
+.. currentmodule:: plone.api.addon
 ```
 
 (chapter-addons)=

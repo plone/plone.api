@@ -8,8 +8,7 @@ myst:
 ---
 
 ```{eval-rst}
-.. module:: plone
-    :no-index:
+.. currentmodule:: plone.api.env
 ```
 
 (chapter-env)=
