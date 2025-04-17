@@ -84,5 +84,10 @@ setup(
         "Documentation": "https://6.docs.plone.org/plone.api/index.html",
         "Changelog": "https://github.com/plone/plone.api/blob/main/CHANGES.md",
         "Issue Tracker": "https://github.com/plone/plone.api/issues",
+        "Repository": "https://github.com/plone/plone.api",
+        "Sponsor": "https://github.com/sponsors/plone",
+        "Discord": "https://discord.com/channels/786421998426521600/786421998426521603",
+        "Mastodon": "https://plone.social/@plone",
+        "YouTube": "https://www.youtube.com/@plonecms",
     },
 )
