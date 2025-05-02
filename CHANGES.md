@@ -9,6 +9,20 @@
 
 <!-- towncrier release notes start -->
 
+## 2.5.1 (2025-05-02)
+
+
+### Internal:
+
+- Add project URLs to display on PyPI. @stevepiercy #582
+
+
+### Documentation:
+
+- Add missing members to API methods and sort items. @stevepiercy #579
+- Resolve Sphinx warning `duplicate object description of plone` by using `currentmodule` instead of `module`. This avoids creating duplicate entries in the index. They are already documented in the `docs/api/*.md` files. @stevepiercy #581
+- Pin plone-sphinx-theme to prepare for PLIP 4097. See https://github.com/plone/Products.CMFPlone/issues/4097. @stevepiercy #583
+
 ## 2.5.0 (2025-03-25)
 
 
