@@ -342,8 +342,9 @@ class TestPloneApiUser(unittest.TestCase):
         """Test get roles for a user that does not exist."""
         from plone.api.exc import UserNotFoundError
 
-        with self.assertRaises(UserNotFoundError):
+        with self.assertRaises(UserNotFoundError) as exc:
             api.user.get_roles(username="theurbanspaceman")
+        self.assertEqual(str(exc.exception), "theurbanspaceman")
 
     def test_get_roles_anonymous(self):
         """Test get_roles for an anonymous user."""
@@ -509,8 +510,9 @@ class TestPloneApiUser(unittest.TestCase):
         """Test get_permissions for a user that does not exist."""
         from plone.api.exc import UserNotFoundError
 
-        with self.assertRaises(UserNotFoundError):
+        with self.assertRaises(UserNotFoundError) as exc:
             api.user.get_permissions(username="ming")
+        self.assertEqual(str(exc.exception), "ming")
 
     def test_get_permissions_context(self):
         """Test get permissions on some context."""
