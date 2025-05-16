@@ -152,8 +152,9 @@ class TestPloneApiGroup(unittest.TestCase):
         """Test retrieving of groups for a user that does not exist."""
         from plone.api.exc import UserNotFoundError
 
-        with self.assertRaises(UserNotFoundError):
+        with self.assertRaises(UserNotFoundError) as exc:
             api.group.get_groups(username="theurbanspaceman")
+        self.assertEqual(str(exc.exception), "theurbanspaceman")
 
     def test_get_groups_anonymous(self):
         from AccessControl.users import nobody
@@ -239,8 +240,9 @@ class TestPloneApiGroup(unittest.TestCase):
         """Test adding a user that does not exist to a group."""
         from plone.api.exc import UserNotFoundError
 
-        with self.assertRaises(UserNotFoundError):
+        with self.assertRaises(UserNotFoundError) as exc:
             api.group.add_user(username="jane", groupname="staff")
+        self.assertEqual(str(exc.exception), "jane")
 
     def test_add_user_username(self):
         """Test adding a user to a group by username."""
@@ -327,8 +329,9 @@ class TestPloneApiGroup(unittest.TestCase):
 
         api.group.create(groupname="staff")
         group = api.group.get(groupname="staff")
-        with self.assertRaises(UserNotFoundError):
+        with self.assertRaises(UserNotFoundError) as exc:
             api.group.remove_user(group=group, username="iamnothere")
+        self.assertEqual(str(exc.exception), "iamnothere")
 
     def test_grant_roles(self):
         """Test grant roles."""

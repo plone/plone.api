@@ -59,7 +59,7 @@ def adopt_user(username=None, user=None):
                 user = unwrapped.__of__(acl_users)
                 break
         else:
-            raise UserNotFoundError
+            raise UserNotFoundError(username)
 
     return _adopt_user(user)
 

@@ -85,7 +85,7 @@ def get_groups(username=None, user=None):
     if username:
         user = user_get(username=username)
         if not user:
-            raise UserNotFoundError
+            raise UserNotFoundError(username)
 
     group_tool = portal.get_tool("portal_groups")
 
@@ -157,7 +157,7 @@ def add_user(groupname=None, group=None, username=None, user=None):
     if username:
         user = user_get(username=username)
         if not user:
-            raise UserNotFoundError
+            raise UserNotFoundError(username)
 
     user_id = user.id
     group_id = groupname or group.id
@@ -194,7 +194,7 @@ def remove_user(groupname=None, group=None, username=None, user=None):
     if username:
         user = user_get(username=username)
         if not user:
-            raise UserNotFoundError
+            raise UserNotFoundError(username)
     user_id = user.id
     group_id = groupname or group.id
     portal_groups = portal.get_tool("portal_groups")
