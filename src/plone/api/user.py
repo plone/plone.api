@@ -232,7 +232,7 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
         user = portal_membership.getMemberById(username)
 
     if user is None:
-        raise UserNotFoundError(username or user and user.getUserName())
+        raise UserNotFoundError(username)
 
     if obj is not None:
         if inherit:
