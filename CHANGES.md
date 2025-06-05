@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.5.2 (2025-06-05)
+
+
+### Bug fixes:
+
+- Make plone.api.exc.UserNotFoundError message more informative by including the not found username [@ale-rt] #585
+
 ## 2.5.1 (2025-05-02)
 
 
