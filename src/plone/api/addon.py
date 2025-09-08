@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 from functools import lru_cache
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from plone.api import portal
 from plone.api.exc import InvalidParameterError
 from plone.api.validation import required_parameters
@@ -16,7 +18,6 @@ from zope.component import getAllUtilitiesRegisteredFor
 from zope.globalrequest import getRequest
 
 import logging
-import pkg_resources
 
 
 logger = logging.getLogger("plone.api.addon")
@@ -258,9 +259,9 @@ def get_addon_ids(limit: str = "") -> List[str]:
 def get_version(addon: str) -> str:
     """Return the version of the product (package)."""
     try:
-        dist = pkg_resources.get_distribution(addon)
+        dist = distribution(addon)
         return dist.version
-    except pkg_resources.DistributionNotFound:
+    except PackageNotFoundError:
         if "." in addon:
             return ""
     return get_version(f"Products.{addon}")
