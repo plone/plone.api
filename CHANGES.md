@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.5.3 (2025-09-10)
+
+
+### Bug fixes:
+
+- Drop `pkg_resources` usage @gforcada #4126
+
 ## 2.5.2 (2025-06-05)
 
 

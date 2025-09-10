@@ -3,7 +3,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "2.5.3.dev0"
+version = "2.5.3"
 
 long_description = "\n".join(
     [Path("README.md").read_text(), Path("CHANGES.md").read_text()]
