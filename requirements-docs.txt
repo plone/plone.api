@@ -1,4 +1,4 @@
--c https://dist.plone.org/release/6.0-dev/constraints.txt
+-c https://dist.plone.org/release/6.2-dev/constraints.txt
 linkify-it-py
 myst-parser
 plone-sphinx-theme<2

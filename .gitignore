@@ -1,5 +1,5 @@
 # Generated from:
-# https://github.com/plone/meta/tree/main/config/default
+# https://github.com/plone/meta/tree/main/src/plone/meta/default
 # See the inline comments on how to expand/tweak this configuration file
 # python related
 *.egg-info
@@ -11,7 +11,6 @@
 
 # tools related
 build/
-_build/
 .coverage
 .*project
 coverage.xml
@@ -19,7 +18,10 @@ dist/
 docs/_build
 __pycache__/
 .tox
+.vscode/
 node_modules/
+forest.dot
+forest.json
 
 # venv / buildout related
 bin/
