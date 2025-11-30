@@ -76,6 +76,13 @@ repos:
     hooks:
     -   id: i18ndude
 
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+    -   id: mypy
+        additional_dependencies:
+            - types-decorator
+        exclude: docs
 
 ##
 # Add extra configuration options in .meta.toml:

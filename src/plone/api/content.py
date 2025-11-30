@@ -14,6 +14,7 @@ from plone.app.uuid.utils import uuidToObject
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.DynamicType import DynamicType
 from Products.CMFCore.WorkflowCore import WorkflowException
+from typing import Any
 from zope.component import ComponentLookupError
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
@@ -26,7 +27,7 @@ import transaction
 import uuid
 
 
-_marker = []
+_marker = object()
 
 # Maximum number of attempts to generate a unique random ID
 MAX_UNIQUE_ID_ATTEMPTS = 100
@@ -328,7 +329,7 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
 
 
 @required_parameters("obj")
-def get_state(obj=None, default=_marker):
+def get_state(obj=None, default: Any = _marker):
     """Get the current workflow state of the object.
 
     :param obj: [required] Object that we want to get the state for.

@@ -4,6 +4,7 @@ Heavily inspired by collective.relationhelpers.
 """
 
 from AccessControl.SecurityManagement import getSecurityManager
+from Acquisition import ImplicitAcquisitionWrapper
 from collections import defaultdict
 from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
@@ -14,6 +15,13 @@ from plone.app.linkintegrity.handlers import modifiedContent
 from plone.app.linkintegrity.utils import referencedRelationship
 from plone.base.utils import base_hasattr
 from plone.dexterity.utils import iterSchemataForType
+from plone.supermodel.model import SchemaClass
+from typing import cast
+from typing import DefaultDict
+from typing import List
+from typing import Optional
+from typing import Tuple
+from typing import Union
 from z3c.relationfield import event
 from z3c.relationfield import RelationValue
 from z3c.relationfield.schema import Relation
@@ -23,8 +31,10 @@ from zc.relation.interfaces import ICatalog
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 from zope.lifecycleevent import modified
+from zope.schema._bootstrapfields import Field
 
 import logging
+import z3c.relationfield.relation
 
 
 try:
@@ -33,14 +43,19 @@ except PackageNotFoundError:
     ITERATE_RELATION_NAME = None
     StagingRelationValue = None
 else:
-    from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
-    from plone.app.iterate.dexterity.relation import StagingRelationValue
+    # isort: off
+    from plone.app.iterate.dexterity import ITERATE_RELATION_NAME  # type: ignore[no-redef]
+    from plone.app.iterate.dexterity.relation import StagingRelationValue  # type: ignore[no-redef]
+
+    # isort: on
 
 
 logger = logging.getLogger(__name__)
 
 
-def _get_field_and_schema_for_fieldname(field_id, portal_type):
+def _get_field_and_schema_for_fieldname(
+    field_id: str, portal_type: str
+) -> Optional[Tuple[Field, SchemaClass]]:
     """Get field and its schema from a portal_type."""
     # Turn form.widgets.IDublinCore.title into title
     field_id = field_id.split(".")[-1]
@@ -48,16 +63,20 @@ def _get_field_and_schema_for_fieldname(field_id, portal_type):
         field = schema.get(field_id, None)
         if field is not None:
             return (field, schema)
+    return None
 
 
 @at_least_one_of("source", "target", "relationship")
 def get(
-    source=None,
-    target=None,
-    relationship=None,
-    unrestricted=False,
-    as_dict=False,
-):
+    source: Optional[ImplicitAcquisitionWrapper] = None,
+    target: Optional[ImplicitAcquisitionWrapper] = None,
+    relationship: Optional[str] = None,
+    unrestricted: bool = False,
+    as_dict: bool = False,
+) -> Union[
+    List[z3c.relationfield.relation.RelationValue],
+    DefaultDict[str, List[z3c.relationfield.relation.RelationValue]],
+]:
     """Get specific relations given a source/target/relationship.
 
     :param source: Object that the relations originate from.
@@ -71,7 +90,8 @@ def get(
     :param as_dict: If true, return a dictionary with the relationship
         name as keys.
     :type id: bool
-    :returns: A list of relations
+    :returns: A list of relations or a dict of lists of relations
+        if as_dict is True.
     :rtype: List of RelationValue objects
 
     :Example: :ref:`relation-get-example`
@@ -91,10 +111,13 @@ def get(
     intids = getUtility(IIntIds)
     relation_catalog = getUtility(ICatalog)
     query = {}
-    results = []
 
     if as_dict:
-        results = defaultdict(list)
+        results: DefaultDict[str, List[z3c.relationfield.relation.RelationValue]] = (
+            defaultdict(list)
+        )
+    else:
+        results: List[z3c.relationfield.relation.RelationValue] = []  # type: ignore [no-redef]
 
     if not relation_catalog:
         return results
@@ -124,19 +147,23 @@ def get(
                 if as_dict:
                     results[relation.from_attribute].append(relation)
                 else:
-                    results.append(relation)
+                    results.append(relation)  # type: ignore [attr-defined]
             else:
                 continue
         else:
             if as_dict:
                 results[relation.from_attribute].append(relation)
             else:
-                results.append(relation)
+                results.append(relation)  # type: ignore [attr-defined]
     return results
 
 
 @required_parameters("source", "target", "relationship")
-def create(source=None, target=None, relationship=None):
+def create(
+    source: Optional[ImplicitAcquisitionWrapper] = None,
+    target: Optional[ImplicitAcquisitionWrapper] = None,
+    relationship: Optional[str] = None,
+):
     """Create a relation from source to target using zc.relation.
 
     :param source: [required] Object that the relation will originate from.
@@ -193,7 +220,7 @@ def create(source=None, target=None, relationship=None):
     # This can only get a field from a dexterity item.
     field_and_schema = _get_field_and_schema_for_fieldname(
         from_attribute,
-        source.portal_type,
+        cast(ImplicitAcquisitionWrapper, source).portal_type,
     )
 
     if field_and_schema is None:
@@ -201,8 +228,8 @@ def create(source=None, target=None, relationship=None):
         # Only create a relation.
         logger.debug(
             "No dexterity field. Setting relation %s from %s to %s",
-            source.absolute_url(),
-            target.absolute_url(),
+            cast(ImplicitAcquisitionWrapper, source).absolute_url(),
+            cast(ImplicitAcquisitionWrapper, target).absolute_url(),
             relationship,
         )
         event._setRelation(source, from_attribute, RelationValue(to_id))
@@ -214,8 +241,8 @@ def create(source=None, target=None, relationship=None):
         logger.info(
             "Add relation to relationlist %s from %s to %s",
             from_attribute,
-            source.absolute_url(),
-            target.absolute_url(),
+            cast(ImplicitAcquisitionWrapper, source).absolute_url(),
+            cast(ImplicitAcquisitionWrapper, target).absolute_url(),
         )
         if not has_relation:
             existing_relations = getattr(source, from_attribute, None) or []
@@ -228,8 +255,8 @@ def create(source=None, target=None, relationship=None):
         logger.info(
             "Add relation %s from %s to %s",
             from_attribute,
-            source.absolute_url(),
-            target.absolute_url(),
+            cast(ImplicitAcquisitionWrapper, source).absolute_url(),
+            cast(ImplicitAcquisitionWrapper, target).absolute_url(),
         )
         if not has_relation:
             setattr(source, from_attribute, RelationValue(to_id))
@@ -247,13 +274,17 @@ def create(source=None, target=None, relationship=None):
         "which is not a relation field. Is this what you wanted? "
         "Relation points from %s to %s",
         from_attribute,
-        source.absolute_url(),
-        target.absolute_url(),
+        cast(ImplicitAcquisitionWrapper, source).absolute_url(),
+        cast(ImplicitAcquisitionWrapper, target).absolute_url(),
     )
 
 
 @at_least_one_of("source", "target", "relationship")
-def delete(source=None, target=None, relationship=None):
+def delete(
+    source: Optional[ImplicitAcquisitionWrapper] = None,
+    target: Optional[ImplicitAcquisitionWrapper] = None,
+    relationship: Optional[str] = None,
+):
     """Delete relation or relations.
 
     :param source: Object that the relation originates from.

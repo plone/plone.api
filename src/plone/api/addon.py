@@ -11,6 +11,8 @@ from Products.CMFPlone.controlpanel.browser.quickinstaller import InstallerView
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.CMFPlone.utils import get_installer
 from Products.GenericSetup import EXTENSION
+from typing import Any
+from typing import cast
 from typing import Dict
 from typing import List
 from typing import Tuple
@@ -98,7 +100,7 @@ def _get_non_installable_addons() -> NonInstallableAddons:
 
 
 @lru_cache(maxsize=1)
-def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
+def _cached_addons() -> Tuple[Tuple[str, AddonInformation], ...]:
     """Return information about add-ons in this installation.
 
     :returns: Tuple of tuples with add-on id and AddonInformation.
@@ -134,7 +136,7 @@ def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
         profile_type = pid_parts[-1]
         if product_id not in addons:
             # get some basic information on the product
-            product = {
+            product: Dict[str, Any] = {
                 "id": product_id,
                 "version": get_version(product_id),
                 "title": product_id,
@@ -278,7 +280,9 @@ def get(addon: str) -> AddonInformation:
     addons = dict(_cached_addons())
     if addon not in addons:
         raise InvalidParameterError(f"No add-on {addon} found.")
-    return _update_addon_info(addons.get(addon), _get_installer())
+    return _update_addon_info(
+        cast(AddonInformation, addons.get(addon)), _get_installer()
+    )
 
 
 @required_parameters("addon")

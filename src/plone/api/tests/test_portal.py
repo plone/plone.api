@@ -2,6 +2,7 @@
 
 from datetime import date
 from datetime import datetime
+from email import message_from_bytes
 from packaging import version
 from plone.api import content
 from plone.api import env
@@ -15,6 +16,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
 from unittest import mock
+from unittest.mock import MagicMock
 from zope import schema
 from zope.component import getUtility
 from zope.component.hooks import setSite
@@ -24,14 +26,6 @@ from zope.site import LocalSiteManager
 
 import DateTime
 import unittest
-
-
-try:
-    # Python 3
-    from email import message_from_bytes
-except ImportError:
-    # Python 2
-    from email import message_from_string as message_from_bytes
 
 
 HAS_PLONE5 = version.parse(env.plone_version()) >= version.parse("5.0b2")
@@ -146,7 +140,7 @@ class TestPloneApiPortal(unittest.TestCase):
         setSite(self.portal)
 
     @mock.patch("plone.api.portal.getSite")
-    def test_get_no_site(self, getSite):
+    def test_get_no_site(self, getSite: MagicMock):
         """Test error msg when getSite() returns None."""
         getSite.return_value = None
         from plone.api.exc import CannotGetPortalError
@@ -278,7 +272,7 @@ class TestPloneApiPortal(unittest.TestCase):
             self.portal.MailHost.smtp_host = old_smtp_host
 
     @mock.patch("plone.api.portal.parseaddr")
-    def test_send_email_parseaddr(self, mock_parseaddr):
+    def test_send_email_parseaddr(self, mock_parseaddr: MagicMock):
         """Simulate faulty parsing in parseaddr, from_address should be
         default email_from_address.
         """
