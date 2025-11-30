@@ -36,6 +36,7 @@ setup(
         "plone.dexterity",
         "plone.i18n",
         "plone.registry",
+        "plone.supermodel",
         "plone.uuid",
         "zope.globalrequest",
         "Products.CMFCore",

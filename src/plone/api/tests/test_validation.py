@@ -10,7 +10,9 @@ from plone.api.validation import required_parameters
 import unittest
 
 
-def undecorated_func(arg1=None, arg2=None, arg3=None):
+def undecorated_func(
+    arg1: str | None = None, arg2: str | None = None, arg3: str | None = None
+):
     return "foo"
 
 
@@ -180,6 +182,19 @@ class TestPloneAPIValidation(unittest.TestCase):
         _func = required_parameters("arg1")(undecorated_func)
         with self.assertRaises(MissingParameterError):
             _func()
+
+    def test_single_non_default_arg_missing(self):
+        """Test that MissingParameterError is raised even without defaults."""
+        from plone.api.exc import MissingParameterError
+
+        @required_parameters("arg1")
+        def _func(arg1, arg2=None):
+            return "foo"
+
+        with self.assertRaises(MissingParameterError):
+            _func()
+
+        self.assertEqual(_func("hello"), "foo")
 
     def test_one_missing_one_provided(self):
         """Test that MissingParameterError is raised if only one of the

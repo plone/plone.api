@@ -16,12 +16,14 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
 from unittest import mock
+from unittest.mock import MagicMock
 from zope import schema
 from zope.component import getUtility
 from zope.component.hooks import setSite
 from zope.interface import Interface
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.site import LocalSiteManager
+from ZPublisher.HTTPRequest import HTTPRequest
 
 import DateTime
 import unittest
@@ -115,6 +117,12 @@ class TestPloneApiPortal(unittest.TestCase):
         """Test getting the portal object."""
         self.assertEqual(portal.get(), self.portal)
 
+    def test_request_alias(self):
+        """Request alias should map to ZPublisher HTTPRequest."""
+        from plone.api.types import Request
+
+        self.assertIs(Request, HTTPRequest)
+
     def test_get_with_sub_site(self):
         """Using getSite() alone is not enough to get the portal. It
         will return the closest site, which may return a sub site
@@ -138,7 +146,7 @@ class TestPloneApiPortal(unittest.TestCase):
         setSite(self.portal)
 
     @mock.patch("plone.api.portal.getSite")
-    def test_get_no_site(self, getSite):
+    def test_get_no_site(self, getSite: MagicMock):
         """Test error msg when getSite() returns None."""
         getSite.return_value = None
         from plone.api.exc import CannotGetPortalError
@@ -270,7 +278,7 @@ class TestPloneApiPortal(unittest.TestCase):
             self.portal.MailHost.smtp_host = old_smtp_host
 
     @mock.patch("plone.api.portal.parseaddr")
-    def test_send_email_parseaddr(self, mock_parseaddr):
+    def test_send_email_parseaddr(self, mock_parseaddr: MagicMock):
         """Simulate faulty parsing in parseaddr, from_address should be
         default email_from_address.
         """

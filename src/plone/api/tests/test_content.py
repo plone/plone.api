@@ -8,6 +8,7 @@ from plone import api
 from plone.api.content import _parse_object_provides_query
 from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
+from plone.api.types import Content
 from plone.app.contenttypes.interfaces import IFolder
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 from plone.app.textfield import RichTextValue
@@ -920,7 +921,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertNotIn("blog", self.portal.keys())
         self.assertNotIn("training", self.portal["events"].keys())
 
-    def _set_text(self, obj, text):
+    def _set_text(self, obj: Content, text: str):
         obj.text = RichTextValue(text, "text/html", "text/x-html-safe")
         modified(obj)
 

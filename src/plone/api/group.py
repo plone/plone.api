@@ -12,7 +12,7 @@ from Products.PlonePAS.interfaces.plugins import ILocalRolesPlugin
 
 @required_parameters("groupname")
 def create(
-    groupname=None,
+    groupname,
     title=None,
     description=None,
     roles=[],
@@ -48,7 +48,7 @@ def create(
 
 
 @required_parameters("groupname")
-def get(groupname=None):
+def get(groupname):
     """Get a group.
 
     :param groupname: [required] Name of the group we want to get.

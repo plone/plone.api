@@ -1,25 +1,35 @@
 """Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
+from datetime import date
+from datetime import datetime
+from DateTime.DateTime import DateTime
+from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
 from email.utils import parseaddr
 from logging import getLogger
 from plone.api.exc import CannotGetPortalError
 from plone.api.exc import InvalidParameterError
+from plone.api.types import Content
+from plone.api.types import Request
 from plone.api.validation import required_parameters
 from plone.base.navigationroot import get_navigation_root_object
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.Portal import PloneSite
 from Products.statusmessages.interfaces import IStatusMessage
+from typing import Any
 from zope.component import ComponentLookupError
 from zope.component import getUtilitiesFor
 from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
+from zope.interface.interface import InterfaceClass
 from zope.interface.interfaces import IInterface
 from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleVocabulary
 
 import datetime as dtime
 import re
@@ -51,7 +61,7 @@ else:
 MISSING = object()
 
 
-def get():
+def get() -> PloneSite:
     """Get the Plone portal object out of thin air.
 
     Without the need to import fancy Interfaces and doing multi adapter
@@ -75,7 +85,7 @@ def get():
 
 
 @required_parameters("context")
-def get_navigation_root(context=None):
+def get_navigation_root(context: Content) -> Content:
     """Get the navigation root object for the context.
 
     This traverses the path up and returns the nearest navigation root.
@@ -92,7 +102,7 @@ def get_navigation_root(context=None):
 
 
 @required_parameters("name")
-def get_tool(name=None):
+def get_tool(name: str) -> Any:
     """Get a portal tool in a simple way.
 
     :param name: [required] Name of the tool you want.
@@ -122,11 +132,11 @@ def get_tool(name=None):
 
 @required_parameters("recipient", "subject", "body")
 def send_email(
-    sender=None,
-    recipient=None,
-    subject=None,
-    body=None,
-    immediate=False,
+    sender: str | None = None,
+    recipient: str | None = None,
+    subject: str | None = None,
+    body: MIMEMultipart | str | None = None,
+    immediate: bool = False,
 ):
     """Send an email.
 
@@ -182,7 +192,11 @@ def send_email(
 
 
 @required_parameters("datetime")
-def get_localized_time(datetime=None, long_format=False, time_only=False):
+def get_localized_time(
+    datetime: date | DateTime | datetime,
+    long_format: bool = False,
+    time_only: bool = False,
+) -> str:
     """Display a date/time in a user-friendly way.
 
     It should be localized to the user's preferred language.
@@ -230,7 +244,11 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
 
 
 @required_parameters("message")
-def show_message(message=None, request=None, type="info"):
+def show_message(
+    message: str,
+    request: Request | None = None,
+    type: str = "info",
+):
     """Display a status message.
 
     :param message: [required] Message to show.
@@ -249,7 +267,11 @@ def show_message(message=None, request=None, type="info"):
 
 
 @required_parameters("name")
-def get_registry_record(name=None, interface=None, default=MISSING):
+def get_registry_record(
+    name: str,
+    interface: InterfaceClass | None = None,
+    default: Any = MISSING,
+) -> Any:
     """Get a record value from ``plone.app.registry``.
 
     :param name: [required] Name
@@ -316,7 +338,11 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
 
 @required_parameters("name", "value")
-def set_registry_record(name=None, value=None, interface=None):
+def set_registry_record(
+    name: str,
+    value: Any,
+    interface: InterfaceClass | None = None,
+):
     """Set a record value in the ``plone.app.registry``.
 
     :param name: [required] Name of the record
@@ -368,7 +394,7 @@ def set_registry_record(name=None, value=None, interface=None):
         registry[name] = value
 
 
-def get_default_language():
+def get_default_language() -> str:
     """Return the default language.
 
     :returns: language identifier
@@ -382,7 +408,7 @@ def get_default_language():
     return settings.default_language
 
 
-def get_current_language(context=None):
+def get_current_language(context: Content | None = None) -> str:
     """Return the current negotiated language.
 
     :param context: context object
@@ -399,7 +425,7 @@ def get_current_language(context=None):
     )
 
 
-def translate(msgid, domain="plone", lang=None):
+def translate(msgid: str, domain: str = "plone", lang: str | None = None) -> str:
     """Translate a message into a given language.
 
     Default to current negotiated language if no target language specified.
@@ -431,7 +457,7 @@ def translate(msgid, domain="plone", lang=None):
 
 
 @required_parameters("name")
-def get_vocabulary(name=None, context=None):
+def get_vocabulary(name: str, context: Content | None = None) -> SimpleVocabulary:
     """Return a vocabulary object with the given name.
 
     :param name: Name of the vocabulary.
@@ -458,7 +484,7 @@ def get_vocabulary(name=None, context=None):
     return vocabulary(context)
 
 
-def get_vocabulary_names():
+def get_vocabulary_names() -> list[str]:
     """Return a list of vocabulary names.
 
     :returns: A sorted list of vocabulary names.
