@@ -2,6 +2,7 @@
 
 from Acquisition import aq_chain
 from Acquisition import aq_inner
+from Acquisition import ImplicitAcquisitionWrapper
 from copy import copy as _copy
 from itertools import islice
 from plone.api import portal
@@ -15,6 +16,14 @@ from plone.uuid.interfaces import IUUID
 from Products.CMFCore.DynamicType import DynamicType
 from Products.CMFCore.WorkflowCore import WorkflowException
 from typing import Any
+from typing import Callable
+from typing import cast
+from typing import Dict
+from typing import Iterator
+from typing import List
+from typing import Optional
+from typing import Tuple
+from typing import Union
 from zope.component import ComponentLookupError
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
@@ -22,6 +31,11 @@ from zope.container.interfaces import INameChooser
 from zope.globalrequest import getRequest
 from zope.interface import Interface
 from zope.interface import providedBy
+from zope.interface.interface import InterfaceClass
+from ZPublisher.BaseRequest import RequestContainer
+from ZPublisher.HTTPRequest import HTTPRequest
+from ZTUtils.Lazy import LazyCat
+from ZTUtils.Lazy import LazyMap
 
 import transaction
 import uuid
@@ -36,13 +50,13 @@ MAX_UNIQUE_ID_ATTEMPTS = 100
 @required_parameters("container", "type")
 @at_least_one_of("id", "title")
 def create(
-    container=None,
-    type=None,
-    id=None,
-    title=None,
-    safe_id=False,
+    container: Optional[ImplicitAcquisitionWrapper] = None,
+    type: Optional[str] = None,
+    id: Optional[str] = None,
+    title: Optional[str] = None,
+    safe_id: bool = False,
     **kwargs,  # NOQA: C816, S101
-):
+) -> ImplicitAcquisitionWrapper:
     """Create a new content item.
 
     :param container: [required] Container object in which to create the new
@@ -78,7 +92,7 @@ def create(
         attempts = 0
         while attempts < MAX_UNIQUE_ID_ATTEMPTS:
             content_id = str(uuid.uuid4())
-            if content_id not in container:
+            if content_id not in cast(ImplicitAcquisitionWrapper, container):
                 break
             attempts += 1
         # If we couldn't find a unique ID after max attempts, raise ValueError
@@ -89,13 +103,18 @@ def create(
         kwargs["title"] = title
 
     try:
-        container.invokeFactory(type, content_id, **kwargs)
+        cast(ImplicitAcquisitionWrapper, container).invokeFactory(
+            type, cast(str, content_id), **kwargs
+        )
     except UnicodeDecodeError:
         # UnicodeDecodeError is a subclass of ValueError,
         # so will be swallowed below unless we re-raise it here
         raise
     except ValueError as e:
-        types = [fti.getId() for fti in container.allowedContentTypes()]
+        types = [
+            fti.getId()
+            for fti in cast(ImplicitAcquisitionWrapper, container).allowedContentTypes()
+        ]
 
         raise InvalidParameterError(
             "Cannot add a '{obj_type}' object with id={obj_id} to the container {container_path}.\n"
@@ -103,17 +122,21 @@ def create(
             "{allowed_types}\n"
             "{message}".format(
                 obj_type=type,
-                obj_id=content_id,
-                container_path="/".join(container.getPhysicalPath()),
+                obj_id=cast(str, content_id),
+                container_path="/".join(
+                    cast(ImplicitAcquisitionWrapper, container).getPhysicalPath()
+                ),
                 allowed_types="\n".join(sorted(types)),
                 message=str(e),
             ),
         )
 
-    content = container[content_id]
+    content: ImplicitAcquisitionWrapper = cast(ImplicitAcquisitionWrapper, container)[
+        cast(str, content_id)
+    ]
     if not id or (safe_id and id):
         # Create a new id from title
-        chooser = INameChooser(container)
+        chooser = INameChooser(cast(ImplicitAcquisitionWrapper, container))
         derived_id = id or title
         new_id = chooser.chooseName(derived_id, content)
         # kacee: we must do a partial commit, else the renaming fails because
@@ -130,7 +153,9 @@ def create(
 
 @mutually_exclusive_parameters("path", "UID")
 @at_least_one_of("path", "UID")
-def get(path=None, UID=None):
+def get(
+    path: Optional[str] = None, UID: Optional[str] = None
+) -> Optional[ImplicitAcquisitionWrapper]:
     """Get an object.
 
     :param path: Path to the object we want to get, relative to
@@ -152,10 +177,10 @@ def get(path=None, UID=None):
                 relative_path=path,
             )
         try:
-            path = path.split("/")
-            if len(path) > 1:
-                parent = site.unrestrictedTraverse(path[:-1])
-                content = parent.restrictedTraverse(path[-1])
+            path_list = cast(str, path).split("/")
+            if len(path_list) > 1:
+                parent = site.unrestrictedTraverse(path_list[:-1])
+                content = parent.restrictedTraverse(path_list[-1])
             else:
                 content = site.restrictedTraverse(path[-1])
         except (KeyError, AttributeError):
@@ -167,11 +192,17 @@ def get(path=None, UID=None):
 
     elif UID:
         return uuidToObject(UID)
+    return None
 
 
 @required_parameters("source")
 @at_least_one_of("target", "id")
-def move(source=None, target=None, id=None, safe_id=False):
+def move(
+    source: Optional[ImplicitAcquisitionWrapper] = None,
+    target: Optional[ImplicitAcquisitionWrapper] = None,
+    id: Optional[str] = None,
+    safe_id: bool = False,
+) -> ImplicitAcquisitionWrapper:
     """Move the object to the target container.
 
     :param source: [required] Object that we want to move.
@@ -196,6 +227,7 @@ def move(source=None, target=None, id=None, safe_id=False):
         ValueError
     :Example: :ref:`content-move-example`
     """
+    source = cast(ImplicitAcquisitionWrapper, source)
     source_id = source.getId()
 
     # If no target is given the object is probably renamed
@@ -213,7 +245,11 @@ def move(source=None, target=None, id=None, safe_id=False):
 
 
 @required_parameters("obj", "new_id")
-def rename(obj=None, new_id=None, safe_id=False):
+def rename(
+    obj: Optional[ImplicitAcquisitionWrapper] = None,
+    new_id: Optional[str] = None,
+    safe_id: bool = False,
+) -> ImplicitAcquisitionWrapper:
     """Rename the object.
 
     :param obj: [required] Object that we want to rename.
@@ -227,6 +263,7 @@ def rename(obj=None, new_id=None, safe_id=False):
     :returns: Content object that was renamed
     :Example: :ref:`content-rename-example`
     """
+    obj = cast(ImplicitAcquisitionWrapper, obj)
     obj_id = obj.getId()
     container = obj.aq_parent
 
@@ -241,7 +278,12 @@ def rename(obj=None, new_id=None, safe_id=False):
 
 @required_parameters("source")
 @at_least_one_of("target", "id")
-def copy(source=None, target=None, id=None, safe_id=False):
+def copy(
+    source: Optional[ImplicitAcquisitionWrapper] = None,
+    target: Optional[ImplicitAcquisitionWrapper] = None,
+    id: Optional[str] = None,
+    safe_id: bool = False,
+) -> ImplicitAcquisitionWrapper:
     """Copy the object to the target container.
 
     :param source: [required] Object that we want to copy.
@@ -265,6 +307,7 @@ def copy(source=None, target=None, id=None, safe_id=False):
         ValueError
     :Example: :ref:`content-copy-example`
     """
+    source = cast(ImplicitAcquisitionWrapper, source)
     source_id = source.getId()
 
     if target is None:
@@ -287,7 +330,11 @@ def copy(source=None, target=None, id=None, safe_id=False):
 
 @mutually_exclusive_parameters("obj", "objects")
 @at_least_one_of("obj", "objects")
-def delete(obj=None, objects=None, check_linkintegrity=True):
+def delete(
+    obj: Optional[ImplicitAcquisitionWrapper] = None,
+    objects: Optional[List[ImplicitAcquisitionWrapper]] = None,
+    check_linkintegrity: bool = True,
+):
     """Delete the object(s).
 
     :param obj: Object that we want to delete.
@@ -329,7 +376,9 @@ def delete(obj=None, objects=None, check_linkintegrity=True):
 
 
 @required_parameters("obj")
-def get_state(obj=None, default: Any = _marker):
+def get_state(
+    obj: Optional[ImplicitAcquisitionWrapper] = None, default: Any = _marker
+) -> str:
     """Get the current workflow state of the object.
 
     :param obj: [required] Object that we want to get the state for.
@@ -352,12 +401,17 @@ def get_state(obj=None, default: Any = _marker):
 
 
 # work backwards from our end state
-def _find_path(maps, path, current_state, start_state):
+def _find_path(
+    maps: Dict[str, List[Tuple[str, List[str]]]],
+    path: List[Union[str, Any]],
+    current_state: str,
+    start_state: str,
+) -> Optional[List[str]]:
     paths = []
     # current_state could not be on maps if it only has outgoing
     # transitions. i.e an initial state you are not able to return to.
     if current_state not in maps:
-        return
+        return None
 
     for new_transition, from_states in maps[current_state]:
         next_path = _copy(path)
@@ -383,7 +437,9 @@ def _find_path(maps, path, current_state, start_state):
     return len(paths) and min(paths, key=len) or None
 
 
-def _wf_transitions_for(workflow, from_state, to_state):
+def _wf_transitions_for(
+    workflow: ImplicitAcquisitionWrapper, from_state: str, to_state: str
+) -> Optional[List[str]]:
     """Get list of transition IDs required to transition.
 
     from ``from_state`` to ``to_state``.
@@ -397,7 +453,7 @@ def _wf_transitions_for(workflow, from_state, to_state):
     :returns: A list of transitions
     :rtype: list
     """
-    exit_state_maps = {}
+    exit_state_maps: Dict[str, List[str]] = {}
     for state in workflow.states.objectValues():
         for transition in state.getTransitions():
             exit_state_maps.setdefault(transition, [])
@@ -421,7 +477,12 @@ def _wf_transitions_for(workflow, from_state, to_state):
     return _find_path(transition_maps, [], to_state, from_state)
 
 
-def _transition_to(obj, workflow, to_state, **kwargs):
+def _transition_to(
+    obj: ImplicitAcquisitionWrapper,
+    workflow: ImplicitAcquisitionWrapper,
+    to_state: str,
+    **kwargs,
+):
     # move from the current state to the given state
     # via any route we can find
     for wf in workflow.getWorkflowsFor(obj):
@@ -455,7 +516,12 @@ def _transition_to(obj, workflow, to_state, **kwargs):
 @required_parameters("obj")
 @at_least_one_of("transition", "to_state")
 @mutually_exclusive_parameters("transition", "to_state")
-def transition(obj=None, transition=None, to_state=None, **kwargs):
+def transition(
+    obj: Optional[ImplicitAcquisitionWrapper] = None,
+    transition: Optional[str] = None,
+    to_state: Optional[str] = None,
+    **kwargs,
+):
     """Perform a workflow transition.
 
     for the object or attempt to perform
@@ -476,6 +542,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
         :class:`~plone.api.exc.InvalidParameterError`
     :Example: :ref:`content-transition-example`
     """
+    obj = cast(ImplicitAcquisitionWrapper, obj)
     workflow = portal.get_tool("portal_workflow")
     if transition is not None:
         try:
@@ -489,6 +556,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
                 "{}".format(transition, "\n".join(sorted(transitions))),
             )
     else:
+        to_state = cast(str, to_state)
         _transition_to(obj, workflow, to_state, **kwargs)
         if workflow.getInfoFor(obj, "review_state") != to_state:
             raise InvalidParameterError(
@@ -500,7 +568,7 @@ def transition(obj=None, transition=None, to_state=None, **kwargs):
 
 
 @required_parameters("obj")
-def disable_roles_acquisition(obj=None):
+def disable_roles_acquisition(obj: Optional[ImplicitAcquisitionWrapper] = None):
     """Disable acquisition of local roles on given obj.
 
     Set __ac_local_roles_block__ = 1 on obj.
@@ -514,7 +582,7 @@ def disable_roles_acquisition(obj=None):
 
 
 @required_parameters("obj")
-def enable_roles_acquisition(obj=None):
+def enable_roles_acquisition(obj: Optional[ImplicitAcquisitionWrapper] = None):
     """Enable acquisition of local roles on given obj.
 
     Set __ac_local_roles_block__ = 0 on obj.
@@ -528,7 +596,11 @@ def enable_roles_acquisition(obj=None):
 
 
 @required_parameters("name", "context")
-def get_view(name=None, context=None, request=None):
+def get_view(
+    name: Optional[str] = None,
+    context: Optional[ImplicitAcquisitionWrapper] = None,
+    request: Optional[HTTPRequest] = None,
+):
     """Get a BrowserView object.
 
     :param name: [required] Name of the view.
@@ -574,7 +646,7 @@ def get_view(name=None, context=None, request=None):
 
 
 @required_parameters("obj")
-def get_uuid(obj=None):
+def get_uuid(obj: Optional[ImplicitAcquisitionWrapper] = None) -> str:
     """Get the object's Universally Unique IDentifier (UUID).
 
     :param obj: [required] Object we want its UUID.
@@ -589,7 +661,10 @@ def get_uuid(obj=None):
 
 
 @required_parameters("obj")
-def get_path(obj=None, relative=False):
+def get_path(
+    obj: Optional[Union[ImplicitAcquisitionWrapper, object]] = None,
+    relative: bool = False,
+) -> str:
     """Get the path of an object.
 
     :param obj: [required] Object for which to get its path
@@ -618,7 +693,7 @@ def get_path(obj=None, relative=False):
     return "/".join(rel_path) if rel_path else ""
 
 
-def _parse_object_provides_query(query):
+def _parse_object_provides_query(query: Any) -> Dict[str, Union[str, List[str]]]:
     """Create a query for the object_provides index.
 
     :param query: [required]
@@ -645,7 +720,7 @@ def _parse_object_provides_query(query):
         query_not = [query_not]
     query_not = [getattr(x, "__identifier__", x) for x in query_not]
 
-    result = {}
+    result: Dict[str, Union[str, List[str]]] = {}
 
     if ifaces:
         result["query"] = ifaces
@@ -657,7 +732,12 @@ def _parse_object_provides_query(query):
     return result
 
 
-def find(context=None, depth=None, unrestricted=False, **kwargs):
+def find(
+    context: Optional[ImplicitAcquisitionWrapper] = None,
+    depth: Optional[int] = None,
+    unrestricted: bool = False,
+    **kwargs,
+) -> Union[LazyMap, LazyCat]:
     """Find content in the portal.
 
     :param context: Context for the search
@@ -670,7 +750,7 @@ def find(context=None, depth=None, unrestricted=False, **kwargs):
     :Example: :ref:`content-find-example`
 
     """
-    query = {}
+    query: Dict[str, Any] = {}
     query.update(**kwargs)
 
     # Save the original path to maybe restore it later.
@@ -718,7 +798,12 @@ def find(context=None, depth=None, unrestricted=False, **kwargs):
 
 
 @required_parameters("obj")
-def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
+def iter_ancestors(
+    obj: Optional[Union[ImplicitAcquisitionWrapper, object]] = None,
+    function: Optional[Callable] = None,
+    interface: Optional[InterfaceClass] = None,
+    stop_at: Union[bool, ImplicitAcquisitionWrapper] = _marker,
+) -> Iterator[Union[ImplicitAcquisitionWrapper, RequestContainer]]:
     """Iterate over the object ancestors.
 
     Optionally filter the ancestors:
@@ -755,7 +840,7 @@ def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
         #
         # This is useful if we want to have an empty iterator when checking
         # for ancestors in the portal.
-        return iter(())
+        yield from ()
 
     chain = aq_chain(aq_inner(obj))
 
@@ -769,6 +854,7 @@ def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
     else:
         end = None
 
+    ancestors: Union[Iterator[Union[ImplicitAcquisitionWrapper, RequestContainer]], Any]
     ancestors = islice(chain, 1, end)
 
     if interface is not None:
@@ -781,7 +867,12 @@ def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
 
 
 @required_parameters("obj")
-def get_closest_ancestor(obj=None, function=None, interface=None, stop_at=_marker):
+def get_closest_ancestor(
+    obj: Optional[Union[ImplicitAcquisitionWrapper, object]] = None,
+    function: Optional[Callable] = None,
+    interface: Optional[InterfaceClass] = None,
+    stop_at: Union[bool, ImplicitAcquisitionWrapper] = _marker,
+) -> Optional[ImplicitAcquisitionWrapper]:
     """Get the closest ancestor that matches the criteria.
 
     See :func:`~plone.api.content.iter_ancestors` for more information on the parameters.
