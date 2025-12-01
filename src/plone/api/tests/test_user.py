@@ -41,7 +41,7 @@ class TestPloneApiUser(unittest.TestCase):
         username = user.getUserName()
         self.assertNotEqual(userid, username)
 
-    def _set_emaillogin(self, value):
+    def _set_emaillogin(self, value: bool):
         api.portal.set_registry_record("plone.use_email_as_login", value)
 
     def test_create_no_email(self):

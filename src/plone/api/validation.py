@@ -3,11 +3,20 @@
 from decorator import decorator
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
+from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import List
+from typing import Tuple
+from typing import Union
 
 import inspect
 
 
-def _get_arg_spec(func, validator_args):
+def _get_arg_spec(
+    func: Callable,
+    validator_args: Tuple[str, ...],
+) -> List[str]:
     """Get the arguments specified in the function spec.
 
     and check that the decorator doesn't refer to non-existent args.
@@ -26,7 +35,11 @@ def _get_arg_spec(func, validator_args):
     return signature_args
 
 
-def _get_supplied_args(signature_params, args, kwargs):
+def _get_supplied_args(
+    signature_params: Union[List[str], Tuple[str, ...]],
+    args: Any,
+    kwargs: Dict[str, Any],
+) -> List[Any]:
     """Return names of all args that have been passed in.
 
     either as positional or keyword arguments, and are not None.
@@ -43,7 +56,7 @@ def _get_supplied_args(signature_params, args, kwargs):
     return supplied_args
 
 
-def required_parameters(*required_params):
+def required_parameters(*required_params: Tuple[str, ...]) -> Callable:
     """Test whether all of the specified parameters have been supplied and are not None.
 
     Todo: add an optional flag to allow None values through as valid parameters
@@ -77,7 +90,7 @@ def required_parameters(*required_params):
     return _required_parameters
 
 
-def mutually_exclusive_parameters(*exclusive_params):
+def mutually_exclusive_parameters(*exclusive_params: Tuple[str, ...]) -> Callable:
     """Provide decorator.
 
     The decorator raises an exception if more than one
@@ -113,7 +126,7 @@ def mutually_exclusive_parameters(*exclusive_params):
     return _mutually_exclusive_parameters
 
 
-def at_least_one_of(*candidate_params):
+def at_least_one_of(*candidate_params: Tuple[str, ...]) -> Callable:
     """Provide a decorator.
 
     The decorator raises an exception if none of the

@@ -9,6 +9,15 @@ commit-id = "2.2.2"
 codespell_extra_lines = """
         exclude: docs/locale/.*.pot
 """
+extra_lines = """
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+    -   id: mypy
+        additional_dependencies:
+            - types-decorator
+        exclude: docs
+"""
 
 [pyproject]
 check_manifest_ignores = """

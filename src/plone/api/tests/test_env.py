@@ -6,6 +6,7 @@ from plone import api
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_PASSWORD
+from typing import List
 
 import AccessControl
 import unittest
@@ -35,7 +36,7 @@ class TestException(Exception):
 class HasProtectedMethods(SimpleItem):
     security = AccessControl.ClassSecurityInfo()
 
-    def __init__(self, id):
+    def __init__(self, id: str):
         self.id = id
 
     @security.public
@@ -117,11 +118,11 @@ class TestPloneApiEnv(unittest.TestCase):
         """Shared test environment clean-up, ran after every test."""
         AccessControl.SecurityManagement.setSecurityManager(self._old_sm)
 
-    def should_allow(self, names):
+    def should_allow(self, names: List[str]):
         for name in names:
             self.portal.hpm.restrictedTraverse(name)
 
-    def should_forbid(self, names):
+    def should_forbid(self, names: List[str]):
         for name in names:
             with self.assertRaises(Unauthorized):
                 self.portal.hpm.restrictedTraverse(name)

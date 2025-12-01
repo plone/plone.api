@@ -1,6 +1,11 @@
 """Module that provides various utility methods on the portal level."""
 
 from Acquisition import aq_inner
+from Acquisition import ImplicitAcquisitionWrapper
+from datetime import date
+from datetime import datetime
+from DateTime.DateTime import DateTime
+from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
 from email.utils import parseaddr
 from logging import getLogger
@@ -12,14 +17,21 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
+from typing import Any
+from typing import List
+from typing import Optional
+from typing import Union
 from zope.component import ComponentLookupError
 from zope.component import getUtilitiesFor
 from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
+from zope.interface.interface import InterfaceClass
 from zope.interface.interfaces import IInterface
 from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleVocabulary
+from ZPublisher.HTTPRequest import HTTPRequest
 
 import datetime as dtime
 import re
@@ -52,7 +64,7 @@ else:
 MISSING = object()
 
 
-def get():
+def get() -> ImplicitAcquisitionWrapper:
     """Get the Plone portal object out of thin air.
 
     Without the need to import fancy Interfaces and doing multi adapter
@@ -76,7 +88,9 @@ def get():
 
 
 @required_parameters("context")
-def get_navigation_root(context=None):
+def get_navigation_root(
+    context: Optional[ImplicitAcquisitionWrapper] = None,
+) -> ImplicitAcquisitionWrapper:
     """Get the navigation root object for the context.
 
     This traverses the path up and returns the nearest navigation root.
@@ -93,7 +107,7 @@ def get_navigation_root(context=None):
 
 
 @required_parameters("name")
-def get_tool(name=None):
+def get_tool(name: Optional[str] = None) -> ImplicitAcquisitionWrapper:
     """Get a portal tool in a simple way.
 
     :param name: [required] Name of the tool you want.
@@ -123,11 +137,11 @@ def get_tool(name=None):
 
 @required_parameters("recipient", "subject", "body")
 def send_email(
-    sender=None,
-    recipient=None,
-    subject=None,
-    body=None,
-    immediate=False,
+    sender: Optional[str] = None,
+    recipient: Optional[str] = None,
+    subject: Optional[str] = None,
+    body: Optional[Union[MIMEMultipart, str]] = None,
+    immediate: bool = False,
 ):
     """Send an email.
 
@@ -171,11 +185,6 @@ def send_email(
             # formataddr probably got confused by special characters.
             sender = from_address
 
-    # If the mail headers are not properly encoded we need to extract
-    # them and let MailHost manage the encoding.
-    if isinstance(body, str):
-        body = body.encode(encoding)
-
     host = get_tool("MailHost")
     host.send(
         body,
@@ -188,7 +197,11 @@ def send_email(
 
 
 @required_parameters("datetime")
-def get_localized_time(datetime=None, long_format=False, time_only=False):
+def get_localized_time(
+    datetime: Optional[Union[date, DateTime, datetime]] = None,
+    long_format: bool = False,
+    time_only: bool = False,
+) -> str:
     """Display a date/time in a user-friendly way.
 
     It should be localized to the user's preferred language.
@@ -236,7 +249,11 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
 
 
 @required_parameters("message")
-def show_message(message=None, request=None, type="info"):
+def show_message(
+    message: Optional[str] = None,
+    request: Optional[HTTPRequest] = None,
+    type: str = "info",
+):
     """Display a status message.
 
     :param message: [required] Message to show.
@@ -255,7 +272,11 @@ def show_message(message=None, request=None, type="info"):
 
 
 @required_parameters("name")
-def get_registry_record(name=None, interface=None, default=MISSING):
+def get_registry_record(
+    name: Optional[str] = None,
+    interface: Optional[InterfaceClass] = None,
+    default: Any = MISSING,
+) -> Any:
     """Get a record value from ``plone.app.registry``.
 
     :param name: [required] Name
@@ -322,7 +343,11 @@ def get_registry_record(name=None, interface=None, default=MISSING):
 
 
 @required_parameters("name", "value")
-def set_registry_record(name=None, value=None, interface=None):
+def set_registry_record(
+    name: Optional[str] = None,
+    value: Any = None,
+    interface: Optional[InterfaceClass] = None,
+):
     """Set a record value in the ``plone.app.registry``.
 
     :param name: [required] Name of the record
@@ -374,7 +399,7 @@ def set_registry_record(name=None, value=None, interface=None):
         registry[name] = value
 
 
-def get_default_language():
+def get_default_language() -> str:
     """Return the default language.
 
     :returns: language identifier
@@ -388,7 +413,7 @@ def get_default_language():
     return settings.default_language
 
 
-def get_current_language(context=None):
+def get_current_language(context: Optional[ImplicitAcquisitionWrapper] = None) -> str:
     """Return the current negotiated language.
 
     :param context: context object
@@ -405,7 +430,7 @@ def get_current_language(context=None):
     )
 
 
-def translate(msgid, domain="plone", lang=None):
+def translate(msgid: str, domain: str = "plone", lang: Optional[str] = None) -> str:
     """Translate a message into a given language.
 
     Default to current negotiated language if no target language specified.
@@ -437,7 +462,9 @@ def translate(msgid, domain="plone", lang=None):
 
 
 @required_parameters("name")
-def get_vocabulary(name=None, context=None):
+def get_vocabulary(
+    name: Optional[str] = None, context: Optional[ImplicitAcquisitionWrapper] = None
+) -> SimpleVocabulary:
     """Return a vocabulary object with the given name.
 
     :param name: Name of the vocabulary.
@@ -464,7 +491,7 @@ def get_vocabulary(name=None, context=None):
     return vocabulary(context)
 
 
-def get_vocabulary_names():
+def get_vocabulary_names() -> List[str]:
     """Return a list of vocabulary names.
 
     :returns: A sorted list of vocabulary names.
