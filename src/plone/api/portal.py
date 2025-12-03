@@ -197,13 +197,15 @@ def get_localized_time(datetime=None, long_format=False, time_only=False):
     (or any other value that can be converted to a boolean True
     value), but time_only then wins: the long_format value is ignored.
 
-    You can also use datetime.datetime or datetime.date instead of Plone's
-    DateTime. In case of datetime.datetime everything works the same, in
+    You can also use datetime.datetime, datetime.date, or a string
+    representation of a date/time instead of Plone's DateTime.
+    In case of datetime.datetime everything works the same, in
     case of datetime.date the long_format parameter is ignored and on time_only
-    an empty string is returned.
+    an empty string is returned. String inputs will be converted to DateTime
+    objects by the underlying ulocalized_time method.
 
-    :param datetime: [required] Message to show.
-    :type datetime: DateTime, datetime or date
+    :param datetime: [required] Date/time to display.
+    :type datetime: DateTime, datetime, date, or string
     :param long_format: When true, show long date format. When false
         (default), show the short date format.
     :type long_format: boolean

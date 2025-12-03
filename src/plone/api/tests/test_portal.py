@@ -433,6 +433,36 @@ class TestPloneApiPortal(unittest.TestCase):
         )
         self.assertEqual(result, "Dec 31, 1999")
 
+    def test_get_localized_time_string(self):
+        """Test getting the localized time using a string input."""
+
+        # set the expected localized date format
+        self._set_localization_date_format()
+
+        # tests with ISO 8601 format string
+        result = portal.get_localized_time(
+            datetime="1999-12-31 23:59:00",
+            long_format=True,
+        )
+        self.assertEqual(result, "Dec 31, 1999 11:59 PM")
+
+        result = portal.get_localized_time(
+            datetime="1999-12-31 23:59:00",
+            time_only=True,
+        )
+        self.assertEqual(result, "11:59 PM")
+
+        result = portal.get_localized_time(
+            datetime="1999-12-31 23:59:00",
+        )
+        self.assertEqual(result, "Dec 31, 1999")
+
+        # test with date-only string
+        result = portal.get_localized_time(
+            datetime="1999-12-31",
+        )
+        self.assertEqual(result, "Dec 31, 1999")
+
     def test_show_message_constraints(self):
         """Test the constraints for show_message."""
         from plone.api.exc import MissingParameterError
