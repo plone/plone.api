@@ -1,5 +1,6 @@
 """Base module for unittesting."""
 
+from Acquisition import ImplicitAcquisitionWrapper
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import login
@@ -8,12 +9,17 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.testing.zca import NamedConfigurationMachine
 
 
 class PloneApiLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
-    def setUpZope(self, app, configurationContext):
+    def setUpZope(
+        self,
+        app: ImplicitAcquisitionWrapper,
+        configurationContext: NamedConfigurationMachine,
+    ):
         """Prepare Zope instance by loading appropriate ZCMLs."""
         import plone.app.dexterity
 
@@ -25,7 +31,7 @@ class PloneApiLayer(PloneSandboxLayer):
 
         self.loadZCML(package=plone.app.contenttypes)
 
-    def setUpPloneSite(self, portal):
+    def setUpPloneSite(self, portal: ImplicitAcquisitionWrapper):
         """Prepare a Plone instance for testing."""
         # Install into Plone site using portal_setup
         self.applyProfile(portal, "Products.CMFPlone:plone")
@@ -38,7 +44,7 @@ class PloneApiLayer(PloneSandboxLayer):
         setRoles(portal, TEST_USER_ID, ["Manager"])
         login(portal, TEST_USER_NAME)
 
-    def tearDownZope(self, app):
+    def tearDownZope(self, app: ImplicitAcquisitionWrapper):
         """Tear down Zope."""
 
 

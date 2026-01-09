@@ -2,6 +2,8 @@
 
 from AccessControl.Permission import getPermissions
 from AccessControl.SecurityManagement import getSecurityManager
+from AccessControl.users import SpecialUser
+from Acquisition import ImplicitAcquisitionWrapper
 from contextlib import contextmanager
 from plone.api import env
 from plone.api import portal
@@ -14,18 +16,27 @@ from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from Products.PlonePAS.interfaces.plugins import ILocalRolesPlugin
+from Products.PlonePAS.tools.groupdata import GroupData
+from Products.PlonePAS.tools.memberdata import MemberData
+from typing import cast
+from typing import Dict
+from typing import Iterator
+from typing import List
+from typing import Optional
+from typing import Tuple
+from typing import Union
 
 import random
 import string
 
 
 def create(
-    email=None,
-    username=None,
-    password=None,
-    roles=("Member",),
-    properties=None,
-):
+    email: Optional[str] = None,
+    username: Optional[str] = None,
+    password: Optional[str] = None,
+    roles: Union[List[str], Tuple[str, ...]] = ("Member",),
+    properties: Optional[Dict[str, str]] = None,
+) -> MemberData:
     """Create a user.
 
     :param email: [required] Email for the new user.
@@ -66,7 +77,7 @@ def create(
         )
 
     registration = portal.get_tool("portal_registration")
-    user_id = use_email_as_username and email or username
+    user_id = cast(str, use_email_as_username and email or username)
 
     # Generate a random 8-char password
     if not password:
@@ -82,12 +93,14 @@ def create(
         roles,
         properties=properties,
     )
-    return get(username=user_id)
+    return cast(MemberData, get(username=user_id))
 
 
 @mutually_exclusive_parameters("userid", "username")
 @at_least_one_of("userid", "username")
-def get(userid=None, username=None):
+def get(
+    userid: Optional[str] = None, username: Optional[str] = None
+) -> Optional[MemberData]:
     """Get a user.
 
     Plone provides both a unique, unchanging identifier for a user (the
@@ -121,11 +134,11 @@ def get(userid=None, username=None):
     )
 
 
-def get_current():
+def get_current() -> Union[SpecialUser, MemberData]:
     """Get the currently logged-in user.
 
     :returns: Currently logged-in user
-    :rtype: MemberData object
+    :rtype: MemberData object or SpecialUser for anonymous user
     :Example: :ref:`user-get-current-example`
     """
     portal_membership = portal.get_tool("portal_membership")
@@ -133,7 +146,9 @@ def get_current():
 
 
 @mutually_exclusive_parameters("groupname", "group")
-def get_users(groupname=None, group=None):
+def get_users(
+    groupname: Optional[str] = None, group: Optional[GroupData] = None
+) -> List[MemberData]:
     """Get all users or all users filtered by group.
 
     Arguments ``group`` and ``groupname`` are mutually exclusive.
@@ -166,7 +181,7 @@ def get_users(groupname=None, group=None):
 
 @mutually_exclusive_parameters("username", "user")
 @at_least_one_of("username", "user")
-def delete(username=None, user=None):
+def delete(username: Optional[str] = None, user: Optional[MemberData] = None):
     """Delete a user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You can either
@@ -182,11 +197,11 @@ def delete(username=None, user=None):
     :Example: :ref:`user-delete-example`
     """
     portal_membership = portal.get_tool("portal_membership")
-    user_id = username or user.id
+    user_id = username or cast(MemberData, user).id
     portal_membership.deleteMembers((user_id,))
 
 
-def is_anonymous():
+def is_anonymous() -> bool:
     """Check if the currently logged-in user is anonymous.
 
     :returns: True if the current user is anonymous, False otherwise.
@@ -197,7 +212,12 @@ def is_anonymous():
 
 
 @mutually_exclusive_parameters("username", "user")
-def get_roles(username=None, user=None, obj=None, inherit=True):
+def get_roles(
+    username: Optional[str] = None,
+    user: Optional[MemberData] = None,
+    obj: Optional[ImplicitAcquisitionWrapper] = None,
+    inherit: bool = True,
+) -> Union[List[str], Tuple[str, ...]]:
     """Get user's site-wide or local roles.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
@@ -255,13 +275,17 @@ def get_roles(username=None, user=None, obj=None, inherit=True):
 
 
 @contextmanager
-def _nop_context_manager():
+def _nop_context_manager() -> Iterator[None]:
     """Do nothing (trivial context manager)."""
     yield
 
 
 @mutually_exclusive_parameters("username", "user")
-def get_permissions(username=None, user=None, obj=None):
+def get_permissions(
+    username: Optional[str] = None,
+    user: Optional[MemberData] = None,
+    obj: Optional[ImplicitAcquisitionWrapper] = None,
+) -> Dict[str, bool]:
     """Get user's site-wide or local permissions.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
@@ -296,7 +320,12 @@ def get_permissions(username=None, user=None, obj=None):
 
 
 @mutually_exclusive_parameters("username", "user")
-def has_permission(permission, username=None, user=None, obj=None):
+def has_permission(
+    permission: str,
+    username: Optional[str] = None,
+    user: Optional[MemberData] = None,
+    obj: Optional[ImplicitAcquisitionWrapper] = None,
+) -> bool:
     """Check whether this user has the given permission.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
@@ -343,7 +372,12 @@ def has_permission(permission, username=None, user=None, obj=None):
 
 @required_parameters("roles")
 @mutually_exclusive_parameters("username", "user")
-def grant_roles(username=None, user=None, obj=None, roles=None):
+def grant_roles(
+    username: Optional[str] = None,
+    user: Optional[MemberData] = None,
+    obj: Optional[ImplicitAcquisitionWrapper] = None,
+    roles: Optional[Union[List[str], Tuple[str, ...]]] = None,
+):
     """Grant roles to a user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
@@ -374,8 +408,10 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
         roles = list(roles)
 
     # These roles cannot be granted
-    if "Anonymous" in roles or "Authenticated" in roles:
-        raise InvalidParameterError
+    if "Anonymous" in roles or "Authenticated" in roles or not isinstance(roles, list):  # type: ignore
+        raise InvalidParameterError(
+            "Roles must be a list of strings and cannot include 'Anonymous' or 'Authenticated'"
+        )
 
     if obj is None:
         actual_roles = get_roles(user=user)
@@ -392,7 +428,12 @@ def grant_roles(username=None, user=None, obj=None, roles=None):
 
 @required_parameters("roles")
 @mutually_exclusive_parameters("username", "user")
-def revoke_roles(username=None, user=None, obj=None, roles=None):
+def revoke_roles(
+    username: Optional[str] = None,
+    user: Optional[MemberData] = None,
+    obj: Optional[ImplicitAcquisitionWrapper] = None,
+    roles: Optional[Union[List[str], Tuple[str, ...]]] = None,
+):
     """Revoke roles from a user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
@@ -418,9 +459,12 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     if user is None:
         raise InvalidParameterError("User could not be found")
 
-    roles = set(roles)
+    if not isinstance(roles, (list, tuple)):
+        raise InvalidParameterError("Roles must be a list or a tuple of strings")
 
-    if "Anonymous" in roles or "Authenticated" in roles:
+    roles_set = set(roles)
+
+    if "Anonymous" in roles_set or "Authenticated" in roles_set:
         raise InvalidParameterError
 
     inherit = True
@@ -434,7 +478,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
         if role not in ["Anonymous", "Authenticated"]
     }
 
-    roles = list(actual_roles - roles)
+    roles = list(actual_roles - roles_set)
 
     if obj is None:
         user.setSecurityProfile(roles=roles)

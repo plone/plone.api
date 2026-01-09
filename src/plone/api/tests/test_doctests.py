@@ -9,8 +9,11 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.testing.layers import IntegrationTesting
 from plone.testing import layered
 from plone.testing.zope import Browser
+from typing import Callable
+from unittest.suite import TestSuite
 from zope.testing import renormalizing
 
 import doctest
@@ -48,7 +51,7 @@ CHECKER = renormalizing.RENormalizing(
 )
 
 
-def setUp(self):  # pragma: no cover
+def setUp(self: manuel.testing.TestCase):  # pragma: no cover
     """Shared test environment set-up, ran before every test."""
     layer = self.globs["layer"]
     # Update global variables within the tests.
@@ -79,11 +82,11 @@ def setUp(self):  # pragma: no cover
 
 
 def DocFileSuite(
-    testfile,
-    flags=FLAGS,
-    setUp=setUp,
-    layer=PLONE_INTEGRATION_TESTING,
-):
+    testfile: str,
+    flags: int = FLAGS,
+    setUp: Callable = setUp,
+    layer: IntegrationTesting = PLONE_INTEGRATION_TESTING,
+) -> TestSuite:
     """Returns a test suite configured with a test layer.
 
     :param testfile: Path to a doctest file.
@@ -114,7 +117,7 @@ def DocFileSuite(
     )
 
 
-def test_suite():
+def test_suite() -> TestSuite:
     """Find .md files and test code examples in them."""
     path = "doctests"
     doctests = []

@@ -5,11 +5,14 @@ from plone.api.validation import _get_supplied_args as _gsa
 from plone.api.validation import at_least_one_of
 from plone.api.validation import mutually_exclusive_parameters
 from plone.api.validation import required_parameters
+from typing import Optional
 
 import unittest
 
 
-def undecorated_func(arg1=None, arg2=None, arg3=None):
+def undecorated_func(
+    arg1: Optional[str] = None, arg2: Optional[str] = None, arg3: Optional[str] = None
+):
     return "foo"
 
 

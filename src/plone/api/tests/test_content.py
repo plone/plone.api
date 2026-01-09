@@ -1,6 +1,7 @@
 """Tests for plone.api.content."""
 
 from Acquisition import aq_base
+from Acquisition import ImplicitAcquisitionWrapper
 from OFS.CopySupport import CopyError
 from OFS.event import ObjectWillBeMovedEvent
 from OFS.interfaces import IObjectWillBeMovedEvent
@@ -914,7 +915,7 @@ class TestPloneApiContent(unittest.TestCase):
         self.assertNotIn("blog", self.portal.keys())
         self.assertNotIn("training", self.portal["events"].keys())
 
-    def _set_text(self, obj, text):
+    def _set_text(self, obj: ImplicitAcquisitionWrapper, text: str):
         obj.text = RichTextValue(text, "text/html", "text/x-html-safe")
         modified(obj)
 
