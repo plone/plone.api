@@ -396,8 +396,10 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     """Revoke roles from a user.
 
     Arguments ``username`` and ``user`` are mutually exclusive. You
-    can either set one or the other, but not both. if ``username`` and
-    ``user`` are not given, the authenticated member will be used.
+    can either set one or the other, but not both.
+
+    One of ``username`` or ``user`` must be provided.
+
 
     :param username: Username of the user that will receive the revoked roles.
     :type username: string
