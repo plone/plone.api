@@ -11,9 +11,6 @@ from plone.base.interfaces import INonInstallable
 from plone.base.utils import get_installer
 from Products.CMFPlone.controlpanel.browser.quickinstaller import InstallerView
 from Products.GenericSetup import EXTENSION
-from typing import Dict
-from typing import List
-from typing import Tuple
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.globalrequest import getRequest
 
@@ -38,8 +35,8 @@ __all__ = [
 class NonInstallableAddons:
     """Set of add-ons not available for installation."""
 
-    profiles: List[str]
-    products: List[str]
+    profiles: list[str]
+    products: list[str]
 
 
 @dataclass
@@ -51,14 +48,14 @@ class AddonInformation:
     title: str
     description: str
 
-    upgrade_profiles: Dict
-    other_profiles: List[List]
-    install_profile: Dict
-    uninstall_profile: Dict
+    upgrade_profiles: dict
+    other_profiles: list[list]
+    install_profile: dict
+    uninstall_profile: dict
     profile_type: str
-    upgrade_info: Dict
+    upgrade_info: dict
     valid: bool
-    flags: List[str]
+    flags: list[str]
 
     def __repr__(self) -> str:
         """Return a string representation of this object."""
@@ -97,7 +94,7 @@ def _get_non_installable_addons() -> NonInstallableAddons:
 
 
 @lru_cache(maxsize=1)
-def _cached_addons() -> Tuple[Tuple[str, AddonInformation]]:
+def _cached_addons() -> tuple[tuple[str, AddonInformation]]:
     """Return information about add-ons in this installation.
 
     :returns: Tuple of tuples with add-on id and AddonInformation.
@@ -197,7 +194,7 @@ def _update_addon_info(
     return addon
 
 
-def _get_addons() -> List[AddonInformation]:
+def _get_addons() -> list[AddonInformation]:
     """Return an updated list of add-on information.
 
     :returns: List of AddonInformation.
@@ -211,7 +208,7 @@ def _get_addons() -> List[AddonInformation]:
     return result
 
 
-def get_addons(limit: str = "") -> List[AddonInformation]:
+def get_addons(limit: str = "") -> list[AddonInformation]:
     """List add-ons in this Plone site.
 
     :param limit: Limit list of add-ons.
@@ -238,7 +235,7 @@ def get_addons(limit: str = "") -> List[AddonInformation]:
     return addons
 
 
-def get_addon_ids(limit: str = "") -> List[str]:
+def get_addon_ids(limit: str = "") -> list[str]:
     """List add-ons ids in this Plone site.
 
     :param limit: Limit list of add-ons.
