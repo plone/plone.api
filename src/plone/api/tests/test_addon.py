@@ -6,7 +6,6 @@ from plone.api.tests.base import INTEGRATION_TESTING
 
 import unittest
 
-
 ADDON = "plone.session"
 
 

@@ -25,7 +25,6 @@ from zope.interface import providedBy
 import transaction
 import uuid
 
-
 _marker = []
 
 # Maximum number of attempts to generate a unique random ID

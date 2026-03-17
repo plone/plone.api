@@ -19,7 +19,6 @@ from zope.globalrequest import getRequest
 
 import logging
 
-
 logger = logging.getLogger("plone.api.addon")
 
 

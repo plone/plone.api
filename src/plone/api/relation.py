@@ -26,7 +26,6 @@ from zope.lifecycleevent import modified
 
 import logging
 
-
 try:
     distribution("plone.app.iterate")
 except PackageNotFoundError:
