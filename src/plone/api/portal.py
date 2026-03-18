@@ -24,7 +24,6 @@ from zope.schema.interfaces import IVocabularyFactory
 import datetime as dtime
 import re
 
-
 logger = getLogger("plone.api.portal")
 
 try:

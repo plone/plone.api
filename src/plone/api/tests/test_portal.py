@@ -25,7 +25,6 @@ from zope.site import LocalSiteManager
 import DateTime
 import unittest
 
-
 try:
     # Python 3
     from email import message_from_bytes

@@ -18,7 +18,6 @@ from zope.globalrequest import getRequest
 import traceback
 import Zope2
 
-
 IS_TEST = None
 
 
