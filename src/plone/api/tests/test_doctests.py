@@ -21,7 +21,6 @@ import os
 import re
 import unittest
 
-
 logger = getLogger(__name__)
 
 try:

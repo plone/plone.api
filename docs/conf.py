@@ -2,7 +2,6 @@ from importlib.metadata import version
 
 import sys
 
-
 project = "plone.api"
 copyright = "2012, Plone Foundation"
 

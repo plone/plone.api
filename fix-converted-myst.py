@@ -2,7 +2,6 @@ import logging
 import os
 import re
 
-
 logging.basicConfig()
 logger = logging.getLogger("fix converted MyST documentation")
 logger.setLevel(logging.INFO)
