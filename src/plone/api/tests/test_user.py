@@ -113,6 +113,9 @@ class TestPloneApiUser(unittest.TestCase):
         )
         self.assertEqual(user.getUserName(), "chuck@norris.org")
 
+        # Delete user before recreating with different login settings,
+        # because generate_user_id uses username as user_id in both cases.
+        api.user.delete(user=user)
         self._set_emaillogin(False)
 
         user = api.user.create(
