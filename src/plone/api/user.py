@@ -77,10 +77,8 @@ def create(
         "email": email,
         "fullname": properties.get("fullname", ""),
     }
-    generate_user_id(site, data)
-    generate_login_name(site, data)
-    user_id = data["user_id"]
-    login_name = data.get("login_name", username or email)
+    user_id = generate_user_id(site, data) or username or email
+    login_name = generate_login_name(site, data) or username or email
 
     registration = portal.get_tool("portal_registration")
 
