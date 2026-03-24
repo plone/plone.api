@@ -15,6 +15,7 @@ from plone.base.interfaces import INavigationRoot
 from plone.indexer import indexer
 from plone.uuid.interfaces import IMutableUUID
 from plone.uuid.interfaces import IUUIDGenerator
+from Products.CMFCore.indexing import processQueue
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.ZCatalog.interfaces import IZCatalog
@@ -357,6 +358,11 @@ class TestPloneApiContent(unittest.TestCase):
                 id="test-unicode-folder",
                 container=self.portal,
             )
+            # The indexing queue may defer catalog operations until
+            # processQueue() is called (e.g. by a catalog search or
+            # at transaction commit time).  Flush explicitly so the
+            # broken indexer is invoked inside the assertRaises block.
+            processQueue()
 
         # check that the exception is the one we raised
         self.assertEqual(ude.exception.reason, unicode_exception_message)
