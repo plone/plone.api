@@ -27,6 +27,7 @@ setup(
         "Products.PlonePAS",
         "Products.CMFPlone",
         "decorator",
+        "plone.app.users",
         "plone.app.uuid",
         "plone.app.dexterity",
         "plone.app.intid",

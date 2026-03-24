@@ -65,16 +65,29 @@ def create(
             "that is not email so you need to pass a username.",
         )
 
+    # Generate user_id and login_name using the canonical implementation
+    # from plone.app.users, respecting use_uuid_as_userid,
+    # use_email_as_login, IUserIdGenerator, and ILoginNameGenerator.
+    from plone.app.users.utils import generate_login_name
+    from plone.app.users.utils import generate_user_id
+
+    site = portal.get()
+    data = {
+        "username": username,
+        "email": email,
+        "fullname": properties.get("fullname", ""),
+    }
+    user_id = generate_user_id(site, data) or username or email
+    login_name = generate_login_name(site, data) or username or email
+
     registration = portal.get_tool("portal_registration")
-    user_id = use_email_as_username and email or username
 
     # Generate a random 8-char password
     if not password:
         chars = string.ascii_letters + string.digits
         password = "".join(random.choice(chars) for char in range(8))
 
-    properties.update(username=user_id)
-    properties.update(email=email)
+    properties.update(username=user_id, email=email)
 
     registration.addMember(
         user_id,
@@ -82,7 +95,14 @@ def create(
         roles,
         properties=properties,
     )
-    return get(username=user_id)
+
+    # If user_id differs from login_name (e.g. UUID as user id with
+    # email as login), update the login name accordingly.
+    if user_id != login_name:
+        pas = portal.get_tool("acl_users")
+        pas.updateLoginName(user_id, login_name)
+
+    return get(userid=user_id)
 
 
 @mutually_exclusive_parameters("userid", "username")
