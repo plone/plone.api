@@ -1,2 +1,0 @@
-Fix `test_create_raises_unicodedecodeerror` for deferred indexing queue processing since Products.CMFCore 3.9.
-@jensens

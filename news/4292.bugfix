@@ -1,3 +1,0 @@
-Fix ``plone.api.user.create()`` to respect ``use_uuid_as_userid`` and
-``use_email_as_login`` registry settings, as well as custom ``IUserIdGenerator``
-and ``ILoginNameGenerator`` utilities.

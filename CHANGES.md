@@ -9,6 +9,26 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.0a3 (2026-03-25)
+
+
+### Bug fixes
+
+- Fix ``plone.api.user.create()`` to respect ``use_uuid_as_userid`` and
+  ``use_email_as_login`` registry settings, as well as custom ``IUserIdGenerator``
+  and ``ILoginNameGenerator`` utilities. #4292
+
+
+### Internal
+
+- Update configuration files @plone 
+
+
+### Tests
+
+- Fix `test_create_raises_unicodedecodeerror` for deferred indexing queue processing since Products.CMFCore 3.9.
+  @jensens #602
+
 ## 3.0.0a2 (2025-12-18)
 
 
