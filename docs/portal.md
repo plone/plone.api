@@ -244,6 +244,67 @@ api.portal.send_email(
 )
 ```
 
+
+
+A complex example to construct a email with file attachments, HTML and plain text and mailheaders to control the mail response
+
+```
+from email.encoders import encode_base64
+from email.header import Header
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from plone import api
+
+# we need a message part to bundle the HTML and Plain Text
+textmsgpart = MIMEMultipart("alternative")
+
+# create plain text part of email
+plaintextpart = MIMEText("Fill out your plain text", "plain", "utf-8")
+
+# create html text of email
+html = "<html><body><p>fill out your text in HTML</p></body></html>"
+htmlpart = MIMEText(html, "html", "utf-8")
+
+# bundle the parts
+textmsgpart.attach(plaintextpart)
+textmsgpart.attach(htmlpart)
+
+# handle the file attachment
+# attachment is an instance of NamedBlobFile with a PDF
+filepart = MIMEBase("application", "pdf")
+filepart.set_payload(attachment.data)
+encode_base64(filepart)
+filepart.add_header(
+    "Content-Disposition",
+    "attachment",
+    filename=(Header(attachment.filename, "utf-8").encode()),
+)
+
+# we need a mixed Multipart Message to bundle the text bundle and the attachment
+msg = MIMEMultipart("mixed")
+msg["From"] = "sender@abc"
+msg["To"] = "recipient@zzz"
+msg["Subject"] = "The Mail Subject"
+msg["Reply-To"] = "reply_to_other@yyy"
+msg["Return-Path"] = "error@xxx"
+
+# add the text message bundle
+msg.attach(textmsgpart)
+
+# add the file attachment
+msg.attach(textmsgpart)
+
+# send with plone.api
+api.portal.send_email(
+    sender=msg["From"],
+    recipient=msg["To"],
+    subject=msg["Subject"],
+    body=msg.as_string(),
+    immediate=True
+)
+```
+
 % invisible-code-block: python
 %
 % self.assertEqual(len(mailhost.messages), 2)
