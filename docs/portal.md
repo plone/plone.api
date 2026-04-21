@@ -262,7 +262,7 @@ api.portal.send_email(
 
 The following code is a more complex example that constructs an email with file attachments, HTML, plain text, and mail headers to control the mail response.
 
-```python
+```text
 from email.encoders import encode_base64
 from email.header import Header
 from email.mime.base import MIMEBase
