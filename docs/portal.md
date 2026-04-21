@@ -244,11 +244,25 @@ api.portal.send_email(
 )
 ```
 
+% invisible-code-block: python
+%
+% self.assertEqual(len(mailhost.messages), 2)
+%
+% msg = message_from_bytes(mailhost.messages[1])
+% payloads = msg.get_payload()
+% self.assertEqual(len(payloads), 2)
+% self.assertEqual(msg['Reply-To'], 'community@plone.org')
+% self.assertEqual(payloads[0].get_payload(), 'One for you Bar!')
+% self.assertIn(
+%     'attachment; filename="report.xml',
+%     payloads[1]['Content-Disposition']
+% )
+% api.portal.PRINTINGMAILHOST_ENABLED = False
+% mailhost.reset()
 
+The following code is a more complex example that constructs an email with file attachments, HTML, plain text, and mail headers to control the mail response.
 
-A complex example to construct a email with file attachments, HTML and plain text and mailheaders to control the mail response
-
-```
+```python
 from email.encoders import encode_base64
 from email.header import Header
 from email.mime.base import MIMEBase
@@ -304,22 +318,6 @@ api.portal.send_email(
     immediate=True
 )
 ```
-
-% invisible-code-block: python
-%
-% self.assertEqual(len(mailhost.messages), 2)
-%
-% msg = message_from_bytes(mailhost.messages[1])
-% payloads = msg.get_payload()
-% self.assertEqual(len(payloads), 2)
-% self.assertEqual(msg['Reply-To'], 'community@plone.org')
-% self.assertEqual(payloads[0].get_payload(), 'One for you Bar!')
-% self.assertIn(
-%     'attachment; filename="report.xml',
-%     payloads[1]['Content-Disposition']
-% )
-% api.portal.PRINTINGMAILHOST_ENABLED = False
-% mailhost.reset()
 
 (portal-show-message-example)=
 
