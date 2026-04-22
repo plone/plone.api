@@ -329,7 +329,7 @@ msg = MIMEMultipart("mixed")
 msg["From"] = "sender@abc"
 msg["To"] = "recipient@zzz"
 msg["Subject"] = "The Mail Subject"
-msg["Reply-To"] = "reply_to_other@yyy"
+msg["Reply-To"] = "community@plone.org"
 msg["Return-Path"] = "error@xxx"
 
 # add the text message bundle
@@ -347,6 +347,24 @@ api.portal.send_email(
     immediate=True
 )
 ```
+
+% invisible-code-block: python
+%
+% self.assertEqual(len(mailhost.messages), 1)
+%
+% msg = message_from_bytes(mailhost.messages[0])
+% payloads = msg.get_payload()
+% self.assertEqual(len(payloads), 2)
+% self.assertEqual(msg['Reply-To'], 'community@plone.org')
+% payloads = payloads[0].get_payload()
+% self.assertEqual(len(payloads), 2)
+% payloads = payloads[1].get_payload()
+% self.assertIn(
+%     'attachment; filename="document.pdf',
+%     payloads[1]['Content-Disposition']
+% )
+% api.portal.PRINTINGMAILHOST_ENABLED = False
+% mailhost.reset()
 
 (portal-show-message-example)=
 
