@@ -353,11 +353,10 @@ api.portal.send_email(
 %
 % msg = message_from_bytes(mailhost.messages[0])
 % payloads = msg.get_payload()
-% self.assertEqual(len(payloads), 2)
-% self.assertEqual(msg['Reply-To'], 'community@plone.org')
-% payloads = payloads[0].get_payload()
-% self.assertEqual(len(payloads), 2)
-% payloads = payloads[1].get_payload()
+% self.assertTrue(len(payloads) == 2)
+% self.assertTrue(msg['Reply-To'] == 'community@plone.org')
+% text_payloads = payloads[0].get_payload()
+% self.assertEqual(len(text_payloads), 2)
 % self.assertIn(
 %     'attachment; filename="document.pdf',
 %     payloads[1]['Content-Disposition']
