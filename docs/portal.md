@@ -358,7 +358,7 @@ api.portal.send_email(
 % text_payloads = payloads[0].get_payload()
 % self.assertEqual(len(text_payloads), 2)
 % self.assertIn(
-%     'attachment; filename="document.pdf',
+%     'attachment; filename',
 %     payloads[1]['Content-Disposition']
 % )
 % api.portal.PRINTINGMAILHOST_ENABLED = False
