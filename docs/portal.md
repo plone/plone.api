@@ -336,7 +336,7 @@ msg["Return-Path"] = "error@xxx"
 msg.attach(textmsgpart)
 
 # add the file attachment
-msg.attach(textmsgpart)
+msg.attach(filepart)
 
 # send with plone.api
 api.portal.send_email(
