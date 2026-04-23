@@ -342,8 +342,7 @@ api.portal.send_email(
     sender=msg["From"],
     recipient=msg["To"],
     subject=msg["Subject"],
-    body=msg.as_string(),
-    immediate=True
+    body=msg.as_string()
 )
 ```
 
