@@ -259,7 +259,7 @@ api.portal.send_email(
 % )
 % mailhost.messages.clear()
 
-The following code is a more complex example that constructs an email with file attachments, HTML, plain text, and mail headers to control the mail response.
+The following code is a more complex example that constructs an email with a file attachment, HTML, plain text, and mail headers to control the mail response.
 
 ```python
 from email.encoders import encode_base64
