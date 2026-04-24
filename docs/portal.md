@@ -257,6 +257,109 @@ api.portal.send_email(
 %     'attachment; filename="report.xml',
 %     payloads[1]['Content-Disposition']
 % )
+% mailhost.messages.clear()
+
+The following code is a more complex example that constructs an email with a file attachment, HTML, plain text, and mail headers to control the mail response.
+
+```python
+from email.encoders import encode_base64
+from email.header import Header
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from plone import api
+
+# we need a message part to bundle the HTML and Plain Text
+textmsgpart = MIMEMultipart("alternative")
+
+# create plain text part of email
+plaintextpart = MIMEText("Fill out your plain text", "plain", "utf-8")
+
+# create html text of email
+html = "<html><body><p>fill out your text in HTML</p></body></html>"
+htmlpart = MIMEText(html, "html", "utf-8")
+
+# bundle the parts
+textmsgpart.attach(plaintextpart)
+textmsgpart.attach(htmlpart)
+
+# handle the file attachment
+
+# Create a dummy PDF as NamedBlobFile
+from plone.namedfile.file import NamedBlobFile
+
+# Minimal PDF content (a valid but nearly empty PDF)
+pdf_content = b"""%PDF-1.4
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
+3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R>>endobj
+4 0 obj<</Length 44>>stream
+BT /F1 12 Tf 100 700 Td (Hello World) Tj ET
+endstream endobj
+xref
+0 5
+0000000000 65535 f
+0000000009 00000 n
+0000000056 00000 n
+0000000115 00000 n
+0000000214 00000 n
+trailer<</Size 5/Root 1 0 R>>
+startxref
+315
+%%EOF"""
+
+attachment = NamedBlobFile(
+    data=pdf_content,
+    contentType='application/pdf',
+    filename='document.pdf'
+)
+
+filepart = MIMEBase("application", "pdf")
+filepart.set_payload(attachment.data)
+encode_base64(filepart)
+filepart.add_header(
+    "Content-Disposition",
+    "attachment",
+    filename=(Header(attachment.filename, "utf-8").encode()),
+)
+
+# we need a mixed Multipart Message to bundle the text bundle and the attachment
+msg = MIMEMultipart("mixed")
+msg["From"] = "sender@abc"
+msg["To"] = "recipient@zzz"
+msg["Subject"] = "The Mail Subject"
+msg["Reply-To"] = "community@plone.org"
+msg["Return-Path"] = "error@xxx"
+
+# add the text message bundle
+msg.attach(textmsgpart)
+
+# add the file attachment
+msg.attach(filepart)
+
+# send with plone.api
+api.portal.send_email(
+    sender=msg["From"],
+    recipient=msg["To"],
+    subject=msg["Subject"],
+    body=msg.as_string()
+)
+```
+
+% invisible-code-block: python
+%
+% self.assertEqual(len(mailhost.messages), 1)
+%
+% msg = message_from_bytes(mailhost.messages[0])
+% payloads = msg.get_payload()
+% self.assertTrue(len(payloads) == 2)
+% self.assertTrue(msg['Reply-To'] == 'community@plone.org')
+% text_payloads = payloads[0].get_payload()
+% self.assertEqual(len(text_payloads), 2)
+% self.assertIn(
+%     'attachment; filename',
+%     payloads[1]['Content-Disposition']
+% )
 % api.portal.PRINTINGMAILHOST_ENABLED = False
 % mailhost.reset()
 
