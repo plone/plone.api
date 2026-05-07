@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.0 (2026-05-07)
+
+
+### Documentation
+
+- Added example to construct a complex email. @1letter 
+
 ## 3.0.0a3 (2026-03-25)
 
 
