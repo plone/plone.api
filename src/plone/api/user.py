@@ -438,9 +438,12 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     if user is None:
         raise InvalidParameterError("User could not be found")
 
-    roles = set(roles)
+    if not isinstance(roles, (list, tuple)):
+        raise InvalidParameterError("Roles must be a list or a tuple of strings")
 
-    if "Anonymous" in roles or "Authenticated" in roles:
+    roles_set = set(roles)
+
+    if "Anonymous" in roles_set or "Authenticated" in roles_set:
         raise InvalidParameterError
 
     inherit = True
@@ -454,7 +457,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
         if role not in ["Anonymous", "Authenticated"]
     }
 
-    roles = list(actual_roles - roles)
+    roles = list(actual_roles - roles_set)
 
     if obj is None:
         user.setSecurityProfile(roles=roles)

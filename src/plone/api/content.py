@@ -25,7 +25,7 @@ from zope.interface import providedBy
 import transaction
 import uuid
 
-_marker = []
+_marker = object()
 
 # Maximum number of attempts to generate a unique random ID
 MAX_UNIQUE_ID_ATTEMPTS = 100
@@ -753,7 +753,7 @@ def iter_ancestors(obj=None, function=None, interface=None, stop_at=_marker):
         #
         # This is useful if we want to have an empty iterator when checking
         # for ancestors in the portal.
-        return iter(())
+        yield from ()
 
     chain = aq_chain(aq_inner(obj))
 

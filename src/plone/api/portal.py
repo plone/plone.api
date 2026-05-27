@@ -170,11 +170,6 @@ def send_email(
             # formataddr probably got confused by special characters.
             sender = from_address
 
-    # If the mail headers are not properly encoded we need to extract
-    # them and let MailHost manage the encoding.
-    if isinstance(body, str):
-        body = body.encode(encoding)
-
     host = get_tool("MailHost")
     host.send(
         body,
