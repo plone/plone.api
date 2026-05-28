@@ -441,7 +441,9 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     try:
         roles_set = set(roles)
         if not all(isinstance(role, str) for role in roles_set):
-            raise InvalidParameterError("Roles must be an iterable containing only strings")
+            raise InvalidParameterError(
+                "Roles must be an iterable containing only strings"
+            )
     except TypeError:
         raise InvalidParameterError("Roles must be an iterable containing only strings")
 
