@@ -1,6 +1,7 @@
 """Provide decorators for validating parameters."""
 
 from decorator import decorator
+from functools import wraps
 from plone.api.exc import InvalidParameterError
 from plone.api.exc import MissingParameterError
 
@@ -12,7 +13,17 @@ def _get_arg_spec(func, validator_args):
 
     and check that the decorator doesn't refer to non-existent args.
     """
-    signature_args = inspect.getfullargspec(func).args
+    signature = inspect.signature(func)
+    signature_args = [
+        name
+        for name, param in signature.parameters.items()
+        if param.kind
+        in (
+            inspect.Parameter.POSITIONAL_ONLY,
+            inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            inspect.Parameter.KEYWORD_ONLY,
+        )
+    ]
     extra_args = set(validator_args) - set(signature_args)
     if extra_args:
         raise ValueError(
@@ -32,9 +43,10 @@ def _get_supplied_args(signature_params, args, kwargs):
     either as positional or keyword arguments, and are not None.
     """
     supplied_args = []
-    for index in range(len(args)):
-        if args[index] is not None:
-            supplied_args.append(signature_params[index])
+    for index, arg in enumerate(args):
+        if arg is not None:
+            arg_name = signature_params[index]
+            supplied_args.append(arg_name)
 
     for keyword in kwargs:
         if kwargs[keyword] is not None:
@@ -58,7 +70,8 @@ def required_parameters(*required_params):
         """Provide actual decorator."""
         signature_params = _get_arg_spec(func, required_params)
 
-        def wrapped(function, *args, **kwargs):
+        @wraps(func)
+        def wrapped(*args, **kwargs):
             """Provide wrapped function (whose docstring will get replaced)."""
             supplied_args = _get_supplied_args(signature_params, args, kwargs)
 
@@ -70,9 +83,9 @@ def required_parameters(*required_params):
                     ),
                 )
 
-            return function(*args, **kwargs)
+            return func(*args, **kwargs)
 
-        return decorator(wrapped, func)
+        return wrapped
 
     return _required_parameters
 

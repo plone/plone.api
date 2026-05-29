@@ -1,5 +1,6 @@
 """Tests for plone.api.validation."""
 
+from plone.api.exc import MissingParameterError
 from plone.api.tests.base import INTEGRATION_TESTING
 from plone.api.validation import _get_supplied_args as _gsa
 from plone.api.validation import at_least_one_of
@@ -55,6 +56,38 @@ class TestPloneAPIValidation(unittest.TestCase):
                 "wobble",
             )
             _func(undecorated_func)
+
+    def test_required_parameters_with_no_default(self):
+        """Test that we have a nice validation message even if the
+        required parameter doesn't have a default value.
+        """
+
+        @required_parameters("arg1")
+        def _func1(arg1, arg2=None, arg3=None):
+            pass
+
+        with self.assertRaises(MissingParameterError) as e:
+            _func1()
+
+        self.assertEqual(str(e.exception), "Missing required parameter(s): arg1")
+
+        @required_parameters("arg1", "arg2")
+        def _func2(arg1, arg2=None, arg3=None):
+            pass
+
+        with self.assertRaises(MissingParameterError) as e:
+            _func2()
+
+        self.assertEqual(str(e.exception), "Missing required parameter(s): arg1, arg2")
+
+        @required_parameters("arg1", "arg2")
+        def _func3(arg1, arg2=1, arg3=None):
+            pass
+
+        with self.assertRaises(MissingParameterError) as e:
+            _func3()
+
+        self.assertEqual(str(e.exception), "Missing required parameter(s): arg1, arg2")
 
     def test_get_supplied_args(self):
         """Test that positional and keyword args are recognised correctly."""
