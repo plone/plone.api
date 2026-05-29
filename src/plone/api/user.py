@@ -438,9 +438,16 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
     if user is None:
         raise InvalidParameterError("User could not be found")
 
-    roles = set(roles)
+    try:
+        roles_set = set(roles)
+        if not all(isinstance(role, str) for role in roles_set):
+            raise InvalidParameterError(
+                "Roles must be an iterable containing only strings"
+            )
+    except TypeError:
+        raise InvalidParameterError("Roles must be an iterable containing only strings")
 
-    if "Anonymous" in roles or "Authenticated" in roles:
+    if "Anonymous" in roles_set or "Authenticated" in roles_set:
         raise InvalidParameterError
 
     inherit = True
@@ -454,7 +461,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None):
         if role not in ["Anonymous", "Authenticated"]
     }
 
-    roles = list(actual_roles - roles)
+    roles = list(actual_roles - roles_set)
 
     if obj is None:
         user.setSecurityProfile(roles=roles)

@@ -205,12 +205,7 @@ api.portal.send_email(
 %
 % self.assertEqual(len(mailhost.messages), 1)
 %
-% try:
-%     # Python 3
-%     from email import message_from_bytes
-% except ImportError:
-%     # Python 2
-%     from email import message_from_string as message_from_bytes
+% from email import message_from_bytes
 % msg = message_from_bytes(mailhost.messages[0])
 % self.assertEqual(msg['To'], 'bob@plone.org')
 % self.assertEqual(msg['From'], 'noreply@plone.org')

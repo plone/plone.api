@@ -2,6 +2,7 @@
 
 from datetime import date
 from datetime import datetime
+from email import message_from_bytes
 from packaging import version
 from plone.api import content
 from plone.api import env
@@ -24,14 +25,6 @@ from zope.site import LocalSiteManager
 
 import DateTime
 import unittest
-
-try:
-    # Python 3
-    from email import message_from_bytes
-except ImportError:
-    # Python 2
-    from email import message_from_string as message_from_bytes
-
 
 HAS_PLONE5 = version.parse(env.plone_version()) >= version.parse("5.0b2")
 
