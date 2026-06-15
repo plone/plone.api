@@ -9,6 +9,19 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.1 (2026-06-15)
+
+
+### Bug fixes
+
+- The `@required_parameters` decorator can work with arguments that do not have a default. @ale-rt #248
+- Clean up. @ale-rt #592
+
+
+### Internal
+
+- Update configuration files @plone 
+
 ## 3.0.0 (2026-05-07)
 
 
