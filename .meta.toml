@@ -9,6 +9,15 @@ commit-id = "2.9.0"
 codespell_extra_lines = """
         exclude: docs/locale/.*.pot
 """
+extra_lines = """
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+    -   id: mypy
+        additional_dependencies:
+            - types-decorator
+        exclude: docs
+"""
 
 [pyproject]
 check_manifest_ignores = """
@@ -23,7 +32,7 @@ check_manifest_ignores = """
     "requirements-docs.txt",
     "requirements.txt",
 """
-dependencies_ignores = "['Products.PrintingMailHost', 'plone.app.iterate',]"
+dependencies_ignores = "['Products.DCWorkflow', 'Products.PrintingMailHost', 'plone.app.iterate',]"
 codespell_ignores = "manuel,checkin"
 
 [tox]

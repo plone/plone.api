@@ -124,7 +124,7 @@ Zope = [
 ]
 python-dateutil = ['dateutil']
 pytest-plone = ['pytest', 'zope.pytestlayer', 'plone.testing', 'plone.app.testing']
-ignore-packages = ['Products.PrintingMailHost', 'plone.app.iterate',]
+ignore-packages = ['Products.DCWorkflow', 'Products.PrintingMailHost', 'plone.app.iterate',]
 
 ##
 # Add extra configuration options in .meta.toml:
