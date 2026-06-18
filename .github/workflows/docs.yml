@@ -10,7 +10,7 @@ jobs:
 
     steps:
       # git checkout
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # python setup
       - name: Set up Python ${{ matrix.python-version }}
