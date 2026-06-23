@@ -9,6 +9,14 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.2 (2026-06-23)
+
+
+### Internal
+
+- Add typing annotations [@ale-rt] 
+- Remove redundant and deprecated pull request preview build workflow. @stevepiercy 
+
 ## 3.0.1 (2026-06-15)
 
 
