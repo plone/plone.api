@@ -1,9 +1,9 @@
 # plone.api
 
-[![Latest PyPI version](https://img.shields.io/pypi/v/plone.api.svg "Latest PyPI version")](https://pypi.python.org/pypi/plone.api/)
+[![Latest PyPI version](https://img.shields.io/pypi/v/plone.api.svg "Latest PyPI version")](https://pypi.org/project/plone.api/)
 
 
-[![Number of PyPI downloads](https://img.shields.io/pypi/dm/plone.api.svg "Number of PyPI downloads")](https://pypi.python.org/pypi/plone.api/)
+[![Number of PyPI downloads](https://img.shields.io/pypi/dm/plone.api.svg "Number of PyPI downloads")](https://pypi.org/project/plone.api/)
 
 A simple API, built for humans wishing to develop with Plone.
 
@@ -25,7 +25,7 @@ Recipes try to assume the user does not have extensive knowledge about Plone int
 
 ## Source Code and Contribution
 
-[![Testing Status](https://github.com/plone/plone.api/actions/workflows/plone_python.yml/badge.svg "Testing Status")](https://github.com/plone/plone.api/actions/workflows/plone_python.yml)
+[![Testing Status](https://github.com/plone/plone.api/actions/workflows/test-matrix.yml/badge.svg "Testing Status")](https://github.com/plone/plone.api/actions/workflows/test-matrix.yml)
 
 
 Contributors
