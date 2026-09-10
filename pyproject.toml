@@ -10,7 +10,7 @@ requires = ["setuptools>=68.2,<83", "wheel"]
 
 [project]
 name = "plone.api"
-version = "3.0.3.dev0"
+version = "3.0.3"
 description = "A Plone API."
 classifiers = [
     "Development Status :: 5 - Production/Stable",
