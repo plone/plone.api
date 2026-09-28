@@ -900,6 +900,45 @@ class TestPloneApiUser(unittest.TestCase):
             api.user.get_roles(user=user, obj=document),
         )
 
+    def test_grant_roles_in_context_with_user_object(self):
+        """Granting roles with the ``user`` argument (instead of
+        ``username``) together with ``obj`` must keep roles that were
+        already granted locally, not just the newly requested ones.
+        """
+        user = api.user.create(
+            username="chuck",
+            email="chuck@norris.org",
+            password="secretpw",
+        )
+
+        portal = api.portal.get()
+        folder = api.content.create(
+            container=portal,
+            type="Folder",
+            id="folder_one",
+            title="Folder One",
+        )
+
+        api.user.grant_roles(
+            user=user,
+            roles=["Editor"],
+            obj=folder,
+        )
+        self.assertCountEqual(
+            ["Editor"],
+            api.user.get_roles(user=user, obj=folder, inherit=False),
+        )
+
+        api.user.grant_roles(
+            user=user,
+            roles=["Contributor"],
+            obj=folder,
+        )
+        self.assertCountEqual(
+            ["Editor", "Contributor"],
+            api.user.get_roles(user=user, obj=folder, inherit=False),
+        )
+
     def test_grant_roles_disregards_adapter(self):
         """Test that borg.localrole-adpaters are not copied on granting local roles."""
         portal = api.portal.get()

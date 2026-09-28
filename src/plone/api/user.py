@@ -432,7 +432,7 @@ def grant_roles(
         actual_roles = get_roles(user=user)
     else:
         # only roles persistent on the object, not from other providers
-        actual_roles = obj.get_local_roles_for_userid(username)
+        actual_roles = obj.get_local_roles_for_userid(user.getId())
     roles = list(set(actual_roles) | set(roles))
 
     if obj is None:
