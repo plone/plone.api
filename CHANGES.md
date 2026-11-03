@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.4 (2026-11-03)
+
+
+### Documentation
+
+- Require linkcheck to pass. @stevepiercy 
+
 ## 3.0.3 (2026-09-10)
 
 
