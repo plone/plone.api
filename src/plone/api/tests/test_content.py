@@ -584,6 +584,52 @@ class TestPloneApiContent(unittest.TestCase):
 
             self.assertFalse(target.manage_pasteObjects.called)
 
+    def test_move_same_id_in_target(self):
+        """Test that move returns the moved object, not its namesake.
+
+        When the target already has an object with the id of the source,
+        the moved object gets a new id in the target.
+        """
+        namesake = api.content.create(
+            container=self.events,
+            type="Document",
+            id="team",
+        )
+        namesake_uid = api.content.get_uuid(namesake)
+        team_uid = api.content.get_uuid(self.team)
+
+        moved = api.content.move(source=self.team, target=self.events)
+
+        self.assertEqual(api.content.get_uuid(moved), team_uid)
+        self.assertNotEqual(moved.getId(), "team")
+        self.assertEqual(self.events[moved.getId()], moved)
+        self.assertEqual(api.content.get_uuid(self.events["team"]), namesake_uid)
+        self.assertNotIn("team", self.about.keys())
+        self.verify_intids()
+
+    def test_move_same_id_in_target_with_new_id(self):
+        """Test that move renames the moved object, not its namesake."""
+        namesake = api.content.create(
+            container=self.events,
+            type="Document",
+            id="team",
+        )
+        namesake_uid = api.content.get_uuid(namesake)
+        team_uid = api.content.get_uuid(self.team)
+
+        moved = api.content.move(
+            source=self.team,
+            target=self.events,
+            id="our-team",
+        )
+
+        self.assertEqual(api.content.get_uuid(moved), team_uid)
+        self.assertEqual(moved.getId(), "our-team")
+        self.assertEqual(self.events["our-team"], moved)
+        self.assertEqual(api.content.get_uuid(self.events["team"]), namesake_uid)
+        self.assertNotIn("team", self.about.keys())
+        self.verify_intids()
+
     def test_rename_constraints(self):
         """Test the constraints for rename content."""
         from plone.api.exc import MissingParameterError

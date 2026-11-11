@@ -212,20 +212,22 @@ def move(
         ValueError
     :Example: :ref:`content-move-example`
     """
-    source_id = source.getId()
+    moved_id = source.getId()
 
     # If no target is given the object is probably renamed
     if target and source.aq_parent is not target:
-        target.manage_pasteObjects(
-            source.aq_parent.manage_cutObjects(source_id),
+        copy_info = target.manage_pasteObjects(
+            source.aq_parent.manage_cutObjects(moved_id),
         )
+        # The id changes if the target already has an object with this id.
+        moved_id = copy_info[0]["new_id"]
     else:
         target = source.aq_parent
 
     if id:
-        return rename(obj=target[source_id], new_id=id, safe_id=safe_id)
+        return rename(obj=target[moved_id], new_id=id, safe_id=safe_id)
     else:
-        return target[source_id]
+        return target[moved_id]
 
 
 @required_parameters("obj", "new_id")
