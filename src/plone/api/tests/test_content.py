@@ -595,16 +595,16 @@ class TestPloneApiContent(unittest.TestCase):
             type="Document",
             id="team",
         )
-        namesake_uid = api.content.get_uuid(namesake)
-        team_uid = api.content.get_uuid(self.team)
+        namesake_uid = namesake.UID()
+        team_uid = self.team.UID()
 
         moved = api.content.move(source=self.team, target=self.events)
 
-        self.assertEqual(api.content.get_uuid(moved), team_uid)
-        self.assertNotEqual(moved.getId(), "team")
+        self.assertEqual(moved.UID(), team_uid)
+        self.assertEqual(moved.getId(), "copy_of_team")
         self.assertEqual(self.events[moved.getId()], moved)
-        self.assertEqual(api.content.get_uuid(self.events["team"]), namesake_uid)
-        self.assertNotIn("team", self.about.keys())
+        self.assertEqual(self.events["team"].UID(), namesake_uid)
+        self.assertNotIn("team", self.about)
         self.verify_intids()
 
     def test_move_same_id_in_target_with_new_id(self):
@@ -614,8 +614,8 @@ class TestPloneApiContent(unittest.TestCase):
             type="Document",
             id="team",
         )
-        namesake_uid = api.content.get_uuid(namesake)
-        team_uid = api.content.get_uuid(self.team)
+        namesake_uid = namesake.UID()
+        team_uid = self.team.UID()
 
         moved = api.content.move(
             source=self.team,
@@ -623,11 +623,11 @@ class TestPloneApiContent(unittest.TestCase):
             id="our-team",
         )
 
-        self.assertEqual(api.content.get_uuid(moved), team_uid)
+        self.assertEqual(moved.UID(), team_uid)
         self.assertEqual(moved.getId(), "our-team")
         self.assertEqual(self.events["our-team"], moved)
-        self.assertEqual(api.content.get_uuid(self.events["team"]), namesake_uid)
-        self.assertNotIn("team", self.about.keys())
+        self.assertEqual(self.events["team"].UID(), namesake_uid)
+        self.assertNotIn("team", self.about)
         self.verify_intids()
 
     def test_rename_constraints(self):
