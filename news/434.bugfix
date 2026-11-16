@@ -1,0 +1,1 @@
+`api.content.move` returns the moved object if the target already has an object with the same id. @mliebischer

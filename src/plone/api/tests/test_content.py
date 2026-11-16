@@ -584,6 +584,52 @@ class TestPloneApiContent(unittest.TestCase):
 
             self.assertFalse(target.manage_pasteObjects.called)
 
+    def test_move_same_id_in_target(self):
+        """Test that move returns the moved object, not its namesake.
+
+        When the target already has an object with the id of the source,
+        the moved object gets a new id in the target.
+        """
+        namesake = api.content.create(
+            container=self.events,
+            type="Document",
+            id="team",
+        )
+        namesake_uid = namesake.UID()
+        team_uid = self.team.UID()
+
+        moved = api.content.move(source=self.team, target=self.events)
+
+        self.assertEqual(moved.UID(), team_uid)
+        self.assertEqual(moved.getId(), "copy_of_team")
+        self.assertEqual(self.events[moved.getId()], moved)
+        self.assertEqual(self.events["team"].UID(), namesake_uid)
+        self.assertNotIn("team", self.about)
+        self.verify_intids()
+
+    def test_move_same_id_in_target_with_new_id(self):
+        """Test that move renames the moved object, not its namesake."""
+        namesake = api.content.create(
+            container=self.events,
+            type="Document",
+            id="team",
+        )
+        namesake_uid = namesake.UID()
+        team_uid = self.team.UID()
+
+        moved = api.content.move(
+            source=self.team,
+            target=self.events,
+            id="our-team",
+        )
+
+        self.assertEqual(moved.UID(), team_uid)
+        self.assertEqual(moved.getId(), "our-team")
+        self.assertEqual(self.events["our-team"], moved)
+        self.assertEqual(self.events["team"].UID(), namesake_uid)
+        self.assertNotIn("team", self.about)
+        self.verify_intids()
+
     def test_rename_constraints(self):
         """Test the constraints for rename content."""
         from plone.api.exc import MissingParameterError
