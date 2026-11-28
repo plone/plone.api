@@ -20,8 +20,10 @@ jobs:
         - ["ubuntu", "ubuntu-latest"]
         config:
         # [Python version, visual name, tox env]
-        - ["3.14", "6.2 on py3.14", "py314-plone62"]
-        - ["3.10", "6.2 on py3.10", "py310-plone62"]
+        - ["3.15", "6.3 on py3.15", "py315-plone63"]
+        - ["3.11", "6.3 on py3.11", "py311-plone63"]
+        - ["3.15", "6.2 on py3.15", "py315-plone62"]
+        - ["3.11", "6.2 on py3.11", "py311-plone62"]
 
     runs-on: ${{ matrix.os[1] }}
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -31,13 +33,8 @@ jobs:
       with:
         persist-credentials: false
     - name: Install uv + caching
-      uses: astral-sh/setup-uv@v10.3.3
+      uses: plone/meta/.github/actions/setup_uv@2.x
       with:
-        enable-cache: true
-        cache-dependency-glob: |
-          setup.*
-          tox.ini
-          pyproject.toml
         python-version: ${{ matrix.config[0] }}
 
 ##

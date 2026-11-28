@@ -305,7 +305,7 @@ def get_registry_record(
             return default
 
         # Show all records on the interface.
-        records = [key for key in interface.names()]
+        records = [*interface.names()]
         msg = (
             'Cannot find a record with name "{name}"'
             " on interface {identifier}.\n"

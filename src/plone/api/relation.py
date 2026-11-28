@@ -194,9 +194,7 @@ def create(
         "to_id": to_id,
     }
     has_relation = (
-        False
-        if (len([el for el in relation_catalog.findRelations(query)]) == 0)
-        else True
+        False if (len([*relation_catalog.findRelations(query)]) == 0) else True
     )
 
     if from_attribute == referencedRelationship:
@@ -313,7 +311,7 @@ def delete(
     if relationship is not None:
         query["from_attribute"] = relationship
     # We'll change the bucket in the loop
-    for rel in [rel for rel in relation_catalog.findRelations(query)]:
+    for rel in [*relation_catalog.findRelations(query)]:
         source = rel.from_object
         from_attribute = rel.from_attribute
         field_and_schema = _get_field_and_schema_for_fieldname(
