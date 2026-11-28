@@ -427,7 +427,7 @@ class TestPloneApiRelation(unittest.TestCase):
         self.assertEqual(self.about.description, "")
         self.assertEqual(len(api.relation.get(source=self.about)), 1)
         rels = relation_catalog.findRelations({"from_attribute": "description"})
-        self.assertEqual(len([i for i in rels]), 1)
+        self.assertEqual(len([*rels]), 1)
 
         api.relation.delete(
             source=self.about,
@@ -437,7 +437,7 @@ class TestPloneApiRelation(unittest.TestCase):
         self.assertEqual(len(api.relation.get(source=self.about)), 0)
         self.assertEqual(self.about.description, "")
         rels = relation_catalog.findRelations({"from_attribute": "description"})
-        self.assertEqual(len([i for i in rels]), 0)
+        self.assertEqual(len([*rels]), 0)
 
     def test_get_constraints(self):
         """Test the constraints when getting relations."""
